@@ -77,8 +77,6 @@ with col1:
     # Zotero library collections
     st.header('Items by collection: ')
 
-    col1, col2 =st.columns([3,5])
-
     aaa = zot.collections()
     data2=[]
     columns2 = ['Key','Name', 'Number', 'Link']
