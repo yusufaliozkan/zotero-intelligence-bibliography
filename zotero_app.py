@@ -74,7 +74,7 @@ for item in aaa:
 
 pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
-df_collections
+
 df_collections = df_collections.sort_values(by='Name')
 
 
@@ -107,7 +107,7 @@ collection_code = df_collections.loc[df_collections['Name']==collection_name, 'C
 df_collections=df_collections['Name'].reset_index()
 pd.set_option('display.max_colwidth', None)
 
-# st.dataframe(df_collections['Name'], height=1500)
+st.dataframe(df_collections['Name'], height=1500)
 
 # Collection items
 
