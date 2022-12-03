@@ -60,7 +60,7 @@ for i in range(row_nu_1):
     st.write(''+str(i+1)+') ' +df_last.iloc[i])
     if display:
         st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
-df
+
 # Zotero library collections
 st.header('Items by collection: ')
 
@@ -68,9 +68,9 @@ col1, col2 =st.columns([3,5])
 
 aaa = zot.collections()
 data2=[]
-columns2 = ['Code','Name', 'Number', 'Link', 'Parent collection']
+columns2 = ['Code','Name', 'Number', 'Link']
 for item in aaa:
-    data2.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href'], item['data']['parentCollection']))
+    data2.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
 
 pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
