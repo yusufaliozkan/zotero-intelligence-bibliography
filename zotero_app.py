@@ -26,7 +26,7 @@ columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zoter
 for item in items:
     data.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'], item['data']['dateAdded'],))
 
-st.set_page_config(layout = "centered") 
+st.set_page_config(layout = "wide") 
 
 df = pd.DataFrame(data, columns=columns)
 
@@ -52,7 +52,7 @@ st.write('The library last updated on ' + df.loc[0]['Date added'])
 
 # Recently added items
 
-col1, col2 = st.columns([6,2])
+col1, col2 = st.columns([4,2])
 with col1:
     st.header('Recently added items: ')
     display = st.checkbox('Display abstract')
