@@ -70,11 +70,8 @@ for item in bbb:
 pd.set_option('display.max_colwidth', None)
 df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
-def make_clickable(Link, Name):
-    return '{}" rel="noopener noreferrer" target="_blank">{}'.format(Link,Name)
-df_collections_2['Collections'] = df_collections_2.apply(lambda x: make_clickable(x['Link'], x['Name']), axis=1)
-df_collections_2.style
-df_collections_2
+HTML(df_collections_2.to_html(render_links=True, escape=False))
+
 
 # Zotero library collections
 st.header('Items by collection: ')
