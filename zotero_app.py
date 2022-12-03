@@ -76,7 +76,7 @@ df_collections_2
 row_nu_collections = len(df_collections_2.index)
 
 for i in range(row_nu_collections):
-    st.write(df_collections_2.sort_values(by='Name')['Name'].iloc[i])
+    st.write([df_collections_2.sort_values(by='Name')['Name'].iloc[i]](df_collections_2['Key'].iloc[i]))
 
 # Zotero library collections
 st.header('Items by collection: ')
