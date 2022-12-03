@@ -60,7 +60,7 @@ for i in range(row_nu_1):
     st.write(''+str(i+1)+') ' +df_last.iloc[i])
     if display:
         st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
-
+df
 # Zotero library collections
 st.header('Items by collection: ')
 
