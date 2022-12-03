@@ -39,7 +39,8 @@ df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
 df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
 
 
-st.title("Intelligence bibliography [Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
+st.title("Intelligence bibliography") 
+st.title("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 count = zot.count_items()
 st.write('There are '+  str(count) + ' items in the Zotero group library. To see the full library click [link](https://www.zotero.org/groups/2514686/intelligence_bibliography/items)')
@@ -60,11 +61,6 @@ for i in range(row_nu_1):
     st.write(''+str(i+1)+') ' +df_last.iloc[i])
     if display:
         st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
-
-# with st.expander('See recent additions as list'):
-#     st.dataframe(df)
-
-
 
 # Zotero library collections
 st.header('Items by collection: ')
