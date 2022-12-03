@@ -133,8 +133,8 @@ df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 
 df_items = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
-row_nu_1= len(df_items.index)
 
+row_nu_1= len(df_items.index)
 if row_nu_1<25:
     row_nu_1=row_nu_1
 else:
@@ -143,13 +143,13 @@ else:
 st.markdown('#### Collection theme: ' + collection_name)
 
 with st.expander("Expand to see the list", expanded=True):
-    st.write('This list shows the last 30 added items. To see the full collection list click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
+    st.write('This list shows the last 25 added items. To see the full collection list click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
     display2 = st.checkbox('Display abstracts')
     for i in range(row_nu_1):
         st.write(''+str(i+1)+') ' +df_items.iloc[i])
         df_items.fillna("nan") 
-        if display2:
-            st.caption(df['Abstract'].iloc[i])
+        # if display2:
+        #     st.caption(df['Abstract'].iloc[i])
 
 # text_to_be_copied = st.write(''+str(i+1)+') ' +df_items.iloc[i])
 # copy_dict = {"content": text_to_be_copied}
