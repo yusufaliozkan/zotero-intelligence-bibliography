@@ -52,7 +52,7 @@ st.write('The library last updated on ' + df.loc[0]['Date added'])
 
 # Recently added items
 
-col1, col2 = st.columns(5,2)
+col1, col2 = st.columns([5,2])
 with col1:
     st.header('Recently added items: ')
     display = st.checkbox('Display abstract')
