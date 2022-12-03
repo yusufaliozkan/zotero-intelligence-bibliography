@@ -72,8 +72,14 @@ for item in bbb:
 pd.set_option('display.max_colwidth', None)
 df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
-HTML(df_collections_2.to_html(render_links=True, escape=False))
-df_collections_2
+def make_clickable(link):
+    # target _blank to open new window
+    # extract clickable text to display for your link
+    text = link.split('=')[1]
+    return f'<a target="_blank" href="{link}">{text}</a>'
+df_collections_2['Link'] = df_collections_2['Link'].apply(make_clickable)
+df_collections_2 = df_collections_2.to_html(escape=False)
+st.write(df_collections_2, unsafe_allow_html=True)
 
 # Zotero library collections
 st.header('Items by collection: ')
