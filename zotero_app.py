@@ -165,7 +165,7 @@ with col1:
 
 
 with col2:
-    with st.expander("Collections", expanded=True):
+    with st.expander("Collections in Zotero", expanded=True):
         row_nu_collections = len(df_collections_2.index)
 
         for i in range(row_nu_collections):
