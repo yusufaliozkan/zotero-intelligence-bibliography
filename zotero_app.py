@@ -75,7 +75,7 @@ with col1:
     df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
 with col2:
-    with st.expander("Collections in Zotero", expanded=True):
+    with st.expander("Collections in Zotero", expanded=False):
         row_nu_collections = len(df_collections_2.index)
 
         for i in range(row_nu_collections):
