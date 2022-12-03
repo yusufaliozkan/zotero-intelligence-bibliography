@@ -52,17 +52,18 @@ st.write('The library last updated on ' + df.loc[0]['Date added'])
 
 # Recently added items
 
+col1, col2 = st.columns([6,2])
+with col1:
+    st.header('Recently added items: ')
+    display = st.checkbox('Display abstract')
 
-st.header('Recently added items: ')
-display = st.checkbox('Display abstract')
+    df_last = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
+    row_nu_1= len(df_last.index)
 
-df_last = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
-row_nu_1= len(df_last.index)
-
-for i in range(row_nu_1):
-    st.write(''+str(i+1)+') ' +df_last.iloc[i])
-    if display:
-        st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
+    for i in range(row_nu_1):
+        st.write(''+str(i+1)+') ' +df_last.iloc[i])
+        if display:
+            st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
 # Collection list
 bbb = zot.collections()
@@ -112,8 +113,6 @@ df_collections = df_collections.sort_values(by='Name')
 # df_collections['Name2'] = df_collections['Name2'].replace(['98. Special collections'],'Special collections')
 # df_collections['Name2'] = df_collections['Name2'].replace(['99. Archival sources and reports'],'Archival sources and reports')
 
-col1, col2 = st.columns([6,2])
-with col1:
     clist = df_collections['Name'].unique()
     collection_name = st.selectbox('Select a collection:', clist)
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
