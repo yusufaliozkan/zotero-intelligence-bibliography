@@ -142,6 +142,7 @@ with st.expander("Expand to see the list", expanded=True):
     display2 = st.checkbox('Display abstracts')
     for i in range(row_nu_1):
         st.write(''+str(i+1)+') ' +df_items.iloc[i])
+        df_items.fillna("nan")
         if display2:
             st.caption(df['Abstract'].iloc[i])
 
