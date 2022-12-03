@@ -156,7 +156,7 @@ row_nu_1= len(df_items.index)
 if row_nu_1<15:
     row_nu_1=row_nu_1
 else:
-    row_nu_1=25
+    row_nu_1=15
 
 st.markdown('#### Collection theme: ' + collection_name)
 
