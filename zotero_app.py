@@ -26,7 +26,7 @@ columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zoter
 for item in items:
     data.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'], item['data']['dateAdded'],))
 
-st.set_page_config(layout = "wide") 
+st.set_page_config(layout = "centered") 
 
 df = pd.DataFrame(data, columns=columns)
 
