@@ -73,6 +73,7 @@ df_collections_2 = pd.DataFrame(data3, columns=columns3)
 def make_clickable(url, name):
     return '{}" rel="noopener noreferrer" target="_blank">{}'.format(url,name)
 df_collections_2['Collections'] = df_collections_2.apply(lambda x: make_clickable(x['Link'], x['Name']), axis=1)
+df_collections_2
 
 # Zotero library collections
 st.header('Items by collection: ')
