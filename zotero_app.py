@@ -133,7 +133,12 @@ df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 
 df_items = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
-row_nu_1= 10 #len(df_items.index)
+row_nu_1= len(df_items.index)
+
+if row_nu_1<25:
+    row_nu_1=row_nu_1
+else:
+    row_nu_1=25
 
 st.markdown('#### Collection theme: ' + collection_name)
 
