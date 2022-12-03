@@ -75,6 +75,8 @@ for item in aaa:
 pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
 
+df_collections = df_collections.sort_values(by='Name')
+
 # df_collections['Name2'] = df_collections['Name'].replace(['01. Intelligence history'],'Intelligence history')
 # df_collections['Name2'] = df_collections['Name2'].replace(['02. Intelligence studies'],'Intelligence studies')
 # df_collections['Name2'] = df_collections['Name2'].replace(['03. Intelligence analysis'],'Intelligence analysis')
@@ -96,8 +98,6 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 # df_collections['Name2'] = df_collections['Name2'].replace(['15. Methodology'],'Methodology')
 # df_collections['Name2'] = df_collections['Name2'].replace(['98. Special collections'],'Special collections')
 # df_collections['Name2'] = df_collections['Name2'].replace(['99. Archival sources and reports'],'Archival sources and reports')
-
-df_collections = df_collections.sort_values(by='Name')
 
 clist = df_collections['Name'].unique()
 collection_name = st.selectbox('Select a collection:', clist)
