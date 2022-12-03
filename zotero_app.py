@@ -74,9 +74,9 @@ for item in aaa:
 
 pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
-
-df_collections = df_collections.sort_values(by='Name')
 df_collections
+df_collections = df_collections.sort_values(by='Name')
+
 
 # df_collections['Name2'] = df_collections['Name'].replace(['01. Intelligence history'],'Intelligence history')
 # df_collections['Name2'] = df_collections['Name2'].replace(['02. Intelligence studies'],'Intelligence studies')
