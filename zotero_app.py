@@ -69,8 +69,10 @@ for item in bbb:
     data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
 pd.set_option('display.max_colwidth', None)
 df_collections_2 = pd.DataFrame(data3, columns=columns3)
-df_collections_2
 
+
+df_collections_2['hyperlinked'] = [df_collections_2['Name']](df_collections_2['Link'])
+df_collections_2
 # Zotero library collections
 st.header('Items by collection: ')
 
