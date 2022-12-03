@@ -100,7 +100,7 @@ df_collections = df_collections.sort_values(by='Name')
 # df_collections['Name2'] = df_collections['Name2'].replace(['98. Special collections'],'Special collections')
 # df_collections['Name2'] = df_collections['Name2'].replace(['99. Archival sources and reports'],'Archival sources and reports')
 
-clist = df_collections['Name'].unique()
+clist = df_collections['Code'].unique()
 collection_name = st.selectbox('Select a collection:', clist)
 collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Code'].values[0]
 
