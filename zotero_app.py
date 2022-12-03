@@ -107,7 +107,7 @@ collection_code = df_collections.loc[df_collections['Name']==collection_name, 'K
 df_collections=df_collections['Name'].reset_index()
 pd.set_option('display.max_colwidth', None)
 
-st.dataframe(df_collections['Key'], height=1500)
+st.dataframe(df_collections['Name'], height=1500)
 
 # Collection items
 
