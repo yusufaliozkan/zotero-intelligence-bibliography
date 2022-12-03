@@ -103,7 +103,7 @@ df_collections
 
 clist = df_collections['Name'].unique()
 collection_name = st.selectbox('Select a collection:', clist)
-collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Code'].values[0]
+collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Code1'].values[0]
 
 df_collections=df_collections['Name'].reset_index()
 pd.set_option('display.max_colwidth', None)
