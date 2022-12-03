@@ -98,7 +98,6 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 # df_collections['Name2'] = df_collections['Name2'].replace(['99. Archival sources and reports'],'Archival sources and reports')
 
 df_collections = df_collections.sort_values(by='Name')
-df_collections
 
 clist = df_collections['Name'].unique()
 collection_name = st.selectbox('Select a collection:', clist)
