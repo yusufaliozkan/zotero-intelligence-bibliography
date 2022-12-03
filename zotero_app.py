@@ -75,10 +75,7 @@ for item in aaa:
 pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
 
-df_collections_bar = df_collections.copy()
-df_collections_bar
-
-df_collections = df_collections.sort_values(by='Name')
+# df_collections = df_collections.sort_values(by='Name')
 
 
 # df_collections['Name2'] = df_collections['Name'].replace(['01. Intelligence history'],'Intelligence history')
