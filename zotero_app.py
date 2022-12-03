@@ -68,7 +68,7 @@ col1, col2 =st.columns([3,5])
 
 aaa = zot.collections()
 data2=[]
-columns2 = ['Code1','Name', 'Number', 'Link']
+columns2 = ['Key','Name', 'Number', 'Link']
 for item in aaa:
     data2.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
 
@@ -103,7 +103,7 @@ df_collections
 
 clist = df_collections['Name'].unique()
 collection_name = st.selectbox('Select a collection:', clist)
-collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Code1'].values[0]
+collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
 df_collections=df_collections['Name'].reset_index()
 pd.set_option('display.max_colwidth', None)
