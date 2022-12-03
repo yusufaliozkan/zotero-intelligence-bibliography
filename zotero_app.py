@@ -73,16 +73,10 @@ pd.set_option('display.max_colwidth', None)
 df_collections_2 = pd.DataFrame(data3, columns=columns3)
 df_collections_2
 
-df = pd.DataFrame({
-    'name':['Softhints', 'DataScientyst'],
-    'url':['https://www.softhints.com', 'https://datascientyst.com']
-})
-df
-def make_clickable(url, name):
-    return '{}" rel="noopener noreferrer" target="_blank">{}'.format(url,name)
+row_nu_collections = len(df_collections_2.index)
 
-df['link'] = df.apply(lambda x: make_clickable(x['url'], x['name']), axis=1)
-st.dataframe(df.style)
+for i in range(row_nu_collections):
+    st.write(df_collections_2['Name'].iloc[i])
 
 # Zotero library collections
 st.header('Items by collection: ')
