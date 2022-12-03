@@ -52,16 +52,18 @@ st.write('The library last updated on ' + df.loc[0]['Date added'])
 
 # Recently added items
 
-st.header('Recently added items: ')
-display = st.checkbox('Display abstract')
+col1, col2 = st.columns(5,2)
+with col1:
+    st.header('Recently added items: ')
+    display = st.checkbox('Display abstract')
 
-df_last = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
-row_nu_1= len(df_last.index)
+    df_last = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
+    row_nu_1= len(df_last.index)
 
-for i in range(row_nu_1):
-    st.write(''+str(i+1)+') ' +df_last.iloc[i])
-    if display:
-        st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
+    for i in range(row_nu_1):
+        st.write(''+str(i+1)+') ' +df_last.iloc[i])
+        if display:
+            st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
 # Collection list
 bbb = zot.collections()
@@ -72,11 +74,12 @@ for item in bbb:
 pd.set_option('display.max_colwidth', None)
 df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
-with st.expander("Collections", expanded=False):
-    row_nu_collections = len(df_collections_2.index)
+with col2:
+    with st.expander("Collections", expanded=False):
+        row_nu_collections = len(df_collections_2.index)
 
-    for i in range(row_nu_collections):
-        st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
+        for i in range(row_nu_collections):
+            st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
 
 # Zotero library collections
 st.header('Items by collection: ')
