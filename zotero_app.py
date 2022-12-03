@@ -82,7 +82,7 @@ def make_clickable(url, name):
     return '{}" rel="noopener noreferrer" target="_blank">{}'.format(url,name)
 
 df['link'] = df.apply(lambda x: make_clickable(x['url'], x['name']), axis=1)
-df.style
+st.dataframe(df.style)
 
 # Zotero library collections
 st.header('Items by collection: ')
