@@ -99,7 +99,7 @@ with col1:
     df_collections = df_collections.sort_values(by='Name')
 
     clist = df_collections['Name'].unique()
-    collection_name = st.selectbox('Select a collection:', clist)
+    collection_name = st.selectbox('Select a collection:', clist, label_visibility="hidden")
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
     df_collections=df_collections['Name'].reset_index()
