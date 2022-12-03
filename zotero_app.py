@@ -139,7 +139,7 @@ with col2:
     st.markdown('#### Collection theme: ' + collection_name)
 
     with st.expander("Expand to see the list", expanded=True):
-        st.write('This list shows the last 30 added items. To see the full collection list click here (https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/{collection_code})'
+        st.write('This list shows the last 30 added items. To see the full collection list click here (https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code)
         display2 = st.checkbox('Display abstracts')
         for i in range(row_nu_1):
             st.write(''+str(i+1)+') ' +df_items.iloc[i])
