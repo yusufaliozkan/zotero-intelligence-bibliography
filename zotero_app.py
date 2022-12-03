@@ -74,7 +74,6 @@ for item in aaa:
 
 pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
-df_collections
 
 # df_collections = df_collections.sort_values(by='Name')
 
