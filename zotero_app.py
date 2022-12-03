@@ -71,7 +71,7 @@ pd.set_option('display.max_colwidth', None)
 df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
 HTML(df_collections_2.to_html(render_links=True, escape=False))
-
+df_collections_2
 
 # Zotero library collections
 st.header('Items by collection: ')
