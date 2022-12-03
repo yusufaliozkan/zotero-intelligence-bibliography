@@ -151,16 +151,5 @@ with st.expander("Expand to see the list", expanded=False):
         # if display2:
         #     st.caption(df['Abstract'].iloc[i])
 
-# text_to_be_copied = st.write(''+str(i+1)+') ' +df_items.iloc[i])
-# copy_dict = {"content": text_to_be_copied}
-# copy_button = Button(label="Copy HTML template to clipboard")
-# copy_button.js_on_event("button_click", CustomJS(args=copy_dict, code="""
-#         navigator.clipboard.writeText(content);
-#         """))
-# no_event = streamlit_bokeh_events(
-#         copy_button,
-#         events="GET_TEXT",
-#         key="get_text",
-#         refresh_on_update=True,
-#         override_height=75,
-#         debounce_time=0)
+st.dataframe(df_collections, height=1500)
+
