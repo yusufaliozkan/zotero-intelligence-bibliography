@@ -68,7 +68,7 @@ col1, col2 =st.columns([3,5])
 
 aaa = zot.collections()
 data2=[]
-columns2 = ['Code','Name', 'Number', 'Link']
+columns2 = ['Code1','Name', 'Number', 'Link']
 for item in aaa:
     data2.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
 
