@@ -39,6 +39,7 @@ df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post
 df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
 df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
 df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
+df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 
 
 st.title("Intelligence bibliography - [Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
