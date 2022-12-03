@@ -71,6 +71,7 @@ for item in bbb:
     data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
 pd.set_option('display.max_colwidth', None)
 df_collections_2 = pd.DataFrame(data3, columns=columns3)
+df_collections_2
 
 def make_clickable(link):
     # target _blank to open new window
