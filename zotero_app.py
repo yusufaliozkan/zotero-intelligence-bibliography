@@ -74,7 +74,16 @@ with col1:
     pd.set_option('display.max_colwidth', None)
     df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
+with col2:
+    with st.expander("Collections in Zotero", expanded=True):
+        row_nu_collections = len(df_collections_2.index)
+
+        for i in range(row_nu_collections):
+            st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
+
     # Zotero library collections
+col1, col2 = st.columns([6,2])
+with col1:
     st.header('Items by collection: ')
 
     aaa = zot.collections()
@@ -88,37 +97,12 @@ with col1:
 
     df_collections = df_collections.sort_values(by='Name')
 
-
-    # df_collections['Name2'] = df_collections['Name'].replace(['01. Intelligence history'],'Intelligence history')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['02. Intelligence studies'],'Intelligence studies')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['03. Intelligence analysis'],'Intelligence analysis')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['04. Intelligence organisations'],'Intelligence organisations')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['05. Intelligence failures'],'Intelligence failures')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['06. Intelligence, oversight, and ethics'],'Intelligence, oversight, and ethics')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['07. a. HUMINT'],'HUMINT')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['07. b. IMINT'],'IMINT')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['07. c. OSINT - SOCMINT'],'OSINT - SOCMINT')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['07. d. SIGINT'],'SIGINT')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['07. e. Medical Intelligence'],'Medical Intelligence')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['08. Counterintelligence'],'Counterintelligence')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['09. Covert action'],'Covert action')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['10. Cybersphere'],'Cybersphere')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['11. Intelligence in literature and popular culture'],'Intelligence in literature and popular culture')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['12. Documentaries and movies'],'Documentaries and movies')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['13. Podcasts and videos'],'Podcasts and videos')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['14. Miscellaneous'],'Miscellaneous')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['15. Methodology'],'Methodology')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['98. Special collections'],'Special collections')
-    # df_collections['Name2'] = df_collections['Name2'].replace(['99. Archival sources and reports'],'Archival sources and reports')
-
     clist = df_collections['Name'].unique()
     collection_name = st.selectbox('Select a collection:', clist)
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
     df_collections=df_collections['Name'].reset_index()
     pd.set_option('display.max_colwidth', None)
-
-    # st.dataframe(df_collections['Name'], height=1500)
 
     # Collection items
 
@@ -163,10 +147,3 @@ with col1:
             # if display2:
             #     st.caption(df['Abstract'].iloc[i])
 
-
-with col2:
-    with st.expander("Collections in Zotero", expanded=True):
-        row_nu_collections = len(df_collections_2.index)
-
-        for i in range(row_nu_collections):
-            st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
