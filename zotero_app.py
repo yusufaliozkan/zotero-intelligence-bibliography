@@ -60,7 +60,15 @@ with st.sidebar:
         To see more details about the sources, please visit the group library [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/library). 
         If you need more information about Zotero, visit [this page](https://www.intelligencenetwork.org/zotero).
         ''')
-    # with st.expander('Source code'):
+    with st.expander('Source code'):
+        st.info('''
+        Source code of this app is available [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography).
+        ''')
+    with st.expander('Disclaimer'):
+        st.warning('''
+        This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
+        The list is created based on the creator's subjective views.
+        ''')
 
 
 
