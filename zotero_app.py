@@ -69,6 +69,8 @@ with st.sidebar:
         This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
         The list is created based on the creator's subjective views.
         ''')
+    with st.expander('Contact us'):
+        st.write('If you have any questions or suggestions, please do get in [touch with us](https://www.intelligencenetwork.org/contact-us).')
 
 # Recently added items
 
