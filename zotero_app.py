@@ -93,15 +93,16 @@ with st.sidebar:
 col1, col2 = st.columns([4,2]) 
 with col1:
     st.header('Recently added items: ')
-    display = st.checkbox('Display abstract')
+    with st.expander(''):
+        display = st.checkbox('Display abstract')
 
-    df_last = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
-    row_nu_1= len(df_last.index)
+        df_last = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
+        row_nu_1= len(df_last.index)
 
-    for i in range(row_nu_1):
-        st.write(''+str(i+1)+') ' +df_last.iloc[i])
-        if display:
-            st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
+        for i in range(row_nu_1):
+            st.write(''+str(i+1)+') ' +df_last.iloc[i])
+            if display:
+                st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
     # Collection list
     bbb = zot.collections()
