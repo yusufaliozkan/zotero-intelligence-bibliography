@@ -27,7 +27,13 @@ columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zoter
 for item in items:
     data.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'], item['data']['dateAdded'],))
 
-st.set_page_config(layout = "centered", page_title='Intelligence bibliography') 
+image = 'https://images.rawpixel.com/image_png_1000/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L2pvYjcyNi0xMDQtcC5wbmc.png'
+
+st.set_page_config(layout = "centered", 
+                    page_title='Intelligence bibliography',
+                    page_icon="image"
+
+) 
 
 df = pd.DataFrame(data, columns=columns)
 
