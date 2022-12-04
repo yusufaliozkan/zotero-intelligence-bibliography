@@ -53,7 +53,7 @@ st.write('The library last updated on ' + df.loc[0]['Date added'])
 
 # Recently added items
 
-col1, col2 = st.columns([6,1]) 
+col1, col2 = st.columns([5,2]) 
 with col1:
     st.header('Recently added items: ')
     display = st.checkbox('Display abstract')
@@ -139,7 +139,7 @@ with col1:
             #     st.caption(df['Abstract'].iloc[i])
 
 with col2:
-    with st.expander("Collections in Zotero", expanded=False):
+    with st.expander("Collections in Zotero library", expanded=False):
         row_nu_collections = len(df_collections_2.index)
 
         for i in range(row_nu_collections):
