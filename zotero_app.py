@@ -60,7 +60,7 @@ with st.sidebar:
         To see more details about the sources, please visit the Zotero group library. 
         If you need more information about Zotero, visit [this page](https://www.intelligencenetwork.org/zotero).
         ''')
-    with st.expander('Source code'):
+    # with st.expander('Source code'):
 
 
 
