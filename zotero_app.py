@@ -51,7 +51,7 @@ df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 st.write('The library last updated on ' + df.loc[0]['Date added'])
 
 with st.sidebar:
-    st.sidebar.markdown("# Spiral statistics dashboard")
+    st.sidebar.markdown("# Intelligence bibliography")
 
 
 # Recently added items
