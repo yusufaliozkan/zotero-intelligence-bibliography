@@ -60,8 +60,8 @@ st.write('The library last updated on ' + '**'+ df.loc[0]['Date added']+'**')
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 with st.sidebar:
-    st.sidebar.markdown("# Intelligence bibliography")
     st.image(image, width=150)
+    st.sidebar.markdown("# Intelligence bibliography")
     with st.expander('About'):
         st.write('''This website lists secondary sources on intelligence studies and intelligence history.
         The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
