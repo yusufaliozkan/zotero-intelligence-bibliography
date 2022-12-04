@@ -45,7 +45,8 @@ df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 st.title("Intelligence bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
-
+with st.expander('About:'):
+    st.write('This webpage lists secondary sources on intelligence studies and intelligence history. The sources are originally listed in [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography)')
 count = zot.count_items()
 st.write('There are '+  str(count) + ' items in the Zotero group library. To see the full library click [link](https://www.zotero.org/groups/2514686/intelligence_bibliography/items)')
 df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
