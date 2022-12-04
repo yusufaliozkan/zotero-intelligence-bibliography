@@ -70,7 +70,7 @@ with st.sidebar:
         The list is created based on the creator's subjective views.
         ''')
     with st.expander('Contact us'):
-        st.write('If you have any questions or suggestions, please do get in [touch with us](https://www.intelligencenetwork.org/contact-us).')
+        st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
 
 # Recently added items
 
