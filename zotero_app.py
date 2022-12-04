@@ -27,7 +27,6 @@ columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zoter
 for item in items:
     data.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'], item['data']['dateAdded'],))
 
-image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence bibliography',
@@ -61,6 +60,7 @@ st.write('The library last updated on ' + '**'+ df.loc[0]['Date added']+'**')
 with st.sidebar:
     st.sidebar.markdown("# Intelligence bibliography")
     with st.expander('About'):
+        st.image('https://images.pexels.com/photos/315918/pexels-photo-315918.png', width=150)
         st.write('''This website lists secondary sources on intelligence studies and intelligence history.
         The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
         This website uses [Zotero API](https://github.com/urschrei/pyzotero) to connect the *Intelligence bibliography Zotero group library*.
