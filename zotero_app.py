@@ -50,6 +50,10 @@ df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
 df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 st.write('The library last updated on ' + df.loc[0]['Date added'])
 
+with st.sidebar:
+    st.sidebar.image(image, width=150) 
+    st.sidebar.markdown("# Spiral statistics dashboard")
+
 
 # Recently added items
 
