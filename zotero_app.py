@@ -72,7 +72,7 @@ with st.sidebar:
 
 # Recently added items
 
-col1, col2 = st.columns([7,2]) 
+col1, col2 = st.columns([3,1]) 
 with col1:
     st.header('Recently added items: ')
     display = st.checkbox('Display abstract')
