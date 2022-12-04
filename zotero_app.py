@@ -55,7 +55,9 @@ with st.sidebar:
     st.sidebar.markdown("# Intelligence bibliography")
     with st.expander('About'):
         st.write('''This webpage lists secondary sources on intelligence studies and intelligence history. 
-        The sources are originally listed in [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography)
+        The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
+        To see more details about the sources, please visit the Zotero group library. 
+        If you need more information about Zotero, visit [this page](https://www.intelligencenetwork.org/zotero).
         ''')
 
 
