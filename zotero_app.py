@@ -75,16 +75,6 @@ with col1:
     pd.set_option('display.max_colwidth', None)
     df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
-with col2:
-    with st.expander("Collections in Zotero", expanded=False):
-        row_nu_collections = len(df_collections_2.index)
-
-        for i in range(row_nu_collections):
-            st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
-
-    # Zotero library collections
-col1, col2 = st.columns([6,2])
-with col1:
     st.header('Items by collection: ')
 
     aaa = zot.collections()
@@ -148,3 +138,11 @@ with col1:
             # if display2:
             #     st.caption(df['Abstract'].iloc[i])
 
+with col2:
+    with st.expander("Collections in Zotero", expanded=False):
+        row_nu_collections = len(df_collections_2.index)
+
+        for i in range(row_nu_collections):
+            st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
+
+    # Zotero library collections
