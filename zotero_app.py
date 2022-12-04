@@ -70,11 +70,9 @@ with st.sidebar:
         The list is created based on the creator's subjective views.
         ''')
 
-
-
 # Recently added items
 
-col1, col2 = st.columns([5,2]) 
+col1, col2 = st.columns([7,3]) 
 with col1:
     st.header('Recently added items: ')
     display = st.checkbox('Display abstract')
