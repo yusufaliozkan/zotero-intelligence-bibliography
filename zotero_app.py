@@ -43,7 +43,7 @@ df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 
 
 st.title("Intelligence bibliography")
-st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
+# st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 
 count = zot.count_items()
