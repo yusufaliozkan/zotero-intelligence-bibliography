@@ -60,7 +60,7 @@ st.write('The library last updated on ' + '**'+ df.loc[0]['Date added']+'**')
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 with st.sidebar:
-    st.image(image, width=100)
+    st.image(image, width=150)
     st.sidebar.markdown("# Intelligence bibliography")
     with st.expander('About'):
         st.write('''This website lists secondary sources on intelligence studies and intelligence history.
