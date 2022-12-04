@@ -47,8 +47,7 @@ st.title("Intelligence bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 count = zot.count_items()
-st.write('''There are '+  '**'+str(count)+ '**' + ' items in the Zotero group library. 
-To see the full library, go to the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).''')
+st.write('There are '+  '**'+str(count)+ '**' + ' items in the Zotero group library. To see the full library, go to the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
 df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
 df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date added']+'**')
