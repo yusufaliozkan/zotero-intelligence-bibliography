@@ -43,6 +43,8 @@ df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 
 
 st.title("Intelligence bibliography - [Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
+st.header("Intelligence bibliography - [Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
+
 
 count = zot.count_items()
 st.write('There are '+  str(count) + ' items in the Zotero group library. To see the full library click [link](https://www.zotero.org/groups/2514686/intelligence_bibliography/items)')
