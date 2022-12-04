@@ -54,11 +54,14 @@ st.write('The library last updated on ' + df.loc[0]['Date added'])
 with st.sidebar:
     st.sidebar.markdown("# Intelligence bibliography")
     with st.expander('About'):
-        st.write('''This webpage lists secondary sources on intelligence studies and intelligence history. 
+        st.write('''This website lists secondary sources on intelligence studies and intelligence history.
         The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
+        This website uses Zotero API to connect the **Intelligence bibliography Zotero group library**.
         To see more details about the sources, please visit the Zotero group library. 
         If you need more information about Zotero, visit [this page](https://www.intelligencenetwork.org/zotero).
         ''')
+    with st.expander('Source code'):
+
 
 
 # Recently added items
