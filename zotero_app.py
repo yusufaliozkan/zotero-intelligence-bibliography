@@ -93,7 +93,7 @@ with st.sidebar:
 col1, col2 = st.columns([4,2]) 
 with col1:
     st.header('Recently added items: ')
-    with st.expander(''):
+    with st.expander('Click to hide the list', expanded=False):
         display = st.checkbox('Display abstract')
 
         df_last = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
