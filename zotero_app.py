@@ -4,6 +4,7 @@ from pyzotero import zotero
 import pandas as pd
 import streamlit as st
 from IPython.display import HTML
+import streamlit.components.v1 as components
 
 # from bokeh.models.widgets import Button
 # from bokeh.models import CustomJS
