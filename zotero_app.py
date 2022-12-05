@@ -160,7 +160,7 @@ with col1:
             if display:
                 st.caption('Themes: ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')' +
                 '['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')'+', ' +
-                '['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')' +', ' +
+                '['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')' +', ' 
                 )
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
