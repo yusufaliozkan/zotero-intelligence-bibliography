@@ -31,7 +31,6 @@ for item in items:
     item['data']['abstractNote'], 
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
-    item['data']['collections'][0],
     item['data']['collections'][0]
     ))
 
