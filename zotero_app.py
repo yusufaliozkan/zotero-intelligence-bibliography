@@ -33,7 +33,7 @@ for item in items:
     item['data']['abstractNote'], 
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
-    item['data']['collections'],
+    item['data']['creators'],
     item['data']
     ))
 
@@ -44,7 +44,7 @@ st.set_page_config(layout = "wide",
 
 df = pd.DataFrame(data, columns=columns)
 df['Col key']
-split_df= pd.DataFrame(df['Col key'].tolist())
+split_df= pd.DataFrame(df['Col key'].tolist()) # https://datascienceparichay.com/article/split-pandas-column-of-lists-into-multiple-columns/ 
 split_df
 
 # Change type name
