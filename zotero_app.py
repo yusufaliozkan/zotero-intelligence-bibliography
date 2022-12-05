@@ -5,6 +5,8 @@ import pandas as pd
 import streamlit as st
 from IPython.display import HTML
 import streamlit.components.v1 as components
+import numpy as np
+
 
 # from bokeh.models.widgets import Button
 # from bokeh.models import CustomJS
