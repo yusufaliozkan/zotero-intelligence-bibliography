@@ -38,7 +38,6 @@ st.set_page_config(layout = "wide",
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 split_df= pd.DataFrame(df['Col key'].tolist(), columns=['col1', 'col2', 'col3']) # https://datascienceparichay.com/article/split-pandas-column-of-lists-into-multiple-columns/ 
-split_df
 df = pd.concat([df, split_df], axis=1)
 df
 
