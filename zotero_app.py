@@ -43,7 +43,6 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 
 df = pd.DataFrame(data, columns=columns)
-df['Col key'] = df['Col key'].astype(str)
 df['Col key']
 split_df= pd.DataFrame(df['Col key'].tolist())
 split_df
