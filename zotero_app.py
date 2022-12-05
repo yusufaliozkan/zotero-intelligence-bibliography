@@ -85,9 +85,14 @@ merged_df = pd.merge(
     right_on='Key',
     how='left'
 )
-df = merged_df.copy()
-df
-
+merged_df2 = pd.merge(
+    left=merged_df,
+    right=df_collections,
+    left_on='col2',
+    right_on='Key',
+    how='left'
+)
+merged_df2
 # Streamlit app
 
 st.title("Intelligence bibliography")
