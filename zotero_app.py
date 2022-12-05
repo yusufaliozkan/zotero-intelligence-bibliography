@@ -28,9 +28,10 @@ for item in items:
     data.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'], item['data']['dateAdded'],))
 
 
-st.set_page_config(layout = "centered", 
+st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png"
+                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
+                    initial_sidebar_state="expanded"
 
 ) 
 
