@@ -1,4 +1,5 @@
-# Libraries
+
+
 from pyzotero import zotero
 import pandas as pd
 import streamlit as st
@@ -10,7 +11,6 @@ import numpy as np
 # from streamlit_bokeh_events import streamlit_bokeh_events
 
 # Connecting Zotero with API
->>>>>>> eb7ec79dc88bda0298267bda7676f1cfde08ea80
 library_id = '2514686'
 library_type = 'group'
 api_key = '' # api_key is only needed for private groups and libraries
