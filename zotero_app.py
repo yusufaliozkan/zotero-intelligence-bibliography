@@ -449,7 +449,6 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 # © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 # """
 # )
-=======
 
 
 # Legacy
@@ -662,4 +661,3 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 # © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 # """
 # )
->>>>>>> eb7ec79dc88bda0298267bda7676f1cfde08ea80
