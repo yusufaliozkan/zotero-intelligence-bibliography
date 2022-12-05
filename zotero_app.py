@@ -31,7 +31,7 @@ for item in items:
     item['data']['abstractNote'], 
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
-    item['data']['collections'][1]
+    item['data']['collections'][0]
     ))
 
 st.set_page_config(layout = "wide", 
