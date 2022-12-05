@@ -44,6 +44,7 @@ st.set_page_config(layout = "wide",
 
 df = pd.DataFrame(data, columns=columns)
 df
+df['Col key 1']
 
 # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
