@@ -43,7 +43,6 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 
 df = pd.DataFrame(data, columns=columns)
-df
 df['Col key 1'] = df['Col key 1'].astype(str)
 df
 
