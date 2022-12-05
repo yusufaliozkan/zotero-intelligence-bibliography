@@ -32,7 +32,7 @@ for item in items:
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
     item['data']['collections']
-    )
+    ))
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
