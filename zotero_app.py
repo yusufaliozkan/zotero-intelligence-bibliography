@@ -97,7 +97,7 @@ merged_df3 = pd.merge(
     how='left'
 )
 df = merged_df3.copy()
-df
+df = df.fillna('')
 # Streamlit app
 
 st.title("Intelligence bibliography")
