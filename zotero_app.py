@@ -17,7 +17,7 @@ api_key = '' # api_key is only needed for private groups and libraries
 zot = zotero.Zotero(library_id, library_type)
 items = zot.top(limit=10)
 # items = zot.items()
-items
+
 # items = zot.collection_items_top('BNPYHVD4', limit=10)
 pd.set_option('display.max_colwidth', None)
 
