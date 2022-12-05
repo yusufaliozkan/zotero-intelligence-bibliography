@@ -50,7 +50,7 @@ df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
 df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 
-df
+
 
 st.title("Intelligence bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
