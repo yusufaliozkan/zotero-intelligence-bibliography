@@ -78,6 +78,14 @@ df_collections = df_collections.sort_values(by='Name')
 df['Col1Name'] = df['col1'].map(df_collections['Name'])
 df
 
+merged_df = pd.merge(
+    left=df,
+    right=df_collections,
+    left_on='col1',
+    right_on='Key',
+    how='left'
+)
+
 # Streamlit app
 
 st.title("Intelligence bibliography")
