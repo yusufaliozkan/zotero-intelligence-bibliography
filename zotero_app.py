@@ -22,7 +22,7 @@ items = zot.top(limit=10)
 pd.set_option('display.max_colwidth', None)
 
 data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Collection key', 'First name']
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Collection key']
 
 for item in items:
     data.append((item['data']['title'], 
@@ -31,8 +31,7 @@ for item in items:
     item['data']['abstractNote'], 
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
-    item['data']['collections'],
-    item['data']['creators'][1])
+    item['data']['collections']
     )
 
 # items
@@ -48,7 +47,6 @@ df = pd.DataFrame(data, columns=columns)
 
 df['First name'].astype(str)
 
-df
 
 # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
