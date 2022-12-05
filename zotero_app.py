@@ -22,10 +22,10 @@ items = zot.top(limit=10)
 pd.set_option('display.max_colwidth', None)
 
 data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added']
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Collection key']
 
 for item in items:
-    data.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'], item['data']['dateAdded'],))
+    data.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'], item['data']['dateAdded'], item['data']['collections']))
 
 
 st.set_page_config(layout = "wide", 
@@ -50,7 +50,7 @@ df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
 df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 
-
+df
 
 st.title("Intelligence bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
