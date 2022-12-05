@@ -154,9 +154,13 @@ with col1:
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
         )
+        df_last_2 = ("[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
+        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
+        )        
         row_nu_1= len(df_last.index)
         for i in range(row_nu_1):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
+            st.write(''+str(i+1)+') ' +df_last_2.iloc[i])
             if display:
                 st.caption('Themes: ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')' + '   ' +
                 '['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')'+'   ' +
