@@ -46,6 +46,8 @@ st.set_page_config(layout = "wide",
 
 df = pd.DataFrame(data, columns=columns)
 
+df['First name'].astype(str)
+
 df
 
 # Change type name
