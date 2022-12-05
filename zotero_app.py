@@ -56,13 +56,13 @@ df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'N
 df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 
 # Bringing collections
-# bbb = zot.collections()
-# data3=[]
-# columns3 = ['Key','Name', 'Number', 'Link']
-# for item in bbb:
-#     data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
-# pd.set_option('display.max_colwidth', None)
-# df_collections_2 = pd.DataFrame(data3, columns=columns3)
+bbb = zot.collections()
+data3=[]
+columns3 = ['Key','Name', 'Number', 'Link']
+for item in bbb:
+    data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
+pd.set_option('display.max_colwidth', None)
+df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
 collections = zot.collections()
 data2=[]
@@ -192,10 +192,10 @@ with col1:
 
 with col2:
     with st.expander("Collections in Zotero library", expanded=False):
-        row_nu_collections = len(df_collections.index)
+        row_nu_collections = len(df_collections_2.index)
 
         for i in range(row_nu_collections):
-            st.caption('[' + df_collections.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections.sort_values(by='Name')['Link'].iloc[i] + ')')
+            st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
 
     # Zotero library collections
 
