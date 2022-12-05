@@ -119,10 +119,10 @@ with col1:
 
     st.header('Items by collection: ')
 
-    aaa = zot.collections()
+    collections = zot.collections()
     data2=[]
     columns2 = ['Key','Name', 'Number', 'Link']
-    for item in aaa:
+    for item in collections:
         data2.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
 
     pd.set_option('display.max_colwidth', None)
