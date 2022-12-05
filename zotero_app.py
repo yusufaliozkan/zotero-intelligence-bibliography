@@ -192,7 +192,7 @@ with col1:
 
 with col2:
     with st.expander("Collections in Zotero library", expanded=False):
-        row_nu_collections = len(df_collections_2.index)
+        row_nu_collections = len(df_collections.index)
 
         for i in range(row_nu_collections):
             st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
