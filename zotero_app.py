@@ -32,8 +32,8 @@ for item in items:
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
     item['data']['collections'],
-    item['data']['creators']['firstName'],
-    item['data']['creators']['lastName'])
+    item[0]['data']['creators']['firstName'],
+    item[0]['data']['creators']['lastName'])
     )
 
 # items
