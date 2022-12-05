@@ -17,7 +17,7 @@ api_key = '' # api_key is only needed for private groups and libraries
 zot = zotero.Zotero(library_id, library_type)
 items = zot.top(limit=10)
 # items = zot.items()
-
+items
 # items = zot.collection_items_top('BNPYHVD4', limit=10)
 pd.set_option('display.max_colwidth', None)
 
@@ -204,5 +204,3 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
-
-items
