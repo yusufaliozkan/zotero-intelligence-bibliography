@@ -47,8 +47,6 @@ df['Col key']
 split_df= pd.DataFrame(df['Col key'].tolist()) # https://datascienceparichay.com/article/split-pandas-column-of-lists-into-multiple-columns/ 
 split_df
 
-df.tolist()
-df
 
 # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
@@ -140,6 +138,7 @@ with col1:
 
     pd.set_option('display.max_colwidth', None)
     df_collections = pd.DataFrame(data2, columns=columns2)
+    df_collections
 
     df_collections = df_collections.sort_values(by='Name')
 
