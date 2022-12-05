@@ -32,7 +32,7 @@ for item in items:
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
     item['data']['collections'],
-    item['creators'])
+    item['data']['creators'][[0]])
     )
 
 # items
