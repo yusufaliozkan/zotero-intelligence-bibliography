@@ -44,7 +44,7 @@ st.set_page_config(layout = "wide",
 
 df = pd.DataFrame(data, columns=columns)
 df
-str(df['Col key 1'])
+df['Col key 1'] = str(df['Col key 1'])
 df
 
 # Change type name
