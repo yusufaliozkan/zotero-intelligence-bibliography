@@ -76,6 +76,7 @@ df_collections
 df_collections = df_collections.sort_values(by='Name')
 
 df['Col1Name'] = df['col1'].map(df_collections['Name'])
+df
 
 # Streamlit app
 
