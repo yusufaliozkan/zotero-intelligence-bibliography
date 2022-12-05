@@ -37,9 +37,9 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
-df_recent = pd.DataFrame(data, columns=columns)
-df_recent['Col key']
-split_df= pd.DataFrame(df_recent['Col key'].tolist()) # https://datascienceparichay.com/article/split-pandas-column-of-lists-into-multiple-columns/ 
+df = pd.DataFrame(data, columns=columns)
+df['Col key']
+split_df= pd.DataFrame(df['Col key'].tolist()) # https://datascienceparichay.com/article/split-pandas-column-of-lists-into-multiple-columns/ 
 split_df
 
     # Change type name
