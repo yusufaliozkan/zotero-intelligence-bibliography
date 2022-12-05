@@ -22,7 +22,7 @@ items = zot.top(limit=10)
 pd.set_option('display.max_colwidth', None)
 
 data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key 1', 'Col key 2', 'Col key 3']
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key 1']
 
 for item in items:
     data.append((item['data']['title'], 
