@@ -71,7 +71,7 @@ for item in collections:
 
 pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
-df_collections=df_collections.set_index('Key', inplace=True)
+df_collections=df_collections.set_index('Key')
 df_collections
 
 df_collections = df_collections.sort_values(by='Name')
