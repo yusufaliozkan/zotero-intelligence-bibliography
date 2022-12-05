@@ -150,6 +150,18 @@ with col1:
 
     df = pd.DataFrame(data3, columns=columns3)
 
+    df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
+    df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
+    df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
+    df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
+    df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
+    df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
+    df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
+    df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
+    df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
+    df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
+    df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
+
     df_items = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
 
     row_nu_1= len(df_items.index)
