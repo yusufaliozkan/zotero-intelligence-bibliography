@@ -151,7 +151,8 @@ with col1:
 
         df_last = ('**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ 
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'                
+        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'+
+        ' Themes: ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'
         )
         row_nu_1= len(df_last.index)
         for i in range(row_nu_1):
