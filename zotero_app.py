@@ -157,7 +157,7 @@ with col1:
         for i in range(row_nu_1):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
             if display:
-                st.caption(' Themes: ' + '['+df['Name_x']+']' +'('+ df['Link_x'] + ')')
+                st.caption(' Themes: ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')')
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
 # Collection list
