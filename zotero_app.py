@@ -37,12 +37,12 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
-df = pd.DataFrame(data, columns=columns)
-df['Col key']
-split_df= pd.DataFrame(df['Col key'].tolist()) # https://datascienceparichay.com/article/split-pandas-column-of-lists-into-multiple-columns/ 
+df_recent = pd.DataFrame(data, columns=columns)
+df_recent['Col key']
+split_df= pd.DataFrame(df_recent['Col key'].tolist()) # https://datascienceparichay.com/article/split-pandas-column-of-lists-into-multiple-columns/ 
 split_df
 
-# Change type name
+    # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
 df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
 df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
@@ -56,13 +56,13 @@ df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'N
 df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 
 # Bringing collections
-bbb = zot.collections()
-data3=[]
-columns3 = ['Key','Name', 'Number', 'Link']
-for item in bbb:
-    data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
-pd.set_option('display.max_colwidth', None)
-df_collections_2 = pd.DataFrame(data3, columns=columns3)
+# bbb = zot.collections()
+# data3=[]
+# columns3 = ['Key','Name', 'Number', 'Link']
+# for item in bbb:
+#     data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
+# pd.set_option('display.max_colwidth', None)
+# df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
 collections = zot.collections()
 data2=[]
@@ -75,6 +75,8 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 df_collections
 
 df_collections = df_collections.sort_values(by='Name')
+
+
 
 # Streamlit app
 
@@ -134,7 +136,7 @@ with col1:
             if display:
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
-    # Collection list
+# Collection list
 
     st.header('Items by collection: ')
     clist = df_collections['Name'].unique()
