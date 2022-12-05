@@ -25,7 +25,14 @@ data=[]
 columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Collection key']
 
 for item in items:
-    data.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'], item['data']['dateAdded'], item['data']['collections']))
+    data.append((item['data']['title'], 
+    item['data']['itemType'], 
+    item['data']['url'], 
+    item['data']['abstractNote'], 
+    item['links']['alternate']['href'], 
+    item['data']['dateAdded'], 
+    item['data']['collections'])
+    )
 
 
 st.set_page_config(layout = "wide", 
@@ -197,3 +204,5 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
+
+items
