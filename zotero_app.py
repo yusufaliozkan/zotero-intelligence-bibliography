@@ -150,9 +150,7 @@ with col1:
     with st.expander('Click to hide the list', expanded=True):
         display = st.checkbox('Display theme/abstract')
 
-        df_last = ('**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ 
-        "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
+        df_last = ('**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] 
         )
         df_last_2 = ("[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
