@@ -153,6 +153,7 @@ with col1:
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'+
         ' Themes: ' + '['+df['Name_x']+']' +'('+ df['Link_x'] + ')'
+        + '['+df['Name_y']+']' +'('+ df['Link_y'] + ')'
         )
         row_nu_1= len(df_last.index)
         for i in range(row_nu_1):
