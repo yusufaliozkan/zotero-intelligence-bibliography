@@ -32,7 +32,7 @@ for item in items:
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
     item['data']['collections'][0],
-    item['data']
+    item['data']['creators']['creatorType']
     ))
 
 st.set_page_config(layout = "wide", 
