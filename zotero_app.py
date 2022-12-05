@@ -82,22 +82,8 @@ merged_df = pd.merge(
     right_on='Key',
     how='left'
 )
-merged_df2 = pd.merge(
-    left=merged_df,
-    right=df_collections,
-    left_on='col2',
-    right_on='Key',
-    how='left'
-)
-merged_df3 = pd.merge(
-    left=merged_df2,
-    right=df_collections,
-    left_on='col2',
-    right_on='Key',
-    how='left'
-)
 
-df = merged_df3.copy()
+df = merged_df.copy()
 df
 # Streamlit app
 
@@ -153,7 +139,6 @@ with col1:
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'+
         ' Themes: ' + '['+df['Name_x']+']' +'('+ df['Link_x'] + ')'
-        + '['+str(df['Name_y'])+']' +'('+ str(df['Link_y']) + ')'
         )
         row_nu_1= len(df_last.index)
         for i in range(row_nu_1):
