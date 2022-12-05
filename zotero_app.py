@@ -42,9 +42,7 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 
 df = pd.DataFrame(data, columns=columns)
-df
-df.dtypes
-items
+
 # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
 df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
