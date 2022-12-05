@@ -82,8 +82,21 @@ merged_df = pd.merge(
     right_on='Key',
     how='left'
 )
-
-df = merged_df.copy()
+merged_df2 = pd.merge(
+    left=merged_df,
+    right=df_collections,
+    left_on='col1',
+    right_on='Key',
+    how='left'
+)
+merged_df3 = pd.merge(
+    left=merged_df2,
+    right=df_collections,
+    left_on='col1',
+    right_on='Key',
+    how='left'
+)
+df = merged_df3.copy()
 df
 # Streamlit app
 
@@ -133,7 +146,7 @@ col1, col2 = st.columns([4,2])
 with col1:
     st.header('Recently added items: ')
     with st.expander('Click to hide the list', expanded=True):
-        display = st.checkbox('Display abstract')
+        display = st.checkbox('Display theme/abstract')
 
         df_last = ('**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ 
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
@@ -143,7 +156,7 @@ with col1:
         for i in range(row_nu_1):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
             if display:
-                st.caption('Main themes: ' + '['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')')
+                st.caption('Main theme: ' + '['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')')
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
 # Collection list
