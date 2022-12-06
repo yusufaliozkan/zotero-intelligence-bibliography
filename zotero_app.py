@@ -36,8 +36,8 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
-# split_df= pd.DataFrame(df['Col key'].tolist(), columns=['col1', 'col2', 'col3'])
-# df = pd.concat([df, split_df], axis=1)
+split_df= pd.DataFrame(df['Col key'].tolist(), columns=['col1', 'col2', 'col3'])
+df = pd.concat([df, split_df], axis=1)
 
     # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
@@ -72,32 +72,32 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 
 df_collections = df_collections.sort_values(by='Name')
 
-# df['Col1Name'] = df['col1'].map(df_collections['Name'])
+df['Col1Name'] = df['col1'].map(df_collections['Name'])
 
-# merged_df = pd.merge(
-#     left=df,
-#     right=df_collections,
-#     left_on='col1',
-#     right_on='Key',
-#     how='left'
-# )
-# merged_df2 = pd.merge(
-#     left=merged_df,
-#     right=df_collections,
-#     left_on='col2',
-#     right_on='Key',
-#     how='left'
-# )
-# merged_df3 = pd.merge(
-#     left=merged_df2,
-#     right=df_collections,
-#     left_on='col3',
-#     right_on='Key',
-#     how='left'
-# )
-# df = merged_df3.copy()
-# df = df.fillna('')
-# df= df.drop(columns=['Number', 'Number_x', 'Number_y'])
+merged_df = pd.merge(
+    left=df,
+    right=df_collections,
+    left_on='col1',
+    right_on='Key',
+    how='left'
+)
+merged_df2 = pd.merge(
+    left=merged_df,
+    right=df_collections,
+    left_on='col2',
+    right_on='Key',
+    how='left'
+)
+merged_df3 = pd.merge(
+    left=merged_df2,
+    right=df_collections,
+    left_on='col3',
+    right_on='Key',
+    how='left'
+)
+df = merged_df3.copy()
+df = df.fillna('')
+df= df.drop(columns=['Number', 'Number_x', 'Number_y'])
 
 # Streamlit app
 
