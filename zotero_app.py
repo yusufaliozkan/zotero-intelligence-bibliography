@@ -92,7 +92,7 @@ merged_df2 = pd.merge(
 merged_df3 = pd.merge(
     left=merged_df2,
     right=df_collections,
-    left_on=2,
+    left_on=1,
     right_on='Key',
     how='left'
 )
