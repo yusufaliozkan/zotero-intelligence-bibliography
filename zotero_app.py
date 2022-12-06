@@ -161,12 +161,12 @@ with col1:
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
             if display:
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
-                if 0 in df:
-                    st.caption('Theme(s): ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')') 
-                    if 1 in df:
-                        st.caption('['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')')
-                        if 2 in df:
-                            st.caption('['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')')
+            if 0 in df:
+                st.caption('Theme(s): ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')') 
+                if 1 in df:
+                    st.caption('['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')')
+                    if 2 in df:
+                        st.caption('['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')')
 # Collection list
 
     st.header('Items by collection: ')
