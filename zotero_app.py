@@ -56,17 +56,17 @@ df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 # Bringing collections
 bbb = zot.collections()
 data3=[]
-columns3 = ['Key','Name', 'Link']
+columns3 = ['Key','Name', 'Number', 'Link']
 for item in bbb:
-    data3.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
+    data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
 pd.set_option('display.max_colwidth', None)
 df_collections_2 = pd.DataFrame(data3, columns=columns3)
 
 collections = zot.collections()
 data2=[]
-columns2 = ['Key','Name', 'Number', 'Link']
+columns2 = ['Key','Name', 'Link']
 for item in collections:
-    data2.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
+    data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
 
 pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
@@ -102,7 +102,7 @@ if 0 in df:
 df = merged_df.copy()
 df
 df = df.fillna('')
-# df= df.drop(columns=['Number', 'Number_x', 'Number_y'])
+df= df.drop(columns=['Number', 'Number_x', 'Number_y'])
 
 # Streamlit app
 
