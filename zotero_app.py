@@ -166,6 +166,8 @@ with col1:
                         st.caption('['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')')
                         if 2 in df:
                             st.caption('['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')')
+                else:
+                    st.caption('No theme to display!')
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 # Collection list
 
