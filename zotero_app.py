@@ -75,30 +75,31 @@ df_collections = df_collections.sort_values(by='Name')
 
 # df['Col1Name'] = df['col1'].map(df_collections['Name'])
 
-# merged_df = pd.merge(
-#     left=df,
-#     right=df_collections,
-#     left_on=0,
-#     right_on='Key',
-#     how='left'
-# )
-# merged_df2 = pd.merge(
-#     left=merged_df,
-#     right=df_collections,
-#     left_on=1,
-#     right_on='Key',
-#     how='left'
-# )
-# merged_df3 = pd.merge(
-#     left=merged_df2,
-#     right=df_collections,
-#     left_on=1,
-#     right_on='Key',
-#     how='left'
-# )
-# df = merged_df3.copy()
-# df = df.fillna('')
-# df= df.drop(columns=['Number', 'Number_x', 'Number_y'])
+if df[0]!='':
+    merged_df = pd.merge(
+        left=df,
+        right=df_collections,
+        left_on=0,
+        right_on='Key',
+        how='left'
+    )
+merged_df2 = pd.merge(
+    left=merged_df,
+    right=df_collections,
+    left_on=1,
+    right_on='Key',
+    how='left'
+)
+merged_df3 = pd.merge(
+    left=merged_df2,
+    right=df_collections,
+    left_on=1,
+    right_on='Key',
+    how='left'
+)
+df = merged_df3.copy()
+df = df.fillna('')
+df= df.drop(columns=['Number', 'Number_x', 'Number_y'])
 
 # Streamlit app
 
