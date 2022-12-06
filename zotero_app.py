@@ -94,10 +94,18 @@ if 0 in df:
             merged_df = pd.merge(
                 left=merged_df,
                 right=df_collections,
-                left_on=1,
+                left_on=2,
                 right_on='Key',
                 how='left'
             )
+            if 3 in merged_df:
+                    merged_df = pd.merge(
+                    left=merged_df,
+                    right=df_collections,
+                    left_on=3,
+                    right_on='Key',
+                    how='left'
+                )
 df = merged_df.copy()
 df
 df = df.fillna('')
