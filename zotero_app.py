@@ -226,13 +226,13 @@ with col2:
         for i in range(row_nu_collections):
             st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
 
-    components.html(
+    # Zotero library collections
+
+components.html(
 """
 <a class="twitter-timeline" href="https://twitter.com/yaliozkan/lists/intelligence-history-49259?ref_src=twsrc%5Etfw">A Twitter List by yaliozkan</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 """
 )
-    # Zotero library collections
-
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
