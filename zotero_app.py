@@ -38,7 +38,7 @@ pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
-df
+
     # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
 df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
@@ -92,6 +92,14 @@ if 0 in df:
         )
         if 2 in merged_df:
             merged_df = pd.merge(
+                left=merged_df,
+                right=df_collections,
+                left_on=2,
+                right_on='Key',
+                how='left'
+            )
+            if 3 in merged_df:
+                merged_df = pd.merge(
                 left=merged_df,
                 right=df_collections,
                 left_on=2,
