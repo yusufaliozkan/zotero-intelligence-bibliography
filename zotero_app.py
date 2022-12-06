@@ -97,11 +97,9 @@ if 0 in df:
                 left_on=2,
                 right_on='Key',
                 how='left'
-            )
- 
+            ) 
 
 df = merged_df.copy()
-df
 df = df.fillna('')
 
 # Streamlit app
