@@ -147,7 +147,8 @@ col1, col2 = st.columns([4,2])
 with col1:
     st.header('Recently added items: ')
     with st.expander('Click to hide the list', expanded=True):
-        display = st.checkbox('Display theme/abstract')
+        display = st.checkbox('Display theme')
+        display2 = st.checkbox('Display abstract')
 
         df_last = ('**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ 
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
@@ -156,11 +157,12 @@ with col1:
         row_nu_1= len(df_last.index)
         for i in range(row_nu_1):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
-            st.caption('Theme(s): ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')' + ' -- ' +
-            '['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')'+' -- ' +
-            '['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'
-            )
             if display:
+                st.caption('Theme(s): ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')' + ' -- ' +
+                '['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')'+' -- ' +
+                '['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'
+                )
+            if display2:
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
 # Collection list
