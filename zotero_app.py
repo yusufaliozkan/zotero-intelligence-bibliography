@@ -162,7 +162,7 @@ with col1:
             if display:
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
             if 0 in df:
-                st.caption('Theme(s): \n' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')') 
+                st.caption('Theme(s):\n' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')') 
                 if 1 in df:
                     st.caption('['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')')
                     if 2 in df:
