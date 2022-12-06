@@ -102,7 +102,6 @@ if 0 in df:
 df = merged_df.copy()
 df
 df = df.fillna('')
-# df= df.drop(columns=['Number', 'Number_x', 'Number_y'])
 
 # Streamlit app
 
