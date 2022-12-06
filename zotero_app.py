@@ -228,8 +228,7 @@ with col2:
 
     components.html(
 """
-<a class="twitter-timeline" href="https://twitter.com/yaliozkan/lists/intelligence-history-49259?ref_src=twsrc%5Etfw">A Twitter List by yaliozkan</a> 
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<a class="twitter-timeline" href="https://twitter.com/yaliozkan/lists/intelligence-history-49259?ref_src=twsrc%5Etfw">A Twitter List by yaliozkan</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 """
 )
     # Zotero library collections
