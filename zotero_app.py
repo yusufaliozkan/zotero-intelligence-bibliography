@@ -78,21 +78,21 @@ df_collections = df_collections.sort_values(by='Name')
 merged_df = pd.merge(
     left=df,
     right=df_collections,
-    left_on='0',
+    left_on=0,
     right_on='Key',
     how='left'
 )
 merged_df2 = pd.merge(
     left=merged_df,
     right=df_collections,
-    left_on='0',
+    left_on=1,
     right_on='Key',
     how='left'
 )
 merged_df3 = pd.merge(
     left=merged_df2,
     right=df_collections,
-    left_on='0',
+    left_on=2,
     right_on='Key',
     how='left'
 )
