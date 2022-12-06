@@ -84,22 +84,22 @@ if 0 in df:
         how='left'
     )
     if 1 in merged_df:
-        merged_df2 = pd.merge(
+        merged_df = pd.merge(
             left=merged_df,
             right=df_collections,
             left_on=1,
             right_on='Key',
             how='left'
         )
-        if 2 in merged_df2:
-            merged_df3 = pd.merge(
-                left=merged_df2,
+        if 2 in merged_df:
+            merged_df = pd.merge(
+                left=merged_df,
                 right=df_collections,
                 left_on=1,
                 right_on='Key',
                 how='left'
             )
-df = merged_df3.copy()
+df = merged_df.copy()
 df = df.fillna('')
 df= df.drop(columns=['Number', 'Number_x', 'Number_y'])
 
