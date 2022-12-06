@@ -162,7 +162,6 @@ with col1:
                 '['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')'+' -- ' +
                 '['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'
                 )
-
 # Collection list
 
     st.header('Items by collection: ')
