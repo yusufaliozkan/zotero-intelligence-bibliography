@@ -146,7 +146,7 @@ with st.sidebar:
 
 # Recently added items
 
-col1, col2 = st.columns([4,2]) 
+col1, col2 = st.columns([4,1]) 
 with col1:
     st.header('Recently added items: ')
     with st.expander('Click to hide the list', expanded=True):
