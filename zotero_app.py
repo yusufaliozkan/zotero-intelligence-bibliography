@@ -160,7 +160,7 @@ with col1:
         for i in range(row_nu_1):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
             if display:
-                # st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
+                st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
                 if 0 in df:
                     st.caption('Theme(s):  \n ' + '['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')') 
                     if 1 in df:
