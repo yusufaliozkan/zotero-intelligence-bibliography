@@ -27,7 +27,8 @@ for item in items:
     item['data']['abstractNote'], 
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
-    item['data']['collections']
+    item['data']['collections'],
+    item['data']['creators'][0]
     ))
 
 st.set_page_config(layout = "wide", 
@@ -38,7 +39,7 @@ pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
-
+df
     # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
 df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
