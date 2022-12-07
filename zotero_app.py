@@ -42,7 +42,7 @@ df = pd.concat([df, split_df], axis=1)
 split_df2= pd.DataFrame(df['Author'].tolist())
 split_df2 = split_df2[0]
 split_df2
-split_df2.rename(columns={ split_df2.columns[0]: "whatever" })
+split_df2.rename(columns={ split_df2.columns[1]: "whatever" })
 split_df2
 
     # Change type name
