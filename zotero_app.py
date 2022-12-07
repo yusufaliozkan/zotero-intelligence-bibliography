@@ -39,8 +39,8 @@ pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
-df['Author'] = df['Author'].astype(str)
-pd.json_normalize(df['Author'])
+split_df2= pd.DataFrame(df['Author'].tolist())
+split_df2
 
 
     # Change type name
