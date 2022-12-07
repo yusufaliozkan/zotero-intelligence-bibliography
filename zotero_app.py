@@ -240,6 +240,8 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
+count2 = zot.count_items('CN9F5URY')
+
 # Legacy
 
 # # streamlit run "D:\OneDrive\06.Data_science\Zotero\zotero_app.py"
