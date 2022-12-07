@@ -228,6 +228,7 @@ with col2:
         row_nu_collections = len(df_collections_2.index)
 
         for i in range(row_nu_collections):
+            count2 = zot.num_collectionitems(i)
             st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')')
 
     # Zotero library collections
@@ -240,7 +241,6 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 df_collections_2
-count2 = zot.num_collectionitems('CN9F5URY')
 count2, 'dfdf'
 # Legacy
 
