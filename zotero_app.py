@@ -236,7 +236,7 @@ with col2:
 
     # Zotero library collections
 df_collections_2
-st.bar_chart(df_collections_2['Number'])
+st.bar_chart(df_collections_2['Number'], x='Name')
 
 
 components.html(
