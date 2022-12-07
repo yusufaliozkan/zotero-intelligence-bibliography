@@ -40,7 +40,7 @@ df = pd.DataFrame(data, columns=columns)
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
 split_df2 = pd.DataFrame(df['Author'].tolist())
-split_df2[0]['creatorType']
+split_df2[0]
 
     # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
