@@ -236,7 +236,6 @@ with col2:
 
     # Zotero library collections
 
-df_collections_2
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
