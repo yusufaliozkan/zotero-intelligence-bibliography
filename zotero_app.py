@@ -41,7 +41,6 @@ split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
 split_df2= pd.DataFrame(df['Author'].tolist())
 split_df2 = split_df2[0]
-split_df2[0].fillna('{}', inplace=True)
 for df in split_df2.values():
     df.fillna('{}', inplace = True)
 
