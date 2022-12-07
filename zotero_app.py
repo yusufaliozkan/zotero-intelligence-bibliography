@@ -240,7 +240,7 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
-count2 = zot.count_items('CN9F5URY')
+count2 = zot.num_collectionitems('CN9F5URY')
 
 # Legacy
 
