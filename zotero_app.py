@@ -181,6 +181,8 @@ with col1:
 
     # Collection items
 
+    count_collection = zot.num_collectionitems(collection_code)
+
     items = zot.everything(zot.collection_items_top(collection_code))
 
     data3=[]
@@ -213,7 +215,7 @@ with col1:
         row_nu_1=15
 
     st.markdown('#### Collection theme: ' + collection_name)
-
+    count_collection
     with st.expander("Expand to see the list", expanded=False):
         st.write('This list shows the last 15 added items. To see the full collection list click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
         # display2 = st.checkbox('Display abstracts')
