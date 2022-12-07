@@ -241,7 +241,7 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 )
 
 count2 = zot.num_collectionitems('CN9F5URY')
-count2
+count2, 'dfdf'
 # Legacy
 
 # # streamlit run "D:\OneDrive\06.Data_science\Zotero\zotero_app.py"
