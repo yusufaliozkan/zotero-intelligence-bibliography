@@ -40,7 +40,7 @@ df = pd.DataFrame(data, columns=columns)
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
 df['Author'] = df['Author'].astype(str)
-df['Author']['firstName']
+df['Author']
 
 
     # Change type name
