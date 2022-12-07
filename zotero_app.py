@@ -39,8 +39,9 @@ pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
-df['Author'].astype(str)
+df['Author'] = df['Author'].astype(str)
 df['Author']
+
 
     # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
