@@ -215,7 +215,7 @@ with col1:
         row_nu_1=15
 
     st.markdown('#### Collection theme: ' + collection_name)
-    st.write((count_collection).astype(str))
+    st.write(str(count_collection))
     with st.expander("Expand to see the list", expanded=False):
         st.write('This list shows the last 15 added items. To see the full collection list click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
         # display2 = st.checkbox('Display abstracts')
