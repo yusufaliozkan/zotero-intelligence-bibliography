@@ -280,3 +280,8 @@ df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report'
 
 df_types = pd.DataFrame(df_t['Publication type'].value_counts())
 df_types
+
+st.header('Items in the library by type: ')
+plot2= df_types.head(10)
+
+st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
