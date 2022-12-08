@@ -254,7 +254,7 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 )
 
 
-types = zot.top(limit=10)
+types = zot.top(limit=10000)
 
 data_t=[]
 columns_t = ['Publication type']
@@ -276,6 +276,5 @@ df_t['Publication type'] = df_t['Publication type'].replace(['magazineArticle'],
 df_t['Publication type'] = df_t['Publication type'].replace(['webpage'], 'Webpage')
 df_t['Publication type'] = df_t['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
 df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report')
-
 
 df_t
