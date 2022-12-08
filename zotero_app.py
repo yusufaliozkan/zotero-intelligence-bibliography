@@ -260,7 +260,7 @@ data_t=[]
 columns_t = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key']
 
 for item in types:
-    data.append((item['data']['title'], 
+    data_t.append((item['data']['title'], 
     item['data']['itemType'], 
     item['data']['url'], 
     item['data']['abstractNote'], 
