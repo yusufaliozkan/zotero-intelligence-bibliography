@@ -160,7 +160,7 @@ with col1:
 
         df_last = ('**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ 
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')' +str(df['FirstName'])
+        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')' +df['FirstName'].astype(str)
         )
         row_nu_1= len(df_last.index)
         for i in range(row_nu_1):
