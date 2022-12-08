@@ -240,7 +240,7 @@ df_collections_2.set_index('Name', inplace=True)
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(15)
 plot
-st.bar_chart(df_collections_2['Number'].head(15), height=600)
+st.bar_chart(plot, height=600)
 
 
 components.html(
