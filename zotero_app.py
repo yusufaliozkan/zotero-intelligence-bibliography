@@ -245,7 +245,7 @@ st.write(alt.Chart(df_collections_2).mark_bar().encode(
     y='Number'
 ))
 
-st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
+st.bar_chart(df_collections_2['Number'].sort_values(), height=600, width=600, use_container_width=True)
 
 
 components.html(
