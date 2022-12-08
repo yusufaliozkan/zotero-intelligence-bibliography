@@ -240,7 +240,7 @@ st.header('Top 10 collections in the library: ')
 df_collections_2.set_index('Name', inplace=True)
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(10)
-st.bar_chart(plot['Number'], height=600, use_container_width=False)
+st.bar_chart(plot['Number'], height=600, width=600, use_container_width=True)
 
 
 components.html(
