@@ -19,7 +19,7 @@ zot = zotero.Zotero(library_id, library_type)
 items = zot.top(limit=10)
 
 data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key', 'Author']
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key', 'FirstName', 'LastName']
 
 for item in items:
     data.append((item['data']['title'], 
@@ -29,7 +29,8 @@ for item in items:
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
     item['data']['collections'],
-    item['data']['creators'][0]['firstName']['lastName']
+    item['data']['creators'][0]['firstName'],
+    item['data']['creators'][0]['lastName']
     ))
 
 st.set_page_config(layout = "wide", 
