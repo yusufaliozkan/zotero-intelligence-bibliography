@@ -42,6 +42,8 @@ df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
 
+
+pd.json_normalizer(df, record_path=['FirstName'], meta=['creatorType', 'firstName', 'lastName'], errors='ignore')
 df
 
     # Change type name
