@@ -245,15 +245,6 @@ plot= df_collections_2.head(10)
 st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
 
 
-components.html(
-"""
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
-src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-© 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-"""
-)
-
-
 types = zot.everything(zot.top())
 
 data_t=[]
@@ -282,6 +273,16 @@ df_types = pd.DataFrame(df_t['Publication type'].value_counts())
 df_types
 
 st.header('Items in the library by type: ')
+df_types = df_types.sort_values(['Publication type'], ascending=[False])
 plot2= df_types.head(10)
 
 st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
+
+
+components.html(
+"""
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
+src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
+© 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+"""
+)
