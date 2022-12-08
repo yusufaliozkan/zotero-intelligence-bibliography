@@ -19,7 +19,7 @@ zot = zotero.Zotero(library_id, library_type)
 items = zot.top(limit=10)
 
 data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key', 'FirstName', 'LastName']
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key', 'FirstName']
 
 for item in items:
     data.append((item['data']['title'], 
@@ -29,7 +29,6 @@ for item in items:
     item['links']['alternate']['href'], 
     item['data']['dateAdded'], 
     item['data']['collections'],
-    item['data']['creators'],
     item['data']['creators']
     ))
 
@@ -42,7 +41,6 @@ df = pd.DataFrame(data, columns=columns)
 df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 df['FirstName']
 split_df= pd.DataFrame(df['Col key'].tolist())
-split_df
 df = pd.concat([df, split_df], axis=1)
 df
 
