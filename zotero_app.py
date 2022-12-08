@@ -238,7 +238,7 @@ with col2:
 
 df_collections_2.set_index('Name', inplace=True)
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
-
+df_collections_2.head(15)
 st.bar_chart(df_collections_2['Number'].head(15), height=600)
 
 
