@@ -55,7 +55,7 @@ df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
 df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 
-df = df['FirstName'].fillna('None')
+df['FirstName''] = df['FirstName'].fillna('None')
 df
 # Bringing collections
 bbb = zot.collections()
