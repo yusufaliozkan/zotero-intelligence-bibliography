@@ -253,7 +253,7 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
-types = zot.item_types()
+types = zot.item_fields()
 types
 # Legacy
 
