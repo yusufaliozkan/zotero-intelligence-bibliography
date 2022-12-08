@@ -279,3 +279,4 @@ for item in items:
 
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
+df
