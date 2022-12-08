@@ -257,17 +257,10 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 types = zot.top(limit=10)
 
 data_t=[]
-columns_t = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key']
+columns_t = ['Publication type']
 
 for item in types:
-    data_t.append((item['data']['title'], 
-    item['data']['itemType'], 
-    item['data']['url'], 
-    item['data']['abstractNote'], 
-    item['links']['alternate']['href'], 
-    item['data']['dateAdded'], 
-    item['data']['collections']
-    ))
+    data_t.append((item['data']['itemType']))
 
 pd.set_option('display.max_colwidth', None)
 df_t = pd.DataFrame(data_t, columns=columns_t)
