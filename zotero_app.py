@@ -238,11 +238,8 @@ with col2:
     # Zotero library collections
 
 st.header('Top 10 collections in the library: ')
-df_collections_2.set_index('Name', inplace=True)
-df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
-plot= df_collections_2.head(10)
-plot
-st.write(alt.Chart(plot).mark_bar().encode(
+df_collections_2 = df_collections_2.head(10)
+st.write(alt.Chart(df_collections_2).mark_bar().encode(
     x=alt.X('Key', sort=None),
     y='Number'
 ))
