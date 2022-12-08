@@ -237,12 +237,10 @@ with col2:
     # Zotero library collections
 
 df_collections_2.set_index('Name', inplace=True)
-df_collections_2
-
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 df_collections_2
 
-st.bar_chart(df_collections_2['Number'].head())
+st.bar_chart(df_collections_2['Number'].head(15))
 
 
 components.html(
