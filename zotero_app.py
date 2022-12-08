@@ -245,37 +245,37 @@ plot= df_collections_2.head(10)
 st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
 
 
-types = zot.everything(zot.top())
+# types = zot.everything(zot.top())
 
-data_t=[]
-columns_t = ['Publication type']
+# data_t=[]
+# columns_t = ['Publication type']
 
-for item in types:
-    data_t.append((item['data']['itemType']))
+# for item in types:
+#     data_t.append((item['data']['itemType']))
 
-pd.set_option('display.max_colwidth', None)
-df_t = pd.DataFrame(data_t, columns=columns_t)
+# pd.set_option('display.max_colwidth', None)
+# df_t = pd.DataFrame(data_t, columns=columns_t)
 
-df_t['Publication type'] = df_t['Publication type'].replace(['thesis'], 'Thesis')
-df_t['Publication type'] = df_t['Publication type'].replace(['journalArticle'], 'Journal article')
-df_t['Publication type'] = df_t['Publication type'].replace(['book'], 'Book')
-df_t['Publication type'] = df_t['Publication type'].replace(['bookSection'], 'Book chapter')
-df_t['Publication type'] = df_t['Publication type'].replace(['blogPost'], 'Blog post')
-df_t['Publication type'] = df_t['Publication type'].replace(['videoRecording'], 'Video')
-df_t['Publication type'] = df_t['Publication type'].replace(['podcast'], 'Podcast')
-df_t['Publication type'] = df_t['Publication type'].replace(['magazineArticle'], 'Magazine article')
-df_t['Publication type'] = df_t['Publication type'].replace(['webpage'], 'Webpage')
-df_t['Publication type'] = df_t['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
-df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report')
+# df_t['Publication type'] = df_t['Publication type'].replace(['thesis'], 'Thesis')
+# df_t['Publication type'] = df_t['Publication type'].replace(['journalArticle'], 'Journal article')
+# df_t['Publication type'] = df_t['Publication type'].replace(['book'], 'Book')
+# df_t['Publication type'] = df_t['Publication type'].replace(['bookSection'], 'Book chapter')
+# df_t['Publication type'] = df_t['Publication type'].replace(['blogPost'], 'Blog post')
+# df_t['Publication type'] = df_t['Publication type'].replace(['videoRecording'], 'Video')
+# df_t['Publication type'] = df_t['Publication type'].replace(['podcast'], 'Podcast')
+# df_t['Publication type'] = df_t['Publication type'].replace(['magazineArticle'], 'Magazine article')
+# df_t['Publication type'] = df_t['Publication type'].replace(['webpage'], 'Webpage')
+# df_t['Publication type'] = df_t['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
+# df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report')
 
 
-df_types = pd.DataFrame(df_t['Publication type'].value_counts())
+# df_types = pd.DataFrame(df_t['Publication type'].value_counts())
 
-st.header('Items in the library by type: ')
-df_types = df_types.sort_values(['Publication type'], ascending=[False])
-plot2= df_types.head(10)
+# st.header('Items in the library by type: ')
+# df_types = df_types.sort_values(['Publication type'], ascending=[False])
+# plot2= df_types.head(10)
 
-st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
+# st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
 
 components.html(
