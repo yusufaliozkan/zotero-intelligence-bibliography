@@ -253,21 +253,13 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
-items2 = zot.top(limit=10)
+
+types = zot.top(limit=10)
 
 data_t=[]
-column_t = ['Title', 'Publication type']
-for item in items2:
-    data.append((item['data']['title'], item['data']['itemType']))
-df_types = pd.DataFrame(data_t, columns=column_t)
-df_types
+columns_t = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key']
 
-items = zot.top(limit=10)
-
-data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key']
-
-for item in items:
+for item in types:
     data.append((item['data']['title'], 
     item['data']['itemType'], 
     item['data']['url'], 
@@ -278,5 +270,5 @@ for item in items:
     ))
 
 pd.set_option('display.max_colwidth', None)
-df = pd.DataFrame(data, columns=columns)
-df
+df_t = pd.DataFrame(data_t, columns=columns_t)
+df_t
