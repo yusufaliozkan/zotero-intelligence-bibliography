@@ -41,7 +41,7 @@ df = pd.DataFrame(data, columns=columns)
 df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
-df['FirstName'] = df['FirstName'].fillna('')
+df['FirstName'] = df['FirstName'].replace(np.nan, 0)
 
 df
 
