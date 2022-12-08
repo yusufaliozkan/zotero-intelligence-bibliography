@@ -41,6 +41,8 @@ df = pd.DataFrame(data, columns=columns)
 df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
+pd.json_normalize(df['FirstName'], max_level=0)
+
 df
 
     # Change type name
