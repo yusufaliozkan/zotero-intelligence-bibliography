@@ -257,7 +257,7 @@ items2 = zot.top(limit=10)
 
 data_t=[]
 column_t = ['Title', 'Publication type']
-for item in types:
+for item in items2:
     data.append((item['data']['title'], item['data']['itemType']))
 df_types = pd.DataFrame(data_t, columns=column_t)
 df_types
