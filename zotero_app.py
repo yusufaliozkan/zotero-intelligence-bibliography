@@ -253,8 +253,16 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
-types = zot.item_fields()
-types
+types = zot.top(limit=10000)
+
+data_t=[]
+column_t = ['Publication type']
+
+for item in types:
+    data.append((item['data']['itemType']))
+df_types = pd.DataFrame(data, columns=columns)
+df_types
+
 # Legacy
 
 # # streamlit run "D:\OneDrive\06.Data_science\Zotero\zotero_app.py"
