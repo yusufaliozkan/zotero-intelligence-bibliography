@@ -244,7 +244,7 @@ plot= df_collections_2.head(10)
 plot
 st.write(alt.Chart(plot).mark_bar().encode(
     x=alt.X('Key', sort=None),
-    y='Number', , height=600
+    y='Number', height=600
 ))
 
 st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
