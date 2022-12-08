@@ -5,6 +5,7 @@ from IPython.display import HTML
 import streamlit.components.v1 as components
 import numpy as np
 import altair as alt
+import simplejson
 # from bokeh.models.widgets import Button
 # from bokeh.models import CustomJS
 # from streamlit_bokeh_events import streamlit_bokeh_events
@@ -41,6 +42,7 @@ df = pd.DataFrame(data, columns=columns)
 df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
+simplejson.dumps(df['FirstName'], ignore_nan=True)
 
 df['FirstName']
 
