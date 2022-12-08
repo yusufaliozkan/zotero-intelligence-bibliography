@@ -39,7 +39,6 @@ st.set_page_config(layout = "wide",
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
-df['FirstName']
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
 df
