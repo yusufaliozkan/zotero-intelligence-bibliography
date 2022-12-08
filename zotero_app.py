@@ -254,7 +254,7 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 )
 
 
-types = zot.everything(top(limit=10000))
+types = zot.everything(top())
 
 data_t=[]
 columns_t = ['Publication type']
