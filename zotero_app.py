@@ -256,10 +256,9 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 types = zot.top(limit=10)
 
 data_t=[]
-column_t = ['Publication type']
-
+column_t = ['Title', 'Publication type']
 for item in types:
-    data.append((item['data']['itemType']))
+    data.append((item['data']['title'], item['data']['itemType']))
 df_types = pd.DataFrame(data_t, columns=column_t)
 df_types
 
