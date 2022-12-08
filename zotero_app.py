@@ -42,7 +42,7 @@ df = pd.DataFrame(data, columns=columns)
 df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
-
+df
 
 pd.json_normalize(df, record_path=['FirstName'], meta=['creatorType', 'firstName', 'lastName'], errors='ignore')
 df
