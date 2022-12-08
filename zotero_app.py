@@ -41,7 +41,8 @@ df = pd.DataFrame(data, columns=columns)
 df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
-df.FirstName.apply(literal_eval)
+df.FirstName = df.FirstName.fillna('[]')
+
 df
 
     # Change type name
