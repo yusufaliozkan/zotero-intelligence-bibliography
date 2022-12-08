@@ -277,4 +277,4 @@ df_t['Publication type'] = df_t['Publication type'].replace(['webpage'], 'Webpag
 df_t['Publication type'] = df_t['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
 df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report')
 
-df_t
+df_t.value_counts()
