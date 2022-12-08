@@ -270,7 +270,6 @@ df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report'
 
 
 df_types = pd.DataFrame(df_t['Publication type'].value_counts())
-df_types
 
 st.header('Items in the library by type: ')
 df_types = df_types.sort_values(['Publication type'], ascending=[False])
