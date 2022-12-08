@@ -253,7 +253,7 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
-types = zot.top(limit=10000)
+types = zot.top(limit=10)
 
 data_t=[]
 column_t = ['Publication type']
