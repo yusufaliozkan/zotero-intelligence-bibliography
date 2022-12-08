@@ -243,6 +243,7 @@ df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(10)
 plot
 st.write(alt.Chart(plot).mark_bar().encode(
+    x=alt.X('Key', sort=None),
     y='Number',
 ))
 
