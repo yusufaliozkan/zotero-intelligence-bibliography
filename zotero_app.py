@@ -236,6 +236,7 @@ with col2:
 
     # Zotero library collections
 
+st.header('Item numbers by collection: ')
 df_collections_2.set_index('Name', inplace=True)
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(15)
