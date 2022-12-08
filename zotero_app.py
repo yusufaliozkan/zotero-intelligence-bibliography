@@ -264,4 +264,18 @@ for item in types:
 
 pd.set_option('display.max_colwidth', None)
 df_t = pd.DataFrame(data_t, columns=columns_t)
+
+df_t['Publication type'] = df_t['Publication type'].replace(['thesis'], 'Thesis')
+df_t['Publication type'] = df_t['Publication type'].replace(['journalArticle'], 'Journal article')
+df_t['Publication type'] = df_t['Publication type'].replace(['book'], 'Book')
+df_t['Publication type'] = df_t['Publication type'].replace(['bookSection'], 'Book chapter')
+df_t['Publication type'] = df_t['Publication type'].replace(['blogPost'], 'Blog post')
+df_t['Publication type'] = df_t['Publication type'].replace(['videoRecording'], 'Video')
+df_t['Publication type'] = df_t['Publication type'].replace(['podcast'], 'Podcast')
+df_t['Publication type'] = df_t['Publication type'].replace(['magazineArticle'], 'Magazine article')
+df_t['Publication type'] = df_t['Publication type'].replace(['webpage'], 'Webpage')
+df_t['Publication type'] = df_t['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
+df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report')
+
+
 df_t
