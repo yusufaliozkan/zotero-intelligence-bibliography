@@ -41,6 +41,7 @@ pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 df_q = pd.DataFrame(df['FirstName'].tolist())
 df_q = df_q[0].copy
+df_q
 split_df= pd.DataFrame(df['Col key'].tolist())
 split_df
 df = pd.concat([df, split_df], axis=1)
