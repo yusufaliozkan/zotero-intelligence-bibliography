@@ -42,7 +42,7 @@ df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
 
-df['FirstName']
+df
 
     # Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
