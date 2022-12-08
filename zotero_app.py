@@ -55,9 +55,7 @@ df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
 df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
 df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 
-df.FirstName = df.FirstName.fillna('[]')
-df = df.join(pd.json_normalize(df.pop('FirstName')))
-df
+
 # Bringing collections
 bbb = zot.collections()
 data3=[]
