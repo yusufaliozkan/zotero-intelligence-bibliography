@@ -253,7 +253,8 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
-
+types = zot.item_types()
+types
 # Legacy
 
 # # streamlit run "D:\OneDrive\06.Data_science\Zotero\zotero_app.py"
