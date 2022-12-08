@@ -22,17 +22,19 @@ data=[]
 columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Col key', 'FirstName', 'LastName']
 
 for item in items:
-    data.append((item['data']['title'], 
-    item['data']['itemType'], 
-    item['data']['url'], 
-    item['data']['abstractNote'], 
-    item['links']['alternate']['href'], 
-    item['data']['dateAdded'], 
-    item['data']['collections'],
-    item['data']['creators'][0],
-    item['data']['creators']
-    ))
-
+    try:
+        data.append((item['data']['title'], 
+        item['data']['itemType'], 
+        item['data']['url'], 
+        item['data']['abstractNote'], 
+        item['links']['alternate']['href'], 
+        item['data']['dateAdded'], 
+        item['data']['collections'],
+        item['data']['creators'][0],
+        item['data']['creators']
+        ))
+    except:
+        'Nan'
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
