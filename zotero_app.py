@@ -260,7 +260,7 @@ column_t = ['Publication type']
 
 for item in types:
     data.append((item['data']['itemType']))
-df_types = pd.DataFrame(data, columns=columns)
+df_types = pd.DataFrame(data_t, columns=column_t)
 df_types
 
 # Legacy
