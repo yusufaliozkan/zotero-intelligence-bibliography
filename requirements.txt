@@ -4,3 +4,4 @@ pyzotero==1.5.5
 PyQt6==6.4.0
 IPython==6.0
 NumPy==1.23.0
+Altair==4.2.0
