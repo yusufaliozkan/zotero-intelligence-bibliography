@@ -29,7 +29,7 @@ for item in items:
     item['data']['abstractNote'], 
     item['links']['alternate']['href'], 
     item['data']['dateAdded'],
-    item['data']['dataModified']
+    item['data']['dataModified'],
     item['data']['collections'],
     item['data']['creators']
     ))
