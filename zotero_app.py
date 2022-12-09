@@ -238,7 +238,7 @@ with col1:
 
     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                 df['Title'] + ' '+ 
-                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
                 "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                 "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
                 )
