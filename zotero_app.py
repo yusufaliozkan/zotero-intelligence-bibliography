@@ -20,7 +20,7 @@ zot = zotero.Zotero(library_id, library_type)
 items = zot.top(limit=10)
 
 data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date added', 'Col key', 'FirstName']
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date modified', 'Col key', 'FirstName']
 
 for item in items:
     data.append((item['data']['title'], 
