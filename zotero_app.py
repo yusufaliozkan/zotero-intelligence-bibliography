@@ -34,7 +34,7 @@ for item in items:
     ))
 
 st.set_page_config(layout = "wide", 
-                    page_title='Intelligence bibliography',
+                    page_title='TEST ENVIRONMENT - Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
@@ -46,6 +46,8 @@ df_fa = df_fa[0]
 df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
 df_new = pd.json_normalize(df_fa, errors='ignore') 
 df = pd.concat([df, split_df, df_new], axis=1)
+df['firstName'] = df['firstName'].fillna('null')
+df['lastName'] = df['lastName'].fillna('null')
 
 
     # Change type name
@@ -114,7 +116,7 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence bibliography")
+st.title("TEST ENVIRONMENT - Intelligence bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 count = zot.count_items()
@@ -198,14 +200,30 @@ with col1:
     items = zot.everything(zot.collection_items_top(collection_code))
 
     data3=[]
-    columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link']
+    columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'FirstName2']
 
     for item in items:
-        data3.append((item['data']['title'], item['data']['itemType'], item['data']['url'], item['data']['abstractNote'], item['links']['alternate']['href'])) 
+        data3.append((
+            item['data']['title'], 
+            item['data']['itemType'], 
+            item['data']['url'], 
+            item['data']['abstractNote'], 
+            item['links']['alternate']['href'],
+            item['data']['creators']
+            )) 
     pd.set_option('display.max_colwidth', None)
 
     df = pd.DataFrame(data3, columns=columns3)
 
+    df_fa = df['FirstName2']
+    df_fa = pd.DataFrame(df_fa.tolist())
+    df_fa = df_fa[0]
+    df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+    df_new = pd.json_normalize(df_fa, errors='ignore') 
+    df = pd.concat([df, df_new], axis=1)
+    df['firstName'] = df['firstName'].fillna('null')
+    df['lastName'] = df['lastName'].fillna('null')
+        
     df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
     df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
     df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
@@ -218,9 +236,14 @@ with col1:
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 
-    df_items = '**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
-
-    row_nu_1= len(df_items.index)
+    df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                df['Title'] + ' '+ 
+                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                )
+    
+    row_nu_1= len(df.index)
     if row_nu_1<15:
         row_nu_1=row_nu_1
     else:
