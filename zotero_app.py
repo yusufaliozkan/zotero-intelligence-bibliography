@@ -214,7 +214,7 @@ with col1:
     pd.set_option('display.max_colwidth', None)
 
     df = pd.DataFrame(data3, columns=columns3)
-    df
+    
     ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
     # df_fa = df['FirstName2']
     # df_fa = pd.DataFrame(df_fa.tolist())
