@@ -169,7 +169,7 @@ with col1:
         display = st.checkbox('Display theme and abstract')
 
         df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
-        '['+ df['Title'] + ']'+ '('+ df['Publication link'] + ')' +
+        '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
         # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
