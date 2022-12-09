@@ -128,7 +128,7 @@ df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
 df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date added']+'**')
-
+df
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 with st.sidebar:
