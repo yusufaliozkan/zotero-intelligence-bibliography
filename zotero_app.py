@@ -46,7 +46,6 @@ df_fa = df_fa[0]
 df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
 df_new = pd.json_normalize(df_fa, errors='ignore') 
 df = pd.concat([df, split_df, df_new], axis=1)
-df
 
 
     # Change type name
@@ -165,7 +164,7 @@ with col1:
 
         df_last = ('**'+ df['Publication type']+ '**'+ ': ' +  df['Title'] + ' '+ 
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + ' (Added on: ' + df['Date added']+')'
+        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + df['firstName'] +' (Added on: ' + df['Date added']+')'
         )
         row_nu_1= len(df_last.index)
         for i in range(row_nu_1):
