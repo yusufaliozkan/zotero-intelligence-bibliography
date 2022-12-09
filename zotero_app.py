@@ -167,13 +167,20 @@ with col1:
     st.header('Recently added items: ')
     with st.expander('Click to hide the list', expanded=True):
         display = st.checkbox('Display theme and abstract')
-
-        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + ' '+
+        
+        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
+        '['+ df['Title'] + ']'+ '('+ df['Zotero link'] + ')' +
         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-        "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
+        # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
         ' (Added on: ' + df['Date added']+')'
         )
+        # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + ' '+
+        # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+        # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
+        # "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+        # ' (Added on: ' + df['Date added']+')'
+        # )
         row_nu_1= len(df_last.index)
         for i in range(row_nu_1):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
