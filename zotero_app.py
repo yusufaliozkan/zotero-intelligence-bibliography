@@ -115,6 +115,7 @@ if 0 in df:
 
 df = merged_df.copy()
 df = df.fillna('')
+df
 
 # Streamlit app
 
