@@ -39,10 +39,14 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
-df['FirstName'] = pd.DataFrame(df['FirstName'].tolist())
 split_df= pd.DataFrame(df['Col key'].tolist())
-df = pd.concat([df, split_df], axis=1)
-# pd.json_normalize(df, record_path=['FirstName'])
+df_fa = df['FirstName']
+df_fa = pd.DataFrame(df_fa.tolist())
+df_fa = df_fa[0]
+df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+df_new = pd.json_normalize(df_fa, errors='ignore') 
+df = pd.concat([df, split_df, df_new], axis=1)
+df
 
 
     # Change type name
