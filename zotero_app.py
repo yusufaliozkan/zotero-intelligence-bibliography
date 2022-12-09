@@ -162,8 +162,8 @@ with col1:
     with st.expander('Click to hide the list', expanded=True):
         display = st.checkbox('Display theme and abstract')
 
-        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + '*' + df['Title'] + '*'+' '+
-        ' (by ' + df['firstName'] + ' ' + df['lastName'] + ') ' +
+        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + ' '+
+        ' (by ' + '*' + df['firstName'] + ' ' + '*' + df['lastName'] + '*' + ') ' +
         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
         ' (Added on: ' + df['Date added']+')'
