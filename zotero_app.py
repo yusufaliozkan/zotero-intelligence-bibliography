@@ -215,14 +215,14 @@ with col1:
 
     df = pd.DataFrame(data3, columns=columns3)
 
-    df_fa = df['FirstName2']
-    df_fa = pd.DataFrame(df_fa.tolist())
-    df_fa = df_fa[0]
-    df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
-    df_new = pd.json_normalize(df_fa, errors='ignore') 
-    df = pd.concat([df, df_new], axis=1)
-    df['firstName'] = df['firstName'].fillna('null')
-    df['lastName'] = df['lastName'].fillna('null')
+    # df_fa = df['FirstName2']
+    # df_fa = pd.DataFrame(df_fa.tolist())
+    # df_fa = df_fa[0]
+    # df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+    # df_new = pd.json_normalize(df_fa, errors='ignore') 
+    # df = pd.concat([df, df_new], axis=1)
+    # df['firstName'] = df['firstName'].fillna('null')
+    # df['lastName'] = df['lastName'].fillna('null')
         
     df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
     df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
@@ -238,7 +238,7 @@ with col1:
 
     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                 df['Title'] + ' '+ 
-                # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
                 "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                 "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
                 )
