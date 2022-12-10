@@ -141,9 +141,6 @@ with col2:
     # # st.caption(collection_name)
     st.download_button('Download the collection', csv, collection_name+'.csv', mime="text/csv", key='download-csv')
 
-    st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
-
     with st.expander("Expand to see the list", expanded=True):
         st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
         # display2 = st.checkbox('Display abstracts')
