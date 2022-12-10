@@ -69,7 +69,7 @@ df_collections = df_collections.iloc[2: , :]
 
 # clist = df_collections['Name'].unique()
 
-col1, col2, col3 = st.columns([1.6,4,1.6])
+col1, col2, col3 = st.columns([1.5,4,1.6])
 
 with col1:
     radio = st.radio('Select a collection', df_collections['Name'])
