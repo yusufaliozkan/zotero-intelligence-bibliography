@@ -69,7 +69,7 @@ df_collections=df_collections[df_collections['Name'].str.contains("02")]
 
 # clist = df_collections['Name'].unique()
 
-col1, col2, col3 = st.columns([1,4,1])
+col1, col2, col3 = st.columns([2,4,2.1])
 
 with col1:
     radio = st.radio('Select a collection', df_collections['Name'])
