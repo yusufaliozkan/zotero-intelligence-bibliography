@@ -12,7 +12,7 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence oversight and ethics")
+st.title("Intelligence oversight and ethics") 
 
 # Connecting Zotero with API
 library_id = '2514686' # intel 2514686
@@ -140,7 +140,7 @@ with col2:
     # csv = df_download
     # # st.caption(collection_name)
     st.download_button('Download the collection', csv, collection_name+'.csv', mime="text/csv", key='download-csv')
-        
+
     with st.expander("Expand to see the list", expanded=True):
         st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
         # display2 = st.checkbox('Display abstracts')
