@@ -68,7 +68,7 @@ df_collections=df_collections[df_collections['Name'].str.contains("03")]
 # df_collections = df_collections.iloc[1: , :]
 
 # clist = df_collections['Name'].unique()
-
+ 
 col1, col2, col3 = st.columns([1.2,4,1.6])
 
 with col1:
@@ -131,7 +131,7 @@ with col2:
 
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
-    
+
     df_download = df.drop(['Abstract', 'FirstName2'], axis=1)
 
     def convert_df(df):
