@@ -134,7 +134,7 @@ with col2:
 
     df_download = df.drop(['Abstract', 'FirstName2'], axis=1)
     def convert_df(df):
-        return df.to_csv(index=False).encode('cp1252') # not utf-8 because of the weird character,  Â
+        return df.to_csv(index=False).encode('utf-8') # not utf-8 because of the weird character,  Â cp1252
     csv = convert_df(df_download)
     # csv = df_download
     # # st.caption(collection_name)
