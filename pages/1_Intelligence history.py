@@ -132,12 +132,12 @@ with col2:
     df_download
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
-    # def convert_df(df):
-    #     return df.to_csv(index=False).encode('cp1252') # not utf-8 because of the weird character,  Â
-    # csv = convert_df(df_download)
+    def convert_df(df):
+        return df.to_csv(index=False).encode('utf-8') # not utf-8 because of the weird character,  Â
+    csv = convert_df(df_download)
     # csv = df_download
     # # st.caption(collection_name)
-    st.download_button('Press to download the collection', df_download, 'collection.csv', mime="text/csv", key='download-csv')
+    st.download_button('Press to download the collection', csv, 'collection.csv', mime="text/csv", key='download-csv')
     with st.expander("Expand to see the list", expanded=True):
         st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
         # display2 = st.checkbox('Display abstracts')
