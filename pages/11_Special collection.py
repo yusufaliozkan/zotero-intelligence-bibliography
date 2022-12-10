@@ -12,6 +12,8 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
+st.write('This page is under construction!')
+st.stop()
 st.title("Special collection")
 
 # Connecting Zotero with API
