@@ -128,7 +128,7 @@ with col2:
         row_nu_1=row_nu_1
     else:
         row_nu_1=15
-
+    df_items
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
     with st.expander("Expand to see the list", expanded=True):
