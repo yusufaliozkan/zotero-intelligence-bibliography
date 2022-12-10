@@ -165,10 +165,3 @@ with col3:
             ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
             )
     
-    with st.expander('Twitter feed'):
-        components.html(
-            """
-            <a class="twitter-timeline" href="https://twitter.com/yaliozkan/lists/intelligence-history-49259?ref_src=twsrc%5Etfw">A Twitter List by yaliozkan</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            """
-        )
-    
