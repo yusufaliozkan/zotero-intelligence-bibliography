@@ -137,7 +137,7 @@ with col2:
     csv = convert_df(df_download)
     # csv = df_download
     # # st.caption(collection_name)
-    st.download_button('Press to download the collection', csv, 'collection.csv', mime="text/csv", key='download-csv')
+    st.download_button('Press to download the collection', csv, collection_name+'.csv', mime="text/csv", key='download-csv')
     with st.expander("Expand to see the list", expanded=True):
         st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
         # display2 = st.checkbox('Display abstracts')
