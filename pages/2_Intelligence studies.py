@@ -129,6 +129,18 @@ with col2:
     # else:
     #     row_nu_1=15
 
+    df_download = df.drop(['Abstract', 'FirstName2'], axis=1)
+    
+    st.markdown('#### Collection theme: ' + collection_name)
+    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
+    
+    def convert_df(df):
+        return df.to_csv(index=False).encode('utf-8') # not utf-8 because of the weird character,  Â
+    csv = convert_df(df_download)
+    # csv = df_download
+    # # st.caption(collection_name)
+    st.download_button('Download the collection', csv, collection_name+'.csv', mime="text/csv", key='download-csv')
+
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
 
