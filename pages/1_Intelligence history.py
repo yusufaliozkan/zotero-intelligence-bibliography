@@ -129,8 +129,7 @@ with col2:
     else:
         row_nu_1=15
     df_download = df.drop(['Abstract', 'FirstName2'], axis=1)
-    df_download
-
+    
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
     with st.expander("Expand to see the list", expanded=True):
@@ -143,6 +142,11 @@ with col2:
             #     st.caption(df['Abstract'].iloc[i])
 
 with col3:
+    def convert_df(df):
+        return df.to_csv(index=False).encode('cp1252') # not utf-8 because of the weird character,  Â
+    csv = convert_df(df_download)
+    st.download_button('Press to download' + collection_name + 'items:', csv, 'items.csv', "text/csv", key='download-csv'))
+    
     with st.expander("Collections in Zotero library", expanded=False):
         bbb = zot.collections()
         data3=[]
@@ -157,3 +161,4 @@ with col3:
             st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
             ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
             )
+    
