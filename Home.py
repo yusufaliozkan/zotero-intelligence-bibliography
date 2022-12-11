@@ -166,6 +166,15 @@ with st.sidebar:
 col1, col2 = st.columns([4,1]) 
 with col1:
     st.header('Recently added items: ')
+
+    df_download = df.iloc[:, [0,1,2,4]] 
+    def convert_df(df):
+        return df.to_csv(index=False).encode('utf-8') # not utf-8 because of the weird character,  Â
+    csv = convert_df(df_download)
+    # csv = df_download
+    # # st.caption(collection_name)
+    st.download_button('Download recently added items', csv, 'intelligence-bibliography.csv', mime="text/csv", key='download-csv')
+
     with st.expander('Click to hide the list', expanded=True):
         display = st.checkbox('Display theme and abstract')
 
@@ -195,14 +204,6 @@ with col1:
                 else:
                     st.caption('No theme to display!')
                 st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
-        df_download = df.iloc[:, [0,1,2,4]] 
-        def convert_df(df):
-            return df.to_csv(index=False).encode('utf-8') # not utf-8 because of the weird character,  Â
-        csv = convert_df(df_download)
-        # csv = df_download
-        # # st.caption(collection_name)
-        st.download_button('Download recently added items', csv, 'intelligence-bibliography.csv', mime="text/csv", key='download-csv')
-
 
 # Collection list
 
