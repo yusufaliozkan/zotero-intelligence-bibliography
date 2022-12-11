@@ -175,7 +175,7 @@ with col1:
     # csv = df_download
     # # st.caption(collection_name)
     today = datetime.date.today().isoformat()
-    a = 'intelligence-bibliography' + today
+    a = 'intelligence-bibliography-' + today
     st.download_button('Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
 
     with st.expander('Click to hide the list', expanded=True):
