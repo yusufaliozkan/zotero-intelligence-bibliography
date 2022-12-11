@@ -168,7 +168,8 @@ with col1:
     st.header('Recently added items: ')
     with st.expander('Click to hide the list', expanded=True):
         display = st.checkbox('Display theme and abstract')
-        df
+        df_week = df.iloc[:, [0,1,2,4]]
+        df_week
         df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
         '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
