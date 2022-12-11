@@ -170,6 +170,9 @@ with col1:
         display = st.checkbox('Display theme and abstract')
         df_week = df.iloc[:, [0,1,2,4]]
         df_week
+
+        today = date.today()
+        today
         df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
         '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
