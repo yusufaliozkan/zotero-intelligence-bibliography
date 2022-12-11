@@ -6,6 +6,7 @@ import streamlit.components.v1 as components
 import numpy as np
 import altair as alt
 from pandas.io.json import json_normalize
+from datetime import date, timedelta   
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
