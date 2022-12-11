@@ -173,7 +173,7 @@ with col1:
     csv = convert_df(df_download)
     # csv = df_download
     # # st.caption(collection_name)
-    st.download_button('Download recently added items', csv, 'intelligence-bibliography.csv', mime="text/csv", key='download-csv')
+    st.download_button('Download recently added items', csv, 'intelligence-bibliography' + today '.csv', mime="text/csv", key='download-csv')
 
     with st.expander('Click to hide the list', expanded=True):
         display = st.checkbox('Display theme and abstract')
