@@ -179,6 +179,9 @@ with col1:
     st.download_button('Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
 
     today2 = date.today()
+    week_prior =  today - timedelta(weeks=1)
+    df_last_week = df[df['Date added'] <= week_prior]
+    df_last_week
 
     with st.expander('Click to hide the list', expanded=True):
         display = st.checkbox('Display theme and abstract')
