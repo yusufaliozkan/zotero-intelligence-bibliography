@@ -174,6 +174,7 @@ with col1:
     csv = convert_df(df_download)
     # csv = df_download
     # # st.caption(collection_name)
+    today = datetime.date.today().isoformat()
     a = 'intelligence-bibliography' + today
     st.download_button('Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
 
