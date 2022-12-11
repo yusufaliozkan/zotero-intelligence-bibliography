@@ -7,7 +7,6 @@ import numpy as np
 import altair as alt
 from pandas.io.json import json_normalize
 from datetime import date, timedelta  
-import datetime
 # from bokeh.models.widgets import Button
 # from bokeh.models import CustomJS
 # from streamlit_bokeh_events import streamlit_bokeh_events
@@ -174,9 +173,11 @@ with col1:
     csv = convert_df(df_download)
     # csv = df_download
     # # st.caption(collection_name)
-    today = datetime.date.today().isoformat()
+    today = date.date.today().isoformat()
     a = 'intelligence-bibliography-' + today
     st.download_button('Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
+
+    today2 = date.today()
 
     with st.expander('Click to hide the list', expanded=True):
         display = st.checkbox('Display theme and abstract')
