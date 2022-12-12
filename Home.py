@@ -167,6 +167,7 @@ with st.sidebar:
 col1, col2 = st.columns([4,1]) 
 with col1:
     st.header('Recently added items: ')
+    st.caption('This list also shows recently updated items.')
     
     df_download = df.iloc[:, [0,1,2,4,5]] 
     def convert_df(df):
