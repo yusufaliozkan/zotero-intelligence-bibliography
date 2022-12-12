@@ -345,3 +345,9 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
+
+components.html(
+"""
+<a class="twitter-timeline" href="https://twitter.com/yaliozkan/lists/intelligence-history-49259?ref_src=twsrc%5Etfw">A Twitter List by yaliozkan</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+"""
+)
