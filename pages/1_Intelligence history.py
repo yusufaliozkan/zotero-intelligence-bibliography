@@ -127,10 +127,10 @@ with col2:
                 )
      
     row_nu_1= len(df.index)
-    if row_nu_1<15:
-        row_nu_1=row_nu_1
-    else:
-        row_nu_1=15
+    # if row_nu_1<15:
+    #     row_nu_1=row_nu_1
+    # else:
+    #     row_nu_1=15
 
     df_download = df.drop(['Abstract', 'FirstName2'], axis=1)
     
