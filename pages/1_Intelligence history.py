@@ -118,7 +118,6 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 
-    df
     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                 df['Title'] + ' '+ 
                 # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
