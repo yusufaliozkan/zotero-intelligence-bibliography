@@ -306,6 +306,8 @@ with col2:
             st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
             ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
             )
+    with st.expander('Collections in this site', expanded=True):
+        st.caption('[Intelligence history](https://intelligence-bibliography.streamlit.app/Intelligence_history)')
 
     # Zotero library collections
 
