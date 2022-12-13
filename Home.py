@@ -273,6 +273,7 @@ with col1:
     df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
+    df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                 df['Title'] + ' '+ 
