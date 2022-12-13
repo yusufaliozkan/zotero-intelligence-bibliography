@@ -173,7 +173,9 @@ with col3:
             )
 
     with st.expander('Collections in this site', expanded=False):
-        st.markdown('[Intelligence history](https://intelligence-bibliography.streamlit.app/Intelligence_history)')
+        st.markdown('[Intelligence history](https://intelligence-bibliography.streamlit.app/Intelligence_history)'
+            '[Intelligence history](https://intelligence-bibliography.streamlit.app/Intelligence_history)'
+        )
         st.caption('[Intelligence history](https://intelligence-bibliography.streamlit.app/Intelligence_history)')
         st.caption('[Intelligence studies](https://intelligence-bibliography.streamlit.app/Intelligence_studies)')
         st.caption('[Intelligence analysis](https://intelligence-bibliography.streamlit.app/Intelligence_analysis)')
