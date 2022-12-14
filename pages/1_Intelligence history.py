@@ -152,7 +152,7 @@ with col2:
     # else:
     #     row_nu_1=15
 
-    df_download = df.drop(['Abstract', 'FirstName2'], axis=1)
+    df_download = df.drop(['Abstract', 'FirstName2', 'creatorType'], axis=1)
     
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
