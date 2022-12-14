@@ -145,7 +145,7 @@ with col2:
                     "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                     "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
                     )
-     
+    df
     row_nu_1= len(df.index)
     # if row_nu_1<15:
     #     row_nu_1=row_nu_1
