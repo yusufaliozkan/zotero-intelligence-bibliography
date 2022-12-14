@@ -145,6 +145,7 @@ with col2:
                     "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                     "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
                     )
+
     row_nu_1= len(df.index)
     # if row_nu_1<15:
     #     row_nu_1=row_nu_1
@@ -152,9 +153,7 @@ with col2:
     #     row_nu_1=15
 
     df['First author'] = df['firstName'] + ' ' + df['lastName']
-
     df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
-    df_download 
 
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
