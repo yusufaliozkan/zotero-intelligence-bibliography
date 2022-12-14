@@ -153,11 +153,7 @@ with col2:
 
     df['First author'] = df['firstName'] + ' ' + df['lastName']
 
-    df_d = df[['First author', 'Title']]
-    df_d
-
-    df_download = df.drop(['Abstract', 'FirstName2', 'creatorType'], axis=1)
-    df_download['First author'] = df_download['firstName'] + ' ' + df_download['lastName']
+    df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
     df_download 
 
     st.markdown('#### Collection theme: ' + collection_name)
