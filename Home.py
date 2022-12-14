@@ -35,7 +35,6 @@ for item in items:
     item['data']['collections'],
     item['data']['creators']
     ))
-items
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
