@@ -151,8 +151,11 @@ with col2:
     # else:
     #     row_nu_1=15
 
-    df
-    
+    df['First author'] = df['firstName'] + ' ' + df['lastName']
+
+    df_d = df[['First author', 'Title']]
+    df_d
+
     df_download = df.drop(['Abstract', 'FirstName2', 'creatorType'], axis=1)
     df_download['First author'] = df_download['firstName'] + ' ' + df_download['lastName']
     df_download 
