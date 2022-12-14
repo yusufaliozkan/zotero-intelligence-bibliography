@@ -153,6 +153,8 @@ with col2:
 
     df_download = df.drop(['Abstract', 'FirstName2', 'creatorType'], axis=1)
     df_download['First author'] = df_download['firstName'] + ' ' + df_download['lastName']
+    df_download = df_download.copy()
+    df_download = df.drop(['firstName', 'lastName'], axis=1)
     df_download
 
     st.markdown('#### Collection theme: ' + collection_name)
