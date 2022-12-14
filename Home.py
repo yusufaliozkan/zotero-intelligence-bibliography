@@ -252,16 +252,6 @@ with col1:
 
     df = pd.DataFrame(data3, columns=columns3)
     
-    ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
-    # df_fa = df['FirstName2']
-    # df_fa = pd.DataFrame(df_fa.tolist())
-    # df_fa = df_fa[0]
-    # df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
-    # df_new = pd.json_normalize(df_fa, errors='ignore') 
-    # df = pd.concat([df, df_new], axis=1)
-    # df['firstName'] = df['firstName'].fillna('null')
-    # df['lastName'] = df['lastName'].fillna('null')
-        
     df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
     df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
     df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
@@ -275,13 +265,33 @@ with col1:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                df['Title'] + ' '+ 
-                # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
-                "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
-                )
-    
+    if df['FirstName2'].any() in ("", [], None, 0, False):
+        # st.write('no author')
+
+        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+            df['Title'] + ' '+ 
+            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+            "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+            )
+    else:
+        # st.write('author entered')
+        ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
+        df_fa = df['FirstName2']
+        df_fa = pd.DataFrame(df_fa.tolist())
+        df_fa = df_fa[0]
+        df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+        df_new = pd.json_normalize(df_fa, errors='ignore') 
+        df = pd.concat([df, df_new], axis=1)
+        df['firstName'] = df['firstName'].fillna('no')
+        df['lastName'] = df['lastName'].fillna('author')
+        
+        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                    df['Title'] + ' '+ 
+                    ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+                    "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                    )
+                    
     row_nu_1= len(df.index)
     if row_nu_1<15:
         row_nu_1=row_nu_1
