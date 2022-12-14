@@ -282,8 +282,8 @@ with col1:
         df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
         df_new = pd.json_normalize(df_fa, errors='ignore') 
         df = pd.concat([df, df_new], axis=1)
-        df['firstName'] = df['firstName'].fillna('no')
-        df['lastName'] = df['lastName'].fillna('author')
+        df['firstName'] = df['firstName'].fillna('n.')
+        df['lastName'] = df['lastName'].fillna('a.')
         
         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                     df['Title'] + ' '+ 
@@ -291,7 +291,7 @@ with col1:
                     "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                     "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
                     )
-                    
+
     row_nu_1= len(df.index)
     if row_nu_1<15:
         row_nu_1=row_nu_1
