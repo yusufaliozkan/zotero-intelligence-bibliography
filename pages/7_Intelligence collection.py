@@ -193,6 +193,18 @@ with col3:
             ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
             )
 
+    with st.expander('Collections in this site', expanded=False):
+        st.caption('[Intelligence history](https://intelligence-bibliography.streamlit.app/Intelligence_history)')
+        st.caption('[Intelligence studies](https://intelligence-bibliography.streamlit.app/Intelligence_studies)')
+        st.caption('[Intelligence analysis](https://intelligence-bibliography.streamlit.app/Intelligence_analysis)')
+        st.caption('[Intelligence organisations](https://intelligence-bibliography.streamlit.app/Intelligence_organisations)')
+        st.caption('[Intelligence oversight and ethics](https://intelligence-bibliography.streamlit.app/Intelligence_oversight_and_ethics)')
+        st.caption('[Intelligence collection](https://intelligence-bibliography.streamlit.app/Intelligence_collection)')
+        st.caption('[Counterintelligence](https://intelligence-bibliography.streamlit.app/Counterintelligence)')
+        st.caption('[Covert action](https://intelligence-bibliography.streamlit.app/Covert_action)')
+        st.caption('[Intelligence and cybersphere](https://intelligence-bibliography.streamlit.app/Intelligence_and_cybersphere)')
+        st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')           
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
