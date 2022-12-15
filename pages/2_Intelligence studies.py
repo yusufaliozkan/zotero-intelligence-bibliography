@@ -156,7 +156,10 @@ with col2:
 
     df['First author'] = df['firstName'] + ' ' + df['lastName']
     df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
-        
+
+    st.markdown('#### Collection theme: ' + collection_name)
+    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
+
     def convert_df(df):
         return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â
     today = datetime.date.today().isoformat()
