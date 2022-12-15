@@ -168,9 +168,9 @@ col1, col2 = st.columns([5,2])
 with col1:
     st.header('Recently added items: ')
     st.caption('This list also shows recently updated items.')
-    df
-    
-    df_download = df.iloc[:, [0,1,2,4,5]] 
+        
+    df_download = df.iloc[:, [0,1,2,4,5,14,15]] 
+    df_download
     def convert_df(df):
         return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
     csv = convert_df(df_download)
