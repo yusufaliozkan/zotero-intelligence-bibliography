@@ -190,7 +190,7 @@ with col1:
         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
         # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-        ' (Added on: ' + df['Date added']+')'
+        ' (Added on: ' + df['Date added']+')' 
         )
         # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + ' '+
         # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
