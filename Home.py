@@ -168,6 +168,7 @@ col1, col2 = st.columns([5,2])
 with col1:
     st.header('Recently added items: ')
     st.caption('This list also shows recently updated items.')
+    df
     
     df_download = df.iloc[:, [0,1,2,4,5]] 
     def convert_df(df):
