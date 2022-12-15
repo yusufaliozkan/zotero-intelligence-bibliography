@@ -267,6 +267,8 @@ with col1:
 
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
+        df['firstName'] = 'n.'
+        df['lastName'] = 'a.'
 
         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
             df['Title'] + ' '+ 
