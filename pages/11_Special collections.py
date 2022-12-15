@@ -116,13 +116,37 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
+    df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                df['Title'] + ' '+ 
-                # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
-                "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
-                )
+    if df['FirstName2'].any() in ("", [], None, 0, False):
+        # st.write('no author')
+        df['firstName'] = 'null'
+        df['lastName'] = 'null'
+
+        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+            df['Title'] + ' '+ 
+            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
+            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+            "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+            )
+    else:
+        # st.write('author entered')
+        ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
+        df_fa = df['FirstName2']
+        df_fa = pd.DataFrame(df_fa.tolist())
+        df_fa = df_fa[0]
+        df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+        df_new = pd.json_normalize(df_fa, errors='ignore') 
+        df = pd.concat([df, df_new], axis=1)
+        df['firstName'] = df['firstName'].fillna('null')
+        df['lastName'] = df['lastName'].fillna('null')
+        
+        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                    df['Title'] + ' '+ 
+                    ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+                    "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                    )
 
     row_nu_1= len(df.index)
     # if row_nu_1<15:
@@ -130,10 +154,11 @@ with col2:
     # else:
     #     row_nu_1=15
 
-    st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
+    df['First author'] = df['firstName'] + ' ' + df['lastName']
+    df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
 
-    df_download = df.drop(['Abstract', 'FirstName2'], axis=1)
+    st.markdown('#### Collection theme: ' + collection_name)
+    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
     def convert_df(df):
         return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
