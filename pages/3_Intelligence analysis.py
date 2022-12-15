@@ -120,9 +120,12 @@ with col2:
 
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
+        df['firstName'] = 'null'
+        df['lastName'] = 'null'
 
         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
             df['Title'] + ' '+ 
+            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
             "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
             )
@@ -135,8 +138,8 @@ with col2:
         df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
         df_new = pd.json_normalize(df_fa, errors='ignore') 
         df = pd.concat([df, df_new], axis=1)
-        df['firstName'] = df['firstName'].fillna('n.')
-        df['lastName'] = df['lastName'].fillna('a.')
+        df['firstName'] = df['firstName'].fillna('null')
+        df['lastName'] = df['lastName'].fillna('null')
         
         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                     df['Title'] + ' '+ 
@@ -151,11 +154,11 @@ with col2:
     # else:
     #     row_nu_1=15
 
-    st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).')
-    
     df['First author'] = df['firstName'] + ' ' + df['lastName']
     df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
+
+    st.markdown('#### Collection theme: ' + collection_name)
+    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
     def convert_df(df):
         return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
