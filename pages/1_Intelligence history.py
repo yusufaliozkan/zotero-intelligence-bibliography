@@ -121,9 +121,12 @@ with col2:
 
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
+        df['firstName'] = 'null'
+        df['lastName'] = 'null'
 
         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
             df['Title'] + ' '+ 
+            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
             "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
             )
