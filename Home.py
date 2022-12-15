@@ -267,11 +267,12 @@ with col1:
 
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
-        df['firstName'] = 'n.'
-        df['lastName'] = 'a.'
+        df['firstName'] = ''
+        df['lastName'] = ''
 
         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
             df['Title'] + ' '+ 
+            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
             "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
             )
@@ -284,8 +285,8 @@ with col1:
         df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
         df_new = pd.json_normalize(df_fa, errors='ignore') 
         df = pd.concat([df, df_new], axis=1)
-        df['firstName'] = df['firstName'].fillna('n.')
-        df['lastName'] = df['lastName'].fillna('a.')
+        df['firstName'] = df['firstName'].fillna('')
+        df['lastName'] = df['lastName'].fillna('')
         
         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                     df['Title'] + ' '+ 
