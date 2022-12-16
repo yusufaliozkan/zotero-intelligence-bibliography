@@ -391,10 +391,3 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
-components.html(
-"""
-
-<a class="twitter-timeline" href="https://twitter.com/yaliozkan?ref_src=twsrc%5Etfw">Tweets by yaliozkan</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-"""
-)
