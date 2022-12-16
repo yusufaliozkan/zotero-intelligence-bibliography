@@ -198,7 +198,7 @@ with col3:
             )
 
     with st.expander('Collections in this site', expanded=False):
-        st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
+        st.caption('[Intelligence history](/Intelligence_history)')
         st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
         st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
         st.caption('[Intelligence organisations](https://intelligence.streamlit.app/Intelligence_organisations)')
