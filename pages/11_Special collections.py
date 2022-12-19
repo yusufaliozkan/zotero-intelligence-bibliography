@@ -118,8 +118,8 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    options = st.multiselect('Publication type', df['Publication type'].unique())
-    st.write('You selected:', options)
+    types = st.multiselect('Publication type', df['Publication type'].unique())
+    st.write('You selected:', types)
 
     # if journal_article:
     #     df = df[df['Publication type']=='Journal article']
