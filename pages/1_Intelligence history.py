@@ -126,7 +126,7 @@ with col2:
     all_options = st.checkbox("Select all options")
 
     if all_options:
-        selected_options = [df['Publication type'].unique(), df['Publication type'].unique()]
+        selected_options = [df['Publication type'].unique()]
 
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df = df.reset_index()
