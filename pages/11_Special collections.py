@@ -122,6 +122,7 @@ with col2:
     st.write('You selected:', types)
 
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
+    df = df.reset_index()
     df
 
     # if book:
