@@ -118,14 +118,13 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    journal_article = st.checkbox('Journal article')
-    book = st.checkbox('Book')
+    options = st.multiselect('Publication type', ['Book', 'Journal article'])
 
-    if journal_article:
-        df = df[df['Publication type']=='Journal article']
+    # if journal_article:
+    #     df = df[df['Publication type']=='Journal article']
 
-    if book:
-        df = df[df['Publication type']=='Book']        
+    # if book:
+    #     df = df[df['Publication type']=='Book']        
 
     df = df.reset_index()
 
