@@ -178,10 +178,10 @@ with col2:
             if journal_article:
                 st.write('articles')
             else:
-            st.write(''+str(i+1)+') ' +df_items.iloc[i])
-            df_items.fillna("nan") 
-            # if display2:
-            #     st.caption(df['Abstract'].iloc[i])
+                st.write(''+str(i+1)+') ' +df_items.iloc[i])
+                df_items.fillna("nan") 
+                # if display2:
+                #     st.caption(df['Abstract'].iloc[i])
 
 with col3:
     with st.expander("Collections in Zotero library", expanded=False):
