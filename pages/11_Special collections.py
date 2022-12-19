@@ -175,6 +175,9 @@ with col2:
         # display2 = st.checkbox('Display abstracts')
         journal_article = st.checkbox('Journal articles')
         for i in range(row_nu_1):
+            if journal_article:
+                st.write('articles')
+            else:
             st.write(''+str(i+1)+') ' +df_items.iloc[i])
             df_items.fillna("nan") 
             # if display2:
