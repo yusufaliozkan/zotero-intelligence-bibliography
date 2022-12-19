@@ -118,6 +118,15 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
+    st.markdown('#### Collection theme: ' + collection_name)
+    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
+
+    types = st.multiselect('Publication type', df['Publication type'].unique(), df['Publication type'].unique())
+
+
+    df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
+    df = df.reset_index()
+
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
         df['firstName'] = 'null'
@@ -156,9 +165,6 @@ with col2:
 
     df['First author'] = df['firstName'] + ' ' + df['lastName']
     df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
-
-    st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
     def convert_df(df):
         return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
