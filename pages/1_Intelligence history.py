@@ -122,11 +122,11 @@ with col2:
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
-    types = st.multiselect('Publication type', df['Publication type'].unique(), df['Publication type'].unique())
+    types = st.multiselect('Publication type', df['Publication type'].unique())
     all_options = st.checkbox("Select all options")
 
     if all_options:
-        selected_options = [df['Publication type'].unique()]
+        selected_options = [df['Publication type'].unique(), df['Publication type'].unique()]
 
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df = df.reset_index()
