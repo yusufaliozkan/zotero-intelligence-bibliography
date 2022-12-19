@@ -117,7 +117,13 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
-    
+
+    journal_article = st.checkbox('Journal article')
+
+
+    df_journal = df[df['Publication type']=='Journal article']
+    df_journal
+
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
         df['firstName'] = 'null'
@@ -157,8 +163,6 @@ with col2:
     df['First author'] = df['firstName'] + ' ' + df['lastName']
     df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
 
-    df_journal = df[df['Publication type']=='Journal article']
-    
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
@@ -173,15 +177,11 @@ with col2:
     with st.expander("Expand to see the list", expanded=True):
         st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
         # display2 = st.checkbox('Display abstracts')
-        journal = st.checkbox('Journal articles')
         for i in range(row_nu_1):
-            if journal:
-                df_journal
-            else:
-                st.write(''+str(i+1)+') ' +df_items.iloc[i])
-                df_items.fillna("nan") 
-                # if display2:
-                #     st.caption(df['Abstract'].iloc[i])
+            st.write(''+str(i+1)+') ' +df_items.iloc[i])
+            df_items.fillna("nan") 
+            # if display2:
+            #     st.caption(df['Abstract'].iloc[i])
 
 with col3:
     with st.expander("Collections in Zotero library", expanded=False):
