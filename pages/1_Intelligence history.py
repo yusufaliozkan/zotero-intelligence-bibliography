@@ -122,7 +122,7 @@ with col2:
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
-    types = st.multiselect('Publication type', [df['Publication type'].unique()],[df['Publication type'].unique(), 'All'])
+    types = st.multiselect('Publication type', [df['Publication type'].unique(), 'All'],[df['Publication type'].unique()])
     # if "All" in types:
     #     types = df['Publication type'].unique()
     # else:
