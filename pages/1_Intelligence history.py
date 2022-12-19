@@ -125,6 +125,8 @@ with col2:
     types = st.multiselect('Publication type', df['Publication type'].unique(),[df['Publication type'].unique(), 'All'])
     if "All" in types:
         types = df['Publication type'].unique()
+    else:
+        types    
 
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df = df.reset_index()
