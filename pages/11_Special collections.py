@@ -118,12 +118,12 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    types = st.multiselect('Publication type', df['Publication type'].unique())
-    st.write('You selected:', types)
+    # types = st.multiselect('Publication type', df['Publication type'].unique())
+    # st.write('You selected:', types)
 
-    if types:
-        df = df[df['Publication type']==types]
-        df
+    # if types:
+    #     df = df[df['Publication type']==types]
+    #     df
 
     # if book:
     #     df = df[df['Publication type']=='Book']        
