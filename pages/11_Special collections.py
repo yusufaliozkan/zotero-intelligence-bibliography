@@ -120,9 +120,8 @@ with col2:
 
     journal_article = st.checkbox('Journal article')
 
-
-    df_journal = df[df['Publication type']=='Journal article']
-    df_journal
+    if journal_article:
+        df = df[df['Publication type']=='Journal article']
 
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
