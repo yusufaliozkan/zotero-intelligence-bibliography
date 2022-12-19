@@ -127,8 +127,8 @@ with col2:
     # if book:
     #     df = df[df['Publication type']=='Book']        
 
-    df = df.reset_index()
-    df
+    # df = df.reset_index()
+    # df
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
         df['firstName'] = 'null'
