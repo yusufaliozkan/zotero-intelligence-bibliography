@@ -161,7 +161,7 @@ with col2:
     df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
 
     st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('See the full collection here' + collection_link)
+    st.caption('See the full collection here ' + collection_link)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
     
     
