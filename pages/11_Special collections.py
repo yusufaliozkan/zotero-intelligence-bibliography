@@ -121,14 +121,14 @@ with col2:
     types = st.multiselect('Publication type', df['Publication type'].unique())
     st.write('You selected:', types)
 
-    # if journal_article:
-    #     df = df[df['Publication type']=='Journal article']
+    if types:
+        df = df[df['Publication type']==types]
 
     # if book:
     #     df = df[df['Publication type']=='Book']        
 
     df = df.reset_index()
-
+    df
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
         df['firstName'] = 'null'
