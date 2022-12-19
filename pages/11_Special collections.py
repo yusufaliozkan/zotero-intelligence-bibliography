@@ -119,11 +119,9 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
     types = st.multiselect('Publication type', df['Publication type'].unique())
-    st.write('You selected:', types)
 
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df = df.reset_index()
-    df
 
     # if book:
     #     df = df[df['Publication type']=='Book']        
