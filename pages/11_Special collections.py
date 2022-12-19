@@ -84,9 +84,6 @@ with col1:
 
 with col2:
 # Collection items
-    st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
-
     count_collection = zot.num_collectionitems(collection_code)
 
     items = zot.everything(zot.collection_items_top(collection_code))
@@ -119,6 +116,10 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
+
+    st.markdown('#### Collection theme: ' + collection_name)
+    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
+
 
     types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
 
