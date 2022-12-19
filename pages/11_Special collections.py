@@ -123,7 +123,7 @@ with col2:
     if journal_article:
         df = df[df['Publication type']=='Journal article']
         df
-
+    df
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
         df['firstName'] = 'null'
