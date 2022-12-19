@@ -121,9 +121,8 @@ with col2:
     types = st.multiselect('Publication type', df['Publication type'].unique())
     st.write('You selected:', types)
 
-    if types:
-        df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
-        df
+    df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
+    df
 
     # if book:
     #     df = df[df['Publication type']=='Book']        
