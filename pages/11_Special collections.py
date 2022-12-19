@@ -123,6 +123,7 @@ with col2:
 
     if types:
         df = df[df['Publication type']==types]
+        df
 
     # if book:
     #     df = df[df['Publication type']=='Book']        
