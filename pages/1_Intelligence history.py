@@ -80,7 +80,6 @@ with col1:
     # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
-    collection_link = df_collections.loc[df_collections['Name']==collection_name, 'Link'].values[0]
 
     df_collections=df_collections['Name'].reset_index()
     pd.set_option('display.max_colwidth', None)
@@ -161,7 +160,6 @@ with col2:
     df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
 
     st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('See the full collection here ' + collection_link)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
     
     
