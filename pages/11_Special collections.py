@@ -157,7 +157,7 @@ with col2:
     df['First author'] = df['firstName'] + ' ' + df['lastName']
     df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
 
-    df_journal = df['Publication type']=='Journal article'.values[0]
+    df_journal = df['Publication type']=='Journal article'
     df_journal
 
     st.markdown('#### Collection theme: ' + collection_name)
