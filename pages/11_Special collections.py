@@ -117,6 +117,7 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
+    df
 
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
