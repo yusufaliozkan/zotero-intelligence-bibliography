@@ -125,9 +125,10 @@ with col2:
 
     stoggle( 
         "Select publication type",
-        types = st.multiselect('Publication type', df['Publication type'].unique(), df['Publication type'].unique())
+        """🥷 Surprise! Here's some additional content""",
     )
 
+    types = st.multiselect('Publication type', df['Publication type'].unique(), df['Publication type'].unique())
 
 
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
