@@ -233,7 +233,7 @@ with col1:
 
     st.header('Items by collection: ')
     clist = df_collections['Name'].unique()
-    collection_name = selectbox('Select a collection:', clist)
+    collection_name = selectbox('Select a collection:', ['a','b','c'])
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
     df_collections=df_collections['Name'].reset_index()
