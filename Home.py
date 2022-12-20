@@ -330,6 +330,9 @@ with col2:
             ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
             )
     with st.expander('Collections in this site', expanded=False):
+        intel_his = st.button('Intel history')
+        if intel_his:
+            switch_page("Intelligence history")
         st.caption('[Intelligence history](https://intelligence-bibliography.streamlit.app/Intelligence_history)')
         st.caption('[Intelligence studies](https://intelligence-bibliography.streamlit.app/Intelligence_studies)')
         st.caption('[Intelligence analysis](https://intelligence-bibliography.streamlit.app/Intelligence_analysis)')
