@@ -7,7 +7,7 @@ import numpy as np
 import altair as alt
 from pandas.io.json import json_normalize
 import datetime
-
+from streamlit_extras.stoggle import stoggle
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
