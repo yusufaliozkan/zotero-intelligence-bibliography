@@ -119,15 +119,15 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    stoggle( 
-        "Click me!",
-        """🥷 Surprise! Here's some additional content""",
-    )
 
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
-    types = st.multiselect('Publication type', df['Publication type'].unique(), df['Publication type'].unique())
+    stoggle( 
+        "Select publication type",
+        types = st.multiselect('Publication type', df['Publication type'].unique(), df['Publication type'].unique()),
+    )
+
 
 
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
