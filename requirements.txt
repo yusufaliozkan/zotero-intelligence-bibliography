@@ -5,3 +5,4 @@ PyQt6==6.4.0
 IPython==6.0
 NumPy==1.23.0
 Altair==4.2.0
+streamlit-extras==0.2.4
