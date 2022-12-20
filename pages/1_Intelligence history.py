@@ -125,7 +125,7 @@ with col2:
 
     stoggle( 
         "Select publication type",
-        """🥷 Surprise! Here's some additional content""",
+        df,
     )
 
     types = st.multiselect('Publication type', df['Publication type'].unique(), df['Publication type'].unique())
