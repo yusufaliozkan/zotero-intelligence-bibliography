@@ -119,7 +119,7 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    stoggle(
+    stoggle( 
         "Click me!",
         """🥷 Surprise! Here's some additional content""",
     )
