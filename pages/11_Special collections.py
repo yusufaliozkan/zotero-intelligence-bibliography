@@ -222,5 +222,6 @@ st.header('Top 10 collections in the library: ')
 df_plot2= df_plot['Publication type'].value_counts()
 df_plot2
 plot= df_plot2
+plot
 
 st.bar_chart(plot['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
