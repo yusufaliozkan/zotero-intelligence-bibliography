@@ -211,6 +211,11 @@ with col3:
         st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')         
 
+st.markdown('#### Item types of '+ collection_name)
+df_plot= df['Publication type'].value_counts()
+plot= df_plot
+st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
