@@ -372,7 +372,7 @@ with col2:
     row_nu_1= len(df.index)
     with st.expander(collection_name, expanded=False):
         for i in range(row_nu_1):
-            st.caption(df_items.iloc[i])
+            st.caption(''+str(i+1)+') ' +df_items.iloc[i])
             df_items.fillna("nan") 
 
     # Zotero library collections
