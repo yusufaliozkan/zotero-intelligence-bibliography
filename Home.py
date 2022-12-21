@@ -340,6 +340,29 @@ with col2:
         st.caption('[Covert action](https://intelligence-bibliography.streamlit.app/Covert_action)')
         st.caption('[Intelligence and cybersphere](https://intelligence-bibliography.streamlit.app/Intelligence_and_cybersphere)')
         st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
+    
+    collection_code = 'SBJXTAXH'
+    collection_name = df_collections.loc[df_collections['Key']==collection_code, 'Name'].values[0]
+
+    count_collection = zot.num_collectionitems(collection_code)
+
+    items = zot.everything(zot.collection_items_top(collection_code))
+
+    data3=[]
+    columns3=['Title','Link to publication']
+
+    for item in items:
+        data3.append((item['data']['title'], item['data']['url'])) 
+    pd.set_option('display.max_colwidth', None)
+
+    df = pd.DataFrame(data3, columns=columns3)
+    df = df.sort_values(by='Title')
+    df_items = ('['+df['Title'] + ']'+ '('+ df['Link to publication'] + ')')    
+    row_nu_1= len(df.index)
+    with st.expander(collection_name, expanded=False):
+        for i in range(row_nu_1):
+            st.write(''+str(i+1)+') ' +df_items.iloc[i])
+            df_items.fillna("nan") 
 
     # Zotero library collections
 
