@@ -80,9 +80,6 @@ with col1:
 
     df_collections=df_collections['Name'].reset_index()
     pd.set_option('display.max_colwidth', None)
-
-with col2:
-# Collection items
     count_collection = zot.num_collectionitems(collection_code)
 
     items = zot.everything(zot.collection_items_top(collection_code))
@@ -118,6 +115,9 @@ with col2:
 
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
+
+with col2:
+# Collection items
 
     types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
 
