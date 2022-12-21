@@ -79,6 +79,7 @@ with col1:
     # collection_name = df_collections['Name']
     collection_code = df_collections['Key']
 
+    collection_code
     df_collections=df_collections['Name'].reset_index()
     pd.set_option('display.max_colwidth', None)
 
