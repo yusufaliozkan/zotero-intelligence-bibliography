@@ -341,6 +341,17 @@ with col2:
         st.caption('[Intelligence and cybersphere](https://intelligence-bibliography.streamlit.app/Intelligence_and_cybersphere)')
         st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
     
+    collections = zot.collections()
+    data2=[]
+    columns2 = ['Key','Name', 'Link']
+    for item in collections:
+        data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
+
+    pd.set_option('display.max_colwidth', None)
+    df_collections = pd.DataFrame(data2, columns=columns2)
+
+    df_collections = df_collections.sort_values(by='Name')
+    df_collections
     collection_code = 'SBJXTAXH'
     collection_name = df_collections.loc[df_collections['Key']==collection_code, 'Name'].values[0]
 
