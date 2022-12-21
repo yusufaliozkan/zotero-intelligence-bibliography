@@ -117,8 +117,6 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    df_plot = df.copy()
-
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
@@ -211,8 +209,8 @@ with col3:
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
 st.header('Top 10 collections in the library: ')
-df_plot2= df_plot['Publication type'].value_counts()
-plot= df_plot2
+df_plot= df['Publication type'].value_counts()
+plot= df_plot
 st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
 
