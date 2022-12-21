@@ -221,10 +221,6 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 st.header('Top 10 collections in the library: ')
 df_plot2= df_plot['Publication type'].value_counts()
 df_plot2
-
-
-df_plot2
-df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
-plot= df_collections_2.head(10)
+plot= df_plot2
 
 st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
