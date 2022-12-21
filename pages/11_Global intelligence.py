@@ -77,6 +77,7 @@ with col1:
     
     # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = df_collections['Name']
+    collection_name
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
     df_collections=df_collections['Name'].reset_index()
