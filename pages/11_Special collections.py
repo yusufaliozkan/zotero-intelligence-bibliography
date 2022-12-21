@@ -219,7 +219,7 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 )
 
 st.header('Top 10 collections in the library: ')
-df_plot.set_index('Publication type', inplace=True)
+df_plot
 df_plot2= df_plot['Publication type'].value_counts()
 df_plot2
 
