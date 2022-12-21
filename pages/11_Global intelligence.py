@@ -78,7 +78,7 @@ with col1:
     
     # # collection_name = st.selectbox('Select a collection:', clist)
     # collection_name = radio
-    
+    collection_name = df_collections['Name'].loc[0]
     collection_code = df_collections['Key'].loc[0]
     
     df_collections=df_collections['Name'].reset_index()
