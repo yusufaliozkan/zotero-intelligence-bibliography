@@ -66,12 +66,15 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 
 df_collections = df_collections.sort_values(by='Name')
 df_collections=df_collections[df_collections['Name'].str.contains("16.")]
-
+df_collections
 # clist = df_collections['Name'].unique()
 
 col1, col2, col3 = st.columns([1.4,4,1.6])
 
 with col1:
+    radio = st.radio('Select a collection', df_collections['Name'])
+    
+    # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = df_collections['Name']
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
