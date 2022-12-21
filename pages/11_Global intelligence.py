@@ -66,7 +66,7 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 
 df_collections = df_collections.sort_values(by='Name')
 df_collections=df_collections[df_collections['Name'].str.contains("16.")]
-df_collections.loc[df_collections['Key']]
+df_collections.loc[df_collections['Key']].values[0]
 
 
 # clist = df_collections['Name'].unique()
