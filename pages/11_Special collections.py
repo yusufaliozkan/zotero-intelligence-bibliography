@@ -220,7 +220,10 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 
 st.header('Top 10 collections in the library: ')
 df_plot.set_index('Publication type', inplace=True)
-df_plot2= df_plot[df_plot.columns['Publication type']].count()
+df_plot2= df_plot['Publication type'].value_counts()
+df_plot2
+
+
 df_plot2
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(10)
