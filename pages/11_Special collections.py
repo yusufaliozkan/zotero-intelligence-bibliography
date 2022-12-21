@@ -224,4 +224,4 @@ df_plot2
 plot= df_plot2
 plot
 
-st.bar_chart(plot['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
+st.bar_chart(plot, height=600, width=600, use_container_width=True)
