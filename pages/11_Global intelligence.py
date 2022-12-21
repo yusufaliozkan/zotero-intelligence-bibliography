@@ -69,7 +69,7 @@ df_collections=df_collections[df_collections['Name'].str.contains("Global")].res
 
 # clist = df_collections['Name'].unique()
 
-col1, col2 = st.columns([4, 1])
+col1, col2 = st.columns([5, 2])
 
 with col1:
     collection_name = df_collections['Name'].loc[0]
