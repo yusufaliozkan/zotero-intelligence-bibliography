@@ -66,7 +66,7 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 
 df_collections = df_collections.sort_values(by='Name')
 df_collections=df_collections[df_collections['Name'].str.contains("Global")].reset_index()
-df_collections
+df_collections.loc['Key']
 
 # clist = df_collections['Name'].unique()
 
