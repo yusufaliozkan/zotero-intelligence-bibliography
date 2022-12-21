@@ -117,6 +117,8 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
+    df_plot = df.copy()
+
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
@@ -215,3 +217,12 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
+
+st.header('Top 10 collections in the library: ')
+df_plot.set_index('Publication type', inplace=True)
+df_plot2= df_plot[df_plot.columns['Publication type']].count()
+df_plot2
+df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
+plot= df_collections_2.head(10)
+
+st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
