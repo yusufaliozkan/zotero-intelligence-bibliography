@@ -210,6 +210,12 @@ with col3:
         st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
+st.header('Top 10 collections in the library: ')
+df_plot2= df_plot['Publication type'].value_counts()
+plot= df_plot2
+st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
+
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
@@ -217,8 +223,3 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
-
-st.header('Top 10 collections in the library: ')
-df_plot2= df_plot['Publication type'].value_counts()
-plot= df_plot2
-st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
