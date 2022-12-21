@@ -79,7 +79,7 @@ with col1:
     collection_name = radio
     collection_name
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
-
+    collection_code
     df_collections=df_collections['Name'].reset_index()
     pd.set_option('display.max_colwidth', None)
 
