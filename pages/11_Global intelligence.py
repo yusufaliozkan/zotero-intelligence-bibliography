@@ -80,47 +80,11 @@ with col1:
 
     df_collections=df_collections['Name'].reset_index()
     pd.set_option('display.max_colwidth', None)
-    count_collection = zot.num_collectionitems(collection_code)
-
-    items = zot.everything(zot.collection_items_top(collection_code))
-
-    data3=[]
-    columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'FirstName2']
-
-    for item in items:
-        data3.append((
-            item['data']['title'], 
-            item['data']['itemType'], 
-            item['data']['url'], 
-            item['data']['abstractNote'], 
-            item['links']['alternate']['href'],
-            item['data']['creators']
-            )) 
-    pd.set_option('display.max_colwidth', None)
-
-    df = pd.DataFrame(data3, columns=columns3)
-
-    df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
-    df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
-    df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
-    df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
-    df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
-    df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
-    df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
-    df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
-    df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
-    df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
-    df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
-    df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
-
-    st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
-    types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
 
 with col2:
 # Collection items
 
-    
+    types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
 
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df = df.reset_index()
