@@ -69,15 +69,23 @@ df_collections=df_collections[df_collections['Name'].str.contains("Global")].res
 
 # clist = df_collections['Name'].unique()
 
-col1, col2 = st.columns([5, 2])
+col1, col2, col3 = st.columns([1.4,4,1.6])
 
 with col1:
-    collection_name = df_collections['Name'].loc[0]
-    collection_code = df_collections['Key'].loc[0]
+    radio = st.radio('Select a collection', df_collections['Name'])
+    radio2=df_collections['Name']
+    radio2
+    
+    # collection_name = st.selectbox('Select a collection:', clist)
+    collection_name = radio
+    
+    collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
     
     df_collections=df_collections['Name'].reset_index()
     pd.set_option('display.max_colwidth', None)
 
+with col2:
+# Collection items
     count_collection = zot.num_collectionitems(collection_code)
 
     items = zot.everything(zot.collection_items_top(collection_code))
@@ -174,7 +182,7 @@ with col1:
             # if display2:
             #     st.caption(df['Abstract'].iloc[i])
 
-with col2:
+with col3:
     with st.expander("Collections in Zotero library", expanded=False):
         bbb = zot.collections()
         data3=[]
