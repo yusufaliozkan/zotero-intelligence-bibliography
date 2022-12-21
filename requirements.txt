@@ -6,3 +6,4 @@ IPython==6.0
 NumPy==1.23.0
 Altair==4.2.0
 streamlit-extras==0.2.4
+plotly==4.14.1
