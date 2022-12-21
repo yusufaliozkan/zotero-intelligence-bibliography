@@ -351,7 +351,6 @@ with col2:
     df_collections = pd.DataFrame(data2, columns=columns2)
 
     df_collections = df_collections.sort_values(by='Name')
-    df_collections
     collection_code = 'SBJXTAXH'
     collection_name = df_collections.loc[df_collections['Key']==collection_code, 'Name'].values[0]
 
