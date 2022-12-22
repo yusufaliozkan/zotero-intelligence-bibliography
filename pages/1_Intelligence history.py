@@ -217,6 +217,9 @@ with col3:
 
 st.markdown('#### Item types of '+ collection_name)
 df_plot= df['Publication type'].value_counts()
+df_plot=df_plot.reset_index()
+df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+
 plot= df_plot
 plot
 st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
