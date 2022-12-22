@@ -379,14 +379,11 @@ with col2:
     # Zotero library collections
 
 st.header('Top 10 collections in the library: ')
-df_collections_2.set_index('Name', inplace=True)
-df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
+# df_collections_2.set_index('Name', inplace=True)
+# df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(10)
-
-st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
+# st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
 plot = plot.reset_index()
-plot
-
 fig = px.bar(plot, x='Name', y='Number', color='Name')
 fig.update_layout(
     autosize=False,
