@@ -7,6 +7,7 @@ import numpy as np
 import altair as alt
 from pandas.io.json import json_normalize
 import datetime
+import plotly.express as px
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
