@@ -228,6 +228,14 @@ fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':
 fig.update_traces(textinfo='value')
 st.plotly_chart(fig, use_container_width = True)
 
+fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
+fig.update_layout(
+    autosize=False,
+    width=800,
+    height=800,)
+fig.update_layout(title={'text':'KISG publications (2022)', 'y':0.95, 'x':0.3, 'yanchor':'top'})
+st.plotly_chart(fig, use_container_width = True)
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
