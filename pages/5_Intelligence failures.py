@@ -215,7 +215,7 @@ with col3:
         st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')          
 
-st.markdown('Visuals')
+st.header('Visuals')
 
 col1, col2 = st.columns(2)
 with col1:
