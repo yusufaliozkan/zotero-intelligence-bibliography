@@ -234,7 +234,7 @@ fig.update_layout(
     width=400,
     height=400,)
 fig.update_layout(title={'text':'KISG publications (2022)', 'y':0.95, 'x':0.3, 'yanchor':'top'})
-st.plotly_chart(fig, use_container_width = True)
+st.plotly_chart(fig, use_container_width = False)
 
 components.html(
 """
