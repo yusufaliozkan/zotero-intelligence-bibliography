@@ -224,8 +224,8 @@ plot= df_plot
 plot
 # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
-fig = px.pie(plot, values='Count')
-st.plotly_chart(fig)
+fig = px.pie(plot, values='Count', names='Publication type', title='Publications: '+collection_name)
+st.plotly_chart(fig, use_container_width = True)
 
 components.html(
 """
