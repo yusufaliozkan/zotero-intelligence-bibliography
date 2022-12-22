@@ -221,7 +221,7 @@ plot= df_plot
 st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
 fig = px.pie(plot, values='Publication type')
-st.fig.show()
+fig.show()
 
 components.html(
 """
