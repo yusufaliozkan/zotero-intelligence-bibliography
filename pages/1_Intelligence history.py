@@ -225,6 +225,7 @@ plot= df_plot
 
 fig = px.pie(plot, values='Count', names='Publication type')
 fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.45, 'yanchor':'top'})
+fig.update_traces(textinfo='Count')
 st.plotly_chart(fig, use_container_width = True)
 
 components.html(
