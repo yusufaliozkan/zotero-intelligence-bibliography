@@ -383,6 +383,15 @@ df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(10)
 
 st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
+plot
+
+# fig = px.bar(plot, x='Publication type', y='Number', color='Publication type')
+# fig.update_layout(
+#     autosize=False,
+#     width=400,
+#     height=400,)
+# fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+# col2.plotly_chart(fig, use_container_width = True)
 
 
 # types = zot.everything(zot.top())
