@@ -218,10 +218,10 @@ with col3:
 st.markdown('#### Item types of '+ collection_name)
 df_plot= df['Publication type'].value_counts()
 plot= df_plot
+plot
 st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
 fig = px.pie(plot, values='Publication type')
-fig.show()
 st.plotly_chart(fig)
 
 components.html(
