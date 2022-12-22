@@ -215,7 +215,7 @@ with col3:
         st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
-st.markdown('#### Item types of '+ collection_name)
+st.markdown('#### Visuals')
 df_plot= df['Publication type'].value_counts()
 df_plot=df_plot.reset_index()
 df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
