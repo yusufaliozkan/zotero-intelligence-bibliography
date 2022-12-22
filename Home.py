@@ -393,7 +393,7 @@ fig.update_layout(
     width=400,
     height=400,)
 fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.3, 'yanchor':'top'})
-col2.plotly_chart(fig, use_container_width = True)
+st.plotly_chart(fig, use_container_width = True)
 
 
 # types = zot.everything(zot.top())
