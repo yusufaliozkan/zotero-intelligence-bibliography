@@ -7,6 +7,8 @@ import numpy as np
 import altair as alt
 from pandas.io.json import json_normalize
 import datetime
+import plotly.express as px
+
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
@@ -211,10 +213,31 @@ with col3:
         st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
-st.markdown('#### Item types of '+ collection_name)
-df_plot= df['Publication type'].value_counts()
-plot= df_plot
-st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
+st.markdown('#### Visuals')
+
+col1, col2 = st.columns(2)
+with col1:
+    df_plot= df['Publication type'].value_counts()
+    df_plot=df_plot.reset_index()
+    df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+
+    plot= df_plot
+    # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
+
+    fig = px.pie(plot, values='Count', names='Publication type')
+    fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.45, 'yanchor':'top'})
+    fig.update_traces(textinfo='value')
+    col1.plotly_chart(fig, use_container_width = True)
+
+with col2:
+    fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
+    fig.update_layout(
+        autosize=False,
+        width=400,
+        height=400,)
+    fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+    col2.plotly_chart(fig, use_container_width = True)
+
 
 components.html(
 """
