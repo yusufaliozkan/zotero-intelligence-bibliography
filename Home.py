@@ -324,8 +324,8 @@ with col1:
 
 with col2:
     with st.expander("Collections in Zotero library", expanded=False):
-        row_nu_collections = len(df_collections_2.index)
-        
+        st.markdown('''[Visuals](#visuals)''', unsafe_allow_html=True)
+        row_nu_collections = len(df_collections_2.index)        
         for i in range(row_nu_collections):
             st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
             ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
@@ -378,7 +378,7 @@ with col2:
 
     # Zotero library collections
 
-st.header('Top 10 collections in the library: ')
+st.header('Visuals')
 df_collections_2.set_index('Name', inplace=True)
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(10)
