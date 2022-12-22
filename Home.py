@@ -383,6 +383,7 @@ df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(10)
 
 st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
+plot = plot.reset_index()
 plot
 
 # fig = px.bar(plot, x='Publication type', y='Number', color='Publication type')
