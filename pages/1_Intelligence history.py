@@ -224,8 +224,8 @@ plot= df_plot
 plot
 # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
-fig = px.pie(plot, values='Count', names='Publication type', title='Publications: '+collection_name)
-fig.update_layout(title={'text':'KISG publications (2022)', 'y':0.95, 'x':0.45, 'yanchor':'top'})
+fig = px.pie(plot, values='Count', names='Publication type')
+fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.45, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
 components.html(
