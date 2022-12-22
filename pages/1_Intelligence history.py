@@ -222,7 +222,7 @@ df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'C
 
 plot= df_plot
 plot
-st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
+# st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
 fig = px.pie(plot, values='Publication type')
 st.plotly_chart(fig)
