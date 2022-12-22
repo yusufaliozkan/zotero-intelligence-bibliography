@@ -231,8 +231,8 @@ st.plotly_chart(fig, use_container_width = True)
 fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
 fig.update_layout(
     autosize=False,
-    width=800,
-    height=800,)
+    width=400,
+    height=400,)
 fig.update_layout(title={'text':'KISG publications (2022)', 'y':0.95, 'x':0.3, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
