@@ -387,9 +387,9 @@ plot = plot.reset_index()
 fig = px.bar(plot, x='Name', y='Number', color='Name')
 fig.update_layout(
     autosize=False,
-    width=400,
+    width=600,
     height=600,)
-fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.3, 'yanchor':'top'})
+fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.5, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
 
