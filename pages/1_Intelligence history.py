@@ -220,6 +220,9 @@ df_plot= df['Publication type'].value_counts()
 plot= df_plot
 st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
+fig = px.pie(plot, values='Publication type')
+st.fig.show()
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
