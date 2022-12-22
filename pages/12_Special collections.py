@@ -76,9 +76,7 @@ col1, col2, col3 = st.columns([1.4,4,1.6])
 with col1:
     radio = st.radio('Select a collection', df_collections['Name'])
     st.markdown('''
-# Sections
-- [Section 1](#section-1)
-- [Section 2](#section-2)
+- [Visuals](#visuals)
 ''', unsafe_allow_html=True)
     
     # collection_name = st.selectbox('Select a collection:', clist)
