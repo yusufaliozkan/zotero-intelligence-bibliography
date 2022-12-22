@@ -222,7 +222,7 @@ st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_conta
 
 fig = px.pie(plot, values='Publication type')
 fig.show()
-st.plotly_chart()
+st.plotly_chart(fig)
 
 components.html(
 """
