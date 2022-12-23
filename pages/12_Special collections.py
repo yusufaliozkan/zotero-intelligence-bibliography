@@ -92,7 +92,7 @@ with col2:
     items = zot.everything(zot.collection_items_top(collection_code))
 
     data3=[]
-    columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'FirstName2']
+    columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2']
 
     for item in items:
         data3.append((
@@ -101,15 +101,15 @@ with col2:
             item['data']['url'], 
             item['data']['abstractNote'], 
             item['links']['alternate']['href'],
-            item['data']['dateAdded'],
+            item['data'].get('date'),
             item['data']['creators']
             )) 
     pd.set_option('display.max_colwidth', None)
 
     df = pd.DataFrame(data3, columns=columns3)
 
-    df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
-    df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
+    df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
+    df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
     df
 
     df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
