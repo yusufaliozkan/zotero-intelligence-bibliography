@@ -119,6 +119,9 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
+
+    df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
+    df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
     df
 
     st.markdown('#### Collection theme: ' + collection_name)
