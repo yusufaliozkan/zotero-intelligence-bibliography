@@ -109,6 +109,7 @@ with col2:
     df = pd.DataFrame(data3, columns=columns3)
 
     df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
+    df
     df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
     df
 
