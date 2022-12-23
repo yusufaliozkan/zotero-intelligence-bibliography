@@ -45,9 +45,6 @@ st.set_page_config(layout = "wide",
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 
-df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
-df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
-
 split_df= pd.DataFrame(df['Col key'].tolist())
 df_fa = df['FirstName']
 df_fa = pd.DataFrame(df_fa.tolist())
@@ -73,7 +70,8 @@ df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'N
 df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-
+df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
+df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
 df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
 df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
