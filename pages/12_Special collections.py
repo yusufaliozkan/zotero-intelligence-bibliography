@@ -101,15 +101,15 @@ with col2:
             item['data']['url'], 
             item['data']['abstractNote'], 
             item['links']['alternate']['href'],
-            item['data'].get('date'),
+            item['data']['dateAdded'],
             item['data']['creators']
             )) 
     pd.set_option('display.max_colwidth', None)
 
     df = pd.DataFrame(data3, columns=columns3)
 
-    df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
-    df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
+    df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
+    df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
     df
 
     df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
