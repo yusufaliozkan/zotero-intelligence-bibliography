@@ -108,7 +108,6 @@ with col2:
 
     df = pd.DataFrame(data3, columns=columns3)
 
-    df['Date published'] = df['Date published'].astype('float')
     df['Date published'] = df['Date published'].astype('Int32')
 
     # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
