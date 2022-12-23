@@ -108,7 +108,9 @@ with col2:
 
     df = pd.DataFrame(data3, columns=columns3)
 
-    df['Date published'] = df['Date published'].astype.str.strip()
+    df['Date published'] = df['Date published'].astype('float')
+    df['Date published'] = df['Date published'].astype('Int32')
+
     # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
     # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
     # df
