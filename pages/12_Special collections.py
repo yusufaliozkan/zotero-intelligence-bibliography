@@ -92,7 +92,7 @@ with col2:
     items = zot.everything(zot.collection_items_top(collection_code))
 
     data3=[]
-    columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2']
+    columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'FirstName2']
 
     for item in items:
         data3.append((
