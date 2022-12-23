@@ -108,6 +108,10 @@ with col2:
 
     df = pd.DataFrame(data3, columns=columns3)
 
+    df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
+    df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
+    df
+
     df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
     df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
     df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
@@ -120,10 +124,6 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
-
-    # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
-    # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
-    df
 
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
