@@ -69,6 +69,12 @@ df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'N
 df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
 df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
+df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
+df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
+df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
+df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
+df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
+df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 
 # Bringing collections
 bbb = zot.collections()
@@ -127,10 +133,6 @@ st.title("Intelligence bibliography")
 
 count = zot.count_items()
 st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
-df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
-df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
-df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
-df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
