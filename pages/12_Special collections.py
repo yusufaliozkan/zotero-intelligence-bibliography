@@ -6,6 +6,7 @@ import streamlit.components.v1 as components
 import numpy as np
 import altair as alt
 from pandas.io.json import json_normalize
+from datetime import date, timedelta  
 import datetime
 import plotly.express as px
 
@@ -120,8 +121,8 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
-    # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
+    df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
+    df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
     df
 
     st.markdown('#### Collection theme: ' + collection_name)
