@@ -109,7 +109,7 @@ with col2:
     df = pd.DataFrame(data3, columns=columns3)
 
     df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
-    df['Date published'] = df['Date published'].map(lambda x: x.strptime('%d/%m/%Y') if x else 'No date')
+    df['Date published'] = df['Date published'].map(lambda x: x.strptime(df['Date published'], '%d/%m/%Y') if x else 'No date')
     df
 
     df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
