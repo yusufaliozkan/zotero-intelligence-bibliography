@@ -127,6 +127,7 @@ with col2:
 
     df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+    df['Date year'] = df['Date published'].dt.strftime('%Y')
     df['Date published'] = df['Date published'].fillna('No date')
 
     st.markdown('#### Collection theme: ' + collection_name)
