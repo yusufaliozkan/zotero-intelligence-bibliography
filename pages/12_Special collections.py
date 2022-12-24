@@ -125,7 +125,7 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-    df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
+    df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
     df['Date published'] = df['Date published'].fillna('No date')
 
@@ -168,6 +168,7 @@ with col2:
                     "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                     ' (Published on: ' +df['Date published'] + ')'
                     )
+
     row_nu_1= len(df.index)
     # if row_nu_1<15:
     #     row_nu_1=row_nu_1
