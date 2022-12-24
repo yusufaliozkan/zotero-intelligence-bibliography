@@ -125,6 +125,10 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
+    df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
+    df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+    df['Date published'] = df['Date published'].fillna('No date')
+
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
@@ -142,7 +146,8 @@ with col2:
             df['Title'] + ' '+ 
             ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-            "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+            ' (Published on: ' +df['Date published'] + ')'
             )
     else:
         # st.write('author entered')
@@ -160,7 +165,8 @@ with col2:
                     df['Title'] + ' '+ 
                     ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
                     "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+                    ' (Published on: ' +df['Date published'] + ')'
                     )
     row_nu_1= len(df.index)
     # if row_nu_1<15:
