@@ -175,7 +175,7 @@ with col2:
     #     row_nu_1=15
 
     df['First author'] = df['firstName'] + ' ' + df['lastName']
-    df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link']]
+    df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link', 'Date published']]
 
     def convert_df(df):
         return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
