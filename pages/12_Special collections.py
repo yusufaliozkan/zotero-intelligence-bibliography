@@ -254,12 +254,11 @@ df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
 df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
 df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-df_year
 fig = px.bar(df_year, x='Publication year', y='Count')
 fig.update_layout(
     autosize=False,
     width=400,
-    height=400,)
+    height=500,)
 fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
