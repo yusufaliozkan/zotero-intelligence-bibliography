@@ -186,7 +186,7 @@ with col2:
     # # st.caption(collection_name)
     st.download_button('Download the collection', csv, collection_name+ '-'+today +'.csv', mime="text/csv", key='download-csv')
 
-    if st.selectbox('Sort by publication date'):
+    if st.checkbox('Sort by publication date'):
         df=df.sort_values(by='Date published', ascending=True)
 
     with st.expander("Expand to see the list", expanded=True):
