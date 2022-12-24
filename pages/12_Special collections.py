@@ -251,6 +251,8 @@ df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coe
 df['Date year'] = df['Date published'].dt.strftime('%Y')
 df['Date year'] = df['Date year'].fillna('No date')
 
+df_year=df['Date year'].value_counts()
+df_year
 df
 
 
