@@ -131,7 +131,9 @@ with col2:
 
     sort = st.checkbox('Sort by publication date', disabled=False)
     if sort:
-        df['Date published'] = pd.to_datetime(df['Date published'])
+        df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+        df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+        df['Date published'] = df['Date published'].fillna('No date')
         df=df.sort_values(by='Date published', ascending=True)
 
     st.markdown('#### Collection theme: ' + collection_name)
