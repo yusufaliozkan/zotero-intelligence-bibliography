@@ -126,7 +126,7 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
     df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
-    df['Date published'] = df['Date published'].dt.strftime('%Y')
+    df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
     df['Date published'] = df['Date published'].fillna('No date')
 
     st.markdown('#### Collection theme: ' + collection_name)
