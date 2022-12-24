@@ -129,9 +129,10 @@ with col2:
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
     df['Date published'] = df['Date published'].fillna('No date')
 
-    # sort = st.checkbox('Sort by publication date', disabled=False)
-    # if sort:
-    #     df=df.sort_values(by='Date published', ascending=True)
+    sort = st.checkbox('Sort by publication date', disabled=False)
+    if sort:
+        df['Date published'] = pd.to_datetime(df['Date published'])
+        df=df.sort_values(by='Date published', ascending=True)
 
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
