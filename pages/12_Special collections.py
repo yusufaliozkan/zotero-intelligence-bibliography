@@ -255,8 +255,6 @@ df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
 df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
 df_year
-df
-
 
 
 components.html(
