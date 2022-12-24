@@ -255,7 +255,7 @@ df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
 df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
 df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-df_year=df_year.sort_values(by='Publication year', ascending=False)
+df_year=df_year.sort_values(by='Publication year', ascending=True)
 fig = px.bar(df_year, x='Publication year', y='Count')
 fig.update_layout(
     autosize=False,
