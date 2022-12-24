@@ -258,8 +258,8 @@ fig = px.bar(df_year, x='Publication year', y='Count')
 fig.update_layout(
     autosize=False,
     width=400,
-    height=500,)
-fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+    height=600,)
+fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
 
