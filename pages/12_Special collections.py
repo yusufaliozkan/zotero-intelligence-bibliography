@@ -129,6 +129,10 @@ with col2:
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
     df['Date published'] = df['Date published'].fillna('No date')
 
+    sort = st.checkbox('Sort by publication date')
+    if sort:
+        df=df.sort_values(by='Date published', ascending=False)
+
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
@@ -185,10 +189,6 @@ with col2:
     # csv = df_download
     # # st.caption(collection_name)
     st.download_button('Download the collection', csv, collection_name+ '-'+today +'.csv', mime="text/csv", key='download-csv')
-
-    sort = st.checkbox('Sort by publication date')
-    if sort:
-        df=df.sort_values(by='Date published', ascending=False)
 
     with st.expander("Expand to see the list", expanded=True):
         st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
