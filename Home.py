@@ -266,11 +266,7 @@ with col1:
     pd.set_option('display.max_colwidth', None)
 
     df = pd.DataFrame(data3, columns=columns3)
-
-    # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
-    # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
-    # df
-
+    
     df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
     df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
     df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
@@ -286,15 +282,7 @@ with col1:
 
     df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
-    df['Date published'] = df['Date published'].fillna('No date')
-
-    st.markdown('#### Collection theme: ' + collection_name)
-    st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
-
-    types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
-
-    df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
-    df = df.reset_index()
+    df['Date published'] = df['Date published'].fillna('No date')    
 
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
@@ -327,6 +315,7 @@ with col1:
                     "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                     ' (Published on: ' +df['Date published'] + ')'
                     )
+
     row_nu_1= len(df.index)
     if row_nu_1<15:
         row_nu_1=row_nu_1
