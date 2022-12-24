@@ -263,7 +263,6 @@ fig.update_layout(
     height=500,)
 fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
-df_year
 
 components.html(
 """
