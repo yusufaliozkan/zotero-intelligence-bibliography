@@ -252,6 +252,7 @@ df['Date year'] = df['Date published'].dt.strftime('%Y')
 df['Date year'] = df['Date year'].fillna('No date')
 
 df_year=df['Date year'].value_counts()
+df_year=df_year.rename(columns={'index':'Publication year','Publication type':'Count'})
 df_year
 df
 
