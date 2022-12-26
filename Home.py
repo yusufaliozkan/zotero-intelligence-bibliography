@@ -76,7 +76,7 @@ df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
 df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
 df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
-df
+
 
 # Bringing collections
 bbb = zot.collections()
