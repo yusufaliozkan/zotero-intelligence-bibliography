@@ -126,13 +126,13 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
     df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-    df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y').timestamp()
+    df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
     df['Date published'] = df['Date published'].fillna('No date')
     df
     sort = st.checkbox('Sort by publication date', disabled=False)
-    if sort:
-        df['Date published'] = df['Date published'].astype('datetime64[ns]')
-        df=df.sort_values(by='Date published', ascending=True)
+    # if sort:
+    #     df['Date published'] = df['Date published'].astype('datetime64[ns]')
+    #     df=df.sort_values(by='Date published', ascending=True)
 
     st.markdown('#### Collection theme: ' + collection_name)
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
