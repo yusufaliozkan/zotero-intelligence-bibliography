@@ -131,6 +131,7 @@ with col2:
     df
     sort = st.checkbox('Sort by publication date', disabled=False)
     if sort:
+        df['Date published'] = df['Date published'].astype('datetime64[ns')
         df=df.sort_values(by='Date published', ascending=True)
 
     st.markdown('#### Collection theme: ' + collection_name)
