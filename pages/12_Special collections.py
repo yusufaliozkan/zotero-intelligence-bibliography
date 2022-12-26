@@ -127,7 +127,7 @@ with col2:
 
     df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
-    df['Date published'] = df['Date published'].fillna('')
+    df['Date published'] = df['Date published'].fillna('No date')
     df
     sort = st.checkbox('Sort by publication date', disabled=False)
     if sort:
