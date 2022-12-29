@@ -129,7 +129,7 @@ with col2:
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
     df['Date published'] = df['Date published'].fillna('No date')
     
-    sort = st.checkbox('Sort by publication date', disabled=False)
+    # sort = st.checkbox('Sort by publication date', disabled=False)
     # if sort:
     #     df['Date published'] = df['Date published'].astype('datetime64[ns]')
     #     df=df.sort_values(by='Date published', ascending=True)
