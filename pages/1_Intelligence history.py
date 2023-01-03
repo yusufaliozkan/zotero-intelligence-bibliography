@@ -124,6 +124,7 @@ with col2:
     df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
     df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
     df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
+    df['Publication type'] = df['Publication type'].replace(['presentation'], 'Presentation')
 
     df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
