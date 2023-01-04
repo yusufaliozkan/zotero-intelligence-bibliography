@@ -176,8 +176,7 @@ with st.sidebar:
 
 col1, col2 = st.columns([5,2]) 
 with col1:
-    st.header('Recently added items: ')
-    st.caption('This list also shows recently updated items.')
+    st.header('Recently added or updated items: ')
         
     df_download = df.iloc[:, [0,1,2,4,5,6,14,15]] 
     df_download['First author'] = df['firstName'] + ' ' + df['lastName']
