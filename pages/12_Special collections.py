@@ -300,19 +300,23 @@ with col1:
     df_publisher = df_publisher.head(number)
     df_publisher
 
-    fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher')
-    fig.update_layout(
-        autosize=False,
-        width=1200,
-        height=700,)
-    fig.update_xaxes(tickangle=-70)
-    fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-    col1.plotly_chart(fig, use_container_width = True)
-    with st.expander('See publishers'):
-        row_nu_collections = len(df_publisher.index)        
-        for i in range(row_nu_collections):
-            st.caption(df_publisher['Publisher'].iloc[i]
-            )
+    if df_publisher['Publisher'].any() in ("", [], None, 0, False):
+        st.write('No publisher to display')
+
+    else:
+        fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher')
+        fig.update_layout(
+            autosize=False,
+            width=1200,
+            height=700,)
+        fig.update_xaxes(tickangle=-70)
+        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+        col1.plotly_chart(fig, use_container_width = True)
+        with st.expander('See publishers'):
+            row_nu_collections = len(df_publisher.index)        
+            for i in range(row_nu_collections):
+                st.caption(df_publisher['Publisher'].iloc[i]
+                )
 
 with col2:
     number2 = st.select_slider('Select a number of journals', options=[5,10,15,20,25,30], value=10)
