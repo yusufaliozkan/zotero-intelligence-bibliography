@@ -422,26 +422,23 @@ df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
 df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
 df_year=df_year.sort_values(by='Publication year', ascending=True)
 
-col1, col2 = st.columns(2)
-with col1:
-    fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type')
-    fig.update_layout(
-        autosize=False,
-        width=1200,
-        height=600,)
-    fig.update_xaxes(tickangle=-70)
-    fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-    col1.plotly_chart(fig, use_container_width = True)
+fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type')
+fig.update_layout(
+    autosize=False,
+    width=1200,
+    height=600,)
+fig.update_xaxes(tickangle=-70)
+fig.update_layout(title={'text':'All items in the library (by item type)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+st.plotly_chart(fig, use_container_width = True)
 
-with col2:
-    fig = px.bar(df_year, x='Publication year', y='Count')
-    fig.update_xaxes(tickangle=-70)
-    fig.update_layout(
-        autosize=False,
-        width=1400,
-        height=700,)
-    fig.update_layout(title={'text':'Publications by year: all items', 'y':0.95, 'x':0.5, 'yanchor':'top'})
-    col2.plotly_chart(fig, use_container_width = True)
+fig = px.bar(df_year, x='Publication year', y='Count')
+fig.update_xaxes(tickangle=-70)
+fig.update_layout(
+    autosize=False,
+    width=1400,
+    height=700,)
+fig.update_layout(title={'text':'All items in the library by publication year', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+st.plotly_chart(fig, use_container_width = True)
 
 
 # types = zot.everything(zot.top())
