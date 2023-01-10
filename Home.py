@@ -488,6 +488,7 @@ with col1:
             )
 
 with col2:
+    number2 = st.select_slider('Select a number of journals', options=[5,10,15,20,25,30])
     df_journal = df_csv.loc[df_csv['Publication type']=='Journal article']
     df_journal = pd.DataFrame(df_journal['Journal'].value_counts())
     df_journal = df_journal.sort_values(['Journal'], ascending=[False])
@@ -502,7 +503,7 @@ with col2:
         height=700,
         showlegend=False)
     fig.update_xaxes(tickangle=-70)
-    fig.update_layout(title={'text':'Top 15 journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+    fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
     with st.expander('See journals'):
         row_nu_collections = len(df_journal.index)        
