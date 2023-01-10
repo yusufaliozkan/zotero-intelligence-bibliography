@@ -141,7 +141,7 @@ count = zot.count_items()
 st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
-st.markdown('''[Go to visuals](#visuals)''', unsafe_allow_html=True)
+st.markdown('''Go to [Dashboard](#dashboard) to see visuals''', unsafe_allow_html=True)
 
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
@@ -351,6 +351,7 @@ with col2:
         st.caption('[Intelligence studies](https://intelligence-bibliography.streamlit.app/Intelligence_studies)')
         st.caption('[Intelligence analysis](https://intelligence-bibliography.streamlit.app/Intelligence_analysis)')
         st.caption('[Intelligence organisations](https://intelligence-bibliography.streamlit.app/Intelligence_organisations)')
+        st.caption('[Intelligence failures](https://intelligence.streamlit.app/Intelligence_failures)')
         st.caption('[Intelligence oversight and ethics](https://intelligence-bibliography.streamlit.app/Intelligence_oversight_and_ethics)')
         st.caption('[Intelligence collection](https://intelligence-bibliography.streamlit.app/Intelligence_collection)')
         st.caption('[Counterintelligence](https://intelligence-bibliography.streamlit.app/Counterintelligence)')
@@ -394,7 +395,8 @@ with col2:
 
     # Zotero library collections
 
-st.header('Visuals')
+st.write("---")
+st.header('Dashboard')
 df_collections_2.set_index('Name', inplace=True)
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
 plot= df_collections_2.head(10)
@@ -486,12 +488,13 @@ with col2:
     df_journal = df_journal.reset_index()
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(15)
-
+    
     fig = px.bar(df_journal, x='Journal', y='Count', color='Journal')
     fig.update_layout(
         autosize=False,
         width=1200,
-        height=600,)
+        height=600,
+        showlegend=False)
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(title={'text':'Top 15 journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
