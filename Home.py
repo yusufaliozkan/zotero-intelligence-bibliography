@@ -499,7 +499,7 @@ with col2:
         autosize=False,
         width=1200,
         height=700,
-        legend=dict(font=dict(size= 10))
+        legend=dict(font=dict(size= 6))
         )
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(title={'text':'Top 15 journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
