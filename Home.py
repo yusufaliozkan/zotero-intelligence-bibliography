@@ -351,6 +351,7 @@ with col2:
         st.caption('[Intelligence studies](https://intelligence-bibliography.streamlit.app/Intelligence_studies)')
         st.caption('[Intelligence analysis](https://intelligence-bibliography.streamlit.app/Intelligence_analysis)')
         st.caption('[Intelligence organisations](https://intelligence-bibliography.streamlit.app/Intelligence_organisations)')
+        st.caption('[Intelligence failures](https://intelligence.streamlit.app/Intelligence_failures)')
         st.caption('[Intelligence oversight and ethics](https://intelligence-bibliography.streamlit.app/Intelligence_oversight_and_ethics)')
         st.caption('[Intelligence collection](https://intelligence-bibliography.streamlit.app/Intelligence_collection)')
         st.caption('[Counterintelligence](https://intelligence-bibliography.streamlit.app/Counterintelligence)')
