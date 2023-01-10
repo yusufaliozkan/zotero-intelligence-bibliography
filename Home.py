@@ -437,7 +437,7 @@ with col1:
 
 with col2:
     fig = px.pie(df_types, values='Count', names='Publication type')
-    fig.update_layout(title={'text':'Publications by type', 'y':0.95, 'x':0.45, 'yanchor':'top'})
+    fig.update_layout(title={'text':'All items in the library (by item type)', 'y':0.95, 'x':0.45, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
 
 col1, col2 = st.columns(2)
