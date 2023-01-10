@@ -480,7 +480,7 @@ with col1:
     col1.plotly_chart(fig, use_container_width = True)
 
 with col2:
-    df_journal = df.loc[df_csv['Publication type']=='Journal article']
+    df_journal = df_csv.loc[df_csv['Publication type']=='Journal article']
     df_journal = pd.DataFrame(df_journal['Journal'].value_counts())
     df_journal = df_journal.sort_values(['Journal'], ascending=[False])
     df_journal = df_journal.reset_index()
