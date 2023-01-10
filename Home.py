@@ -141,6 +141,8 @@ count = zot.count_items()
 st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
+st.markdown('''[Go to visuals](#visuals)''', unsafe_allow_html=True)
+
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 with st.sidebar:
@@ -405,6 +407,60 @@ fig.update_layout(
     height=600,)
 fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
+
+# Visauls for all items in the library
+df_csv = pd.read_csv('all_items.csv')
+df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
+df_types = df_types.sort_values(['Publication type'], ascending=[False])
+df_types=df_types.reset_index()
+df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
+
+df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
+df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+df_year=df_csv['Date year'].value_counts()
+df_year=df_year.reset_index()
+df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+df_year=df_year.sort_values(by='Publication year', ascending=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type')
+    fig.update_layout(
+        autosize=False,
+        width=1200,
+        height=600,)
+    fig.update_xaxes(tickangle=-70)
+    fig.update_layout(title={'text':'All items in the library (by item type)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+    col1.plotly_chart(fig, use_container_width = True)
+
+with col2:
+    fig = px.pie(df_types, values='Count', names='Publication type')
+    fig.update_layout(title={'text':'All items in the library (by item type)', 'y':0.95, 'x':0.45, 'yanchor':'top'})
+    col2.plotly_chart(fig, use_container_width = True)
+
+col1, col2 = st.columns(2)
+with col1:
+    fig = px.bar(df_year, x='Publication year', y='Count')
+    fig.update_xaxes(tickangle=-70)
+    fig.update_layout(
+        autosize=False,
+        width=1200,
+        height=600,)
+    fig.update_layout(title={'text':'All items in the library by publication year', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    col1.plotly_chart(fig, use_container_width = True)
+
+with col2:
+    df_year['Sum'] = df_year['Count'].cumsum()
+    fig2 = px.line(df_year, x='Publication year', y='Sum')
+    fig2.update_layout(title={'text':'All items in the library by publication year (cumulative sum)', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    fig2.update_layout(
+        autosize=False,
+        width=1200,
+        height=600,)
+    fig2.update_xaxes(tickangle=-70)
+    col2.plotly_chart(fig2, use_container_width = True)
 
 
 # types = zot.everything(zot.top())
