@@ -464,7 +464,7 @@ with col2:
 
 col1, col2 = st.columns(2)
 with col1:
-    df_publisher = pd.DataFrame(df['Publisher'].value_counts())
+    df_publisher = pd.DataFrame(df_csv['Publisher'].value_counts())
     df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
     df_publisher = df_publisher.reset_index()
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
@@ -479,7 +479,7 @@ with col1:
     col1.plotly_chart(fig, use_container_width = True)
 
 with col2:
-    df_journal = pd.DataFrame(df['Journal'].value_counts())
+    df_journal = pd.DataFrame(df_csv['Journal'].value_counts())
     df_journal = df_journal.sort_values(['Journal'], ascending=[False])
     df_journal = df_journal.reset_index()
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
