@@ -473,7 +473,10 @@ with col1:
     df_publisher = df_publisher.head(15)
     with st.expander('See publishers'):
         df_publisher
-        publishers = st.multiselect('Publishers', df_publisher['Publisher'].unique(), df_publisher['Publisher'].unique())
+        row_nu_collections = len(df_publisher.index)        
+        for i in range(row_nu_collections):
+            st.caption(df_publisher.sort_values(by='Publisher')['Publisher'].iloc[i]
+            )
 
     fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher')
     fig.update_layout(
