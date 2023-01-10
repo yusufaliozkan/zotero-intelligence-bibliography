@@ -434,7 +434,14 @@ with col1:
     col1.plotly_chart(fig, use_container_width = True)
 
 with col2:
-    df_year
+    fig = px.bar(df_year, x='Publication year', y='Count')
+    fig.update_xaxes(tickangle=-70)
+    fig.update_layout(
+        autosize=False,
+        width=1400,
+        height=700,)
+    fig.update_layout(title={'text':'Publications by year: all items', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    col2.plotly_chart(fig, use_container_width = True)
 
 
 # types = zot.everything(zot.top())
