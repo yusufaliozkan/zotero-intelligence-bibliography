@@ -437,7 +437,17 @@ fig.update_layout(
     autosize=False,
     width=1200,
     height=600,)
-fig.update_layout(title={'text':'All items in the library by publication year (' + today + ')', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+fig.update_layout(title={'text':'All items in the library by publication year', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+st.plotly_chart(fig, use_container_width = True)
+
+df_year['Sum'] = df_year['Count'].cumsum()
+fig2 = px.line(df_year, x='Publication year', y='Sum')
+fig2.update_layout(title={'text':'All items in the library by publication year (cumulative sum)', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+fig2.update_layout(
+    autosize=False,
+    width=1000,
+    height=500,)
+fig2.update_xaxes(tickangle=-70)
 st.plotly_chart(fig, use_container_width = True)
 
 
