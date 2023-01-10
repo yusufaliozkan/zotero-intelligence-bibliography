@@ -494,7 +494,7 @@ with col2:
     df_journal = df_journal.sort_values(['Journal'], ascending=[False])
     df_journal = df_journal.reset_index()
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
-    df_journal = df_journal.head(15)
+    df_journal = df_journal.head(number2)
 
     fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
     fig.update_layout(
