@@ -472,7 +472,6 @@ with col1:
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
     df_publisher = df_publisher.head(15)
     with st.expander('See publishers'):
-        df_publisher
         row_nu_collections = len(df_publisher.index)        
         for i in range(row_nu_collections):
             st.caption(df_publisher['Publisher'].iloc[i]
@@ -495,7 +494,10 @@ with col2:
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(15)
     with st.expander('See journals'):
-        df_journal
+        row_nu_collections = len(df_journal.index)        
+        for i in range(row_nu_collections):
+            st.caption(df_journal['Journal'].iloc[i]
+            )
 
     fig = px.bar(df_journal, x='Journal', y='Count', color='Journal')
     fig.update_layout(
