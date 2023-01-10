@@ -488,6 +488,7 @@ with col2:
     df_journal = df_journal.reset_index()
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(15)
+    df_journal
 
     fig = px.bar(df_journal, x='Journal', y='Count', color='Journal')
     fig.update_layout(
