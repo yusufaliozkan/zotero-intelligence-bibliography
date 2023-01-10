@@ -406,6 +406,13 @@ fig.update_layout(
 fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
+df_csv = pd.read_csv('all_items.csv')
+df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
+df_types = df_types.sort_values(['Publication type'], ascending=[False])
+df_types=df_types.reset_index()
+df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
+df_types
+
 
 # types = zot.everything(zot.top())
 
