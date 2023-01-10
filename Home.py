@@ -395,6 +395,7 @@ with col2:
 
     # Zotero library collections
 
+st.write("---")
 st.header('Dashboard')
 df_collections_2.set_index('Name', inplace=True)
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
