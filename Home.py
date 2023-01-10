@@ -466,11 +466,12 @@ with col2:
 
 col1, col2 = st.columns(2)
 with col1:
+    number = st.select_slider('Select a number of publishers', options=[5,10,15,20,25,30])
     df_publisher = pd.DataFrame(df_csv['Publisher'].value_counts())
     df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
     df_publisher = df_publisher.reset_index()
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
-    df_publisher = df_publisher.head(15)
+    df_publisher = df_publisher.head(number)
 
     fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher')
     fig.update_layout(
@@ -478,7 +479,7 @@ with col1:
         width=1200,
         height=700,)
     fig.update_xaxes(tickangle=-70)
-    fig.update_layout(title={'text':'Top 15 publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+    fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col1.plotly_chart(fig, use_container_width = True)
     with st.expander('See publishers'):
         row_nu_collections = len(df_publisher.index)        
