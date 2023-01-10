@@ -360,38 +360,38 @@ with col2:
         st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
         st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
     
-    collections = zot.collections()
-    data2=[]
-    columns2 = ['Key','Name', 'Link']
-    for item in collections:
-        data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
+    # collections = zot.collections()
+    # data2=[]
+    # columns2 = ['Key','Name', 'Link']
+    # for item in collections:
+    #     data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
 
-    pd.set_option('display.max_colwidth', None)
-    df_collections = pd.DataFrame(data2, columns=columns2)
+    # pd.set_option('display.max_colwidth', None)
+    # df_collections = pd.DataFrame(data2, columns=columns2)
 
-    df_collections = df_collections.sort_values(by='Name')
-    collection_code = 'SBJXTAXH'
-    collection_name = df_collections.loc[df_collections['Key']==collection_code, 'Name'].values[0]
+    # df_collections = df_collections.sort_values(by='Name')
+    # collection_code = 'SBJXTAXH'
+    # collection_name = df_collections.loc[df_collections['Key']==collection_code, 'Name'].values[0]
 
-    count_collection = zot.num_collectionitems(collection_code)
+    # count_collection = zot.num_collectionitems(collection_code)
 
-    items = zot.everything(zot.collection_items_top(collection_code))
+    # items = zot.everything(zot.collection_items_top(collection_code))
 
-    data3=[]
-    columns3=['Title','Link to publication']
+    # data3=[]
+    # columns3=['Title','Link to publication']
 
-    for item in items:
-        data3.append((item['data']['title'], item['data']['url'])) 
-    pd.set_option('display.max_colwidth', None)
+    # for item in items:
+    #     data3.append((item['data']['title'], item['data']['url'])) 
+    # pd.set_option('display.max_colwidth', None)
 
-    df = pd.DataFrame(data3, columns=columns3)
-    df = df.sort_values(by='Title')
-    df_items = ('['+df['Title'] + ']'+ '('+ df['Link to publication'] + ')')    
-    row_nu_1= len(df.index)
-    with st.expander(collection_name, expanded=False):
-        for i in range(row_nu_1):
-            st.caption(''+str(i+1)+') ' +df_items.iloc[i])
-            df_items.fillna("nan") 
+    # df = pd.DataFrame(data3, columns=columns3)
+    # df = df.sort_values(by='Title')
+    # df_items = ('['+df['Title'] + ']'+ '('+ df['Link to publication'] + ')')    
+    # row_nu_1= len(df.index)
+    # with st.expander(collection_name, expanded=False):
+    #     for i in range(row_nu_1):
+    #         st.caption(''+str(i+1)+') ' +df_items.iloc[i])
+    #         df_items.fillna("nan") 
 
     # Zotero library collections
 
@@ -466,38 +466,51 @@ with col2:
 
 col1, col2 = st.columns(2)
 with col1:
+    number = st.select_slider('Select a number of publishers', options=[5,10,15,20,25,30])
     df_publisher = pd.DataFrame(df_csv['Publisher'].value_counts())
     df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
     df_publisher = df_publisher.reset_index()
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
-    df_publisher = df_publisher.head(15)
+    df_publisher = df_publisher.head(number)
 
     fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher')
     fig.update_layout(
         autosize=False,
         width=1200,
-        height=600,)
+        height=700,)
     fig.update_xaxes(tickangle=-70)
-    fig.update_layout(title={'text':'Top 15 publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+    fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col1.plotly_chart(fig, use_container_width = True)
+    with st.expander('See publishers'):
+        row_nu_collections = len(df_publisher.index)        
+        for i in range(row_nu_collections):
+            st.caption(df_publisher['Publisher'].iloc[i]
+            )
 
 with col2:
+    number2 = st.select_slider('Select a number of journals', options=[5,10,15,20,25,30])
     df_journal = df_csv.loc[df_csv['Publication type']=='Journal article']
     df_journal = pd.DataFrame(df_journal['Journal'].value_counts())
     df_journal = df_journal.sort_values(['Journal'], ascending=[False])
     df_journal = df_journal.reset_index()
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
-    df_journal = df_journal.head(15)
-    
-    fig = px.bar(df_journal, x='Journal', y='Count', color='Journal')
+    df_journal = df_journal.head(number2)
+
+    fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
     fig.update_layout(
         autosize=False,
         width=1200,
-        height=600,
+        height=700,
         showlegend=False)
     fig.update_xaxes(tickangle=-70)
-    fig.update_layout(title={'text':'Top 15 journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+    fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
+    with st.expander('See journals'):
+        row_nu_collections = len(df_journal.index)        
+        for i in range(row_nu_collections):
+            st.caption(df_journal['Journal'].iloc[i]
+            )
+    
 
 # types = zot.everything(zot.top())
 
