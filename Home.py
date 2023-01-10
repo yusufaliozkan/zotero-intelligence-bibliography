@@ -498,7 +498,7 @@ with col2:
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(title={'text':'Top 15 journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
-    st.expander(df_journal)
+    st.expander('See', df_journal)
 
 # types = zot.everything(zot.top())
 
