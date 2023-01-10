@@ -435,9 +435,9 @@ fig = px.bar(df_year, x='Publication year', y='Count')
 fig.update_xaxes(tickangle=-70)
 fig.update_layout(
     autosize=False,
-    width=1400,
-    height=700,)
-fig.update_layout(title={'text':'All items in the library by publication year', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    width=1200,
+    height=600,)
+fig.update_layout(title={'text':'All items in the library by publication year (' + today + ')', 'y':0.95, 'x':0.5, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
 
