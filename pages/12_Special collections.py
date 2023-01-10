@@ -298,8 +298,7 @@ with col1:
     df_publisher = df_publisher.reset_index()
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
     df_publisher = df_publisher.head(number)
-    df_publisher
-
+    
     if df_publisher['Publisher'].any() in ("", [], None, 0, False):
         st.write('No publisher to display')
 
@@ -327,20 +326,24 @@ with col2:
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(number2)
 
-    fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
-    fig.update_layout(
-        autosize=False,
-        width=1200,
-        height=700,
-        showlegend=False)
-    fig.update_xaxes(tickangle=-70)
-    fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-    col2.plotly_chart(fig, use_container_width = True)
-    with st.expander('See journals'):
-        row_nu_collections = len(df_journal.index)        
-        for i in range(row_nu_collections):
-            st.caption(df_journal['Journal'].iloc[i]
-            )    
+    if df_journal['Journal'].any() in ("", [], None, 0, False):
+        st.write('No journal to display')
+
+    else:
+        fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
+        fig.update_layout(
+            autosize=False,
+            width=1200,
+            height=700,
+            showlegend=False)
+        fig.update_xaxes(tickangle=-70)
+        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+        col2.plotly_chart(fig, use_container_width = True)
+        with st.expander('See journals'):
+            row_nu_collections = len(df_journal.index)        
+            for i in range(row_nu_collections):
+                st.caption(df_journal['Journal'].iloc[i]
+                )    
 
 components.html(
 """
