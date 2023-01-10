@@ -471,6 +471,8 @@ with col1:
     df_publisher = df_publisher.reset_index()
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
     df_publisher = df_publisher.head(15)
+    with st.expander('See publishers'):
+        df_publisher
 
     fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher')
     fig.update_layout(
@@ -488,7 +490,9 @@ with col2:
     df_journal = df_journal.reset_index()
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(15)
-    
+    with st.expander('See journals'):
+        df_journal
+
     fig = px.bar(df_journal, x='Journal', y='Count', color='Journal')
     fig.update_layout(
         autosize=False,
@@ -498,8 +502,7 @@ with col2:
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(title={'text':'Top 15 journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
-    with st.expander('See'):
-        df_journal
+    
 
 # types = zot.everything(zot.top())
 
