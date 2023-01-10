@@ -471,11 +471,6 @@ with col1:
     df_publisher = df_publisher.reset_index()
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
     df_publisher = df_publisher.head(15)
-    with st.expander('See publishers'):
-        row_nu_collections = len(df_publisher.index)        
-        for i in range(row_nu_collections):
-            st.caption(df_publisher['Publisher'].iloc[i]
-            )
 
     fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher')
     fig.update_layout(
@@ -485,6 +480,11 @@ with col1:
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(title={'text':'Top 15 publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col1.plotly_chart(fig, use_container_width = True)
+    with st.expander('See publishers'):
+        row_nu_collections = len(df_publisher.index)        
+        for i in range(row_nu_collections):
+            st.caption(df_publisher['Publisher'].iloc[i]
+            )
 
 with col2:
     df_journal = df_csv.loc[df_csv['Publication type']=='Journal article']
@@ -493,11 +493,6 @@ with col2:
     df_journal = df_journal.reset_index()
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(15)
-    with st.expander('See journals'):
-        row_nu_collections = len(df_journal.index)        
-        for i in range(row_nu_collections):
-            st.caption(df_journal['Journal'].iloc[i]
-            )
 
     fig = px.bar(df_journal, x='Journal', y='Count', color='Journal')
     fig.update_layout(
@@ -508,6 +503,11 @@ with col2:
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(title={'text':'Top 15 journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
+    with st.expander('See journals'):
+        row_nu_collections = len(df_journal.index)        
+        for i in range(row_nu_collections):
+            st.caption(df_journal['Journal'].iloc[i]
+            )
     
 
 # types = zot.everything(zot.top())
