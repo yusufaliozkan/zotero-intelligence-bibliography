@@ -448,7 +448,7 @@ fig2.update_layout(
     width=1000,
     height=500,)
 fig2.update_xaxes(tickangle=-70)
-st.plotly_chart(fig, use_container_width = True)
+st.plotly_chart(fig2, use_container_width = True)
 
 
 # types = zot.everything(zot.top())
