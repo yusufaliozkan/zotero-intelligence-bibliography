@@ -448,8 +448,8 @@ with col2:
     fig2.update_layout(title={'text':'All items in the library by publication year (cumulative sum)', 'y':0.95, 'x':0.5, 'yanchor':'top'})
     fig2.update_layout(
         autosize=False,
-        width=1000,
-        height=500,)
+        width=1200,
+        height=600,)
     fig2.update_xaxes(tickangle=-70)
     col2.plotly_chart(fig2, use_container_width = True)
 
