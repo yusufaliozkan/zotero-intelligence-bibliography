@@ -466,7 +466,7 @@ with col2:
 
 col1, col2 = st.columns(2)
 with col1:
-    number = st.select_slider('Select a number of publishers', options=[5,10,15,20,25,30])
+    number = st.select_slider('Select a number of publishers', options=[5,10,15,20,25,30], value=10)
     df_publisher = pd.DataFrame(df_csv['Publisher'].value_counts())
     df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
     df_publisher = df_publisher.reset_index()
@@ -488,7 +488,7 @@ with col1:
             )
 
 with col2:
-    number2 = st.select_slider('Select a number of journals', options=[5,10,15,20,25,30])
+    number2 = st.select_slider('Select a number of journals', options=[5,10,15,20,25,30], value=10)
     df_journal = df_csv.loc[df_csv['Publication type']=='Journal article']
     df_journal = pd.DataFrame(df_journal['Journal'].value_counts())
     df_journal = df_journal.sort_values(['Journal'], ascending=[False])
