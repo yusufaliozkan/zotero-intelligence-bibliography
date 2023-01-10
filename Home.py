@@ -406,12 +406,35 @@ fig.update_layout(
 fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
+# Visauls for all items in the library
 df_csv = pd.read_csv('all_items.csv')
 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
 df_types = df_types.sort_values(['Publication type'], ascending=[False])
 df_types=df_types.reset_index()
 df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
-df_types
+
+df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
+df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+df_year=df['Date year'].value_counts()
+df_year=df_year.reset_index()
+df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+df_year=df_year.sort_values(by='Publication year', ascending=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type')
+    fig.update_layout(
+        autosize=False,
+        width=1200,
+        height=600,)
+    fig.update_xaxes(tickangle=-70)
+    fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+    col1.plotly_chart(fig, use_container_width = True)
+
+with col2:
+    df_year
 
 
 # types = zot.everything(zot.top())
