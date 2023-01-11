@@ -489,25 +489,50 @@ with col1:
     df_publisher = df_publisher.head(number)
 
     log1 = st.checkbox('Show in log scale', key='log1')
+    leg1 = st.checkbox('Display legend', key='leg1')
 
     if log1:
-        fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
-        fig.update_layout(
-            autosize=False,
-            width=1200,
-            height=700,)
-        fig.update_xaxes(tickangle=-70)
-        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-        col1.plotly_chart(fig, use_container_width = True)
+        if leg1:
+            fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
+            fig.update_layout(
+                autosize=False,
+                width=1200,
+                height=700,
+                showlegend=True)
+            fig.update_xaxes(tickangle=-70)
+            fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+            col1.plotly_chart(fig, use_container_width = True)
+        else:
+            fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
+            fig.update_layout(
+                autosize=False,
+                width=1200,
+                height=700,
+                showlegend=False)
+            fig.update_xaxes(tickangle=-70)
+            fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+            col1.plotly_chart(fig, use_container_width = True)
     else:
-        fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
-        fig.update_layout(
-            autosize=False,
-            width=1200,
-            height=700,)
-        fig.update_xaxes(tickangle=-70)
-        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-        col1.plotly_chart(fig, use_container_width = True)
+        if leg1:
+            fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
+            fig.update_layout(
+                autosize=False,
+                width=1200,
+                height=700,
+                showlegend=True)
+            fig.update_xaxes(tickangle=-70)
+            fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+            col1.plotly_chart(fig, use_container_width = True)
+        else:
+            fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
+            fig.update_layout(
+                autosize=False,
+                width=1200,
+                height=700,
+                showlegend=False)
+            fig.update_xaxes(tickangle=-70)
+            fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+            col1.plotly_chart(fig, use_container_width = True)
     with st.expander('See publishers'):
         row_nu_collections = len(df_publisher.index)        
         for i in range(row_nu_collections):
