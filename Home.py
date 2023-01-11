@@ -489,7 +489,7 @@ with col1:
     df_publisher = df_publisher.head(number)
 
     log1 = st.checkbox('Show in log scale', key='log1')
-    leg1 = st.checkbox('Display legend', key='leg1', disabled=True)
+    leg1 = st.checkbox('Display legend', key='leg1', disabled=False)
 
     if log1:
         if leg1:
