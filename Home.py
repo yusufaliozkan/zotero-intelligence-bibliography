@@ -397,9 +397,11 @@ with col2:
 
 st.write("---")
 st.header('Dashboard')
+
+number0 = st.select_slider('Select a number collections', options=[5,10,15,20,25,30], value=10)
 df_collections_2.set_index('Name', inplace=True)
 df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
-plot= df_collections_2.head(10)
+plot= df_collections_2.head(number0)
 # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
 plot = plot.reset_index()
 fig = px.bar(plot, x='Name', y='Number', color='Name')
@@ -407,7 +409,7 @@ fig.update_layout(
     autosize=False,
     width=600,
     height=600,)
-fig.update_layout(title={'text':'Top 10 collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
 st.plotly_chart(fig, use_container_width = True)
 
 # Visauls for all items in the library
