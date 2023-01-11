@@ -549,7 +549,7 @@ with col2:
             col2.plotly_chart(fig, use_container_width = True)
     else:
         if leg2:
-            fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
+            fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
             fig.update_layout(
                 autosize=False,
                 width=1200,
@@ -559,7 +559,7 @@ with col2:
             fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             col2.plotly_chart(fig, use_container_width = True)
         else:
-            fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
+            fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
             fig.update_layout(
                 autosize=False,
                 width=1200,
