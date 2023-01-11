@@ -489,7 +489,7 @@ with col1:
     df_publisher = df_publisher.head(number)
 
     log1 = st.checkbox('Show in log scale', key='log1')
-    leg1 = st.checkbox('Display legend', key='leg1', disabled=False)
+    leg1 = st.checkbox('Disable legend', key='leg1', disabled=False)
 
     if log1:
         if leg1:
@@ -498,7 +498,7 @@ with col1:
                 autosize=False,
                 width=1200,
                 height=700,
-                showlegend=True)
+                showlegend=False)
             fig.update_xaxes(tickangle=-70)
             fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             col1.plotly_chart(fig, use_container_width = True)
@@ -508,7 +508,7 @@ with col1:
                 autosize=False,
                 width=1200,
                 height=700,
-                showlegend=False)
+                showlegend=True)
             fig.update_xaxes(tickangle=-70)
             fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             col1.plotly_chart(fig, use_container_width = True)
