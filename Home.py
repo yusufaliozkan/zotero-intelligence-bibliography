@@ -510,7 +510,7 @@ with col2:
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(number2)
 
-    log2 = st.checkbox('Show in log scale')
+    log2 = st.checkbox('Show the plot in log scale')
 
     if log2:
         fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
