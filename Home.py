@@ -549,7 +549,7 @@ with col2:
     df_journal = df_journal.head(number2)
 
     log2 = st.checkbox('Show in log scale', key='log2')
-    leg2 = st.checkbox('Display legend', key='leg2')
+    leg2 = st.checkbox('Disable legend', key='leg2')
 
     if log2:
         if leg2:
@@ -558,7 +558,7 @@ with col2:
                 autosize=False,
                 width=1200,
                 height=700,
-                showlegend=True)
+                showlegend=False)
             fig.update_xaxes(tickangle=-70)
             fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             col2.plotly_chart(fig, use_container_width = True)
@@ -568,7 +568,7 @@ with col2:
                 autosize=False,
                 width=1200,
                 height=700,
-                showlegend=False)
+                showlegend=True)
             fig.update_xaxes(tickangle=-70)
             fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             col2.plotly_chart(fig, use_container_width = True)
@@ -579,7 +579,7 @@ with col2:
                 autosize=False,
                 width=1200,
                 height=700,
-                showlegend=True)
+                showlegend=False)
             fig.update_xaxes(tickangle=-70)
             fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             col2.plotly_chart(fig, use_container_width = True)
@@ -589,7 +589,7 @@ with col2:
                 autosize=False,
                 width=1200,
                 height=700,
-                showlegend=False)
+                showlegend=True)
             fig.update_xaxes(tickangle=-70)
             fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             col2.plotly_chart(fig, use_container_width = True)
