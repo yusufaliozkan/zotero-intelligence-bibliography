@@ -475,7 +475,7 @@ with col1:
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
     df_publisher = df_publisher.head(number)
 
-    log1 = st.checkbox('Show in log scale')
+    log1 = st.checkbox('Show in log scale', key='log1')
 
     if log1:
         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
@@ -510,7 +510,7 @@ with col2:
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(number2)
 
-    log2 = st.checkbox('Show the plot in log scale')
+    log2 = st.checkbox('Show in log scale', key='log2')
 
     if log2:
         fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
