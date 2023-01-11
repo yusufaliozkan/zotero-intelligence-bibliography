@@ -476,7 +476,6 @@ with col1:
     df_publisher = df_publisher.head(number)
 
     log1 = st.checkbox('Show in log scale')
-    leg1 = st.checkbox('Display the plot legend', key='leg1')
 
     if log1:
         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
