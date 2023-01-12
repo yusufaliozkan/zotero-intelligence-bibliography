@@ -361,6 +361,10 @@ with col2:
         st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
         st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
     
+    if st.button('Dasboard (visualisations'):
+        st.markdown('''Go to [Dashboard](#dashboard) to see visuals''', unsafe_allow_html=True)
+
+
     # collections = zot.collections()
     # data2=[]
     # columns2 = ['Key','Name', 'Link']
