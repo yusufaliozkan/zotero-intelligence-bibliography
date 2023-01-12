@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import nltk
 from nltk.corpus import stopwords
 nltk.download('stopwords')
+nltk.WordNetLemmatizer()
 from wordcloud import WordCloud
 
 # Connecting Zotero with API
@@ -638,8 +639,8 @@ def remove_stopwords(text):
     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
     return text
 df['stopword']=df['token_title'].apply(remove_stopwords)
-wn = nltk.WordNetLemmatizer()
 
+wn = nltk.WordNetLemmatizer()
 def lemmatizer(text):
     text = [wn.lemmatize(word) for word in text]
     return text
