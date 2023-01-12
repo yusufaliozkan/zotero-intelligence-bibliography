@@ -467,8 +467,8 @@ df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs 
 listdf = df['lemma_title']
 listdf_abstract = df['lemma_abstract']
 
-col1, col2 = st.columns(2)
-with col1:
+wordcloud_opt = st.radio('Wordcloud in:', ('Title', 'Abstract'))
+if wordcloud_opt=='Title':
     df_list = [item for sublist in listdf for item in sublist]
     string = pd.Series(df_list).str.cat(sep=' ')
     wordcloud_texts = string
@@ -482,8 +482,7 @@ with col1:
     plt.show()
     st.set_option('deprecation.showPyplotGlobalUse', False)
     st.pyplot() 
-
-with col2:
+else:
     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
     string = pd.Series(df_list_abstract).str.cat(sep=' ')
     wordcloud_texts = string
