@@ -362,7 +362,7 @@ with col2:
         st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
     
 
-    st.markdown('''Go to [Dashboard](#dashboard) to see visuals''', unsafe_allow_html=True)
+    st.markdown('''[Dashboard](#dashboard) for visuals''', unsafe_allow_html=True)
 
 
     # collections = zot.collections()
