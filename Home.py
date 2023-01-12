@@ -644,7 +644,7 @@ def lemmatizer(text):
     text = [wn.lemmatize(word) for word in text]
     return text
 
-df['lemma_title'] = df['stopword'].apply(lemmatizer)
+# df['lemma_title'] = df['stopword'].apply(lemmatizer)
 
 listdf = df['stopword']
 
