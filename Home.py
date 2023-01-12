@@ -646,3 +646,9 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 """
 )
 
+url = 'https://stackoverflow.com'
+
+st.markdown(f'''
+<a href={url}><button style="background-color:GreenYellow;">Stackoverflow</button></a>
+''',
+unsafe_allow_html=True)
