@@ -292,18 +292,56 @@ with col1:
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
     df_publisher = df_publisher.head(number)
     
+    log1 = st.checkbox('Show in log scale', key='log1')
+    leg1 = st.checkbox('Disable legend', key='leg1', disabled=False)
+    
     if df_publisher['Publisher'].any() in ("", [], None, 0, False):
         st.write('No publisher to display')
 
     else:
-        fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher')
-        fig.update_layout(
-            autosize=False,
-            width=1200,
-            height=700,)
-        fig.update_xaxes(tickangle=-70)
-        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-        col1.plotly_chart(fig, use_container_width = True)
+
+        if log1:
+            if leg1:
+                fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
+                fig.update_layout(
+                    autosize=False,
+                    width=1200,
+                    height=700,
+                    showlegend=False)
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                col1.plotly_chart(fig, use_container_width = True)
+            else:
+                fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
+                fig.update_layout(
+                    autosize=False,
+                    width=1200,
+                    height=700,
+                    showlegend=True)
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                col1.plotly_chart(fig, use_container_width = True)
+        else:
+            if leg1:
+                fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
+                fig.update_layout(
+                    autosize=False,
+                    width=1200,
+                    height=700,
+                    showlegend=False)
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                col1.plotly_chart(fig, use_container_width = True)
+            else:
+                fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
+                fig.update_layout(
+                    autosize=False,
+                    width=1200,
+                    height=700,
+                    showlegend=True)
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                col1.plotly_chart(fig, use_container_width = True)
         with st.expander('See publishers'):
             row_nu_collections = len(df_publisher.index)        
             for i in range(row_nu_collections):
@@ -319,24 +357,60 @@ with col2:
     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
     df_journal = df_journal.head(number2)
 
+    log2 = st.checkbox('Show in log scale', key='log2')
+    leg2 = st.checkbox('Disable legend', key='leg2')
+
     if df_journal['Journal'].any() in ("", [], None, 0, False):
         st.write('No journal to display')
 
     else:
-        fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
-        fig.update_layout(
-            autosize=False,
-            width=1200,
-            height=700,
-            showlegend=False)
-        fig.update_xaxes(tickangle=-70)
-        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-        col2.plotly_chart(fig, use_container_width = True)
+        if log2:
+            if leg2:
+                fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
+                fig.update_layout(
+                    autosize=False,
+                    width=1200,
+                    height=700,
+                    showlegend=False)
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                col2.plotly_chart(fig, use_container_width = True)
+            else:
+                fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
+                fig.update_layout(
+                    autosize=False,
+                    width=1200,
+                    height=700,
+                    showlegend=True)
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                col2.plotly_chart(fig, use_container_width = True)
+        else:
+            if leg2:
+                fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
+                fig.update_layout(
+                    autosize=False,
+                    width=1200,
+                    height=700,
+                    showlegend=False)
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                col2.plotly_chart(fig, use_container_width = True)
+            else:
+                fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
+                fig.update_layout(
+                    autosize=False,
+                    width=1200,
+                    height=700,
+                    showlegend=True)
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                col2.plotly_chart(fig, use_container_width = True)
         with st.expander('See journals'):
             row_nu_collections = len(df_journal.index)        
             for i in range(row_nu_collections):
                 st.caption(df_journal['Journal'].iloc[i]
-                )  
+                )
 
 components.html(
 """
