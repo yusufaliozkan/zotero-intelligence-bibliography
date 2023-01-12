@@ -630,7 +630,7 @@ def tokenization(text):
     text = re.split('\W+', text)
     return text
 df['token_title']=df['clean_title'].apply(tokenization)
-df['token_abstract']=df['clean_abstract'].apply(tokenization)
+df['token_abstract']=df['clean_abstract'].astype(str).apply(tokenization)
 stopword = nltk.corpus.stopwords.words('english')
 
 SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
