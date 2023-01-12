@@ -17,7 +17,7 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
-from wordcloud import WordCloud
+import WordCloud
 
 # Connecting Zotero with API
 library_id = '2514686'
