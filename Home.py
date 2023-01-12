@@ -647,7 +647,7 @@ def lemmatizer(text):
 
 df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
 
-listdf = df['stopword']
+listdf = df['lemma_title']
 
 df_list = [item for sublist in listdf for item in sublist]
 string = pd.Series(df_list).str.cat(sep=' ')
