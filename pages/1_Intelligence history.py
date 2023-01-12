@@ -292,12 +292,9 @@ with col1:
     df_publisher = df_publisher.reset_index()
     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
     df_publisher = df_publisher.head(number)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        log1 = st.checkbox('Show in log scale', key='log1')
-    with col2:
-        leg1 = st.checkbox('Disable legend', key='leg1', disabled=False)
+    
+    log1 = st.checkbox('Show in log scale', key='log1')
+    leg1 = st.checkbox('Disable legend', key='leg1', disabled=False)
     
     if df_publisher['Publisher'].any() in ("", [], None, 0, False):
         st.write('No publisher to display')
