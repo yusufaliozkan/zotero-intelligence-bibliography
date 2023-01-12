@@ -361,6 +361,10 @@ with col2:
         st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
         st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
     
+
+    st.markdown('''[Dashboard](#dashboard) for visuals''', unsafe_allow_html=True)
+
+
     # collections = zot.collections()
     # data2=[]
     # columns2 = ['Key','Name', 'Link']
@@ -641,4 +645,3 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
-
