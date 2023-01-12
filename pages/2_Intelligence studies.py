@@ -240,6 +240,9 @@ with col3:
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
 st.header('Dashboard')
+if df['Title'].any() in ("", [], None, 0, False):
+    st.write('No data to visualise')
+    st.stop()
 
 col1, col2 = st.columns(2)
 with col1:
