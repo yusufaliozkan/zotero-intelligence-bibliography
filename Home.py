@@ -623,7 +623,7 @@ def tokenization(text):
     text = re.split('\W+', text)
     return text
 df['token_title']=df['clean_title'].apply(tokenization)
-stopword = stopwords.words('english')
+stopword = set(stopwords.words('english'))
 
 SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 
