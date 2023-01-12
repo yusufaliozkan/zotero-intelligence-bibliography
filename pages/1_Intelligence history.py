@@ -423,6 +423,7 @@ with col2:
             for i in range(row_nu_collections):
                 st.caption(df_journal['Journal'].iloc[i]
                 )
+st.write('---')
 df=df.copy()
 def clean_text (text):
     text = text.lower() # lowercasing
@@ -467,6 +468,7 @@ df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs 
 listdf = df['lemma_title']
 listdf_abstract = df['lemma_abstract']
 
+st.markdown('##Wordcloud')
 wordcloud_opt = st.radio('Wordcloud in:', ('Title', 'Abstract'))
 if wordcloud_opt=='Title':
     df_list = [item for sublist in listdf for item in sublist]
