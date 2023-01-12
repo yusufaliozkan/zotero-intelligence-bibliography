@@ -487,6 +487,7 @@ if title:
     st.pyplot() 
 
 abstract = st.radio('Abstract wordcloud', key='abstract')
+if abstract:
     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
     string = pd.Series(df_list_abstract).str.cat(sep=' ')
     wordcloud_texts = string
