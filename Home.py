@@ -17,6 +17,7 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
+from nltk.corpus import stopwords
 from wordcloud import WordCloud
 
 # Connecting Zotero with API
