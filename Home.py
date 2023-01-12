@@ -18,6 +18,7 @@ import re
 import matplotlib.pyplot as plt
 import nltk
 from nltk.corpus import stopwords
+nltk.download('stopwords')
 from wordcloud import WordCloud
 
 # Connecting Zotero with API
@@ -623,7 +624,7 @@ def tokenization(text):
     text = re.split('\W+', text)
     return text
 df['token_title']=df['clean_title'].apply(tokenization)
-stopword = set(stopwords.words('english'))
+stopword = nltk.corpus.stopwords.words('english')
 
 SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 
