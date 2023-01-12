@@ -442,6 +442,7 @@ df['token_abstract']=df['clean_abstract'].apply(tokenization)
 stopword = nltk.corpus.stopwords.words('english')
 
 SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
+    'analysis', 'analyst', 
     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
