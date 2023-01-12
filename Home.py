@@ -399,7 +399,7 @@ with tab1:
         # Zotero library collections
 
 with tab2:
-    st.write("---")
+    # st.write("---")
     st.header('Dashboard')
 
     number0 = st.select_slider('Select a number collections', options=[5,10,15,20,25,30], value=10)
