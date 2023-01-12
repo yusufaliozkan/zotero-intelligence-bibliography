@@ -8,6 +8,14 @@ import altair as alt
 from pandas.io.json import json_normalize
 import datetime
 import plotly.express as px
+import numpy as np
+import re
+import matplotlib.pyplot as plt
+import nltk
+nltk.download('all')
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+from wordcloud import WordCloud
 
 
 st.set_page_config(layout = "wide", 
@@ -411,6 +419,58 @@ with col2:
             for i in range(row_nu_collections):
                 st.caption(df_journal['Journal'].iloc[i]
                 ) 
+
+df=df.copy()
+def clean_text (text):
+    text = text.lower() # lowercasing
+    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+    text = re.sub('[0-9_]', ' ', text) # this removes numbers
+    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+    return text
+df['clean_title'] = df['Title'].apply(clean_text)
+df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+def tokenization(text):
+    text = re.split('\W+', text)
+    return text
+df['token_title']=df['clean_title'].apply(tokenization)
+stopword = nltk.corpus.stopwords.words('english')
+
+SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
+    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+    'examines', 'become', 'used', 'journal', 'london', 'review']
+stopword.extend(SW)
+
+def remove_stopwords(text):
+    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+    return text
+df['stopword']=df['token_title'].apply(remove_stopwords)
+
+wn = nltk.WordNetLemmatizer()
+def lemmatizer(text):
+    text = [wn.lemmatize(word) for word in text]
+    return text
+
+df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
+
+listdf = df['lemma_title']
+
+df_list = [item for sublist in listdf for item in sublist]
+string = pd.Series(df_list).str.cat(sep=' ')
+
+wordcloud_texts = string
+wordcloud_texts_str = str(wordcloud_texts)
+wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+plt.figure(figsize=(20,8))
+plt.axis('off')
+plt.title('Top words in title (collection: ' +collection_name+')')
+plt.imshow(wordcloud)
+plt.axis("off")
+plt.show()
+st.set_option('deprecation.showPyplotGlobalUse', False)
+st.pyplot() 
 
 components.html(
 """
