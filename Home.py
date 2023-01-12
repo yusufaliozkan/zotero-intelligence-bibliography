@@ -622,7 +622,7 @@ def clean_text (text):
     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
     return text
 df['clean_title'] = df['Title'].apply(clean_text)
-df['clean_abstract'] = df['Abstract'].apply(clean_text)
+df['clean_abstract'] = df['Abstract'].astype(str).apply(clean_text)
 df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
 df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
 
