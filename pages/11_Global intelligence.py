@@ -424,6 +424,7 @@ with col2:
                 st.caption(df_journal['Journal'].iloc[i]
                 )  
                 
+st.write('---')
 df=df.copy()
 def clean_text (text):
     text = text.lower() # lowercasing
@@ -432,11 +433,15 @@ def clean_text (text):
     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
     return text
 df['clean_title'] = df['Title'].apply(clean_text)
+df['clean_abstract'] = df['Abstract'].apply(clean_text)
 df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+
 def tokenization(text):
     text = re.split('\W+', text)
     return text
 df['token_title']=df['clean_title'].apply(tokenization)
+df['token_abstract']=df['clean_abstract'].apply(tokenization)
 stopword = nltk.corpus.stopwords.words('english')
 
 SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
@@ -451,6 +456,7 @@ def remove_stopwords(text):
     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
     return text
 df['stopword']=df['token_title'].apply(remove_stopwords)
+df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
 
 wn = nltk.WordNetLemmatizer()
 def lemmatizer(text):
@@ -458,23 +464,41 @@ def lemmatizer(text):
     return text
 
 df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
+df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
 
 listdf = df['lemma_title']
+listdf_abstract = df['lemma_abstract']
 
-df_list = [item for sublist in listdf for item in sublist]
-string = pd.Series(df_list).str.cat(sep=' ')
-
-wordcloud_texts = string
-wordcloud_texts_str = str(wordcloud_texts)
-wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-plt.figure(figsize=(20,8))
-plt.axis('off')
-plt.title('Top words in title (collection: ' +collection_name+')')
-plt.imshow(wordcloud)
-plt.axis("off")
-plt.show()
-st.set_option('deprecation.showPyplotGlobalUse', False)
-st.pyplot() 
+st.markdown('## Wordcloud')
+wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+if wordcloud_opt=='Titles':
+    df_list = [item for sublist in listdf for item in sublist]
+    string = pd.Series(df_list).str.cat(sep=' ')
+    wordcloud_texts = string
+    wordcloud_texts_str = str(wordcloud_texts)
+    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+    plt.figure(figsize=(20,8))
+    plt.axis('off')
+    plt.title('Top words in title (collection: ' +collection_name+')')
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    plt.show()
+    st.set_option('deprecation.showPyplotGlobalUse', False)
+    st.pyplot() 
+else:
+    df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
+    string = pd.Series(df_list_abstract).str.cat(sep=' ')
+    wordcloud_texts = string
+    wordcloud_texts_str = str(wordcloud_texts)
+    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+    plt.figure(figsize=(20,8))
+    plt.axis('off')
+    plt.title('Top words in abstract (collection: ' +collection_name+')')
+    plt.imshow(wordcloud)
+    plt.axis("off")
+    plt.show()
+    st.set_option('deprecation.showPyplotGlobalUse', False)
+    st.pyplot()  
 
 components.html(
 """

@@ -426,6 +426,7 @@ with col2:
                 st.caption(df_journal['Journal'].iloc[i]
                 )  
 
+st.write('---')
 df=df.copy()
 def clean_text (text):
     text = text.lower() # lowercasing
@@ -470,8 +471,9 @@ df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs 
 listdf = df['lemma_title']
 listdf_abstract = df['lemma_abstract']
 
-col1, col2 = st.columns(2)
-with col1:
+st.markdown('## Wordcloud')
+wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+if wordcloud_opt=='Titles':
     df_list = [item for sublist in listdf for item in sublist]
     string = pd.Series(df_list).str.cat(sep=' ')
     wordcloud_texts = string
@@ -485,8 +487,7 @@ with col1:
     plt.show()
     st.set_option('deprecation.showPyplotGlobalUse', False)
     st.pyplot() 
-
-with col2:
+else:
     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
     string = pd.Series(df_list_abstract).str.cat(sep=' ')
     wordcloud_texts = string
@@ -494,7 +495,7 @@ with col2:
     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
     plt.figure(figsize=(20,8))
     plt.axis('off')
-    plt.title('Top words in title (collection: ' +collection_name+')')
+    plt.title('Top words in abstract (collection: ' +collection_name+')')
     plt.imshow(wordcloud)
     plt.axis("off")
     plt.show()
