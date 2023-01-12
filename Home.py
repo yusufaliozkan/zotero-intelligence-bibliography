@@ -176,6 +176,7 @@ with st.sidebar:
 
 # Recently added items
 
+
 col1, col2 = st.columns([5,2]) 
 with col1:
     st.header('Recently added or updated items: ')
