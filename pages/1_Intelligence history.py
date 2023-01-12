@@ -283,7 +283,7 @@ with col2:
     fig2.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
     fig2.update_xaxes(tickangle=-70)
     col2.plotly_chart(fig2, use_container_width = True)
-df
+
 col1, col2 = st.columns(2)
 with col1:
     number = st.select_slider('Select a number of publishers', options=[5,10,15,20,25,30], value=10)
@@ -412,7 +412,7 @@ with col2:
             for i in range(row_nu_collections):
                 st.caption(df_journal['Journal'].iloc[i]
                 )
-df
+df=df.copy()
 def clean_text (text):
     text = text.lower() # lowercasing
     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
