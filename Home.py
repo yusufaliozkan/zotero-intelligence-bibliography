@@ -17,9 +17,9 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
+nltk.download('averaged_perceptron_tagger')
 from nltk.corpus import stopwords
 nltk.download('stopwords')
-nltk.WordNetLemmatizer()
 from wordcloud import WordCloud
 
 # Connecting Zotero with API
