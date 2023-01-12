@@ -643,10 +643,10 @@ wn = nltk.WordNetLemmatizer()
 def lemmatizer(text):
     text = [wn.lemmatize(word) for word in text]
     return text
-    
-df['lemma_title']=df['stopword'].apply(lemmatizer)
 
-listdf = df['lemma_title']
+# df['lemma_title']=df['stopword'].apply(lemmatizer)
+
+listdf = df['stopword']
 
 df_list = [item for sublist in listdf for item in sublist]
 string = pd.Series(df_list).str.cat(sep=' ')
