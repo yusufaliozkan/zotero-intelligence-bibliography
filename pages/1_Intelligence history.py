@@ -412,7 +412,7 @@ with col2:
             for i in range(row_nu_collections):
                 st.caption(df_journal['Journal'].iloc[i]
                 )
-
+df
 def clean_text (text):
     text = text.lower() # lowercasing
     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
