@@ -243,7 +243,7 @@ with col3:
 st.header('Dashboard')
 if df['Title'].any() in ("", [], None, 0, False):
     st.write('No data to visualise')
-else:
+
     
 col1, col2 = st.columns(2)
 with col1:
