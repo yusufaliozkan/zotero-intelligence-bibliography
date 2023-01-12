@@ -76,8 +76,6 @@ col1, col2, col3 = st.columns([1,4,1.6])
 
 with col1:
     radio = st.radio('Select a collection', df_collections['Name'])
-    st.markdown('''[Visuals](#visuals)''', unsafe_allow_html=True)
-    
     # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
     collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
@@ -140,6 +138,7 @@ with col2:
     df['Date published'] = df['Date published'].fillna('No date')
 
     st.markdown('#### Collection theme: ' + collection_name)
+    st.markdown('''Go to [Dashboard](#dashboard) for visuals''', unsafe_allow_html=True) 
     st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
     types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
@@ -233,7 +232,7 @@ with col3:
         st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
-st.header('Visuals')
+st.header('Dashboard')
 
 col1, col2 = st.columns(2)
 with col1:
