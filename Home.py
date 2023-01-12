@@ -176,7 +176,7 @@ with st.sidebar:
 
 # Recently added items
 
-tab1, tab2 = st.tabe(['Recently added items', 'Dasboard (visualisations)'])
+tab1, tab2 = st.tabs(['Recently added items', 'Dasboard (visualisations)'])
 
 with tab1:
     col1, col2 = st.columns([5,2]) 
@@ -399,7 +399,7 @@ with tab1:
         # Zotero library collections
 
 with tab2:
-    # st.write("---")
+    st.write("---")
     st.header('Dashboard')
 
     number0 = st.select_slider('Select a number collections', options=[5,10,15,20,25,30], value=10)
