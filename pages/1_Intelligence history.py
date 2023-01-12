@@ -468,7 +468,7 @@ df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs 
 listdf = df['lemma_title']
 listdf_abstract = df['lemma_abstract']
 
-st.markdown('##Wordcloud')
+st.markdown('## Wordcloud')
 wordcloud_opt = st.radio('Wordcloud in:', ('Title', 'Abstract'))
 if wordcloud_opt=='Title':
     df_list = [item for sublist in listdf for item in sublist]
