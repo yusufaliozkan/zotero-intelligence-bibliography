@@ -276,7 +276,7 @@ df['Date published'] = pd.to_datetime(df['Date published'], yearfirst=True, utc=
 df['month'] = df['Date published'].dt.month
 df['year'] = df['Date published'].dt.year
 # df['year'] = df['year'].astype(int)
-df['Date year'] = df['Date published'].dt.strftime('%m-%Y')
+df['Date year'] = df['Date published'].dt.strftime('%Y-%m')
 df['Date year'] = df['Date year'].fillna('No date')
 df
 
