@@ -292,6 +292,7 @@ with col1:
 
 with col2:
     df_year['Sum'] = df_year['Count'].cumsum()
+    df_year
     fig2 = px.line(df_year, x='Publication year', y='Sum')
     fig2.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
     fig2.update_xaxes(tickangle=-70)
