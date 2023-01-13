@@ -273,7 +273,7 @@ with col2:
 
 
 df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-df['Date published'] = df['Date published'].dt.strftime('%m-%Y')
+df['Date published'] = df['Date published'].dt.strftime('%Y-%m')
 df['Date year'] = df['Date published'].fillna('No date')
 
 # df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
