@@ -287,6 +287,7 @@ df
 
 df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
+df_year
 
 col1, col2 = st.columns(2)
 with col1:
