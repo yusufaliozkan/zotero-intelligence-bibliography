@@ -272,7 +272,7 @@ with col2:
     col2.plotly_chart(fig, use_container_width = True)
 
 
-df['Date published'] = pd.to_datetime(df['Date published'])#,utc=True, errors='coerce').dt.tz_convert('Europe/London')
+df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce')#.dt.tz_convert('Europe/London')
 df['Date year'] = df['Date published'].dt.strftime('%m-%Y')
 df
 df['Date year'] = df['Date year'].fillna('No date')
