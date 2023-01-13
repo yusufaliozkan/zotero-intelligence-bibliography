@@ -459,7 +459,7 @@ stopword = nltk.corpus.stopwords.words('english')
 
 if collection_name=='98.1 War in Ukraine':
     SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'invasion',
-        'ukraine', 'russian', 'ukrainian', 'russia', 
+        'ukraine', 'russian', 'ukrainian', 'russia', 'could', 'vladimir',
         'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
         'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
         'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
