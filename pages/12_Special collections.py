@@ -273,12 +273,17 @@ with col2:
 
 
 df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-df['month'] = df['Date published'].dt.month
-df['year'] = df['Date published'].dt.year
-# df['year'] = df['year'].astype(int)
-# df
-df['Date year'] = df['Date published'].dt.strftime('%Y')
-df['Date year'] = df['Date year'].fillna('No date')
+df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+df['Date year'] = df['Date published'].fillna('No date')
+
+# df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+# df['month'] = df['Date published'].dt.month
+# df['year'] = df['Date published'].dt.year
+# # df['year'] = df['year'].astype(int)
+# # df
+# df['Date year'] = df['Date published'].dt.strftime('%Y')
+# df['Date year'] = df['Date year'].fillna('No date')
+df
 
 df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
