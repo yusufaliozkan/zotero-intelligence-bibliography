@@ -278,6 +278,7 @@ df['Date month'] = df['Date published'].dt.strftime('%m')
 df['Date year'] = df['Date year'].fillna('No date')
 df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
+df
 
 
 # df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
@@ -288,8 +289,6 @@ df_year=df_year.reset_index()
 # df['Date year'] = df['Date published'].dt.strftime('%Y')
 # df['Date year'] = df['Date year'].fillna('No date')
 
-df_year=df['Date year'].value_counts()
-df_year=df_year.reset_index()
 
 col1, col2 = st.columns(2)
 with col1:
