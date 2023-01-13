@@ -271,16 +271,16 @@ with col2:
     fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
 
-df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
-df['Date published'] = df['Date published'].fillna('No date')
-
 # df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-# df['Date year'] = df['Date published'].dt.strftime('%d-%m-%Y')
-# df['Date month'] = df['Date published'].dt.strftime('%m')
+# df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+# df['Date published'] = df['Date published'].fillna('No date')
 
-# df['Date year'] = df['Date year'].fillna('No date')
-df_year=df['Date published'].value_counts()
+df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+df['Date year'] = df['Date published'].dt.strftime('%Y')
+df['Date month'] = df['Date published'].dt.strftime('%m')
+
+df['Date year'] = df['Date year'].fillna('No date')
+df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
 df
 
