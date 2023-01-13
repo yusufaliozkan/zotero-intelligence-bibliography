@@ -272,7 +272,7 @@ with col2:
     col2.plotly_chart(fig, use_container_width = True)
 
 
-df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce')#.dt.tz_convert('Europe/London')
 df['month'] = df['Date published'].dt.month
 df['year'] = df['Date published'].dt.year
 # df['year'] = df['year'].astype(int)
