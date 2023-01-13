@@ -458,7 +458,7 @@ df['token_abstract']=df['clean_abstract'].apply(tokenization)
 stopword = nltk.corpus.stopwords.words('english')
 
 if collection_name=='98.1 War in Ukraine':
-    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
+    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'invasion',
         'ukraine', 'russian', 'ukrainian', 'russia', 
         'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
         'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
