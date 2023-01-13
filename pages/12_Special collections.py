@@ -138,11 +138,11 @@ with col2:
 
     df['Journal'] = df['Journal'].replace(['International Journal of Intelligence and Counter-Intelligence', 'International Journal of Intelligence and Counterintelligence', 'International Journal of Intelligence and CounterIntelligence'], 'Intl Journal of Intelligence and Counterintelligence')
     df['Journal'] = df['Journal'].replace(['Intelligence and national security', 'Intelligence and National Security', 'Intelligence & National Security'], 'Intelligence and National Security')
-
+    df
     df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
     df['Date published'] = df['Date published'].fillna('No date')
-    
+    df
     
     # sort = st.checkbox('Sort by publication date', disabled=False)
     # if sort:
@@ -282,8 +282,6 @@ df['Date month'] = df['Date published'].dt.strftime('%m')
 df['Date year'] = df['Date year'].fillna('No date')
 df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
-df
-
 
 # df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
 # df['month'] = df['Date published'].dt.month
