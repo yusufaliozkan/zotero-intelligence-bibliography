@@ -271,13 +271,10 @@ with col2:
     fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
     col2.plotly_chart(fig, use_container_width = True)
 
-
 df['Date published'] = pd.to_datetime(df['Date published'], yearfirst=True, utc=True, errors='coerce').dt.tz_convert('Europe/London')
-df['month'] = df['Date published'].dt.month
-df['year'] = df['Date published'].dt.year
-# df['year'] = df['year'].astype(int)
-df['Date year'] = df['Date published'].dt.strftime('%m-%Y')
-df['Date year'] = df['Date year'].fillna('No date')
+df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+df['Date published'] = df['Date published'].fillna('No date')
+
 df
 
 # df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
