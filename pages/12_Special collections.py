@@ -272,14 +272,14 @@ with col2:
     col2.plotly_chart(fig, use_container_width = True)
 
 
-df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce')#.dt.tz_convert('Europe/London')
+df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
 df['month'] = df['Date published'].dt.month
 df['year'] = df['Date published'].dt.year
 # df['year'] = df['year'].astype(int)
 # df
-df['Date year'] = df['Date published'].dt.strftime('%Y-%m-%d')
+df['Date year'] = df['Date published'].dt.strftime('%Y-%m')
 df['Date year'] = df['Date year'].fillna('No date')
-df
+
 df_year=df['Date year'].value_counts()
 df_year=df_year.reset_index()
 
