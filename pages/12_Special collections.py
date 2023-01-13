@@ -274,7 +274,7 @@ with col2:
 
 df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
 df['month'] = df['Date published'].dt.month
-df['month'] = df.index.month.astype('Int64')
+df['month'] = df.index.month.astype(int)
 df
 df['Date year'] = df['Date published'].dt.strftime('%Y-%m')
 df['Date year'] = df['Date year'].fillna('No date')
