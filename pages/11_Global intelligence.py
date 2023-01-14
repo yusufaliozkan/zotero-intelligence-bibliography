@@ -149,7 +149,6 @@ with tab1:
         df['Date published'] = df['Date published'].fillna('No date')
 
         st.markdown('#### Collection theme: ' + collection_name)
-        st.markdown('''Go to [Dashboard](#dashboard) for visuals''', unsafe_allow_html=True) 
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
         st.info('This collection lists academic sources that are non-UK/US on intelligence.')
 

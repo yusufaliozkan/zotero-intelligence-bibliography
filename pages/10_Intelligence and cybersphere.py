@@ -34,7 +34,6 @@ api_key = '' # api_key is only needed for private groups and libraries
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 with st.sidebar:
-
     st.image(image, width=150)
     st.sidebar.markdown("# Intelligence bibliography")
     with st.expander('About'):
@@ -148,7 +147,6 @@ with tab1:
         df['Date published'] = df['Date published'].fillna('No date')
 
         st.markdown('#### Collection theme: ' + collection_name)
-        st.markdown('''Go to [Dashboard](#dashboard) for visuals''', unsafe_allow_html=True) 
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
