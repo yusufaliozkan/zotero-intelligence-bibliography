@@ -445,12 +445,20 @@ with tab2:
     df['token_abstract']=df['clean_abstract'].apply(tokenization)
     stopword = nltk.corpus.stopwords.words('english')
 
-    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
-        'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-        'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-        'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-        'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-        'examines', 'become', 'used', 'journal', 'london', 'review']
+    if collection_name=='01.6 WW2 (Second World War)':
+        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter', 'second',
+            'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
+            'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
+            'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+            'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+            'examines', 'become', 'used', 'journal', 'london', 'review']
+    else:
+        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
+            'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
+            'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
+            'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+            'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+            'examines', 'become', 'used', 'journal', 'london', 'review']
     stopword.extend(SW)
 
     def remove_stopwords(text):
