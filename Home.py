@@ -368,10 +368,6 @@ with tab1:
             st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
             st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
         
-
-        st.markdown('''[Dashboard](#dashboard) for visuals''', unsafe_allow_html=True)
-
-
         # collections = zot.collections()
         # data2=[]
         # columns2 = ['Key','Name', 'Link']
