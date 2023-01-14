@@ -80,7 +80,7 @@ df_collections=df_collections[df_collections['Name'].str.contains("03")]
 
 # clist = df_collections['Name'].unique()
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
-    with tab1:
+with tab1:
     col1, col2, col3 = st.columns([1.2,4,1.6])
 
     with col1:
