@@ -152,7 +152,6 @@ with tab1:
         #     df=df.sort_values(by='Date published', ascending=True)
 
         st.markdown('#### Collection theme: ' + collection_name)
-        st.markdown('''Go to [Dashboard](#dashboard) for visuals''', unsafe_allow_html=True) 
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
