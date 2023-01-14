@@ -675,7 +675,7 @@ if wordcloud_opt=='Titles':
     st.set_option('deprecation.showPyplotGlobalUse', False)
     st.pyplot() 
 else:
-    st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considred as authoritative.', icon="⚠️")
+    st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considred as authoritative.')
     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
     string = pd.Series(df_list_abstract).str.cat(sep=' ')
     wordcloud_texts = string
