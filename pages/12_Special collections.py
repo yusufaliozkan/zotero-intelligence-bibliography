@@ -247,7 +247,7 @@ with tab1:
             st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
 with tab2:
-    st.header('Dashboard')
+    st.header('Dashboard for ' + collection_name)
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
         st.stop()
