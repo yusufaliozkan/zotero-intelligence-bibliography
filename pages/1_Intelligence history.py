@@ -452,6 +452,13 @@ with tab2:
             'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
             'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
             'examines', 'become', 'used', 'journal', 'london', 'review']
+    if collection_name=='01.4 WW1 (First Wold War)':
+        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
+            'new', 'first', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
+            'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
+            'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+            'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+            'examines', 'become', 'used', 'journal', 'london', 'review']        
     else:
         SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
             'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
