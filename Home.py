@@ -429,7 +429,7 @@ with tab2:
     df_types=df_types.reset_index()
     df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
 
-    if df['Title'].any() in ("", [], None, 0, False):
+    if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
         st.stop()
     col1, col2 = st.columns(2)
