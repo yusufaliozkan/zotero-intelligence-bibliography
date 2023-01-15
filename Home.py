@@ -421,13 +421,11 @@ with tab2:
 
     # Visauls for all items in the library
     df_csv = pd.read_csv('all_items.csv')
-    container = st.container()
-    all_types = st.checkbox('Select all types')
+    types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
+    all_types = st.checkbox('Select all items')
     if all_types:
-        types = container.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
-    else: 
-        types = container.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
-
+        types = [df_csv['Publication type'].unique(),df_csv['Publication type'].unique()]
+    types
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
 
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
