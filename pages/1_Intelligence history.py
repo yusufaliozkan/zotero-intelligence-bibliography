@@ -376,7 +376,6 @@ with tab2:
 
         if df_journal['Journal'].any() in ("", [], None, 0, False):
             st.write('No journal to display')
-
         else:
             if log2:
                 if leg2:
