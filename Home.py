@@ -428,7 +428,7 @@ with tab2:
 
         all = container.checkbox('Select all')
         if all:
-            container.experimental_rerun()
+            container.button('Select all items')
 
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
