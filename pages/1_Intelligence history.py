@@ -246,6 +246,7 @@ with tab2:
     types = st.multiselect('Publication type', df2['Publication type'].unique(),df2['Publication type'].unique(), key='multiselect2')
     df2 = df2[df2['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df2 = df2.reset_index()
+    df = df2.copy()
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
         st.stop()
