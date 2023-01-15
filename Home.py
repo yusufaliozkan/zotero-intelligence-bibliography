@@ -423,7 +423,7 @@ with tab2:
     df_csv = pd.read_csv('all_items.csv')
     with st.expander('Select publication type'):
         container = st.container()
-        types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
+        types = st.multiselect('Publication type', df_csv['Publication type'].unique())
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
         all = container.checkbox('Select all')
         if all:
