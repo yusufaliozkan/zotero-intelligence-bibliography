@@ -80,7 +80,7 @@ df_collections = df_collections.iloc[1: , :]
 # clist = df_collections['Name'].unique()
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
-    col1, col2 = st.columns([5,1.6])
+    col1, col2 = st.columns([1.6,5])
     with col1:
         radio = st.radio('Select a collection', df_collections['Name'])
         # collection_name = st.selectbox('Select a collection:', clist)
