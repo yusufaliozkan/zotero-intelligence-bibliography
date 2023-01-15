@@ -422,8 +422,12 @@ with tab2:
     # Visauls for all items in the library
     df_csv = pd.read_csv('all_items.csv')
     with st.expander('Select publication type'):
+        container = st.container()
         types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
+        all = container.checkbox('Select all')
+        if all:
+            types
  
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
