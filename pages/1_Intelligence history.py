@@ -82,6 +82,15 @@ tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
     col1, col2 = st.columns([5,1.6])
     with col1:
+        radio = st.radio('Select a collection', df_collections['Name'])
+        # collection_name = st.selectbox('Select a collection:', clist)
+        collection_name = radio
+        collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
+
+        df_collections=df_collections['Name'].reset_index()
+        pd.set_option('display.max_colwidth', None)
+
+    with col2:
     # Collection items
         count_collection = zot.num_collectionitems(collection_code)
 
@@ -201,40 +210,33 @@ with tab1:
                 # if display2:
                 #     st.caption(df['Abstract'].iloc[i])
 
-    with col2:
-        radio = st.radio('Select a collection', df_collections['Name'])
-        # collection_name = st.selectbox('Select a collection:', clist)
-        collection_name = radio
-        collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
-
-        df_collections=df_collections['Name'].reset_index()
-        pd.set_option('display.max_colwidth', None)
-        with st.expander("Collections in Zotero library", expanded=False):
-            bbb = zot.collections()
-            data3=[]
-            columns3 = ['Key','Name', 'Number', 'Link']
-            for item in bbb:
-                data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
-            pd.set_option('display.max_colwidth', None)
-            df_collections_2 = pd.DataFrame(data3, columns=columns3)
-            row_nu_collections = len(df_collections_2.index)
+    # with col3:
+    #     with st.expander("Collections in Zotero library", expanded=False):
+    #         bbb = zot.collections()
+    #         data3=[]
+    #         columns3 = ['Key','Name', 'Number', 'Link']
+    #         for item in bbb:
+    #             data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
+    #         pd.set_option('display.max_colwidth', None)
+    #         df_collections_2 = pd.DataFrame(data3, columns=columns3)
+    #         row_nu_collections = len(df_collections_2.index)
             
-            for i in range(row_nu_collections):
-                st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
-                ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
-                )
+    #         for i in range(row_nu_collections):
+    #             st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
+    #             ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
+    #             )
 
-        with st.expander('Collections in this site', expanded=False):
-            st.caption('[Intelligence history](/Intelligence_history)')
-            st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
-            st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
-            st.caption('[Intelligence organisations](https://intelligence.streamlit.app/Intelligence_organisations)')
-            st.caption('[Intelligence oversight and ethics](https://intelligence.streamlit.app/Intelligence_oversight_and_ethics)')
-            st.caption('[Intelligence collection](https://intelligence.streamlit.app/Intelligence_collection)')
-            st.caption('[Counterintelligence](https://intelligence.streamlit.app/Counterintelligence)')
-            st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
-            st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
-            st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
+    #     with st.expander('Collections in this site', expanded=False):
+    #         st.caption('[Intelligence history](/Intelligence_history)')
+    #         st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
+    #         st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
+    #         st.caption('[Intelligence organisations](https://intelligence.streamlit.app/Intelligence_organisations)')
+    #         st.caption('[Intelligence oversight and ethics](https://intelligence.streamlit.app/Intelligence_oversight_and_ethics)')
+    #         st.caption('[Intelligence collection](https://intelligence.streamlit.app/Intelligence_collection)')
+    #         st.caption('[Counterintelligence](https://intelligence.streamlit.app/Counterintelligence)')
+    #         st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
+    #         st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
+    #         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
 with tab2:
     st.header('Dashboard')
