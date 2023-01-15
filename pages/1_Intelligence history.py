@@ -250,7 +250,7 @@ with tab2:
     if df['Title'].any() in ("", [], None, 0, False):
         all = container.checkbox('Show all types')
         if all:
-            df
+            df=df2.copy()
     
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
