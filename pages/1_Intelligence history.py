@@ -243,7 +243,7 @@ with tab1:
 with tab2:
     st.header('Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
-    types = st.multiselect('Publication type', df2['Publication type'].unique(),df2['Publication type'].unique())
+    types = st.multiselect('Publication type', df2['Publication type'].unique(),df2['Publication type'].unique(), key='multiselect2')
     df2 = df2[df2['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df2 = df2.reset_index()
     if df['Title'].any() in ("", [], None, 0, False):
