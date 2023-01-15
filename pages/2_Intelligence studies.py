@@ -240,7 +240,7 @@ with tab1:
     #         st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
     #         st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
     #         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
-
+with tab2:    
     st.header('Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
     if df['Title'].any() in ("", [], None, 0, False):
