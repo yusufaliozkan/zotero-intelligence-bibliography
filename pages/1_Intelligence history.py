@@ -541,7 +541,7 @@ with tab2:
                 topic_descr = topic_descr + tfidf_feature_names[fid] + ' '
             topics[i] = topic_descr
         return pd.DataFrame({'Topic Terms Sklearn': topics})
-    nmf=NMF(n_components=10, init='nndsvd').fit(tfidf)
+    nmf=NMF(n_components=16, init='nndsvd').fit(tfidf)
     df_topics= get_topics(nmf)
     df_topics
 components.html(
