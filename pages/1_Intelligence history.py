@@ -147,6 +147,10 @@ with tab1:
         st.markdown('#### Collection theme: ' + collection_name)
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
+        types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original')
+        df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
+        df = df.reset_index()
+
         if df['FirstName2'].any() in ("", [], None, 0, False):
             # st.write('no author')
             df['firstName'] = 'null'
@@ -234,10 +238,6 @@ with tab1:
             st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
             st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
             st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
-        
-        types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original')
-        df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
-        df = df.reset_index()
 
 with tab2:
     st.header('Dashboard')
