@@ -427,11 +427,9 @@ with tab2:
     all = st.checkbox("Select all")
  
     if all:
-        selected_options = container.multiselect("Select one or more options:",
-            ['A', 'B', 'C'],['A', 'B', 'C'])
+        selected_options = container.multiselect("Select one or more options:", ['A', 'B', 'C'],['A', 'B', 'C'])
     else:
-        selected_options =  container.multiselect("Select one or more options:",
-            ['A', 'B', 'C'])
+        selected_options =  container.multiselect("Select one or more options:", ['A', 'B', 'C'])
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
     df_types=df_types.reset_index()
