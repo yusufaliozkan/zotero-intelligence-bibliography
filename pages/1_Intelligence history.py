@@ -243,13 +243,12 @@ with tab2:
     st.markdown('#### Collection theme: ' + collection_name)
 
     container = st.container()
-    types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original2')
-    df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
-    df = df.reset_index()
+
     all = container.checkbox('Show all types')
     if all:
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original3')
-        df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]        
+        df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]     
+        df = df.reset_index()  
     
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
