@@ -425,6 +425,7 @@ with tab2:
     all_types = st.checkbox('Select all items')
     if all_types:
         types = [df_csv['Publication type'].unique(),df_csv['Publication type'].unique()]
+    types
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
 
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
