@@ -426,7 +426,7 @@ with tab2:
     if all_types:
         types = container.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     else: 
-        types = container.multiselect('Publication type', df_csv['Publication type'].unique())
+        types = container.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
 
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
 
