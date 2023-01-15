@@ -527,6 +527,23 @@ with tab2:
         st.set_option('deprecation.showPyplotGlobalUse', False)
         st.pyplot() 
 
+    data = df['lemma_title']
+    data = data.astype(str) # keep the data in string format
+    tfidf_vectorizer = TfidfVectorizer(max_df=0.85, min_df=25)
+    tfidf = tfidf_vectorizer.fit_transform(data) # The data has been fitted.
+    tfidf_feature_names = tfidf_vectorizer.get_feature_names() #for getting feature names
+    def get_topics(nmf):
+
+        topics = {}
+        for i, topic_vec in enumerate(nmf.components_):
+            topic_descr = ''
+            for fid in topic_vec.argsort()[-1:-10-1:-1]:
+                topic_descr = topic_descr + tfidf_feature_names[fid] + ' '
+            topics[i] = topic_descr
+        return pd.DataFrame({'Topic Terms Sklearn': topics})
+    nmf=NMF(n_components=10, init='nndsvd').fit(tfidf)
+    df_topics= get_topics(nmf)
+    df_topics
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
