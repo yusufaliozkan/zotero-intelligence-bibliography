@@ -147,8 +147,8 @@ with tab1:
         st.markdown('#### Collection theme: ' + collection_name)
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
+        df2 = df.copy()
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
-
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df = df.reset_index()
 
@@ -243,6 +243,9 @@ with tab1:
 with tab2:
     st.header('Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
+    types = st.multiselect('Publication type', df2['Publication type'].unique(),df2['Publication type'].unique())
+    df2 = df2[df2['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
+    df2 = df2.reset_index()
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
         st.stop()
