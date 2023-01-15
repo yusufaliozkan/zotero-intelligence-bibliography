@@ -21,7 +21,7 @@ st.set_page_config(layout = "wide",
                     page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
-
+placeholder = st.empty()
 st.title("Intelligence history")
 
 # Connecting Zotero with API
@@ -245,8 +245,7 @@ with tab2:
     types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df = df.reset_index()
-    placeholder = st.empty()
-
+    
     with placeholder.container():
         st.title("Try")
         btn = st.button("try")
