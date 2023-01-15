@@ -423,13 +423,12 @@ with tab2:
     df_csv = pd.read_csv('all_items.csv')
     with st.expander('Select publication type'):
         types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
+        if df_csv['Title'].any() in ("", [], None, 0, False):
+            all = st.checkbox("Select all")
+            if all:
+                types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
+            else:
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
-    all = st.checkbox("Select all")
- 
-    if all:
-        selected_options = container.multiselect("Select one or more options:", ['A', 'B', 'C'],['A', 'B', 'C'])
-    else:
-        st.write('dd')
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
     df_types=df_types.reset_index()
