@@ -84,9 +84,7 @@ tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 container_theme = st.container()
 container = st.container()
 with tab1:
-
     col1, col2, col3 = st.columns([1.4,4,1.6])
-
     with col1:
         radio = st.radio('Select a collection', df_collections['Name'])
         # collection_name = st.selectbox('Select a collection:', clist)
