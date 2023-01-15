@@ -428,8 +428,6 @@ with tab2:
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
     df_types=df_types.reset_index()
     df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
-    df_csv
-    df_types
 
     col1, col2 = st.columns(2)
     with col1:
