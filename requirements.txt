@@ -9,5 +9,3 @@ streamlit-extras==0.2.4
 plotly==4.14.1
 nltk==3.8.1
 wordcloud==1.8.2.2
-gensim==4.3.0
-scikit-learn==1.2.0
