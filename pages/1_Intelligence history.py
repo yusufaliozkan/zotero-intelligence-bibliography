@@ -245,6 +245,16 @@ with tab2:
     types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
     df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
     df = df.reset_index()
+    placeholder = st.empty()
+
+    with placeholder.container():
+        st.title("Try")
+        btn = st.button("try")
+
+    #If btn is pressed or True
+    if btn:
+        #This would empty everything inside the container
+        placeholder.empty()
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
         st.stop()
