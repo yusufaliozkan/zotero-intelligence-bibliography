@@ -426,6 +426,9 @@ with tab2:
     df_types=df_types.reset_index()
     df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
     df_csv
+    df_types
+    # types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df['Publication type'].unique())
+    # df = df[df['Publication type'].isin(types)]
 
     col1, col2 = st.columns(2)
     with col1:
