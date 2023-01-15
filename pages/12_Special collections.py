@@ -249,10 +249,6 @@ with tab2:
     st.header('Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
 
-    types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='d2')
-
-    df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
-    df = df.reset_index()
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
         st.stop()
