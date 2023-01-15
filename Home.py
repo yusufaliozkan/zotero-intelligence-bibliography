@@ -421,14 +421,14 @@ with tab2:
 
     # Visauls for all items in the library
     df_csv = pd.read_csv('all_items.csv')
+    types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df['Publication type'].unique())
+    df_csv = df_csv[df_csv['Publication type'].isin(types)]
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
     df_types=df_types.reset_index()
     df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
     df_csv
     df_types
-    # types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df['Publication type'].unique())
-    # df = df[df['Publication type'].isin(types)]
 
     col1, col2 = st.columns(2)
     with col1:
