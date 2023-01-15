@@ -453,7 +453,7 @@ with tab2:
                 width=1200,
                 height=600,)
             fig.update_xaxes(tickangle=-70)
-            fig.update_layout(title={'text':'All items in the library (by item type)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+            fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             col1.plotly_chart(fig, use_container_width = True)
 
     with col2:
