@@ -16,6 +16,11 @@ nltk.download('all')
 from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
+from gensim import corpora
+from gensim.models import Nmf
+from gensim import models
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.decomposition import NMF
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
