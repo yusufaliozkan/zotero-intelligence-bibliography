@@ -76,7 +76,7 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 df_collections = df_collections.sort_values(by='Name')
 df_collections=df_collections[df_collections['Name'].str.contains("01.")]
 df_collections = df_collections.iloc[1: , :]
-container = st.container()
+
 # clist = df_collections['Name'].unique()
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
@@ -146,9 +146,8 @@ with tab1:
 
         st.markdown('#### Collection theme: ' + collection_name)
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
-
-
-        types = container.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original')
+        
+        types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original')
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df = df.reset_index()
 
