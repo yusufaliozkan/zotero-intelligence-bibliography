@@ -137,6 +137,7 @@ with tab1:
         df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
         df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
         df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
+        df['Publication type'] = df['Publication type'].replace(['conferencePaper'], 'Conference paper')
 
         df['Publisher'] = df['Publisher'].replace(['Taylor & Francis Group', 'Taylor and Francis', 'Taylor & Francis'], 'Taylor and Francis')
         df['Publisher'] = df['Publisher'].replace(['Routledge', 'Routledge Handbooks Online'], 'Routledge')
