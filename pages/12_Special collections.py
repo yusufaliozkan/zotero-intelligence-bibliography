@@ -80,7 +80,6 @@ df_collections = df_collections.iloc[2: , :]
 # clist = df_collections['Name'].unique()
 
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
-
 container_theme = st.container()
 container = st.container()
 with tab1:
