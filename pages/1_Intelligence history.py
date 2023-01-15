@@ -311,9 +311,7 @@ with tab2:
         
         if df_publisher['Publisher'].any() in ("", [], None, 0, False):
             st.write('No publisher to display')
-
         else:
-
             if log1:
                 if leg1:
                     fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
