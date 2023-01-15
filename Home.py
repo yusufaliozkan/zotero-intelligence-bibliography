@@ -729,10 +729,6 @@ with tab2:
 
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
-container = st.container()
-
-st.write('Intelligence bibliography')
-container.caption('This website is free')
 
 components.html(
 """
