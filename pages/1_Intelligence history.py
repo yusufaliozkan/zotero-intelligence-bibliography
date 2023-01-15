@@ -93,7 +93,6 @@ with tab1:
 
     with col2:
     # Collection items
-        st.header('Publications')
         count_collection = zot.num_collectionitems(collection_code)
 
         items = zot.everything(zot.collection_items_top(collection_code))
