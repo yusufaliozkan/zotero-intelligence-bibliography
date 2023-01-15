@@ -21,7 +21,7 @@ st.set_page_config(layout = "wide",
                     page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
-placeholder = st.empty()
+
 st.title("Intelligence history")
 
 # Connecting Zotero with API
@@ -242,18 +242,7 @@ with tab1:
 with tab2:
     st.header('Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
-    types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
-    df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
-    df = df.reset_index()
     
-    with placeholder.container():
-        st.title("Try")
-        btn = st.button("try")
-
-    #If btn is pressed or True
-    if btn:
-        #This would empty everything inside the container
-        placeholder.empty()
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
         st.stop()
