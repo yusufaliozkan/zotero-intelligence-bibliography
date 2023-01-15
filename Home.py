@@ -557,7 +557,7 @@ with tab2:
                     )
 
     with col2:
-        number2 = st.select_slider('Select a number of journals', options=[5,10,15,20,25,30], value=10)
+        number2 = st.slider('Select a number of journals', 0,30,10)
         df_journal = df_csv.loc[df_csv['Publication type']=='Journal article']
         df_journal = pd.DataFrame(df_journal['Journal'].value_counts())
         df_journal = df_journal.sort_values(['Journal'], ascending=[False])
