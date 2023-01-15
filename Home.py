@@ -729,6 +729,12 @@ with tab2:
 
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
+with st.container():
+   st.write("This is inside the container")
+
+   # You can call any Streamlit command, including custom components:
+   st.bar_chart(np.random.randn(50, 3))
+st.write("This is outside the container")
 
 components.html(
 """
