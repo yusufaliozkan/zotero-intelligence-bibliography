@@ -429,7 +429,7 @@ with tab2:
     if all:
         selected_options = container.multiselect("Select one or more options:", ['A', 'B', 'C'],['A', 'B', 'C'])
     else:
-        selected_options =  container.multiselect("Select one or more options:", ['A', 'B', 'C'])
+        st.write('dd')
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
     df_types=df_types.reset_index()
