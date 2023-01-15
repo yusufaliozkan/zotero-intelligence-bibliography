@@ -405,7 +405,7 @@ with tab1:
 
 with tab2:
     st.header('Dashboard')
-    number0 = st.select_slider('Select a number collections', options=[5,10,15,20,25,30], value=10)
+    number0 = st.slider('Select a number collections', 0,30,10)
     df_collections_2.set_index('Name', inplace=True)
     df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
     plot= df_collections_2.head(number0)
