@@ -458,7 +458,7 @@ with tab2:
 
     with col2:
         fig = px.pie(df_types, values='Count', names='Publication type')
-        fig.update_layout(title={'text':'All items in the library (by item type)', 'y':0.95, 'x':0.45, 'yanchor':'top'})
+        fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.45, 'yanchor':'top'})
         col2.plotly_chart(fig, use_container_width = True)
 
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
