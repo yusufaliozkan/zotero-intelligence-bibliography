@@ -147,8 +147,6 @@ with tab1:
 
         df2 = df.copy()
         # types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
-        container = st.container()
-        df = container.copy()
         # df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         # df = df.reset_index()
 
@@ -239,8 +237,8 @@ with tab1:
             st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')        
 
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
-        container = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
-        container = container.reset_index()
+        df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
+        df = df.reset_index()
 
 with tab2:
     st.header('Dashboard')
