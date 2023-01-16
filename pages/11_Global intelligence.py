@@ -78,7 +78,7 @@ df_collections = df_collections.sort_values(by='Name')
 df_collections=df_collections[df_collections['Name'].str.contains("Global")].reset_index()
 # clist = df_collections['Name'].unique()
 df_collections
-a = df.loc[df_collections['Name']].values[0]
+a = df_collections.loc['Name']
 a
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
