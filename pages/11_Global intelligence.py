@@ -88,7 +88,7 @@ with tab1:
         # st.write(radio)
 
         # collection_name = st.selectbox('Select a collection:', clist)
-        collection_name = df_collections.loc[df_collections['Name']=='16 Global intelligence'].values[0]
+        collection_name = '16 Global intelligence'
         collection_name
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
         collection_code
