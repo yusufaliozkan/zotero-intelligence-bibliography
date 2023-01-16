@@ -79,6 +79,8 @@ df_collections=df_collections[df_collections['Name'].str.contains("07")]
 # df_collections = df_collections.iloc[1: , :]
 
 # clist = df_collections['Name'].unique()
+st.write('<style>div.Widget.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+
 container = st.container()
 
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
