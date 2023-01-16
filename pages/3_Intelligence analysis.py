@@ -76,6 +76,7 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 
 df_collections = df_collections.sort_values(by='Name')
 df_collections=df_collections[df_collections['Name'].str.contains("03")]
+df_collections = df_collections.reset_index()
 # df_collections = df_collections.iloc[1: , :]
 
 # clist = df_collections['Name'].unique()
@@ -84,7 +85,9 @@ with tab1:
     col1, col2, col3 = st.columns([1.2,4,1.6])
 
     with col1:
-        collection_name = '03 Intelligence analysis'
+        radio = st.radio('Select a collection', df_collections['Name'])
+        # collection_name = st.selectbox('Select a collection:', clist)
+        collection_name = radio
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
         df_collections=df_collections['Name'].reset_index()
