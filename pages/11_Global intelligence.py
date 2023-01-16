@@ -85,7 +85,8 @@ with tab1:
     col1, col2, col3 = st.columns([1.4,4,1.6])
 
     with col1:
-        radio =  df_collections['Name']
+        df_collections
+        radio = st.radio('Select a collection', df_collections['Name'])
         radio2=df_collections['Name']
         # collection_name = st.selectbox('Select a collection:', clist)
         collection_name = radio
