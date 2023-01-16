@@ -81,7 +81,7 @@ df_collections=df_collections[df_collections['Name'].str.contains("Global")].res
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
 
-    col1, col2, col3 = st.columns([1.4,4,1.6])
+    col1, col2, col3 = st.columns([5,1.6])
 
     with col1:
         # radio = st.radio('Select a collection', df_collections['Name'])
@@ -91,8 +91,6 @@ with tab1:
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
         df_collections=df_collections['Name'].reset_index()
         pd.set_option('display.max_colwidth', None)
-
-    with col2:
     # Collection items
         count_collection = zot.num_collectionitems(collection_code)
 
