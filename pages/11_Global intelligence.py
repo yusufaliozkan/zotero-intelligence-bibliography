@@ -81,7 +81,7 @@ df_collections=df_collections[df_collections['Name'].str.contains("Global")].res
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
 
-    col1, col2, col3 = st.columns([5,1.6])
+    col1, col2 = st.columns([5,1.6])
 
     with col1:
         # radio = st.radio('Select a collection', df_collections['Name'])
@@ -209,7 +209,7 @@ with tab1:
                 # if display2:
                 #     st.caption(df['Abstract'].iloc[i])
 
-    with col3:
+    with col2:
         with st.expander("Collections in Zotero library", expanded=False):
             bbb = zot.collections()
             data3=[]
