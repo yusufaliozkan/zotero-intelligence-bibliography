@@ -75,25 +75,21 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 
 df_collections = df_collections.sort_values(by='Name')
 df_collections=df_collections[df_collections['Name'].str.contains("10")]
+df_collections = df_collections.reset_index(drop=True)
 # df_collections = df_collections.iloc[1: , :]
 
 # clist = df_collections['Name'].unique()
 
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
-    col1, col2, col3 = st.columns([1,4,1.6])
+    col1, col2 = st.columns([5,1.6])
 
     with col1:
-        radio = st.radio('Select a collection', df_collections['Name'])
-        # collection_name = st.selectbox('Select a collection:', clist)
-        collection_name = radio
+        collection_name = df_collections.loc[0]['Name']
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
         df_collections=df_collections['Name'].reset_index()
         pd.set_option('display.max_colwidth', None)
-
-    with col2:
-    # Collection items
 
         count_collection = zot.num_collectionitems(collection_code)
 
@@ -149,6 +145,7 @@ with tab1:
         st.markdown('#### Collection theme: ' + collection_name)
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
+        df2 = df.copy()
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
 
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
@@ -212,7 +209,7 @@ with tab1:
                 # if display2:
                 #     st.caption(df['Abstract'].iloc[i])
 
-    with col3:
+    with col2:
         with st.expander("Collections in Zotero library", expanded=False):
             bbb = zot.collections()
             data3=[]
@@ -243,6 +240,14 @@ with tab1:
 with tab2:
     st.header('Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
+
+    if df['Title'].any() in ("", [], None, 0, False):
+        all = st.checkbox('Show all types')
+        if all:
+            df=df2.copy()
+    types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original2')
+    df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
+    df = df.reset_index()  
     if df['Title'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
         st.stop()
