@@ -82,7 +82,7 @@ df_collections = df_collections.reset_index(drop=True)
 # clist = df_collections['Name'].unique()
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
-    col1, col2, col3 = st.columns([1.4,4,1.6])
+    col1, col2 = st.columns([5,1.6])
 
     with col1:
         collection_name = df_collections.loc[0]['Name']
@@ -90,9 +90,6 @@ with tab1:
 
         df_collections=df_collections['Name'].reset_index()
         pd.set_option('display.max_colwidth', None)
-
-    with col2:
-    # Collection items
 
         count_collection = zot.num_collectionitems(collection_code)
 
@@ -212,7 +209,7 @@ with tab1:
                 # if display2:
                 #     st.caption(df['Abstract'].iloc[i])
 
-    with col3:
+    with col2:
         with st.expander("Collections in Zotero library", expanded=False):
             bbb = zot.collections()
             data3=[]
