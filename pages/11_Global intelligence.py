@@ -146,8 +146,8 @@ with tab1:
         df['Date published'] = df['Date published'].fillna('No date')
 
         container.markdown('#### Collection theme: ' + collection_name)
-        container.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
-        container.caption('This collection lists academic sources that are non-UK/US on intelligence.')
+        st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
+        st.caption('This collection lists academic sources that are non-UK/US on intelligence.')
 
         types = container.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
