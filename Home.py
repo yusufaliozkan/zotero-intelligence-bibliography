@@ -474,6 +474,7 @@ with tab2:
 
     col1, col2 = st.columns(2)
     with col1:
+        df_year
         fig = px.bar(df_year, x='Publication year', y='Count')
         fig.update_xaxes(tickangle=-70)
         fig.update_layout(
