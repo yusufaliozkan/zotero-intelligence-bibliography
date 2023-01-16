@@ -84,12 +84,12 @@ with tab1:
     col1, col2, col3 = st.columns([1.4,4,1.6])
 
     with col1:
-        radio = st.radio('Select a collection', df_collections['Name'])
-        st.write(radio)
+        # radio = st.radio('Select a collection', df_collections['Name'])
+        # st.write(radio)
 
         # collection_name = st.selectbox('Select a collection:', clist)
-        collection_name = radio
-        
+        collection_name = df_collections.loc[df_collections['Name']=='16 Global intelligence'].values[0]
+        collection_name
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
         collection_code
         df_collections=df_collections['Name'].reset_index()
