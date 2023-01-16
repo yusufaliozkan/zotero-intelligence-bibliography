@@ -238,7 +238,6 @@ with tab1:
             st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')        
 
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
-
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df = df.reset_index()
 
