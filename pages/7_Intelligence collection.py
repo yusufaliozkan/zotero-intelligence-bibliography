@@ -79,14 +79,15 @@ df_collections=df_collections[df_collections['Name'].str.contains("07")]
 # df_collections = df_collections.iloc[1: , :]
 
 # clist = df_collections['Name'].unique()
-container = st.container()
+with st.expander('Select a collection'):
+    container = st.container()
 
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
 with tab1:
     col1, col2, col3 = st.columns([1.1,4,1.6])
 
     with col1:
-        radio = container.radio('Select a collection', df_collections['Name'])
+        radio = container.radio('', df_collections['Name'])
         # collection_name = st.selectbox('Select a collection:', clist)
         collection_name = radio
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
