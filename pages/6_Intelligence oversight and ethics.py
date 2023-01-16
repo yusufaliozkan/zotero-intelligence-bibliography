@@ -86,7 +86,7 @@ with tab1:
     col1, col2 = st.columns([5,1.6])
 
     with col1:
-        collection_name = df.collections.loc[0]['Name']
+        collection_name = df_collections.loc[0]['Name']
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
         df_collections=df_collections['Name'].reset_index()
