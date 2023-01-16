@@ -237,6 +237,11 @@ with tab1:
             st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
             st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')        
 
+        types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
+
+        df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
+        df = df.reset_index()
+
 with tab2:
     st.header('Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
