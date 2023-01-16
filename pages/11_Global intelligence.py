@@ -149,7 +149,7 @@ with tab1:
         container.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
         container.caption('This collection lists academic sources that are non-UK/US on intelligence.')
 
-        container = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
+        types = container.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df = df.reset_index()
 
