@@ -77,6 +77,7 @@ df_collections = pd.DataFrame(data2, columns=columns2)
 df_collections = df_collections.sort_values(by='Name')
 df_collections=df_collections[df_collections['Name'].str.contains("03")]
 df_collections = df_collections.reset_index()
+df_collections
 # df_collections = df_collections.iloc[1: , :]
 
 # clist = df_collections['Name'].unique()
