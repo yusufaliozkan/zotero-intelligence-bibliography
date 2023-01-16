@@ -411,6 +411,7 @@ with tab2:
     plot= df_collections_2.head(number0)
     # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
     plot = plot.reset_index()
+    plot
     fig = px.bar(plot, x='Name', y='Number', color='Name')
     fig.update_layout(
         autosize=False,
