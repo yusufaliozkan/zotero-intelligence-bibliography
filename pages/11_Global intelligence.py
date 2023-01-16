@@ -86,10 +86,9 @@ with tab1:
 
     with col1:
         df_collections
-        radio =  df_collections['Name']
+        radio = st.radio('Select a collection', df_collections['Name'])
         # collection_name = st.selectbox('Select a collection:', clist)
         collection_name = radio
-        collection_name
         
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
         
