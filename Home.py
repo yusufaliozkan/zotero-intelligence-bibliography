@@ -684,8 +684,7 @@ with tab2:
         st.set_option('deprecation.showPyplotGlobalUse', False)
         st.pyplot() 
     else:
-        st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative.')
-        st.write(str(len(df_abs_no)))
+        st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no)))
         df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
         string = pd.Series(df_list_abstract).str.cat(sep=' ')
         wordcloud_texts = string
