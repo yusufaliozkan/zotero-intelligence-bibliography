@@ -632,7 +632,6 @@ with tab2:
     df['clean_title'] = df['Title'].apply(clean_text)
     df['clean_abstract'] = df['Abstract'].astype(str).apply(clean_text)
     df_abs_no = df.dropna(subset=['clean_abstract'])
-    st.write(len(df_abs_no))
     df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
     df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
 
@@ -686,6 +685,7 @@ with tab2:
         st.pyplot() 
     else:
         st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative.')
+        st.write(str(len(df_abs_no)))
         df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
         string = pd.Series(df_list_abstract).str.cat(sep=' ')
         wordcloud_texts = string
