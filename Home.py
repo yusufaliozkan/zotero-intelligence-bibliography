@@ -772,34 +772,11 @@ sheet_url = st.secrets["public_gsheets_url"]
 rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
 data = []
-columns = ['event_name', 'organiser']
+columns = ['event_name', 'organiser', 'link', 'date', 'venue']
 
 # Print results.
 for row in rows:
-    data.append((row.event_name, row.organiser))
-    st.write(f"{row.date} has a :{row.link}:")
+    data.append((row.event_name, row.organiser, row.link, row.date, row.venue))
+
 pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
-df_gs
-
-# data=[]
-# columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName']
-
-# for item in items:
-#     data.append((item['data']['title'], 
-#     item['data']['itemType'], 
-#     item['data']['url'], 
-#     item['data']['abstractNote'], 
-#     item['links']['alternate']['href'],
-#     item['data']['dateAdded'],
-#     item['data'].get('date'), 
-#     item['data']['dateModified'],
-#     item['data']['collections'],
-#     item['data']['creators']
-#     ))
-# st.set_page_config(layout = "wide", 
-#                     page_title='Intelligence bibliography',
-#                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-#                     initial_sidebar_state="auto") 
-# pd.set_option('display.max_colwidth', None)
-# df = pd.DataFrame(data, columns=columns)
