@@ -444,8 +444,8 @@ with tab2:
             st.write(years[1])
             df_csv = df_csv[df_csv['Date year'] !='No date']
             df_csv
-            df_csv = (df_csv['Date year'].astype(int)>years[0]) & (df_csv['Date year'].astype(int)<years[1])
-            df_csv
+            filter = (df_csv['Date year'].astype(int)>years[0]) & (df_csv['Date year'].astype(int)<years[1])
+            df_csv.loc[filter]
 
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
