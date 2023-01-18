@@ -103,10 +103,10 @@ for i in range(row_nu):
 
 st.header('Past events')
 df_gs2
-df_gs = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+df_gs3 = ('['+ df_gs2['event_name'] + ']'+ '('+ df_gs2['link'] + ')'', organised by ' + '**' + df_gs2['organiser'] + '**' + '. Date: ' + df_gs2['date_new'] + ', Venue: ' + df_gs2['venue'])
 row_nu = len(df_gs.index)
 for i in range(row_nu):
-    st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+    st.write(''+str(i+1)+') '+ df_gs3.iloc[i]) 
 
 
 components.html(
