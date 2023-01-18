@@ -124,6 +124,13 @@ row_nu = len(feb.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
+st.write('Events in March')
+mar = df_gs[df_gs['month']=='03']
+df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
+row_nu = len(mar.index)
+for i in range(row_nu):
+    st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+
 st.header('Past events')
 row_nu2 = len(df_gs2.index)
 df_gs3 = ('['+ df_gs2['event_name'] + ']'+ '('+ df_gs2['link'] + ')'', organised by ' + '**' + df_gs2['organiser'] + '**' + '. Date: ' + df_gs2['date_new'] + ', Venue: ' + df_gs2['venue'])
