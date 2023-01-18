@@ -444,7 +444,7 @@ with tab2:
             st.write(years[1])
             df_csv = df_csv[df_csv['Date year'] !='No date']
             df_csv
-            filter = (df_csv['Date year'].astype(int)>years[0]) & (df_csv['Date year'].astype(int)<years[1])
+            filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
             df_csv = df_csv.loc[filter]
             df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
