@@ -53,7 +53,7 @@ df_gs
 df_gs['date'] = pd.to_datetime(df_gs['date'])
 df_gs['date'] = df_gs['date'].dt.strftime('%d-%m-%Y')
 
-st.write(df_gs.dtype)
+st.write(df_gs.dtype())
 
 
 components.html(
