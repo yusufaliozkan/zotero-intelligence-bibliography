@@ -443,6 +443,7 @@ with tab2:
         if st.button('Refresh page'):
             st.write(years[1])
             df_csv = df_csv[df_csv['Date year'] !='No date']
+            df_csv
             df_csv = (df_csv['Date year'].astype(int)>years[0]) & (df_csv['Date year'].astype(int)<years[1])
             df_csv
 
