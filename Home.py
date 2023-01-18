@@ -441,7 +441,6 @@ with tab2:
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
         years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
         if st.button('Show publications between selected years'):
-            st.write(years[1])
             df_csv = df_csv[df_csv['Date year'] !='No date']
             filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
             df_csv = df_csv.loc[filter]
