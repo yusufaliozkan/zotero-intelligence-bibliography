@@ -102,7 +102,7 @@ df_gs.sort_values(by='date', ascending = True, inplace=True)
 # df_gs['month'] = df_gs['month'].replace('10', 'October')
 # df_gs['month'] = df_gs['month'].replace('11', 'November')
 # df_gs['month'] = df_gs['month'].replace('12', 'December')
-df_gs
+
 
 filter = (df_gs['date']>=today)
 filter2 = (df_gs['date']<today)
