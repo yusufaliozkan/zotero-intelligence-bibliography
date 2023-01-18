@@ -780,4 +780,3 @@ for row in rows:
 
 pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
-df_gs['date']
