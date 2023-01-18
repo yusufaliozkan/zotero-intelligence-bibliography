@@ -90,6 +90,8 @@ df_gs = pd.DataFrame(data, columns=columns)
 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
 df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
 df_gs.sort_values(by='date', ascending = True, inplace=True)
+df_gs['month'] = df_gs['month'].replace('01', 'January')
+
 df_gs
 
 filter = (df_gs['date']>=today)
