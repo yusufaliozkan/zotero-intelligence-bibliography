@@ -110,12 +110,12 @@ df_gs2 = df_gs.loc[filter2]
 df_gs = df_gs.loc[filter]
 
 if '01' in df_gs['month'].values:
-    with st.expander('Events in January', expanded=True):
-        jan = df_gs[df_gs['month']=='01']
-        df_gs1 = ('['+ jan['event_name'] + ']'+ '('+ jan['link'] + ')'', organised by ' + '**' + jan['organiser'] + '**' + '. Date: ' + jan['date_new'] + ', Venue: ' + jan['venue'])
-        row_nu = len(jan.index)
-        for i in range(row_nu):
-            st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+    st.markdown('## Events in January')
+    jan = df_gs[df_gs['month']=='01']
+    df_gs1 = ('['+ jan['event_name'] + ']'+ '('+ jan['link'] + ')'', organised by ' + '**' + jan['organiser'] + '**' + '. Date: ' + jan['date_new'] + ', Venue: ' + jan['venue'])
+    row_nu = len(jan.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
 
 if '02' in df_gs['month'].values:
     with st.expander('Events in February', expanded=True):
