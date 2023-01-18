@@ -89,8 +89,8 @@ pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
 df_gs.sort_values(by='date', ascending = True, inplace=True)
-df_gs_1 = df_gs[df_gs['date'].dt.month==1]
-df_gs_1
+jan = df_gs['date'].map(lambda x: x.month) == 1
+df_gs[jan]
 
 filter = (df_gs['date']>=today)
 filter2 = (df_gs['date']<today)
