@@ -52,8 +52,6 @@ df_gs = pd.DataFrame(data, columns=columns)
 
 df_gs['date'] = pd.to_datetime(df_gs['date'], errors='coerce')
 df_gs['date'] = df_gs['date'].dt.strftime('%d/%m/%Y')
-df_gs['date'] = pd.to_datetime(df_gs['date'], errors='coerce')
-df_gs['date'] = df_gs['date'].dt.strftime('%d/%m/%Y')
 
 df_gs
 
