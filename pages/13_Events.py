@@ -20,6 +20,9 @@ from gsheetsdb import connect
 import datetime as dt     
 
 
+today = dt.date.today()
+today
+
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
@@ -85,16 +88,10 @@ pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
 
+filter = (df_gs['date']>today)
+
 df_gs
 
-# df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
-# '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
-# ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-# # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-# "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-# ' (Published on: ' + df['Date published']+', ' +
-# 'Added on: ' + df['Date added']+')'
-# )
 
 df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
 
@@ -102,8 +99,6 @@ row_nu = len(df_gs.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
-today = dt.date.today()
-today
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
