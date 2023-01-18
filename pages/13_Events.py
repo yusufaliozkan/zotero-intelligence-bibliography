@@ -99,6 +99,15 @@ row_nu = len(df_gs.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
+st.header('Past events')
+
+filter2 = (df_gs['date']<today)
+df_gs = df_gs.loc[filter2]
+df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+row_nu = len(df_gs.index)
+for i in range(row_nu):
+    st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
