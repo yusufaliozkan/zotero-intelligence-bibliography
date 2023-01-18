@@ -21,6 +21,7 @@ nltk.download('all')
 from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
+from gsheetsdb import connect
 
 # Connecting Zotero with API
 library_id = '2514686'
@@ -754,3 +755,29 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
+
+
+# Create a connection object.
+conn = connect()
+
+# Perform SQL query on the Google Sheet.
+# Uses st.cache to only rerun when the query changes or after 10 min.
+@st.cache(ttl=600)
+def run_query(query):
+    rows = conn.execute(query, headers=1)
+    rows = rows.fetchall()
+    return rows
+
+sheet_url = st.secrets["public_gsheets_url"]
+rows = run_query(f'SELECT * FROM "{sheet_url}"')
+
+data = []
+columns = ['event_name', 'organiser', 'link', 'date', 'venue']
+
+# Print results.
+for row in rows:
+    data.append((row.event_name, row.organiser, row.link, row.date, row.venue))
+
+pd.set_option('display.max_colwidth', None)
+df_gs = pd.DataFrame(data, columns=columns)
+df_gs['date']
