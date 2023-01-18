@@ -49,7 +49,7 @@ for row in rows:
 
 pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
-
+df_gs
 df_gs['date'] = pd.to_datetime(df_gs['date'], errors='coerce')
 df_gs['date'] = df_gs['date'].dt.strftime('%d/%m/%Y')
 
