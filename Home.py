@@ -440,7 +440,7 @@ with tab2:
         types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
         years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
-        if years:
+        if st.button('Refresh page'):
             st.write(years[1])
             df_csv1 = (df_csv['Date year'].astype(int)>years[0]) & (df_csv['Date year'].astype(int)<years[1])
             df_csv1
