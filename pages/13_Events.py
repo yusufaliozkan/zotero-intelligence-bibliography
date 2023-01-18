@@ -103,8 +103,6 @@ df_gs.sort_values(by='date', ascending = True, inplace=True)
 # df_gs['month'] = df_gs['month'].replace('11', 'November')
 # df_gs['month'] = df_gs['month'].replace('12', 'December')
 
-df_gs
-
 filter = (df_gs['date']>=today)
 filter2 = (df_gs['date']<today)
 df_gs2 = df_gs.loc[filter2]
@@ -124,12 +122,13 @@ row_nu = len(feb.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
-st.write('Events in March')
-mar = df_gs[df_gs['month']=='03']
-df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
-row_nu = len(mar.index)
-for i in range(row_nu):
-    st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+if '03' in df_gs['month']:
+    st.write('Events in March')
+    mar = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
+    row_nu = len(mar.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
 st.header('Past events')
 row_nu2 = len(df_gs2.index)
