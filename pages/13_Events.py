@@ -101,7 +101,7 @@ for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
 st.header('Past events')
-
+filter2
 df_gs = df_gs.loc[filter2]
 df_gs
 df_gs2 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
