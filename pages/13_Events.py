@@ -90,7 +90,7 @@ df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('
 
 filter = (df_gs['date']>today)
 
-df_gs
+df_gs = df_gs.loc[filter]
 
 
 df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
