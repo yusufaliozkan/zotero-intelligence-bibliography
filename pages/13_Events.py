@@ -102,10 +102,10 @@ for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
 st.header('Past events')
-row_nu = len(df_gs2.index)
+row_nu2 = len(df_gs2.index)
 df_gs3 = ('['+ df_gs2['event_name'] + ']'+ '('+ df_gs2['link'] + ')'', organised by ' + '**' + df_gs2['organiser'] + '**' + '. Date: ' + df_gs2['date_new'] + ', Venue: ' + df_gs2['venue'])
 row_nu = len(df_gs.index)
-for i in range(row_nu):
+for i in range(row_nu2):
     st.write(''+str(i+1)+') '+ df_gs3.iloc[i]) 
 
 
