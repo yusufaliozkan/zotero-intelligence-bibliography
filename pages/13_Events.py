@@ -99,10 +99,14 @@ df_gs = df_gs.loc[filter]
 
 st.write('Events in January')
 df_gs = df_gs[df_gs['month']=='01']
-df_gs
-
 df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+row_nu = len(df_gs.index)
+for i in range(row_nu):
+    st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
 
+st.write('Events in February')
+df_gs = df_gs[df_gs['month']=='02']
+df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
 row_nu = len(df_gs.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
