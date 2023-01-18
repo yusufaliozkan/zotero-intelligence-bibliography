@@ -435,8 +435,6 @@ with tab2:
     df_year=df_year.reset_index(drop=True)
     max = df_year['Publication year'].max()
     min = df_year['Publication year'].min()
-    max.astype(int)
-    min.astype(int)
 
     with st.expander('Select publication type', expanded=False):
         types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
