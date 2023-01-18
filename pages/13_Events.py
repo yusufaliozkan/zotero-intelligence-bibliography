@@ -91,7 +91,7 @@ df_gs.sort_values(by='date', ascending = False, inplace=True)
 
 filter = (df_gs['date']>=today)
 filter2 = (df_gs['date']<today)
-df_gs = df_gs.loc[filter]
+df_gs = df_gs.loc[filter2]
 
 
 df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
