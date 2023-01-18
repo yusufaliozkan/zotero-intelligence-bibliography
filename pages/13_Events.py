@@ -94,8 +94,8 @@ df_gs
 # ' (Published on: ' + df['Date published']+', ' +
 # 'Added on: ' + df['Date added']+')'
 # )
-st.write(today)
-df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + df_gs.iloc)
+
+df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + df_gs['organiser'] + '. ' + df_gs['date_new'])
 
 row_nu = len(df_gs.index)
 for i in range(row_nu):
