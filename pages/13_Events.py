@@ -124,7 +124,7 @@ if '02' in df_gs['month'].values:
     for i in range(row_nu):
         st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
-if '03' in df_gs['month']:
+if '02' in df_gs['month'].values:
     st.write('Events in March')
     mar = df_gs[df_gs['month']=='03']
     df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
