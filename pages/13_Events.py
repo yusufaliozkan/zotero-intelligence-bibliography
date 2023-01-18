@@ -90,18 +90,18 @@ df_gs = pd.DataFrame(data, columns=columns)
 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
 df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
 df_gs.sort_values(by='date', ascending = True, inplace=True)
-df_gs['month'] = df_gs['month'].replace('01', 'January')
-df_gs['month'] = df_gs['month'].replace('02', 'February')
-df_gs['month'] = df_gs['month'].replace('03', 'March')
-df_gs['month'] = df_gs['month'].replace('04', 'April')
-df_gs['month'] = df_gs['month'].replace('05', 'May')
-df_gs['month'] = df_gs['month'].replace('06', 'June')
-df_gs['month'] = df_gs['month'].replace('07', 'July')
-df_gs['month'] = df_gs['month'].replace('08', 'August')
-df_gs['month'] = df_gs['month'].replace('09', 'September')
-df_gs['month'] = df_gs['month'].replace('10', 'October')
-df_gs['month'] = df_gs['month'].replace('11', 'November')
-df_gs['month'] = df_gs['month'].replace('12', 'December')
+# df_gs['month'] = df_gs['month'].replace('01', 'January')
+# df_gs['month'] = df_gs['month'].replace('02', 'February')
+# df_gs['month'] = df_gs['month'].replace('03', 'March')
+# df_gs['month'] = df_gs['month'].replace('04', 'April')
+# df_gs['month'] = df_gs['month'].replace('05', 'May')
+# df_gs['month'] = df_gs['month'].replace('06', 'June')
+# df_gs['month'] = df_gs['month'].replace('07', 'July')
+# df_gs['month'] = df_gs['month'].replace('08', 'August')
+# df_gs['month'] = df_gs['month'].replace('09', 'September')
+# df_gs['month'] = df_gs['month'].replace('10', 'October')
+# df_gs['month'] = df_gs['month'].replace('11', 'November')
+# df_gs['month'] = df_gs['month'].replace('12', 'December')
 
 df_gs
 
@@ -111,15 +111,15 @@ df_gs2 = df_gs.loc[filter2]
 df_gs = df_gs.loc[filter]
 
 st.write('Events in January')
-df_gs = df_gs[df_gs['month']=='01']
-df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+jan = df_gs[df_gs['month']=='01']
+df_gs1 = ('['+ jan['event_name'] + ']'+ '('+ jan['link'] + ')'', organised by ' + '**' + jan['organiser'] + '**' + '. Date: ' + jan['date_new'] + ', Venue: ' + jan['venue'])
 row_nu = len(df_gs.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
 
 st.write('Events in February')
-df_gs = df_gs[df_gs['month']=='02']
-df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+feb = df_gs[df_gs['month']=='02']
+df_gs1 = ('['+ feb['event_name'] + ']'+ '('+ feb['link'] + ')'', organised by ' + '**' + feb['organiser'] + '**' + '. Date: ' + feb['date_new'] + ', Venue: ' + feb['venue'])
 row_nu = len(df_gs.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
