@@ -61,7 +61,7 @@ with st.sidebar:
 
 
 today = dt.date.today()
-today2 = dt.date.today().strftime('%Y-%m-%d')
+today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Today is: '+ str(today2))
 
 # Create a connection object.
