@@ -442,7 +442,8 @@ with tab2:
         years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
         st.write(years[0])
         st.write(years[1])
-        df_csv = (df_csv['Date year']>years[0]) & (df_csv['Date year']<years[1])
+        df_csv1 = (df_csv['Date year']>years[0]) & (df_csv['Date year']<years[1])
+        df_csv1
 
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
