@@ -438,11 +438,6 @@ with tab2:
         types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
 
-        df_csv
-
-        clist_year = df_csv['Date year'].unique()
-        pub_year = st.selectbox('Select a publication year:', clist_year)
-        df_csv = df_csv[df_csv['Date year'].isin(pub_year)]
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
     df_types=df_types.reset_index()
