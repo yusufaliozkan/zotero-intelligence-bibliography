@@ -447,6 +447,7 @@ with tab2:
             filter = (df_csv['Date year'].astype(int)>years[0]) & (df_csv['Date year'].astype(int)<years[1])
             df_csv = df_csv.loc[filter]
             df_year=df_csv['Date year'].value_counts()
+            df_year=df_year.reset_index()
             df_year
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
             df_year
