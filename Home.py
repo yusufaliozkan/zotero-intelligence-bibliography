@@ -21,6 +21,7 @@ nltk.download('all')
 from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
+from gsheetsdb import connect
 
 # Connecting Zotero with API
 library_id = '2514686'
@@ -754,3 +755,4 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
+
