@@ -643,7 +643,7 @@ with tab2:
                     )
 
     st.write('---')
-    df=df.copy()
+    df=df_csv.copy()
     def clean_text (text):
         text = text.lower() # lowercasing
         text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
