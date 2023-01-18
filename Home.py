@@ -437,10 +437,10 @@ with tab2:
     min_y = int(df_year['Publication year'].min())
 
     with st.expander('Select parameters', expanded=False):
-        types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
-        df_csv = df_csv[df_csv['Publication type'].isin(types)]
+        types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())        
         years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
         if st.button('Show publications between selected years'):
+            df_csv = df_csv[df_csv['Publication type'].isin(types)]
             df_csv = df_csv[df_csv['Date year'] !='No date']
             filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
             df_csv = df_csv.loc[filter]
