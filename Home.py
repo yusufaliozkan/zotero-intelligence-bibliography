@@ -423,7 +423,7 @@ with tab2:
 
     # Visauls for all items in the library
     df_csv = pd.read_csv('all_items.csv')
-    with st.expander('Select publication type'):
+    with st.expander('Select publication type', expanded=False):
         types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
@@ -473,8 +473,7 @@ with tab2:
     df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
     df_year=df_year.sort_values(by='Publication year', ascending=True)
     df_year=df_year.reset_index(drop=True)
-    df_year
-    
+
     col1, col2 = st.columns(2)
     with col1:
         fig = px.bar(df_year, x='Publication year', y='Count')
