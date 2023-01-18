@@ -87,8 +87,8 @@ for row in rows:
 pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-df_gs = df_gs.sort_values(by='date', ascending = False, inplace=True)
-df_gs
+df_gs.sort_values(by='date', ascending = False, inplace=True)
+
 filter = (df_gs['date']>=today)
 df_gs = df_gs.loc[filter]
 
