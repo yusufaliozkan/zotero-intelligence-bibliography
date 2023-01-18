@@ -101,6 +101,8 @@ row_nu = len(df_gs.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
+today = dt.date.today()
+today
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
