@@ -780,7 +780,7 @@ for row in rows:
     st.write(f"{row.date} has a :{row.link}:")
 pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
-
+df_gs
 
 # data=[]
 # columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName']
