@@ -92,6 +92,10 @@ df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m'
 df_gs.sort_values(by='date', ascending = True, inplace=True)
 df_gs
 
+st.write('Events in January')
+df_gs_jan = df_gs[df_gs['month']==01]
+df_gs_jan
+
 filter = (df_gs['date']>=today)
 filter2 = (df_gs['date']<today)
 df_gs2 = df_gs.loc[filter2]
