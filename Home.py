@@ -427,6 +427,17 @@ with tab2:
         types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
 
+        df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+        df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
+        df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+        df = df_csv.copy()
+        df_year=df_csv['Date year'].value_counts()
+        df_year=df_year.reset_index()
+        df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+        df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+        df_year=df_year.sort_values(by='Publication year', ascending=True)
+        df_year=df_year.reset_index(drop=True)
+
         df_csv
 
         # clist_year = df_collections['Name'].unique()
@@ -468,17 +479,6 @@ with tab2:
         fig = px.pie(df_types, values='Count', names='Publication type')
         fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.45, 'yanchor':'top'})
         col2.plotly_chart(fig, use_container_width = True)
-
-    df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-    df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
-    df_csv['Date year'] = df_csv['Date year'].fillna('No date')
-    df = df_csv.copy()
-    df_year=df_csv['Date year'].value_counts()
-    df_year=df_year.reset_index()
-    df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-    df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-    df_year=df_year.sort_values(by='Publication year', ascending=True)
-    df_year=df_year.reset_index(drop=True)
 
     col1, col2 = st.columns(2)
     with col1:
