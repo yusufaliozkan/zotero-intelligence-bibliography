@@ -88,7 +88,7 @@ pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
 
-filter = (df_gs['date']>today)
+filter = (df_gs['date']<today)
 
 df_gs = df_gs.loc[filter]
 
