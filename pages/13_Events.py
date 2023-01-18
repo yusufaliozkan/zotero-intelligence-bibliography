@@ -82,10 +82,13 @@ for row in rows:
 
 pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
-df_gs
 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
 
 df_gs
+
+row_nu = len(df_gs.index)
+for i in range(row_nu):
+    st.write(''+str(i+1)+')')
 
 components.html(
 """
