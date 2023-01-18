@@ -440,7 +440,7 @@ with tab2:
         types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
         df_csv = df_csv[df_csv['Publication type'].isin(types)]
         years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
-        if st.button('Refresh page'):
+        if st.button('Show publications between ' + min_y + ' and ' +max_y):
             st.write(years[1])
             df_csv = df_csv[df_csv['Date year'] !='No date']
             df_csv
@@ -448,14 +448,10 @@ with tab2:
             df_csv = df_csv.loc[filter]
             df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
-            df_year
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-            df_year
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             df_year=df_year.reset_index(drop=True)
-            df_year
-            df_csv
 
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
     df_types = df_types.sort_values(['Publication type'], ascending=[False])
