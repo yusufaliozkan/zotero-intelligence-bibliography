@@ -433,8 +433,8 @@ with tab2:
     df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
     df_year=df_year.sort_values(by='Publication year', ascending=True)
     df_year=df_year.reset_index(drop=True)
-    max_y = df_year['Publication year'].max()
-    min_y = df_year['Publication year'].min()
+    max_y = int(df_year['Publication year'].max())
+    min_y = int(df_year['Publication year'].min())
     st.write(type(max_y))
 
     with st.expander('Select publication type', expanded=False):
