@@ -95,7 +95,7 @@ df_gs
 # 'Added on: ' + df['Date added']+')'
 # )
 
-df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + df_gs['organiser'] + '. ' + df_gs['date_new'])
+df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. ' + df_gs['date_new'])
 
 row_nu = len(df_gs.index)
 for i in range(row_nu):
