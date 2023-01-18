@@ -115,12 +115,13 @@ row_nu = len(jan.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
 
-st.write('Events in February')
-feb = df_gs[df_gs['month']=='02']
-df_gs1 = ('['+ feb['event_name'] + ']'+ '('+ feb['link'] + ')'', organised by ' + '**' + feb['organiser'] + '**' + '. Date: ' + feb['date_new'] + ', Venue: ' + feb['venue'])
-row_nu = len(feb.index)
-for i in range(row_nu):
-    st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+if '02' in df_gs['month']:
+    st.write('Events in February')
+    feb = df_gs[df_gs['month']=='02']
+    df_gs1 = ('['+ feb['event_name'] + ']'+ '('+ feb['link'] + ')'', organised by ' + '**' + feb['organiser'] + '**' + '. Date: ' + feb['date_new'] + ', Venue: ' + feb['venue'])
+    row_nu = len(feb.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
 
 if '03' in df_gs['month']:
     st.write('Events in March')
