@@ -98,9 +98,8 @@ df_gs2 = df_gs.loc[filter2]
 df_gs = df_gs.loc[filter]
 
 st.write('Events in January')
-df_gs_jan = df_gs[df_gs['month']=='01']
-df_gs_jan
-
+df_gs = df_gs[df_gs['month']=='01']
+df_gs
 
 df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
 
