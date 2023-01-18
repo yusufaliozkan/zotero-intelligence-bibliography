@@ -428,6 +428,7 @@ with tab2:
     df_csv['Date year'] = df_csv['Date year'].fillna('No date')
     df = df_csv.copy()
     df_year=df_csv['Date year'].value_counts()
+    df_year=df_year.reset_index()
     df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
     df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
     df_year=df_year.sort_values(by='Publication year', ascending=True)
@@ -452,6 +453,7 @@ with tab2:
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             df_year=df_year.reset_index(drop=True)
+            df_year
             df_csv
 
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
