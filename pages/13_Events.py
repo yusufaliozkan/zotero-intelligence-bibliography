@@ -20,9 +20,6 @@ from gsheetsdb import connect
 import datetime as dt     
 
 
-today = dt.date.today()
-today
-
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
@@ -62,6 +59,9 @@ with st.sidebar:
     with st.expander('Contact us'):
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
 
+
+today = dt.date.today()
+today
 
 # Create a connection object.
 conn = connect()
