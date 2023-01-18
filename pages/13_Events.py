@@ -86,9 +86,20 @@ df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('
 
 df_gs
 
+df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
+'['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
+' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+# "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
+"[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+' (Published on: ' + df['Date published']+', ' +
+'Added on: ' + df['Date added']+')'
+)
+
+df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')')
+
 row_nu = len(df_gs.index)
 for i in range(row_nu):
-    st.write(''+str(i+1)+')')
+    st.write(''+str(i+1)+')') + df_gs1.iloc[i]
 
 components.html(
 """
