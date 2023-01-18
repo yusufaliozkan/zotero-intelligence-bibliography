@@ -90,6 +90,7 @@ df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('
 df_gs.sort_values(by='date', ascending = False, inplace=True)
 
 filter = (df_gs['date']>=today)
+filter2 = (df_gs['date']<today)
 df_gs = df_gs.loc[filter]
 
 
@@ -101,7 +102,6 @@ for i in range(row_nu):
 
 st.header('Past events')
 
-filter2 = (df_gs['date']<today)
 df_gs = df_gs.loc[filter2]
 df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
 row_nu = len(df_gs.index)
