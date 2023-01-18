@@ -26,6 +26,37 @@ st.set_page_config(layout = "wide",
 
 st.title("Events about intelligence")
 
+with st.sidebar:
+
+    st.image(image, width=150)
+    st.sidebar.markdown("# Intelligence bibliography")
+    with st.expander('About'):
+        st.write('''This website lists secondary sources on intelligence studies and intelligence history.
+        The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
+        This website uses [Zotero API](https://github.com/urschrei/pyzotero) to connect the *Intelligence bibliography Zotero group library*.
+        To see more details about the sources, please visit the group library [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/library). 
+        If you need more information about Zotero, visit [this page](https://www.intelligencenetwork.org/zotero).
+        ''')
+        components.html(
+        """
+        <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
+        src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
+        © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+        """
+        )
+    with st.expander('Source code'):
+        st.info('''
+        Source code of this app is available [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography).
+        ''')
+    with st.expander('Disclaimer'):
+        st.warning('''
+        This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
+        The list is created based on the creator's subjective views.
+        ''')
+    with st.expander('Contact us'):
+        st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
+
+
 # Create a connection object.
 conn = connect()
 
