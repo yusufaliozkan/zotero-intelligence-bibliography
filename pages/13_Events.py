@@ -61,7 +61,7 @@ with st.sidebar:
 
 
 today = dt.date.today()
-today
+st.write('Today is: '+ str(today))
 
 # Create a connection object.
 conn = connect()
