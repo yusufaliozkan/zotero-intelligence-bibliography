@@ -107,6 +107,7 @@ df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised b
 row_nu = len(df_gs.index)
 for i in range(row_nu):
     st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+    
 
 components.html(
 """
