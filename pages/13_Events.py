@@ -93,7 +93,7 @@ df_gs.sort_values(by='date', ascending = True, inplace=True)
 df_gs
 
 st.write('Events in January')
-df_gs_jan = df_gs[df_gs['month']==1]
+df_gs_jan = df_gs[df_gs['month']=='01']
 df_gs_jan
 
 filter = (df_gs['date']>=today)
