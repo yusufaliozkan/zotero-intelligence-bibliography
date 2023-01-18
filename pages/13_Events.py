@@ -102,7 +102,10 @@ df_gs.sort_values(by='date', ascending = True, inplace=True)
 # df_gs['month'] = df_gs['month'].replace('10', 'October')
 # df_gs['month'] = df_gs['month'].replace('11', 'November')
 # df_gs['month'] = df_gs['month'].replace('12', 'December')
+online_event = st.checkbox('Show online events only')
 
+if online_event:
+    df_gs = df_gs[df_gs['venue']=='Online event']
 
 filter = (df_gs['date']>=today)
 filter2 = (df_gs['date']<today)
