@@ -446,6 +446,7 @@ with tab2:
             df_csv
             filter = (df_csv['Date year'].astype(int)>years[0]) & (df_csv['Date year'].astype(int)<years[1])
             df_csv = df_csv.loc[filter]
+            df_year=df_csv['Date year'].value_counts()
             df_csv
 
     df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
