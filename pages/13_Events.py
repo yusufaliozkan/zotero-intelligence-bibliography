@@ -60,7 +60,7 @@ with st.sidebar:
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
 
 
-today = dt.date.today()
+today = dt.date.today().strftime('%Y-%m-%d')
 st.write('Today is: '+ str(today))
 
 # Create a connection object.
