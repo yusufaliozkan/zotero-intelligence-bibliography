@@ -256,6 +256,8 @@ with tab1:
     st.plotly_chart(fig, use_container_width = True)
 
     organiser_plot = df_gs_plot['organiser'].value_counts()
+    organiser_plot=organiser_plot.reset_index()
+    organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
     organiser_plot
 
 with tab2:
