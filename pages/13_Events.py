@@ -255,6 +255,9 @@ with tab1:
     fig.update_layout(title={'text':'Events over time', 'y':0.95, 'x':0.5, 'yanchor':'top'})
     st.plotly_chart(fig, use_container_width = True)
 
+    organiser_plot = df_gs_plot['organiser'].value_conts()
+    organiser_plot
+
 with tab2:
     st.subheader('Conferences')
     sheet_url2 = st.secrets["public_gsheets_url2"]
