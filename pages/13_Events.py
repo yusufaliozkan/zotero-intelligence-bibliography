@@ -241,8 +241,15 @@ with tab1:
             st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
     
     st.header('Event visuals')
-
-    
+    df_gs
+    # fig = px.bar(df_year, x='Publication year', y='Count')
+    # fig.update_xaxes(tickangle=-70)
+    # fig.update_layout(
+    #     autosize=False,
+    #     width=400,
+    #     height=500,)
+    # fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    # col1.plotly_chart(fig, use_container_width = True)
 
 with tab2:
     st.subheader('Conferences')
