@@ -395,12 +395,11 @@ with tab1:
 
             pd.set_option('display.max_colwidth', None)
             df_gs = pd.DataFrame(data, columns=columns)
-            df_gs
             df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
             df_gs.sort_values(by='date', ascending = True, inplace=True)
+            today = dt.date.today()
             filter = (df_gs['date']>=today)
             df_gs = df_gs.loc[filter]
-            # df_gs = df_gs.head(3)
             if df_gs['event_name'].any() in ("", [], None, 0, False):
                 st.write('No upcoming event!')
             df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
