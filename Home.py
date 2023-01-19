@@ -28,13 +28,8 @@ api_key = '' # api_key is only needed for private groups and libraries
 
 # Bringing recently changed items
 
-@st.cache(ttl=6)
-def run_query():
-    zot = zotero.Zotero(library_id, library_type)
-    items = zot.top(limit=15)
-    return items
-
-items = run_query()
+zot = zotero.Zotero(library_id, library_type)
+items = zot.top(limit=15)
 
 data=[]
 columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName']
