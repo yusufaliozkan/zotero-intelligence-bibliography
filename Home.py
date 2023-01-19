@@ -409,41 +409,6 @@ with tab1:
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
         
-        # collections = zot.collections()
-        # data2=[]
-        # columns2 = ['Key','Name', 'Link']
-        # for item in collections:
-        #     data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
-
-        # pd.set_option('display.max_colwidth', None)
-        # df_collections = pd.DataFrame(data2, columns=columns2)
-
-        # df_collections = df_collections.sort_values(by='Name')
-        # collection_code = 'SBJXTAXH'
-        # collection_name = df_collections.loc[df_collections['Key']==collection_code, 'Name'].values[0]
-
-        # count_collection = zot.num_collectionitems(collection_code)
-
-        # items = zot.everything(zot.collection_items_top(collection_code))
-
-        # data3=[]
-        # columns3=['Title','Link to publication']
-
-        # for item in items:
-        #     data3.append((item['data']['title'], item['data']['url'])) 
-        # pd.set_option('display.max_colwidth', None)
-
-        # df = pd.DataFrame(data3, columns=columns3)
-        # df = df.sort_values(by='Title')
-        # df_items = ('['+df['Title'] + ']'+ '('+ df['Link to publication'] + ')')    
-        # row_nu_1= len(df.index)
-        # with st.expander(collection_name, expanded=False):
-        #     for i in range(row_nu_1):
-        #         st.caption(''+str(i+1)+') ' +df_items.iloc[i])
-        #         df_items.fillna("nan") 
-
-        # Zotero library collections
-
 with tab2:
     st.header('Dashboard')
     number0 = st.slider('Select a number collections', 3,30,15)
