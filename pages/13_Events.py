@@ -252,7 +252,8 @@ with tab1:
     fig.update_layout(
         autosize=False,
         width=400,
-        height=500,)
+        height=500,
+        showlegend=False)
     fig.update_layout(title={'text':'Events over time', 'y':0.95, 'x':0.5, 'yanchor':'top'})
     st.plotly_chart(fig, use_container_width = True)
 
