@@ -258,8 +258,7 @@ with tab2:
     df_con.sort_values(by='date', ascending = True, inplace=True)
 
     df_con['details'] = df_con['details'].fillna('No details')
-    df_con
-
+    
     display = st.checkbox('Show details', key='conference')
 
     filter = (df_con['date']>=today)
