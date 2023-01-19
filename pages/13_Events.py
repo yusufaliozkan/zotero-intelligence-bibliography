@@ -244,11 +244,11 @@ with tab2:
     rows = run_query(f'SELECT * FROM "{sheet_url2}"')
 
     data = []
-    columns = ['conference_name', 'organiser', 'link', 'date', 'date_end', 'venue', 'details']
+    columns = ['conference_name', 'organiser', 'link', 'date', 'date_end', 'venue', 'details', 'location']
 
     # Print results.
     for row in rows:
-        data.append((row.conference_name, row.organiser, row.link, row.date, row.date_end, row.venue, row.details))
+        data.append((row.conference_name, row.organiser, row.link, row.date, row.date_end, row.venue, row.details, row.location))
 
     pd.set_option('display.max_colwidth', None)
     df_con = pd.DataFrame(data, columns=columns)
@@ -258,6 +258,7 @@ with tab2:
     df_con.sort_values(by='date', ascending = True, inplace=True)
 
     df_con['details'] = df_con['details'].fillna('No details')
+    df_con['location'] = df_con['location'].fillna('No details')
     
     display = st.checkbox('Show details', key='conference')
 
@@ -271,7 +272,9 @@ with tab2:
     for i in range(row_nu):
         st.write(''+str(i+1)+') '+ df_con1.iloc[i])
         if display:
+            st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
             st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
+        
 
 with tab3:
     st.write('CfP')
