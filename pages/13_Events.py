@@ -92,6 +92,7 @@ with tab1:
 
     df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
+    df_gs['month_year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m-%Y')
     df_gs.sort_values(by='date', ascending = True, inplace=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
     
@@ -237,7 +238,11 @@ with tab1:
         df_gs3 = ('['+ df_gs2['event_name'] + ']'+ '('+ df_gs2['link'] + ')'', organised by ' + '**' + df_gs2['organiser'] + '**' + '. Date: ' + df_gs2['date_new'] + ', Venue: ' + df_gs2['venue'])
         row_nu = len(df_gs.index)
         for i in range(row_nu2):
-            st.write(''+str(i+1)+') '+ df_gs3.iloc[i]) 
+            st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
+    
+    st.header('Event visuals')
+
+    
 
 with tab2:
     st.subheader('Conferences')
