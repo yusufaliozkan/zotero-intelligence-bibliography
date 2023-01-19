@@ -246,14 +246,14 @@ with tab1:
     date_plot=date_plot.reset_index()
     date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
     date_plot
-    # fig = px.bar(date_plot, x='', y='Count')
-    # fig.update_xaxes(tickangle=-70)
-    # fig.update_layout(
-    #     autosize=False,
-    #     width=400,
-    #     height=500,)
-    # fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-    # st.plotly_chart(fig, use_container_width = True)
+    fig = px.bar(date_plot, x='', y='Count')
+    fig.update_xaxes(tickangle=-70)
+    fig.update_layout(
+        autosize=False,
+        width=400,
+        height=500,)
+    fig.update_layout(title={'text':'Events over time', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    st.plotly_chart(fig, use_container_width = True)
 
 with tab2:
     st.subheader('Conferences')
