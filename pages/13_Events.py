@@ -117,7 +117,6 @@ if df_gs['event_name'].any() in ("", [], None, 0, False):
 
 for i in range(12):
     a=i+1
-    a
 
 if '01' in df_gs['month'].values:
     st.markdown('#### Events in January')
