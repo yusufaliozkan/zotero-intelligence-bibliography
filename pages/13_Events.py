@@ -244,6 +244,7 @@ with tab1:
     df_gs
     date_plot=df_gs['month_year'].value_counts()
     date_plot=date_plot.reset_index()
+    date_plot=date_plot.rename(columns={'index':'Date','Date year':'Count'})
     date_plot
     # fig = px.bar(date_plot, x='', y='Count')
     # fig.update_xaxes(tickangle=-70)
