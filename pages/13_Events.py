@@ -309,6 +309,7 @@ with tab3:
         if display:
             st.caption('Details:'+'\n '+ df_cfp['details'].iloc[i])
 
+st.write('---')
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
