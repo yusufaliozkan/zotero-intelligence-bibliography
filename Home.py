@@ -22,6 +22,7 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
+import datetime as dt
 
 # Connecting Zotero with API
 library_id = '2514686'
@@ -369,6 +370,42 @@ with tab1:
             st.caption('[Intelligence and cybersphere](https://intelligence-bibliography.streamlit.app/Intelligence_and_cybersphere)')
             st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
             st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
+
+        with st.expander('Events', expanded=True):
+            # Create a connection object.
+            conn = connect()
+
+            # Perform SQL query on the Google Sheet.
+            # Uses st.cache to only rerun when the query changes or after 10 min.
+            @st.cache(ttl=10)
+            def run_query(query):
+                rows = conn.execute(query, headers=1)
+                rows = rows.fetchall()
+                return rows
+
+            sheet_url = st.secrets["public_gsheets_url"]
+            rows = run_query(f'SELECT * FROM "{sheet_url}"')
+
+            data = []
+            columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
+
+            # Print results.
+            for row in rows:
+                data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
+
+            pd.set_option('display.max_colwidth', None)
+            df_gs = pd.DataFrame(data, columns=columns)
+            df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+            df_gs.sort_values(by='date', ascending = True, inplace=True)
+            filter = (df_gs['date']>=today)
+            df_gs = df_gs.loc[filter]
+            df_gs = df_gs.head(3)
+            if df_gs['event_name'].any() in ("", [], None, 0, False):
+                st.write('No upcoming event!')
+            df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+            row_nu = len(df_gs.index)
+            for i in range(row_nu):
+                st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
         
         # collections = zot.collections()
         # data2=[]
@@ -756,28 +793,3 @@ src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
 © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
-
-
-# Create a connection object.
-conn = connect()
-
-# Perform SQL query on the Google Sheet.
-# Uses st.cache to only rerun when the query changes or after 10 min.
-@st.cache(ttl=600)
-def run_query(query):
-    rows = conn.execute(query, headers=1)
-    rows = rows.fetchall()
-    return rows
-
-sheet_url = st.secrets["public_gsheets_url"]
-rows = run_query(f'SELECT * FROM "{sheet_url}"')
-
-data = []
-columns = ['event_name', 'organiser', 'link', 'date', 'venue']
-
-# Print results.
-for row in rows:
-    data.append((row.event_name, row.organiser, row.link, row.date, row.venue))
-
-pd.set_option('display.max_colwidth', None)
-df_gs = pd.DataFrame(data, columns=columns)

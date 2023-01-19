@@ -59,7 +59,6 @@ with st.sidebar:
     with st.expander('Contact us'):
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
 
-
 today = dt.date.today()
 today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Today is: '+ str(today2))
