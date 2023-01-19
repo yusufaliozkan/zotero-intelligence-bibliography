@@ -263,7 +263,7 @@ with tab1:
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(
         autosize=False,
-        width=400,
+        width=600,
         height=700,)
     fig.update_layout(title={'text':'Events by organisers', 'y':0.95, 'x':0.5, 'yanchor':'top'})
     st.plotly_chart(fig, use_container_width = True)
