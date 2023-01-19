@@ -34,7 +34,7 @@ def run_query(query):
     items = zot.top(limit=15)
     return items
 
-items
+items = run_query()
 
 data=[]
 columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName']
