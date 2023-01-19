@@ -97,6 +97,7 @@ with tab1:
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
     
     df_gs['details'] = df_gs['details'].fillna('No details')
+    df_gs_plot = df_gs.copy()
     
     online_event = st.checkbox('Show online events only')
 
@@ -242,7 +243,7 @@ with tab1:
     
     st.header('Event visuals')
     df_gs
-    date_plot=df_gs['month_year'].value_counts()
+    date_plot=df_gs_plot['month_year'].value_counts()
     date_plot=date_plot.reset_index()
     date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
     date_plot=date_plot.sort_values(by='Date')
