@@ -115,11 +115,6 @@ df_gs = df_gs.loc[filter]
 if df_gs['event_name'].any() in ("", [], None, 0, False):
     st.write('No upcoming event!')
 
-for i in range(12):
-    a=str(i+1)
-    a
-
-
 if '01' in df_gs['month'].values:
     st.markdown('#### Events in January')
     jan = df_gs[df_gs['month']=='01']
@@ -130,11 +125,66 @@ if '01' in df_gs['month'].values:
 
 if '02' in df_gs['month'].values:
     st.markdown('#### Events in February')
-    feb = df_gs[df_gs['month']=='02']
-    df_gs1 = ('['+ feb['event_name'] + ']'+ '('+ feb['link'] + ')'', organised by ' + '**' + feb['organiser'] + '**' + '. Date: ' + feb['date_new'] + ', Venue: ' + feb['venue'])
-    row_nu = len(feb.index)
+    jan = df_gs[df_gs['month']=='02']
+    df_gs1 = ('['+ jan['event_name'] + ']'+ '('+ jan['link'] + ')'', organised by ' + '**' + jan['organiser'] + '**' + '. Date: ' + jan['date_new'] + ', Venue: ' + jan['venue'])
+    row_nu = len(jan.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+
+if '04' in df_gs['month'].values:
+    st.markdown('#### Events in April', expanded=True)
+    apr = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ apr['event_name'] + ']'+ '('+ apr['link'] + ')'', organised by ' + '**' + apr['organiser'] + '**' + '. Date: ' + apr['date_new'] + ', Venue: ' + apr['venue'])
+    row_nu = len(mar.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+
+if '03' in df_gs['month'].values:
+    st.markdown('#### Events in March', expanded=True)
+    mar = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
+    row_nu = len(mar.index)
     for i in range(row_nu):
         st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+if '03' in df_gs['month'].values:
+    st.markdown('#### Events in March', expanded=True)
+    mar = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
+    row_nu = len(mar.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+
+if '03' in df_gs['month'].values:
+    st.markdown('#### Events in March', expanded=True)
+    mar = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
+    row_nu = len(mar.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i]) 
+
+if '03' in df_gs['month'].values:
+    st.markdown('#### Events in March', expanded=True)
+    mar = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
+    row_nu = len(mar.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+
+if '03' in df_gs['month'].values:
+    st.markdown('#### Events in March', expanded=True)
+    mar = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
+    row_nu = len(mar.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+
+if '03' in df_gs['month'].values:
+    st.markdown('#### Events in March', expanded=True)
+    mar = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ mar['event_name'] + ']'+ '('+ mar['link'] + ')'', organised by ' + '**' + mar['organiser'] + '**' + '. Date: ' + mar['date_new'] + ', Venue: ' + mar['venue'])
+    row_nu = len(mar.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
 
 if '03' in df_gs['month'].values:
     st.markdown('#### Events in March', expanded=True)
