@@ -76,6 +76,7 @@ def run_query(query):
 
 tab1, tab2, tab3 = st.tabs(['Events', 'Conference','Call for papers'])
 with tab1:
+    st.subheader('Events')
     sheet_url = st.secrets["public_gsheets_url"]
     rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
@@ -239,6 +240,22 @@ with tab1:
 
 with tab2:
     st.subheader('Conferences')
+    sheet_url2 = st.secrets["public_gsheets_url2"]
+    rows = run_query(f'SELECT * FROM "{sheet_url2}"')
+
+    data = []
+    columns = ['conference_name', 'organiser', 'link', 'date', 'venue', 'details']
+
+    # Print results.
+    for row in rows:
+        data.append((row.conference_name, row.organiser, row.link, row.date, row.venue, row.details))
+
+    pd.set_option('display.max_colwidth', None)
+    df_con = pd.DataFrame(data, columns=columns)
+
+    df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+    df_con['month'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%m')
+    df_con.sort_values(by='date', ascending = True, inplace=True)
 
 with tab3:
     st.write('CfP')
