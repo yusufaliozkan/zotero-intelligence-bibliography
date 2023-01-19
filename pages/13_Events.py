@@ -108,7 +108,6 @@ online_event = st.checkbox('Show online events only')
 if online_event:
     df_gs = df_gs[df_gs['venue']=='Online event']
 
-
 display = st.checkbox('Show details')
 
 filter = (df_gs['date']>=today)
@@ -124,9 +123,9 @@ if '01' in df_gs['month'].values:
     df_gs1 = ('['+ mon['event_name'] + ']'+ '('+ mon['link'] + ')'', organised by ' + '**' + mon['organiser'] + '**' + '. Date: ' + mon['date_new'] + ', Venue: ' + mon['venue'])
     row_nu = len(mon.index)
     for i in range(row_nu):
-        st.write(''+str(i+1)+') '+ df_gs.iloc[i])
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
     # if display:
-    #     st.caption('Details:'+'\n '+ df_gs1['details'].iloc[i])
+    #     st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
 
 if '02' in df_gs['month'].values:
     st.markdown('#### Events in February')
