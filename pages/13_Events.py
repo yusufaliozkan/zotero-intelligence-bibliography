@@ -87,6 +87,10 @@ for row in rows:
 
 pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
+
+if df_gs['event_name'].any() in ("", [], None, 0, False):
+    st.write('No upcoming event!')
+
 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
 df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
 df_gs.sort_values(by='date', ascending = True, inplace=True)
