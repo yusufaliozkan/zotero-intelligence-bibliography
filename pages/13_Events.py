@@ -246,7 +246,7 @@ with tab1:
     date_plot=date_plot.reset_index()
     date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
     date_plot
-    fig = px.bar(date_plot, x='', y='Count')
+    fig = px.bar(date_plot, x='Date', y='Count')
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(
         autosize=False,
