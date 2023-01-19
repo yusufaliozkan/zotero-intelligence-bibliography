@@ -239,6 +239,44 @@ with tab1:
             st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
             st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
+        with st.expander('Events', expanded=True):
+            # Create a connection object.
+            conn = connect()
+
+            # Perform SQL query on the Google Sheet.
+            # Uses st.cache to only rerun when the query changes or after 10 min.
+            @st.cache(ttl=10)
+            def run_query(query):
+                rows = conn.execute(query, headers=1)
+                rows = rows.fetchall()
+                return rows
+
+            sheet_url = st.secrets["public_gsheets_url"]
+            rows = run_query(f'SELECT * FROM "{sheet_url}"')
+
+            data = []
+            columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
+
+            # Print results.
+            for row in rows:
+                data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
+
+            pd.set_option('display.max_colwidth', None)
+            df_gs = pd.DataFrame(data, columns=columns)
+            df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+            df_gs.sort_values(by='date', ascending = True, inplace=True)
+            today = dt.date.today()
+            filter = (df_gs['date']>=today)
+            df_gs = df_gs.loc[filter]
+            df_gs = df_gs.head(3)
+            if df_gs['event_name'].any() in ("", [], None, 0, False):
+                st.write('No upcoming event!')
+            df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+            row_nu = len(df_gs.index)
+            for i in range(row_nu):
+                st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+            st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
+            
 with tab2:
     st.header('Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
