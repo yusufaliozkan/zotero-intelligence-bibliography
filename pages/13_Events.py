@@ -242,14 +242,17 @@ with tab1:
     
     st.header('Event visuals')
     df_gs
-    # fig = px.bar(df_year, x='Publication year', y='Count')
+    date_plot=df_gs['month_year'].value_counts()
+    date_plot=date_plot.reset_index()
+    date_plot
+    # fig = px.bar(date_plot, x='', y='Count')
     # fig.update_xaxes(tickangle=-70)
     # fig.update_layout(
     #     autosize=False,
     #     width=400,
     #     height=500,)
     # fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-    # col1.plotly_chart(fig, use_container_width = True)
+    # st.plotly_chart(fig, use_container_width = True)
 
 with tab2:
     st.subheader('Conferences')
