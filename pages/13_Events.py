@@ -79,11 +79,11 @@ sheet_url = st.secrets["public_gsheets_url"]
 rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
 data = []
-columns = ['event_name', 'organiser', 'link', 'date', 'venue']
+columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
 
 # Print results.
 for row in rows:
-    data.append((row.event_name, row.organiser, row.link, row.date, row.venue))
+    data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
 
 pd.set_option('display.max_colwidth', None)
 df_gs = pd.DataFrame(data, columns=columns)
@@ -108,6 +108,8 @@ online_event = st.checkbox('Show online events only')
 if online_event:
     df_gs = df_gs[df_gs['venue']=='Online event']
 
+display = st.checkbox('Show details')
+
 filter = (df_gs['date']>=today)
 filter2 = (df_gs['date']<today)
 df_gs2 = df_gs.loc[filter2]
@@ -122,6 +124,8 @@ if '01' in df_gs['month'].values:
     row_nu = len(mon.index)
     for i in range(row_nu):
         st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+    if display:
+        st.caption('Details:'+'\n '+ df_gs1['details'].iloc[i])
 
 if '02' in df_gs['month'].values:
     st.markdown('#### Events in February')
