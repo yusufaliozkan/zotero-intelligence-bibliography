@@ -100,7 +100,7 @@ with tab1:
     online_event = st.checkbox('Show online events only')
 
     if online_event:
-        df_gs = df_gs[df_gs['venue']=='Online event']
+        df_gs = df_gs[df_gs['venue', 'link']=='Online event']
 
     display = st.checkbox('Show details')
 
