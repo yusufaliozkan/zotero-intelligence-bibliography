@@ -257,6 +257,15 @@ with tab2:
     df_con['month'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%m')
     df_con.sort_values(by='date', ascending = True, inplace=True)
 
+    df_con['details'] = df_con['details'].fillna('No details')
+
+    display = st.checkbox('Show details')
+
+    filter = (df_con['date']>=today)
+    df_con = df_con.loc[filter]
+    if df_con['event_name'].any() in ("", [], None, 0, False):
+        st.write('No upcoming conference!')
+
 with tab3:
     st.write('CfP')
 
