@@ -105,7 +105,7 @@ with tab1:
         df_gs = df_gs[df_gs['venue']=='Online event']
 
     display = st.checkbox('Show details')
-    st.write('See [Event visuals](#Event-visuals)')
+    st.write('See [Event visuals](#event-visuals)')
 
     filter = (df_gs['date']>=today)
     filter2 = (df_gs['date']<today)
