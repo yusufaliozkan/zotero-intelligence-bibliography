@@ -76,7 +76,7 @@ def run_query(query):
 
 tab1, tab2, tab3 = st.tabs(['Events', 'Conferences','Call for papers'])
 with tab1:
-    st.subheader('Events')
+    st.header('Events')
     sheet_url = st.secrets["public_gsheets_url"]
     rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
@@ -105,6 +105,7 @@ with tab1:
         df_gs = df_gs[df_gs['venue']=='Online event']
 
     display = st.checkbox('Show details')
+    st.write('See [Events visuals](Event visuals)')
 
     filter = (df_gs['date']>=today)
     filter2 = (df_gs['date']<today)
@@ -263,7 +264,7 @@ with tab1:
     fig.update_xaxes(tickangle=-70)
     fig.update_layout(
         autosize=False,
-        width=600,
+        width=400,
         height=700,)
     fig.update_layout(title={'text':'Events by organisers', 'y':0.95, 'x':0.5, 'yanchor':'top'})
     st.plotly_chart(fig, use_container_width = True)
