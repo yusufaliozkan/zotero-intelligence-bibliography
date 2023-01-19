@@ -94,9 +94,9 @@ with tab1:
     df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
     df_gs.sort_values(by='date', ascending = True, inplace=True)
     df_gs
-    df_gs = df_gs.drop_duplicates(subset='event_name',keep=False, inplace=True)
-
+    
     df_gs['details'] = df_gs['details'].fillna('No details')
+    df_gs = df_gs.drop_duplicates(subset='event_name',keep=False, inplace=True)
 
     online_event = st.checkbox('Show online events only')
 
