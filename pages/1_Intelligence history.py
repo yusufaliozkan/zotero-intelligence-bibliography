@@ -16,6 +16,8 @@ nltk.download('all')
 from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
+from gsheetsdb import connect
+import datetime as dt     
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
@@ -241,7 +243,7 @@ with tab1:
             st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
             st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
             st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
-            
+
         with st.expander('Events', expanded=True):
             # Create a connection object.
             conn = connect()
