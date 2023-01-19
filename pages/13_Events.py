@@ -263,7 +263,7 @@ with tab2:
 
     filter = (df_con['date']>=today)
     df_con = df_con.loc[filter]
-    if df_con['event_name'].any() in ("", [], None, 0, False):
+    if df_con['conference_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming conference!')
 
 with tab3:
