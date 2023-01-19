@@ -258,7 +258,7 @@ with tab1:
     organiser_plot = df_gs_plot['organiser'].value_counts()
     organiser_plot=organiser_plot.reset_index()
     organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
-    organiser_plot=organiser_plot.sort_values(by='Count')
+    organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
     organiser_plot
 
 with tab2:
