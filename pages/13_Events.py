@@ -124,8 +124,8 @@ if '01' in df_gs['month'].values:
     row_nu = len(mon.index)
     for i in range(row_nu):
         st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
-    # if display:
-    #     st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+        if display:
+            st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
 
 if '02' in df_gs['month'].values:
     st.markdown('#### Events in February')
