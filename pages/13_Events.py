@@ -259,7 +259,14 @@ with tab1:
     organiser_plot=organiser_plot.reset_index()
     organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
     organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
-    organiser_plot
+    fig = px.bar(organiser_plot, x='Organiser', y='Count')
+    fig.update_xaxes(tickangle=-70)
+    fig.update_layout(
+        autosize=False,
+        width=400,
+        height=500,)
+    fig.update_layout(title={'text':'Events by organisers', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    st.plotly_chart(fig, use_container_width = True)
 
 with tab2:
     st.subheader('Conferences')
