@@ -74,7 +74,7 @@ def run_query(query):
     rows = rows.fetchall()
     return rows
 
-tab1, tab2, tab3 = st.tabs(['Events', 'Conference','Call for papers'])
+tab1, tab2, tab3 = st.tabs(['Events', 'Conferences','Call for papers'])
 with tab1:
     st.subheader('Events')
     sheet_url = st.secrets["public_gsheets_url"]
