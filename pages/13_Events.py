@@ -96,7 +96,7 @@ with tab1:
     df_gs
     
     df_gs['details'] = df_gs['details'].fillna('No details')
-    df_gs = df_gs.drop_duplicates(subset='event_name',keep=False, inplace=True)
+    df_gs = df_gs.drop_duplicates(subset=['event_name'])
 
     online_event = st.checkbox('Show online events only')
 
