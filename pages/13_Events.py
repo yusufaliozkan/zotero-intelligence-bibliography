@@ -131,6 +131,14 @@ if '02' in df_gs['month'].values:
     for i in range(row_nu):
         st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
 
+if '03' in df_gs['month'].values:
+    st.markdown('#### Events in March')
+    mon = df_gs[df_gs['month']=='03']
+    df_gs1 = ('['+ mon['event_name'] + ']'+ '('+ mon['link'] + ')'', organised by ' + '**' + mon['organiser'] + '**' + '. Date: ' + mon['date_new'] + ', Venue: ' + mon['venue'])
+    row_nu = len(mon.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+
 
 
 st.header('Past events')
