@@ -25,7 +25,7 @@ st.set_page_config(layout = "centered",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Events about intelligence")
+st.title("Events on intelligence")
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 
