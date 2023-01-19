@@ -407,7 +407,7 @@ with tab1:
             row_nu = len(df_gs.index)
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
-            st.write('For more events, go to the [Events on intelligence](https://intelligence.streamlit.app/Events) page')
+            st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
         
         # collections = zot.collections()
         # data2=[]
