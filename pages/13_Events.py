@@ -238,6 +238,7 @@ with tab1:
             st.write(''+str(i+1)+') '+ df_gs3.iloc[i]) 
 
 with tab2:
+    st.write('Conferences')
 
 with tab3:
     st.write('CfP')
