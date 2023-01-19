@@ -116,7 +116,9 @@ if df_gs['event_name'].any() in ("", [], None, 0, False):
     st.write('No upcoming event!')
 
 for i in range(12):
-    a=i+1
+    a=str(i+1)
+    a
+
 
 if '01' in df_gs['month'].values:
     st.markdown('#### Events in January')
