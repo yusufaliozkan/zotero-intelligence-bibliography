@@ -267,7 +267,7 @@ with tab2:
     if df_con['conference_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming conference!')
 
-    df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date: ' + df_con['date_new'] + ', Venue: ' + df_con['venue'])
+    df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Dates: ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
     row_nu = len(df_con.index)
     for i in range(row_nu):
         st.write(''+str(i+1)+') '+ df_con1.iloc[i])
