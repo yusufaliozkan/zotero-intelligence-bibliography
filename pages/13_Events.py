@@ -275,9 +275,39 @@ with tab2:
             st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
             st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
         
-
 with tab3:
-    st.write('CfP')
+    st.subheader('Call for papers')
+    sheet_url3 = st.secrets["public_gsheets_url3"]
+    rows = run_query(f'SELECT * FROM "{sheet_url3}"')
+
+    data = []
+    columns = ['name', 'organiser', 'link', 'date', 'details']
+
+    # Print results.
+    for row in rows:
+        data.append((row.name, row.organiser, row.link, row.deadline, row.details))
+
+    pd.set_option('display.max_colwidth', None)
+    df_cfp = pd.DataFrame(data, columns=columns)
+
+    df_cfp['date_new'] = pd.to_datetime(df_cfp['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+    df_con.sort_values(by='date', ascending = True, inplace=True)
+
+    df_cfp['details'] = df_cfp['details'].fillna('No details')
+    
+    display = st.checkbox('Show details', key='cfp')
+
+    filter = (df_cfp['date']>=today)
+    df_cfp = df_cfp.loc[filter]
+    if df_cfp['name'].any() in ("", [], None, 0, False):
+        st.write('No upcoming Call for papers!')
+
+    df_cfp1 = ('['+ df_cfp['name'] + ']'+ '('+ df_cfp['link'] + ')'', organised by ' + '**' + df_cfp['organiser'] + '**' + '. Deadline: ' + df_cfp['date_new'])
+    row_nu = len(df_cfp.index)
+    for i in range(row_nu):
+        st.write(''+str(i+1)+') '+ df_cfp1.iloc[i])
+        if display:
+            st.caption('Details:'+'\n '+ df_cfp['details'].iloc[i])
 
 components.html(
 """
