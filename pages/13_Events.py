@@ -259,7 +259,7 @@ with tab2:
 
     df_con['details'] = df_con['details'].fillna('No details')
 
-    display = st.checkbox('Show details')
+    display = st.checkbox('Show details', key='conference')
 
     filter = (df_con['date']>=today)
     df_con = df_con.loc[filter]
