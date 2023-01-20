@@ -115,12 +115,8 @@ with tab1:
         st.write('No upcoming event!')
 
     if '01' in df_gs['month'].values:
-        a = st.container()
-        st.write(str(a))
         st.markdown('#### Events in January')
         mon = df_gs[df_gs['month']=='01']
-        a=len(mon)
-        # mon = mon.reset_index(inplace=True)
         df_gs1 = ('['+ mon['event_name'] + ']'+ '('+ mon['link'] + ')'', organised by ' + '**' + mon['organiser'] + '**' + '. Date: ' + mon['date_new'] + ', Venue: ' + mon['venue'])
         row_nu = len(mon.index)
         for i in range(row_nu):
