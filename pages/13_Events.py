@@ -116,7 +116,8 @@ with tab1:
 
     if '01' in df_gs['month'].values:
         a = st.container()
-        st.markdown(str(a)+'#### Events in January')
+        st.write(str(a))
+        st.markdown('#### Events in January')
         mon = df_gs[df_gs['month']=='01']
         a=len(mon)
         # mon = mon.reset_index(inplace=True)
