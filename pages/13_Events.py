@@ -117,8 +117,8 @@ with tab1:
     if '01' in df_gs['month'].values:
         st.markdown('#### Events in January')
         mon = df_gs[df_gs['month']=='01']
-        mon = mon.sort_index(ascending=False)
-        mon
+        # mon = mon.sort_index(ascending=False)
+        # mon
         df_gs1 = ('['+ mon['event_name'] + ']'+ '('+ mon['link'] + ')'', organised by ' + '**' + mon['organiser'] + '**' + '. Date: ' + mon['date_new'] + ', Venue: ' + mon['venue'])
         row_nu = len(mon.index)
         for i in range(row_nu):
