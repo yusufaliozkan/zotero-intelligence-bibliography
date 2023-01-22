@@ -279,7 +279,7 @@ with tab1:
             slider = st.slider('Select a year', 2022,2023,2023)
             slider = str(slider)
             df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
-            ap = '(in )' + slider
+            ap = '(in ' + slider+')'
 
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
