@@ -286,10 +286,9 @@ with tab1:
         fig.update_layout(title={'text':'Events over time', 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
 
-        # years = df_gs_plot['year'].unique()
-        # years = st.slider('Years:', min_y, max_y, (min_y, max_y), key='years')
-        # filter_y = (df_gs_plot['year'].astype(int)>=years[0])& (df_gs_plot['year'].astype(int)<years[1])
-        # df_
+        years = df_gs_plot['year'].unique()
+        years
+
         organiser_plot = df_gs_plot['organiser'].value_counts()
         organiser_plot=organiser_plot.reset_index()
         organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
