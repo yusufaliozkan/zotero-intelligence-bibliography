@@ -381,7 +381,7 @@ with tab3:
     df_cfp = pd.DataFrame(data, columns=columns)
 
     df_cfp['date_new'] = pd.to_datetime(df_cfp['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-    df_con.sort_values(by='date', ascending = True, inplace=True)
+    df_cfp.sort_values(by='date', ascending = True, inplace=True)
 
     df_cfp['details'] = df_cfp['details'].fillna('No details')
     
