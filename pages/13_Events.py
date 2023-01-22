@@ -277,6 +277,7 @@ with tab1:
         if y_2022:
             df_gs_plot =df_gs_plot[df_gs_plot['year']=='2022']
         y_2023 = st.checkbox('2023')
+            df_gs_plot =df_gs_plot[df_gs_plot['year']=='2023']
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
