@@ -279,6 +279,7 @@ with tab1:
             slider = st.slider('Select a year', 2022,2023,2023)
             slider = str(slider)
             df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
+            ap = '(in )' + slider
 
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
@@ -290,7 +291,7 @@ with tab1:
             autosize=False,
             width=400,
             height=500)
-        fig.update_layout(title={'text':'Events over time', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+        fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
 
         organiser_plot = df_gs_plot['organiser'].value_counts()
