@@ -273,7 +273,7 @@ with tab1:
                         st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
         
         st.header('Event visuals')
-
+        ap = ''
         selector = st.checkbox('Select a year')
         if selector:
             slider = st.slider('Select a year', 2022,2023,2023)
