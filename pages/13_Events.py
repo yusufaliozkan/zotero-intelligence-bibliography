@@ -274,6 +274,7 @@ with tab1:
         
         st.header('Event visuals')
         ap = ''
+        ap2 = ''
         selector = st.checkbox('Select a year')
         if selector:
             slider = st.slider('Select a year', 2022,2023,2023)
@@ -301,6 +302,7 @@ with tab1:
         top5 = st.checkbox('Show the top 5 event organiser')
         if top5:
             organiser_plot=organiser_plot.head(5)
+            ap2 = ' (top 5)'
         fig = px.bar(organiser_plot, x='Organiser', y='Count', color='Organiser')
         fig.update_xaxes(tickangle=-65)
         fig.update_layout(
@@ -308,7 +310,7 @@ with tab1:
             width=400,
             height=700,
             showlegend=False)
-        fig.update_layout(title={'text':'Events by organisers' + ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+        fig.update_layout(title={'text':'Events by organisers' + ap + ap2, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
 
 with tab2:
