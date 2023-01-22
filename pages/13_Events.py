@@ -99,15 +99,19 @@ with tab1:
     df_gs['details'] = df_gs['details'].fillna('No details')
     df_gs_plot = df_gs.copy()
     
-    online_event = st.checkbox('Show online events only')
+    col1, col2, col3 = st.columns(3)
 
-    if online_event:
-        df_gs = df_gs[df_gs['venue']=='Online event']
+    with col1:
+        online_event = st.checkbox('Show online events only')
+        if online_event:
+            df_gs = df_gs[df_gs['venue']=='Online event']
     
-    last_added = st.checkbox('Show last added items first')
+    with col2:
+        last_added = st.checkbox('Sort by most recently added')
 
-    display = st.checkbox('Show details')
-    st.write('See [Event visuals](#event-visuals)')
+    with col3:
+        display = st.checkbox('Show details')
+        st.write('See [Event visuals](#event-visuals)')
 
 
     filter = (df_gs['date']>=today)
