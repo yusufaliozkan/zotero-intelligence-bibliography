@@ -311,19 +311,30 @@ with tab2:
     df_con['location'] = df_con['location'].fillna('No details')
     
     display = st.checkbox('Show details', key='conference')
-
+    last_added = st.checkbox('Sort by most recently added')
     filter = (df_con['date']>=today)
     df_con = df_con.loc[filter]
     if df_con['conference_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming conference!')
 
-    df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
-    row_nu = len(df_con.index)
-    for i in range(row_nu):
-        st.write(''+str(i+1)+') '+ df_con1.iloc[i])
-        if display:
-            st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
-            st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
+    if last_added:
+        df_con = df_con.sort_index(ascending=False)
+        df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
+        row_nu = len(df_con.index)
+        for i in range(row_nu):
+            st.write(''+str(i+1)+') '+ df_con1.iloc[i])
+            if display:
+                st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
+                st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
+
+    else:
+        df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
+        row_nu = len(df_con.index)
+        for i in range(row_nu):
+            st.write(''+str(i+1)+') '+ df_con1.iloc[i])
+            if display:
+                st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
+                st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
         
 with tab3:
     st.subheader('Call for papers')
