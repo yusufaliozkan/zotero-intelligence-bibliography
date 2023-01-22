@@ -275,6 +275,7 @@ with tab1:
         st.header('Event visuals')
         ap = ''
         ap2 = ''
+        ap3 = ''
         selector = st.checkbox('Select a year')
         if selector:
             slider = st.slider('Select a year', 2022,2023,2023)
@@ -299,10 +300,14 @@ with tab1:
         organiser_plot=organiser_plot.reset_index()
         organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
         organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
-        top5 = st.checkbox('Show the top 5 event organiser')
-        if top5:
+        organiser_plot_all=organiser_plot.copy()        
+        all = st.checkbox('Show all organisers')
+        if all:
+            organiser_plot=organiser_plot_all
+            ap2 = ' (all)'
+        else:
             organiser_plot=organiser_plot.head(5)
-            ap2 = ' (top 5)'
+            ap3 = ' (top 5) '
         fig = px.bar(organiser_plot, x='Organiser', y='Count', color='Organiser')
         fig.update_xaxes(tickangle=-65)
         fig.update_layout(
@@ -310,7 +315,7 @@ with tab1:
             width=400,
             height=700,
             showlegend=False)
-        fig.update_layout(title={'text':'Events by organisers' + ap + ap2, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+        fig.update_layout(title={'text':'Events by organisers' + ap + ap2 +ap3, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
 
 with tab2:
@@ -381,7 +386,7 @@ with tab3:
     df_cfp = pd.DataFrame(data, columns=columns)
 
     df_cfp['date_new'] = pd.to_datetime(df_cfp['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-    df_con.sort_values(by='date', ascending = True, inplace=True)
+    df_cfp.sort_values(by='date', ascending = True, inplace=True)
 
     df_cfp['details'] = df_cfp['details'].fillna('No details')
     
