@@ -298,6 +298,9 @@ with tab1:
         organiser_plot=organiser_plot.reset_index()
         organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
         organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
+        top5 = st.checkbox('Show the top 5 event organiser')
+        if top5:
+            organiser_plot=organiser_plot.head(5)
         fig = px.bar(organiser_plot, x='Organiser', y='Count', color='Organiser')
         fig.update_xaxes(tickangle=-65)
         fig.update_layout(
