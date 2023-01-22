@@ -300,7 +300,7 @@ with tab1:
         organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
         organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
         organiser_plot_all=organiser_plot.copy()
-        organiser_plot=organiser_plot.head(10)
+        organiser_plot=organiser_plot.head(5)
         all = st.checkbox('Show all organisers')
         if all:
             organiser_plot=organiser_plot_all
