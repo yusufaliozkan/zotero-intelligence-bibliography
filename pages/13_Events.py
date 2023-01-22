@@ -272,6 +272,8 @@ with tab1:
                     for i in range(row_nu2):
                         st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
         
+        y_2022 = st.checkbox('2022')
+        y_2023 = st.checkbox('2023')
         st.header('Event visuals')
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
