@@ -99,18 +99,17 @@ with tab1:
     df_gs['details'] = df_gs['details'].fillna('No details')
     df_gs_plot = df_gs.copy()
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
     with col1:
         online_event = st.checkbox('Show online events only')
         if online_event:
             df_gs = df_gs[df_gs['venue']=='Online event']
+        display = st.checkbox('Show details')
     
     with col2:
         last_added = st.checkbox('Sort by most recently added')
-
-    with col3:
-        display = st.checkbox('Show details')
+        
     st.write('See [Event visuals](#event-visuals)')
 
 
