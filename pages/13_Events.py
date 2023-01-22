@@ -374,6 +374,10 @@ with tab3:
         if display:
             st.caption('Details:'+'\n '+ df_cfp['details'].iloc[i])
 
+with st.expander('test'):
+    if st.checkbox('test2', key='t2'):
+        st.write('test23')
+
 st.write('---')
 components.html(
 """
