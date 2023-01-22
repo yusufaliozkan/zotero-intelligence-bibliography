@@ -111,7 +111,7 @@ with tab1:
 
     with col3:
         display = st.checkbox('Show details')
-        st.write('See [Event visuals](#event-visuals)')
+    st.write('See [Event visuals](#event-visuals)')
 
 
     filter = (df_gs['date']>=today)
