@@ -277,8 +277,8 @@ with tab1:
         selector = st.checkbox('Select a year')
         if selector:
             slider = st.slider('ssd', 2022,2023,2023)
+            slider
             df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
-
 
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
