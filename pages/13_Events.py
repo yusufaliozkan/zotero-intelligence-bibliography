@@ -118,6 +118,7 @@ with tab1:
         st.write('No upcoming event!')
 
     if last_added:
+        df_gs = df_gs.sort_index(ascending=False)
         df_last = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
         row_nu = len(df_gs.index)
         for i in range(row_nu):
