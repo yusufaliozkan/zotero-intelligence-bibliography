@@ -319,7 +319,7 @@ with tab1:
         st.plotly_chart(fig, use_container_width = True)
         with st.expander('See the list of event organisers'):
             row_nu_organiser= len(organiser_plot_all.index)
-            organiser_plot_all=organiser_plot_all.sort_values(by='Organiser', ascending = False)
+            organiser_plot_all=organiser_plot_all.sort_values()
             for i in range(row_nu_organiser):
                 st.caption(organiser_plot_all['Organiser'].iloc[i])
 
