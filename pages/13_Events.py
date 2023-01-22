@@ -287,7 +287,6 @@ with tab1:
         st.plotly_chart(fig, use_container_width = True)
 
         years = df_gs_plot['year'].unique()
-        years = years.reset_index()
         years
 
         organiser_plot = df_gs_plot['organiser'].value_counts()
