@@ -273,12 +273,13 @@ with tab1:
                         st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
         
         st.header('Event visuals')
-        y_2022 = st.checkbox('2022')
-        if y_2022:
-            df_gs_plot =df_gs_plot[df_gs_plot['year']=='2022']
-        y_2023 = st.checkbox('2023')
-        if y_2023:
-            df_gs_plot =df_gs_plot[df_gs_plot['year']=='2023']
+
+        selector = st.checkbox('Select a year')
+        if selector:
+            slider = st.slider(2022,2023.2022)
+            df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
+
+
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
