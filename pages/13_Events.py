@@ -20,7 +20,7 @@ from gsheetsdb import connect
 import datetime as dt     
 
 
-st.set_page_config(layout = "wide", 
+st.set_page_config(layout = "centered", 
                     page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
