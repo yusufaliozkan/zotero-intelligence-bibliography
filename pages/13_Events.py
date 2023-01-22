@@ -263,6 +263,14 @@ with tab1:
                     row_nu = len(df_gs.index)
                     for i in range(row_nu2):
                         st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
+            if st.checkbox('Events in 2023', key='2023'):
+                if '2022' in df_gs2['year'].values:
+                    y2022 = df_gs2[df_gs2['year']=='2022']
+                    row_nu2 = len(y2022.index)
+                    df_gs3 = ('['+ y2022['event_name'] + ']'+ '('+ y2022['link'] + ')'', organised by ' + '**' + y2022['organiser'] + '**' + '. Date: ' + y2022['date_new'] + ', Venue: ' + y2022['venue'])
+                    row_nu = len(df_gs.index)
+                    for i in range(row_nu2):
+                        st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
         
         st.header('Event visuals')
         date_plot=df_gs_plot['month_year'].value_counts()
