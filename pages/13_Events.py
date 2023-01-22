@@ -320,7 +320,7 @@ with tab1:
         with st.expander('See the list of event organisers'):
             organiser_plot_all
             row_nu_organiser= len(organiser_plot_all.index)
-            for i in row_nu_organiser:
+            for i in range(row_nu_organiser):
                 st.caption(organiser_plot_all['Organiser'].iloc[i])
 
 with tab2:
