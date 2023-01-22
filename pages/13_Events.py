@@ -105,7 +105,6 @@ with tab1:
         df_gs = df_gs[df_gs['venue']=='Online event']
     
     last_added = st.checkbox('Show last added items first')
-    df_gs
 
     display = st.checkbox('Show details')
     st.write('See [Event visuals](#event-visuals)')
