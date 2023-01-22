@@ -317,6 +317,10 @@ with tab1:
             showlegend=False)
         fig.update_layout(title={'text':'Events by organisers' + ap + ap2 +ap3, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
+        with st.expander('See the list of event organisers'):
+            row_nu_organiser= len(organiser_plot_all.index)
+            for i in row_nu_organiser:
+                st.caption(organiser_plot_all['Organiser'].iloc[i])
 
 with tab2:
     st.subheader('Conferences')
