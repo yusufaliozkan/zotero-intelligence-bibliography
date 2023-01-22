@@ -288,7 +288,8 @@ with tab1:
 
         years = df_gs_plot['year'].unique()
         years = years.reset_index()
-        years = years.rename(columns={'0':'years'})
+        years = years.rename(columns={0:'years'})
+        years
 
         organiser_plot = df_gs_plot['organiser'].value_counts()
         organiser_plot=organiser_plot.reset_index()
