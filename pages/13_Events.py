@@ -255,6 +255,8 @@ with tab1:
 
         st.header('Past events')
         with st.expander('Expand to see the list'):
+            df_gs2
+            # 2022 = df_gs2
             row_nu2 = len(df_gs2.index)
             df_gs3 = ('['+ df_gs2['event_name'] + ']'+ '('+ df_gs2['link'] + ')'', organised by ' + '**' + df_gs2['organiser'] + '**' + '. Date: ' + df_gs2['date_new'] + ', Venue: ' + df_gs2['venue'])
             row_nu = len(df_gs.index)
