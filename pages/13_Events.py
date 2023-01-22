@@ -92,6 +92,7 @@ with tab1:
 
     df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
+    df_gs['year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y')
     df_gs['month_year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m')
     df_gs.sort_values(by='date', ascending = True, inplace=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
@@ -373,10 +374,6 @@ with tab3:
         st.write(''+str(i+1)+') '+ df_cfp1.iloc[i])
         if display:
             st.caption('Details:'+'\n '+ df_cfp['details'].iloc[i])
-
-with st.expander('test'):
-    if st.checkbox('test2', key='t2'):
-        st.write('test23')
 
 st.write('---')
 components.html(
