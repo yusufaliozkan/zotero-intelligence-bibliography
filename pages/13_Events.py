@@ -280,35 +280,33 @@ with tab1:
             slider = str(slider)
             df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
             ap = ' (in ' + slider+')'
+        
+        date_plot=df_gs_plot['month_year'].value_counts()
+        date_plot=date_plot.reset_index()
+        date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
+        date_plot=date_plot.sort_values(by='Date')
+        fig = px.bar(date_plot, x='Date', y='Count')
+        fig.update_xaxes(tickangle=-70)
+        fig.update_layout(
+            autosize=False,
+            width=400,
+            height=500)
+        fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+        st.plotly_chart(fig, use_container_width = True)
 
-        col1, col2 = st.columns(2)
-        with col1:
-            date_plot=df_gs_plot['month_year'].value_counts()
-            date_plot=date_plot.reset_index()
-            date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
-            date_plot=date_plot.sort_values(by='Date')
-            fig = px.bar(date_plot, x='Date', y='Count')
-            fig.update_xaxes(tickangle=-70)
-            fig.update_layout(
-                autosize=False,
-                width=400,
-                height=500)
-            fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-            col1.plotly_chart(fig, use_container_width = True)
-        with col2:
-            organiser_plot = df_gs_plot['organiser'].value_counts()
-            organiser_plot=organiser_plot.reset_index()
-            organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
-            organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
-            fig = px.bar(organiser_plot, x='Organiser', y='Count', color='Organiser')
-            fig.update_xaxes(tickangle=-65)
-            fig.update_layout(
-                autosize=False,
-                width=400,
-                height=700,
-                showlegend=False)
-            fig.update_layout(title={'text':'Events by organisers' + ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-            col2.plotly_chart(fig, use_container_width = True)
+        organiser_plot = df_gs_plot['organiser'].value_counts()
+        organiser_plot=organiser_plot.reset_index()
+        organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
+        organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
+        fig = px.bar(organiser_plot, x='Organiser', y='Count', color='Organiser')
+        fig.update_xaxes(tickangle=-65)
+        fig.update_layout(
+            autosize=False,
+            width=400,
+            height=700,
+            showlegend=False)
+        fig.update_layout(title={'text':'Events by organisers' + ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+        st.plotly_chart(fig, use_container_width = True)
 
 with tab2:
     st.subheader('Conferences')
