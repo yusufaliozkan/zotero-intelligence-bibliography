@@ -311,7 +311,7 @@ with tab2:
     df_con['location'] = df_con['location'].fillna('No details')
     
     display = st.checkbox('Show details', key='conference')
-    last_added = st.checkbox('Sort by most recently added')
+    last_added = st.checkbox('Sort by most recently added', key='conference2')
     filter = (df_con['date']>=today)
     df_con = df_con.loc[filter]
     if df_con['conference_name'].any() in ("", [], None, 0, False):
