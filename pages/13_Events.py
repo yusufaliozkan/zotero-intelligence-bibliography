@@ -109,6 +109,14 @@ with tab1:
     display = st.checkbox('Show details')
     st.write('See [Event visuals](#event-visuals)')
 
+
+    filter = (df_gs['date']>=today)
+    filter2 = (df_gs['date']<today)
+    df_gs2 = df_gs.loc[filter2]
+    df_gs = df_gs.loc[filter]
+    if df_gs['event_name'].any() in ("", [], None, 0, False):
+        st.write('No upcoming event!')
+
     if last_added:
         df_last = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
         row_nu = len(df_gs.index)
@@ -117,12 +125,6 @@ with tab1:
             if display:
                 st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
     else:
-        filter = (df_gs['date']>=today)
-        filter2 = (df_gs['date']<today)
-        df_gs2 = df_gs.loc[filter2]
-        df_gs = df_gs.loc[filter]
-        if df_gs['event_name'].any() in ("", [], None, 0, False):
-            st.write('No upcoming event!')
 
         if '01' in df_gs['month'].values:
             st.markdown('#### Events in January')
