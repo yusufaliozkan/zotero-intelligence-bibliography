@@ -263,7 +263,7 @@ with tab1:
                     row_nu = len(df_gs.index)
                     for i in range(row_nu2):
                         st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
-            if st.checkbox('Events in 2023', key='2023'):
+            if st.checkbox('Events in 2023', key='2022'):
                 if '2022' in df_gs2['year'].values:
                     y2022 = df_gs2[df_gs2['year']=='2022']
                     row_nu2 = len(y2022.index)
