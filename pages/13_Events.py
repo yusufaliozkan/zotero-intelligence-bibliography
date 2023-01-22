@@ -274,6 +274,8 @@ with tab1:
         
         st.header('Event visuals')
         y_2022 = st.checkbox('2022')
+        if y_2022:
+            df_gs_plot =df_gs_plot[df_gs_plot['year']=='2022']
         y_2023 = st.checkbox('2023')
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
