@@ -225,7 +225,7 @@ with tab1:
                 if display:
                     a=''
                     b=''
-                    c=''
+                    # c=''
                     if 'Name_x' in df:
                         a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
                         if 'Name_y' in df:
