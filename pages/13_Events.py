@@ -269,7 +269,7 @@ with tab1:
                     row_nu2 = len(y2022.index)
                     df_gs3 = ('['+ y2022['event_name'] + ']'+ '('+ y2022['link'] + ')'', organised by ' + '**' + y2022['organiser'] + '**' + '. Date: ' + y2022['date_new'] + ', Venue: ' + y2022['venue'])
                     row_nu = len(df_gs.index)
-                    for i in range(y2022):
+                    for i in range(row_nu):
                         st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
         
         st.header('Event visuals')
