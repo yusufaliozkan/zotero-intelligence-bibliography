@@ -236,6 +236,8 @@ with tab1:
                                 c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
                                 if df['Name'].iloc[i]=='':
                                     c=''
+                            else:
+                                c=''
                     else:
                         st.caption('No theme to display!')
                     st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
