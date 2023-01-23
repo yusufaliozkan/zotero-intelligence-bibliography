@@ -223,9 +223,9 @@ with tab1:
                 st.write(''+str(i+1)+') ' +df_last.iloc[i])
                 
                 if display:
-                    # a=''
-                    # b=''
-                    # c=''
+                    a=''
+                    b=''
+                    c=''
                     df
                     if 'Name_x' in df:
                         a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
