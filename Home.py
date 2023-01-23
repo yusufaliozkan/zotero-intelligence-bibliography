@@ -229,10 +229,14 @@ with tab1:
                             b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
                             if df['Name_y'].iloc[i]=='':
                                 b=''
+                        else:
+                            b=''
                             if 'Name' in df:
                                 c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
                                 if df['Name'].iloc[i]=='':
                                     c=''
+                            else:
+                                c=''
                     else:
                         st.caption('No theme to display!')
                     st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
