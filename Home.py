@@ -242,8 +242,8 @@ with tab1:
                                 c=''
                     else:
                         st.caption('No theme to display!')
-                        st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                        st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
+                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                    st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
                 # if display:
                 #     if 0 in df:
