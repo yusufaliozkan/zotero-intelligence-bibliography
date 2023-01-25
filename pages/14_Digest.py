@@ -120,7 +120,6 @@ with st.expander('Publications:', expanded=True):
 
     if sort_by_type:
         df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
-
         types2 = df_csv['Publication type'].unique()
         types2 = pd.DataFrame(types2, columns=['Publication type'])
         row_nu_types2 = len(types2.index)
@@ -128,10 +127,12 @@ with st.expander('Publications:', expanded=True):
             st.subheader(types2['Publication type'].iloc[i])
             b = types2['Publication type'].iloc[i]
             df_csva = df_csv[df_csv['Publication type']==b]
-            df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ': ' + 
-                    df_csva['Title'] + ', [Publication link]'+ '('+ df_csva['Link to publication'] + ')' +
-                    ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
-                    ' (Published on: ' + df_csva['Date published new'] + ')'
+            df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
+                    df_csva['Title'] + 
+                    "', Published in: " + df_csva['Journal'] + '' +
+                     ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')' +
+                    ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +                    
+                    ' (Published on: ' + df_csva['Date published new'] + ')' 
                     )
             row_nu = len(df_csva.index)
             for i in range(row_nu):
@@ -141,6 +142,7 @@ with st.expander('Publications:', expanded=True):
         df_last = ('**'+ df_csv['Publication type']+ '**'+ ': ' + 
                     df_csv['Title'] + ', [Publication link]'+ '('+ df_csv['Link to publication'] + ')' +
                     ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                    ' (Published in: ' + df_csv['Journal'] + ')' +
                     ' (Published on: ' + df_csv['Date published new'] + ')'
                     )
         row_nu = len(df_csv.index)
