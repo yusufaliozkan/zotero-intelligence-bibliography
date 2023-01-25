@@ -74,6 +74,7 @@ today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Intelligence bibliogrpahy digest - Day: '+ str(today2))
 
 with st.expander('Publications:', expanded=True):
+    st.header('Publications')
     container = st.container()
     previous_10 = today - dt.timedelta(days=10)
     previous_20 = today - dt.timedelta(days=20)
