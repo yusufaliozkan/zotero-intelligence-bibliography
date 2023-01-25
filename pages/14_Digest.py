@@ -73,7 +73,7 @@ today = dt.date.today()
 today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Intelligence bibliogrpahy digest - Day: '+ str(today2))
 
-st.markdown('## Contents')
+st.markdown('### Contents')
 st.write('[Publications](#publications)')
 
 with st.expander('Publications:', expanded=True):
