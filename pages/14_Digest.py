@@ -232,8 +232,8 @@ with st.expander('Conferences:', expanded=True):
     if range_day == '6 months':
         rg3 = next_6mo
         rg3 =20
-    filter_events = (df_gs['date']<rg3) & (df_gs['date']>=today)
-    df_gs = df_gs.loc[filter_events]
+    filter_events = (df_con['date']<rg3) & (df_con['date']>=today)
+    df_con = df_con.loc[filter_events]
 
     df_con['details'] = df_con['details'].fillna('No details')
     df_con['location'] = df_con['location'].fillna('No details')
