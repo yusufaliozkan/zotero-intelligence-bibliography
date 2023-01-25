@@ -61,7 +61,6 @@ with st.sidebar:
     with st.expander('Contact us'):
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
 
-
 df_csv = pd.read_csv(r'all_items.csv', index_col=None)
 df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.date
 df_csv['Publisher'] =df_csv['Publisher'].fillna('')
@@ -80,6 +79,8 @@ st.caption('[Publications](#publications)')
 st.caption('[Events](#events)')
 st.caption('[Conferences](#conferences)')
 st.caption('[Call for papers](#call-for-papers)')
+
+st.write('---')
 
 with st.expander('Publications:', expanded=True):
     st.header('Publications')
