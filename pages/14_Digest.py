@@ -80,7 +80,7 @@ st.caption('[Conferences](#conferences)')
 
 with st.expander('Publications:', expanded=True):
     st.header('Publications')
-    previous_10 = today - dt.timedelta(days=10)
+    previous_10 = today - dt.timedelta(days=1)
     previous_20 = today - dt.timedelta(days=20)
     previous_30 = today - dt.timedelta(days=30)
     rg = previous_30
