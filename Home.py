@@ -179,7 +179,7 @@ with st.sidebar:
         ''')
     with st.expander('Contact us'):
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
-
+    st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
 # Recently added items
 
 tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
