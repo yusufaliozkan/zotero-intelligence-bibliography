@@ -207,12 +207,41 @@ with tab1:
 
         with st.expander("Expand to see the list", expanded=True):
             st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
-            # display2 = st.checkbox('Display abstracts')
-            for i in range(row_nu_1):
-                st.write(''+str(i+1)+') ' +df_items.iloc[i])
-                df_items.fillna("nan") 
-                # if display2:
-                #     st.caption(df['Abstract'].iloc[i])
+
+            sort_by_type = st.checkbox('Sort by publication type', key='type')
+            display2 = st.checkbox('Display abstracts')
+
+            if sort_by_type:
+                df = df.drop(columns=['index'])
+                df = df.sort_values(by=['Publication type'], ascending=True)
+                types = df['Publication type'].unique()
+                types = pd.DataFrame(types, columns=['Publication type'])
+                row_nu_types = len(types.index)
+                for i in range(row_nu_types):
+                    st.subheader(types['Publication type'].iloc[i])
+                    b = types['Publication type'].iloc[i]
+                    df_a = df[df['Publication type']==b]
+                    df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
+                        df_a['Title'] + ' '+ 
+                        ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+                        "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
+                        "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')' +
+                        ' (Published on: ' +df_a['Date published'] + ')'
+                        )
+                    row_nu_1 = len(df_a.index)
+                    for i in range(row_nu_1):
+                        st.write(''+str(i+1)+') ' +df_items.iloc[i])
+                        df_items.fillna("nan") 
+                        if display2:
+                            st.caption(df['Abstract'].iloc[i])
+
+            else:
+           
+                for i in range(row_nu_1):
+                    st.write(''+str(i+1)+') ' +df_items.iloc[i])
+                    df_items.fillna("nan") 
+                    if display2:
+                        st.caption(df['Abstract'].iloc[i])
 
     with col2:
         with st.expander("Collections in Zotero library", expanded=False):
