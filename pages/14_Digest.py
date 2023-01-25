@@ -17,7 +17,8 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
-import datetime as dt     
+import datetime as dt
+from fpdf import FPDF
 
 
 st.set_page_config(layout = "centered", 
