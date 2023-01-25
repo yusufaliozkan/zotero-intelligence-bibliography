@@ -159,10 +159,6 @@ with tab1:
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df = df.reset_index()
 
-        sort_by_date = st.checkbox('Sort by publication date', key='pub date')
-        if sort_by_date:
-            df.sort_values(by='Date published', ascending = True, inplace=True)
-
         if df['FirstName2'].any() in ("", [], None, 0, False):
             # st.write('no author')
             df['firstName'] = 'null'
