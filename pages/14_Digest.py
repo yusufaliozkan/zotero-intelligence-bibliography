@@ -190,6 +190,8 @@ with st.expander('Events', expanded=True):
     filter_events = (df_gs['date']<rg2) & (df_gs['date']>today)
     df_gs = df_gs.loc[filter_events]
 
+    st.subheader('Events in the next ' + str(aa) + ' days')
+
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
