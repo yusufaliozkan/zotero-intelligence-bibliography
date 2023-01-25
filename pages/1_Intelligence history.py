@@ -24,7 +24,7 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence history")
+st.title("Intelligence studies network bibliography")
 
 # Connecting Zotero with API
 library_id = '2514686' # intel 2514686
