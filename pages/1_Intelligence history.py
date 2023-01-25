@@ -20,11 +20,11 @@ from gsheetsdb import connect
 import datetime as dt     
 
 st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network bibliography',
+                    page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence studies network bibliography")
+st.title("Intelligence history")
 
 # Connecting Zotero with API
 library_id = '2514686' # intel 2514686
