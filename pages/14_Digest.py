@@ -178,7 +178,6 @@ with st.expander('Events', expanded=True):
     rg2 = next_30
     aa=30
     range_day = st.radio('How many days do you want to go further?', ('30', '20', '10'), key='events')
-    display = st.checkbox('Show details')
     if range_day == '10':
         rg2 = next_10
         aa = 10
@@ -192,6 +191,7 @@ with st.expander('Events', expanded=True):
     df_gs = df_gs.loc[filter_events]
 
     st.subheader('Events in the next ' + str(aa) + ' days')
+    display = st.checkbox('Show details')
 
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
