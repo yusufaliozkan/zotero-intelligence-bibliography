@@ -67,7 +67,6 @@ df_csv['Publisher'] =df_csv['Publisher'].fillna('')
 df_csv['Journal'] =df_csv['Journal'].fillna('')
 df_csv['firstName'] =df_csv['firstName'].fillna('')
 df_csv['lastName'] =df_csv['lastName'].fillna('')
-df_csv
 
 df_csv = df_csv.drop(['Unnamed: 0'], axis=1)
 
