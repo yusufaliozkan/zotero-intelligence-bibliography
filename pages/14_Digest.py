@@ -228,10 +228,10 @@ with st.expander('Conferences:', expanded=True):
     range_day = st.radio('Show conferences in the next: ', ('3 months', '6 months'), key='conferences')
     if range_day == '3 months':
         rg3 = next_3mo
-
+        aaa = '3 months'
     if range_day == '6 months':
         rg3 = next_6mo
-        rg3 =20
+        aaa = '6 months'
     filter_events = (df_con['date']<rg3) & (df_con['date']>=today)
     df_con = df_con.loc[filter_events]
 
