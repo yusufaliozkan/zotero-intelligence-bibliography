@@ -173,6 +173,7 @@ with st.expander('Events', expanded=True):
     df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_gs.sort_values(by='date', ascending = True, inplace=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
+    df_gs
 
     next_10 = today + dt.timedelta(days=10)
     next_10
