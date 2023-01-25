@@ -179,7 +179,7 @@ with st.expander('Events', expanded=True):
     next_30 = today + dt.timedelta(days=30)
     rg2 = next_30
     aa=30
-    range_day = st.radio('How many days do you want to go back?', ('30', '20', '10'))
+    range_day = st.radio('How many days do you want to go back?', ('30', '20', '10'), key='events')
     if range_day == '10':
         rg2 = next_10
         aa = 10
