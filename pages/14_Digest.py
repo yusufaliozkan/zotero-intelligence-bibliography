@@ -302,6 +302,14 @@ st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 st.write('---')
 
+def show_pdf(file_path):
+    with open(file_path,"rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
+    st.markdown(pdf_display, unsafe_allow_html=True)
+
+show_pdf('post1-compressed.pdf')
+
 def create_pdf(img_fn, pdf_fn):
     """
     Create pdf written to pdf_fn with the image file img_fn.
