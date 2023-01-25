@@ -217,7 +217,6 @@ with tab1:
             display2 = st.checkbox('Display abstracts')
 
             if sort_by_type:
-
                 df = df.sort_values(by=['Publication type'], ascending=True)
                 types = df['Publication type'].unique()
                 types = pd.DataFrame(types, columns=['Publication type'])
@@ -227,6 +226,7 @@ with tab1:
                     st.subheader(types['Publication type'].iloc[i])
                     b = types['Publication type'].iloc[i]
                     df = df[df['Publication type']==b]
+                    df
                     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                         df['Title'] + ' '+ 
                         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
