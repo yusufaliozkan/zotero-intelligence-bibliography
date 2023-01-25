@@ -316,7 +316,7 @@ def create_pdf(img_fn, pdf_fn):
 
 
 def main():
-    publications= 'df_csv'
+    publications= 'sdfdsfcsv'
 
 
     # pdf download
