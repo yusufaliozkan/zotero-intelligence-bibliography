@@ -102,7 +102,7 @@ with st.expander('Publications:', expanded=True):
     df_csv.sort_values(by='Date published', ascending = False, inplace=True)
 
 
-    container.header('Sources published in the last ' + str(a) + ' days')
+    container.subheader('Sources published in the last ' + str(a) + ' days')
 
     sort_by_type = st.checkbox('Sort by publication type', key='type')
     types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
