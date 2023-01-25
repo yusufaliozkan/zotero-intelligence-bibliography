@@ -144,8 +144,8 @@ with st.expander('Publications:', expanded=True):
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
 
-
 with st.expander('Events', expanded=True):
+    st.header('Events')
     # Create a connection object.
     conn = connect()
 
