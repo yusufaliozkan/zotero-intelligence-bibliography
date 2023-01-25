@@ -86,15 +86,15 @@ with st.expander('Publications:', expanded=True):
     rg = previous_30
     a=30
 
-    range_day = st.radio('How many days do you want to go back?', ('30', '20', '10'))
+    range_day = st.radio('Show sources published in the last', ('30 days', '20 days', '10 days'))
 
-    if range_day == '10':
+    if range_day == '10 days':
         rg = previous_10
         a = 10
-    if range_day == '20':
+    if range_day == '20 days':
         rg = previous_20
         a =20
-    if range_day == '30':
+    if range_day == '30 days':
         rg = previous_30
         a=30
 
