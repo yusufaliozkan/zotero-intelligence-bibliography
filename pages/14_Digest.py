@@ -330,14 +330,6 @@ def main():
     img_fn = 'Hip angle.png'
     fig1.savefig(img_fn)
 
-    # Prepare file for download.
-    dfn = 'angle.png'
-    with open(img_fn, "rb") as f:
-        st.download_button(
-            label="Descarregar imagem",
-            data=f,
-            file_name=dfn,
-            mime="image/png")
 
     # pdf download
     checkbox = st.checkbox('Name', value='')
