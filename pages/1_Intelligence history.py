@@ -217,7 +217,6 @@ with tab1:
 
             if sort_by_type:
                 df = df.drop(columns=['index'])
-                df
                 df = df.sort_values(by=['Publication type'], ascending=True)
                 df
                 types = df['Publication type'].unique()
