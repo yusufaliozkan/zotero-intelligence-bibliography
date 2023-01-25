@@ -191,7 +191,7 @@ with st.expander('Events:', expanded=True):
     filter_events = (df_gs['date']<rg2) & (df_gs['date']>=today)
     df_gs = df_gs.loc[filter_events]
 
-    st.subheader('Events in the next ' + str(aa) + ' days')
+    st.subheader('Events in the next ' + str(aa))
     display = st.checkbox('Show details')
 
     if df_gs['event_name'].any() in ("", [], None, 0, False):
