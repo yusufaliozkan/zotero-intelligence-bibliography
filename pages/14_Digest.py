@@ -175,6 +175,7 @@ with st.expander('Events', expanded=True):
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
 
     next_10 = today + dt.timedelta(days=10)
+    next_10
     next_20 = today + dt.timedelta(days=20)
     next_30 = today + dt.timedelta(days=30)
     rg2 = next_30
