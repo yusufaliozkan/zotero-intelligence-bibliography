@@ -79,7 +79,6 @@ st.caption('[Events](#events)')
 
 with st.expander('Publications:', expanded=True):
     st.header('Publications')
-    container = st.container()
     previous_10 = today - dt.timedelta(days=10)
     previous_20 = today - dt.timedelta(days=20)
     previous_30 = today - dt.timedelta(days=30)
@@ -104,14 +103,13 @@ with st.expander('Publications:', expanded=True):
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
     df_csv['Date published'] = df_csv['Date published'].fillna('No date')
-    df_csv.sort_values(by='Date published', ascending = False, inplace=True)
-
-
-    container.subheader('Sources published in the last ' + str(a) + ' days')
+    df_csv.sort_values(by='Date published', ascending = False, inplace=True)    
 
     sort_by_type = st.checkbox('Sort by publication type', key='type')
     types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
+
+    st.subheader('Sources published in the last ' + str(a) + ' days')
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication in the last '+ str(a) +' days!')
@@ -191,7 +189,7 @@ with st.expander('Events', expanded=True):
         aa=30
     filter_events = (df_gs['date']<rg2) & (df_gs['date']>today)
     df_gs = df_gs.loc[filter_events]
-    
+
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
