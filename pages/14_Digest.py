@@ -77,6 +77,7 @@ st.markdown('#### Contents')
 st.caption('[Publications](#publications)')
 st.caption('[Events](#events)')
 st.caption('[Conferences](#conferences)')
+st.caption('[Call for papers](#call-for-papers)')
 
 with st.expander('Publications:', expanded=True):
     st.header('Publications')
@@ -256,6 +257,7 @@ with st.expander('Conferences:', expanded=True):
             st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
 
 with st.expander('Call for papers:', expanded=True):
+    st.header('Call for papers')
     sheet_url3 = st.secrets["public_gsheets_url3"]
     rows = run_query(f'SELECT * FROM "{sheet_url3}"')
 
