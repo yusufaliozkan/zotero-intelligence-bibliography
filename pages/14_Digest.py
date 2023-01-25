@@ -325,7 +325,7 @@ def main():
         pdf_fn = 'mypdf.pdf'
         create_pdf(pubs, pdf_fn)
 
-        with open(pdf_fn, 'rb') as h_pdf:
+        with open(pdf_fn) as h_pdf:
             st.download_button(
                 label="Download as PDF",
                 data=h_pdf,
