@@ -304,7 +304,6 @@ st.write('---')
 
 report_text = st.text_input("Report Text")
 
-
 export_as_pdf = st.button("Export Report")
 
 def create_download_link(val, filename):
@@ -317,7 +316,7 @@ if export_as_pdf:
     pdf.set_font('Arial', 'B', 16)
     pdf.cell(40, 10, report_text)
     
-    html = create_download_link(pdf.output(dest="S"), "test")
+    html = create_download_link(pdf.output(dest="S"), "Intelligence studies network digest")
 
     st.markdown(html, unsafe_allow_html=True)
 
