@@ -187,7 +187,7 @@ with st.expander('Events', expanded=True):
     if range_day == '30':
         rg2 = next_30
         aa=30
-    filter_events = (df_gs['date']<rg2) & (df_gs['date']>today)
+    filter_events = (df_gs['date']<rg2) & (df_gs['date']>=today)
     df_gs = df_gs.loc[filter_events]
 
     st.subheader('Events in the next ' + str(aa) + ' days')
