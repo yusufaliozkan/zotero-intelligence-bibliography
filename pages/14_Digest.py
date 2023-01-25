@@ -302,38 +302,6 @@ st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 st.write('---')
 
-df=pd.read_csv(r'all_items.csv', index_col=None)
-df=df.head(2)
-st.write(df)
-
-export_as_pdf = st.button("Export Report")
-
-def create_download_link(val, filename):
-    b64 = base64.b64encode(val)  # val looks like b'...'
-    return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{filename}.pdf">Download file</a>'
-
-if export_as_pdf:
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_xy(10,10)
-    pdf.set_font('Arial', 'B', 16)
-    temp=[]
-    for i in range(df.shape[0]):
-        for j in range(df.shape[1]):
-            temp.append(df.iloc[[i],[j]].values)
-
-    for i in range(df.shape[0]):
-        pdf.ln()
-        for j in range(df.shape[1]):
-            pdf.cell(-120)
-            pdf.ln()    
-            pdf.cell(i, j, str(temp[i]),align='C')
-            pdf.ln()
-
-    html = create_download_link(pdf.output(dest="S").encode("latin-1"), "test")
-
-    st.markdown(html, unsafe_allow_html=True)
-    
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
