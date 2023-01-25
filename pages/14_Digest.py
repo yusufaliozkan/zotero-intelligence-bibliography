@@ -316,14 +316,14 @@ def create_pdf(img_fn, pdf_fn):
 
 
 def main():
-    publications = ('sdsd')
+    pubs = 'sdsdsd'
 
 
     # pdf download
     checkbox = st.checkbox('Name', value='')
     if checkbox:
         pdf_fn = 'mypdf.pdf'
-        create_pdf(publications, pdf_fn)
+        create_pdf(pubs, pdf_fn)
 
         with open(pdf_fn, 'rb') as h_pdf:
             st.download_button(
