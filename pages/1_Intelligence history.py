@@ -220,6 +220,7 @@ with tab1:
                 df = df.sort_values(by=['Publication type'], ascending=True)
                 df
                 types = df['Publication type'].unique()
+                types
                 types = pd.DataFrame(types, columns=['Publication type'])
                 row_nu_types = len(types.index)
                 types
