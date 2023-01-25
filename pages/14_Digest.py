@@ -221,6 +221,20 @@ with st.expander('Conferences:', expanded=True):
     df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_con.sort_values(by='date', ascending = True, inplace=True)
 
+    next_3mo = today + dt.timedelta(days=90)    
+    next_6mo = today + dt.timedelta(days=180)
+    rg3 = next_3mo
+    aa=90
+    range_day = st.radio('Show conferences in the next: ', ('3 months', '6 months'), key='conferences')
+    if range_day == '3 months':
+        rg3 = next_3mo
+        aa = 10
+    if range_day == '6 months':
+        rg2 = next_6mo
+        rg3 =20
+    filter_events = (df_gs['date']<rg3) & (df_gs['date']>=today)
+    df_gs = df_gs.loc[filter_events]
+
     df_con['details'] = df_con['details'].fillna('No details')
     df_con['location'] = df_con['location'].fillna('No details')
 
