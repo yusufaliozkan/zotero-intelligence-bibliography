@@ -177,17 +177,17 @@ with st.expander('Events:', expanded=True):
     next_20 = today + dt.timedelta(days=20)
     next_30 = today + dt.timedelta(days=30)
     rg2 = next_30
-    aa=30
+    aa='30 days'
     range_day = st.radio('Show events in the next:', ('30 days', '20 days', '10 days'), key='events')
-    if range_day == '10':
+    if range_day == '30 days':
         rg2 = next_10
-        aa = 10
-    if range_day == '20':
+        aa = '10 days'
+    if range_day == '20 days':
         rg2 = next_20
-        aa =20
-    if range_day == '30':
+        aa ='20 days'
+    if range_day == '30 days':
         rg2 = next_30
-        aa=30
+        aa='30 days'
     filter_events = (df_gs['date']<rg2) & (df_gs['date']>=today)
     df_gs = df_gs.loc[filter_events]
 
