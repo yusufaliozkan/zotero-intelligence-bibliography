@@ -301,51 +301,6 @@ with st.expander('Call for papers:', expanded=True):
 st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 st.write('---')
-
-
-with open("post1-compressed.pdf", "rb") as pdf_file:
-    PDFbyte = pdf_file.read()
-
-st.download_button(label="Download PDF Tutorial", 
-        data=PDFbyte,
-        file_name="pandas-clean-id-column.pdf",
-        mime='application/octet-stream')
-
-def create_pdf(img_fn, pdf_fn):
-    """
-    Create pdf written to pdf_fn with the image file img_fn.
-    """
-    pdf = FPDF()
-    pdf.add_page()
-
-    # Save to pdf
-    pdf.set_xy(30, 50)
-    pdf.image(img_fn, w=140, h=110)
-    pdf.output(pdf_fn)
-
-
-def main():
-    pubs = 'sdsdsd'
-
-
-    # pdf download
-    checkbox = st.checkbox('Name', value='')
-    if checkbox:
-        pdf_fn = 'mypdf.pdf'
-        create_pdf(pubs, pdf_fn)
-
-        with open(pdf_fn) as h_pdf:
-            st.download_button(
-                label="Download as PDF",
-                data=h_pdf,
-                file_name="test.pdf",
-                mime="application/pdf",
-            )
-
-
-if __name__ == '__main__':
-    main()
-
     
 components.html(
 """
