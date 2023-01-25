@@ -227,16 +227,16 @@ with tab1:
                 for i in range(row_nu_types):
                     st.subheader(types['Publication type'].iloc[i])
                     b = types['Publication type'].iloc[i]
-                    df = df[df['Publication type']==b]
+                    df_a = df[df['Publication type']==b]
                     df
-                    df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                        df['Title'] + ' '+ 
-                        ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
-                        "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-                        ' (Published on: ' +df['Date published'] + ')'
+                    df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
+                        df_a['Title'] + ' '+ 
+                        ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+                        "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
+                        "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')' +
+                        ' (Published on: ' +df_a['Date published'] + ')'
                         )
-                    row_nu_1 = len(df.index)
+                    row_nu_1 = len(df_a.index)
                     for i in range(row_nu_1):
                         st.write(''+str(i+1)+') ' +df_items.iloc[i])
                         df_items.fillna("nan") 
