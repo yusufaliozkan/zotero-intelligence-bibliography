@@ -120,7 +120,6 @@ with st.expander('Publications:', expanded=True):
 
     if sort_by_type:
         df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
-        df_csv
         types2 = df_csv['Publication type'].unique()
         types2 = pd.DataFrame(types2, columns=['Publication type'])
         row_nu_types2 = len(types2.index)
@@ -131,7 +130,8 @@ with st.expander('Publications:', expanded=True):
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ': ' + 
                     df_csva['Title'] + ', [Publication link]'+ '('+ df_csva['Link to publication'] + ')' +
                     ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
-                    ' (Published on: ' + df_csva['Date published new'] + ')' + df_csva['Journal']
+                    ' (Published in: ' + df_csva['Journal'] + ')' 
+                    ' (Published on: ' + df_csva['Date published new'] + ')' 
                     )
             row_nu = len(df_csva.index)
             for i in range(row_nu):
