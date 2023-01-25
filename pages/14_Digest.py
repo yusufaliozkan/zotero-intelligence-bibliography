@@ -316,22 +316,14 @@ def create_pdf(img_fn, pdf_fn):
 
 
 def main():
-    x = [1, 2, 3, 4, 5, 6]
-    y = [1, 5, 3, 5, 7, 8]
-    fig1, (ax1, ax2) = plt.subplots(1, 2)
-    ax1.plot(x, y)
-    ax2.scatter(x, y)
-    st.pyplot(fig1)
-    # Save to png
-    img_fn = 'Hip angle.png'
-    fig1.savefig(img_fn)
+    publications = ['sddssd']
 
 
     # pdf download
     checkbox = st.checkbox('Name', value='')
     if checkbox:
         pdf_fn = 'mypdf.pdf'
-        create_pdf(img_fn, pdf_fn)
+        create_pdf(publications, pdf_fn)
 
         with open(pdf_fn, 'rb') as h_pdf:
             st.download_button(
