@@ -140,10 +140,11 @@ with st.expander('Publications:', expanded=True):
 
     else:
         df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
-                    df_csv['Title'] +  "', [Publication link]"+ '('+ df_csv['Link to publication'] + ')' +
+                    df_csv['Title'] +  "'"  +
                     ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
                     ' (Published in: ' + '*' + df_csv['Journal'] +'*' + ')' +
-                    ' (Published on: ' + df_csv['Date published new'] + ')'
+                    ' (Published on: ' + df_csv['Date published new'] + ')'+
+                    ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
                     )
         row_nu = len(df_csv.index)
         for i in range(row_nu):
