@@ -225,7 +225,7 @@ with tab1:
                 types
                 for i in range(row_nu_types):
                     st.subheader(types['Publication type'].iloc[i])
-                    b = types.['Publication type'].iloc[i]
+                    b = types['Publication type'].iloc[i]
                     df = df[df['Publication type']==b]
                     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                         df['Title'] + ' '+ 
