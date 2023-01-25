@@ -76,7 +76,7 @@ st.write('Intelligence bibliogrpahy digest - Day: '+ str(today2))
 st.markdown('#### Contents')
 st.caption('[Publications](#publications)')
 st.caption('[Events](#events)')
-st.caption('[Conferences](#conferences#')
+st.caption('[Conferences](#conferences)')
 
 with st.expander('Publications:', expanded=True):
     st.header('Publications')
