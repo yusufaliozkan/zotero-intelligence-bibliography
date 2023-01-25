@@ -212,6 +212,13 @@ with tab1:
         with st.expander("Expand to see the list", expanded=True):
             df
             st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
+
+            df = df.sort_values(by=['Publication type'], ascending=True)
+            types = df['Publication type'].unique()
+            types = pd.DataFrame(types, columns=['Publication type'])
+            row_nu_types = len(types.index)
+            types
+
             display2 = st.checkbox('Display abstracts')
             
             for i in range(row_nu_1):
