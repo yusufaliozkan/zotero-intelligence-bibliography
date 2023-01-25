@@ -244,6 +244,7 @@ with st.expander('Conferences:', expanded=True):
     df_con['details'] = df_con['details'].fillna('No details')
     df_con['location'] = df_con['location'].fillna('No details')
 
+    st.subheader('Conferences in the next ' + str(aaa))
     display = st.checkbox('Show details', key='conference')
 
     df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
