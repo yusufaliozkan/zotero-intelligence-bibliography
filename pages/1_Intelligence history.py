@@ -161,7 +161,7 @@ with tab1:
 
         sort_by_date = st.checkbox('Sort by publication date', key='pub date')
         if sort_by_date:
-            df.sort_values(by='Publication date', ascending = True, inplace=True)
+            df.sort_values(by='Date published', ascending = True, inplace=True)
 
         if df['FirstName2'].any() in ("", [], None, 0, False):
             # st.write('no author')
