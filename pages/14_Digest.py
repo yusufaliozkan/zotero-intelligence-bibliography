@@ -73,7 +73,7 @@ today = dt.date.today()
 today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Intelligence bibliogrpahy digest - Day: '+ str(today2))
 
-col1, col2 = st.columns([4,1])
+col1, col2 = st.columns([4,2])
 with col1:
     with st.expander('Publications:', expanded=True):
         container = st.container()
