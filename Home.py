@@ -636,7 +636,7 @@ with tab2:
                         height=700,
                         showlegend=True)
                     fig.update_xaxes(tickangle=-70)
-                    fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                    fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
                     col2.plotly_chart(fig, use_container_width = True)
             with st.expander('See journals'):
                 row_nu_collections = len(df_journal.index)        
