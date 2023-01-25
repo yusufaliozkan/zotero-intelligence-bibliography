@@ -80,7 +80,6 @@ st.caption('[Events](#events)')
 st.caption('[Conferences](#conferences)')
 st.caption('[Call for papers](#call-for-papers)')
 
-st.write('---')
 
 with st.expander('Publications:', expanded=True):
     st.header('Publications')
