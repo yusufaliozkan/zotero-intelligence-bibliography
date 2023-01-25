@@ -145,7 +145,7 @@ with st.expander('Publications:', expanded=True):
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
 
-st.caption('[Go to top](#intelligence-bibliography-digest)')
+st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Events:', expanded=True):
     st.header('Events')
@@ -207,7 +207,7 @@ with st.expander('Events:', expanded=True):
             st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
-st.caption('[Go to top](#intelligence-bibliography-digest)')
+st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Conferences:', expanded=True):
     st.header('Conferences')
@@ -260,7 +260,7 @@ with st.expander('Conferences:', expanded=True):
             st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
             st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
 
-st.caption('[Go to top](#intelligence-bibliography-digest)')
+st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Call for papers:', expanded=True):
     st.header('Call for papers')
@@ -296,7 +296,7 @@ with st.expander('Call for papers:', expanded=True):
         if display:
             st.caption('Details:'+'\n '+ df_cfp['details'].iloc[i])
 
-st.caption('[Go to top](#intelligence-bibliography-digest)')
+st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 st.write('---')
 components.html(
