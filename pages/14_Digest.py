@@ -130,7 +130,7 @@ with st.expander('Publications:', expanded=True):
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
                     df_csva['Title'] + "', [Publication link]"+ '('+ df_csva['Link to publication'] + ')' +
                     ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
-                    ' (Published in: ' + df_csva['Journal'] + ')' +
+                    ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')' +
                     ' (Published on: ' + df_csva['Date published new'] + ')' 
                     )
             row_nu = len(df_csva.index)
