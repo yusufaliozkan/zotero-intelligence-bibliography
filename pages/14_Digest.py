@@ -173,10 +173,25 @@ with st.expander('Events', expanded=True):
     df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_gs.sort_values(by='date', ascending = True, inplace=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
-    today = dt.date.today()
-    filter = (df_gs['date']>=today)
-    df_gs = df_gs.loc[filter]
-    df_gs = df_gs.head(3)
+
+    next_10 = today + dt.timedelta(days=10)
+    next_20 = today + dt.timedelta(days=20)
+    next_30 = today + dt.timedelta(days=30)
+    rg2 = next_30
+    aa=30
+    range_day = st.radio('How many days do you want to go back?', ('30', '20', '10'))
+    if range_day == '10':
+        rg2 = next_10
+        aa = 10
+    if range_day == '20':
+        rg2 = next_20
+        aa =20
+    if range_day == '30':
+        rg2 = next_30
+        aa=30
+    filter_events = (df_gs['date']>rg2) & (df_gs['date']<today)
+    df_gs = df_gs.loc[filter_events]
+
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
