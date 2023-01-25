@@ -84,19 +84,19 @@ with st.expander('Publications:', expanded=True):
     previous_20 = today - dt.timedelta(days=20)
     previous_30 = today - dt.timedelta(days=30)
     rg = previous_30
-    a=30
+    a='30 days'
 
     range_day = st.radio('Show sources published in the last', ('30 days', '20 days', '10 days'))
 
     if range_day == '10 days':
         rg = previous_10
-        a = 10
+        a = '10 days'
     if range_day == '20 days':
         rg = previous_20
-        a =20
+        a ='20 days'
     if range_day == '30 days':
         rg = previous_30
-        a=30
+        a='30 days'
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<today)
     df_csv = df_csv.loc[filter]
