@@ -113,7 +113,7 @@ with st.expander('Publications:', expanded=True):
     st.subheader('Sources published in the last ' + str(a))
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
-        st.write('There is no publication in the last '+ str(a))
+        st.write('There is no publication published in the last '+ str(a))
 
     if sort_by_type:
         df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
