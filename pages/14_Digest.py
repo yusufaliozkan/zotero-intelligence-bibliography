@@ -178,6 +178,7 @@ with st.expander('Events', expanded=True):
     rg2 = next_30
     aa=30
     range_day = st.radio('How many days do you want to go further?', ('30', '20', '10'), key='events')
+    display = st.checkbox('Show details')
     if range_day == '10':
         rg2 = next_10
         aa = 10
