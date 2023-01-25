@@ -176,8 +176,8 @@ with st.expander('Events:', expanded=True):
     next_10 = today + dt.timedelta(days=10)    
     next_20 = today + dt.timedelta(days=20)
     next_30 = today + dt.timedelta(days=30)
-    rg2 = next_30
-    aa='30 days'
+    rg2 = next_10
+    aa='10 days'
     range_day = st.radio('Show events in the next:', ('30 days', '20 days', '10 days'), key='events')
     if range_day == '10 days':
         rg2 = next_10
