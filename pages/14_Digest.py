@@ -138,8 +138,8 @@ with st.expander('Publications:', expanded=True):
                 st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
 
     else:
-        df_last = ('**'+ df_csv['Publication type']+ '**'+ ': ' + 
-                    df_csv['Title'] + ', [Publication link]'+ '('+ df_csv['Link to publication'] + ')' +
+        df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
+                    df_csv['Title'] +  "', [Publication link]"+ '('+ df_csv['Link to publication'] + ')' +
                     ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
                     ' (Published in: ' + df_csv['Journal'] + ')' +
                     ' (Published on: ' + df_csv['Date published new'] + ')'
