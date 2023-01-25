@@ -47,7 +47,7 @@ for item in items:
     item['data']['creators']
     ))
 st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network bibliography',
+                    page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
@@ -142,7 +142,7 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence bibliography")
+st.title("Intelligence studies network bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 count = zot.count_items()
