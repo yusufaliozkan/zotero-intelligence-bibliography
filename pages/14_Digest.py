@@ -207,6 +207,8 @@ with st.expander('Events:', expanded=True):
             st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
+st.caption('[Go to top](#intelligence-bibliography-digest)')
+
 with st.expander('Conferences:', expanded=True):
     st.header('Conferences')
     sheet_url2 = st.secrets["public_gsheets_url2"]
@@ -258,6 +260,8 @@ with st.expander('Conferences:', expanded=True):
             st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
             st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
 
+st.caption('[Go to top](#intelligence-bibliography-digest)')
+
 with st.expander('Call for papers:', expanded=True):
     st.header('Call for papers')
     sheet_url3 = st.secrets["public_gsheets_url3"]
@@ -291,6 +295,8 @@ with st.expander('Call for papers:', expanded=True):
         st.write(''+str(i+1)+') '+ df_cfp1.iloc[i])
         if display:
             st.caption('Details:'+'\n '+ df_cfp['details'].iloc[i])
+
+st.caption('[Go to top](#intelligence-bibliography-digest)')
 
 st.write('---')
 components.html(
