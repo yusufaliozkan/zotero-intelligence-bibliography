@@ -347,9 +347,9 @@ def main():
 
         with open(pdf_fn, 'rb') as h_pdf:
             st.download_button(
-                label="Descarregar relatório",
+                label="Download as PDF",
                 data=h_pdf,
-                file_name="Relatório.pdf",
+                file_name="test.pdf",
                 mime="application/pdf",
             )
 
