@@ -19,6 +19,7 @@ from wordcloud import WordCloud
 from gsheetsdb import connect
 import datetime as dt
 from fpdf import FPDF
+import base64
 
 
 st.set_page_config(layout = "centered", 
