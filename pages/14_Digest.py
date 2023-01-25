@@ -127,8 +127,8 @@ with st.expander('Publications:', expanded=True):
             st.subheader(types2['Publication type'].iloc[i])
             b = types2['Publication type'].iloc[i]
             df_csva = df_csv[df_csv['Publication type']==b]
-            df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ': ' + 
-                    df_csva['Title'] + ', [Publication link]'+ '('+ df_csva['Link to publication'] + ')' +
+            df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
+                    df_csva['Title'] + "', [Publication link]"+ '('+ df_csva['Link to publication'] + ')' +
                     ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
                     ' (Published in: ' + df_csva['Journal'] + ')' +
                     ' (Published on: ' + df_csva['Date published new'] + ')' 
