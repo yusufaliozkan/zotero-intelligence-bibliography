@@ -76,6 +76,7 @@ st.write('Intelligence bibliogrpahy digest - Day: '+ str(today2))
 st.markdown('#### Contents')
 st.caption('[Publications](#publications)')
 st.caption('[Events](#events)')
+st.caption('[Conferences](#conferences#')
 
 with st.expander('Publications:', expanded=True):
     st.header('Publications')
@@ -204,6 +205,7 @@ with st.expander('Events:', expanded=True):
     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
 with st.expander('Conferences:', expanded=True):
+    st.header('Conferences')
     sheet_url2 = st.secrets["public_gsheets_url2"]
     rows = run_query(f'SELECT * FROM "{sheet_url2}"')
 
