@@ -60,7 +60,7 @@ with st.sidebar:
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
 
 
-df_csv = pd.read_csv(r'D:\OneDrive\06.Data_science\Zotero\all_items.csv', index_col=None)
+df_csv = pd.read_csv(r'all_items.csv', index_col=None)
 df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.date
 df_csv['Publisher'] =df_csv['Publisher'].fillna('')
 df_csv['Journal'] =df_csv['Journal'].fillna('')
