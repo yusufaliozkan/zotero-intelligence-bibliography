@@ -221,7 +221,6 @@ with tab1:
                 types = df['Publication type'].unique()
                 types = pd.DataFrame(types, columns=['Publication type'])
                 row_nu_types = len(types.index)
-                row_nu_types
                 for i in range(row_nu_types):
                     st.subheader(types['Publication type'].iloc[i])
                     b = types['Publication type'].iloc[i]
