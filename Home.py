@@ -411,7 +411,7 @@ with tab1:
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
-        with st.expander('Digest'):
+        with st.expander('Digest', expanded=True):
             st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
         
 with tab2:
