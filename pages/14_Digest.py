@@ -73,111 +73,114 @@ today = dt.date.today()
 today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Intelligence bibliogrpahy digest - Day: '+ str(today2))
 
-with st.expander('Publications:', expanded=True):
-    container = st.container()
-    previous_10 = today - dt.timedelta(days=10)
-    previous_20 = today - dt.timedelta(days=20)
-    previous_30 = today - dt.timedelta(days=30)
-    rg = previous_30
-    a=30
-
-    range_day = st.radio('How many days do you want to go back?', ('30', '20', '10'))
-
-    if range_day == '10':
-        rg = previous_10
-        a = 10
-    if range_day == '20':
-        rg = previous_20
-        a =20
-    if range_day == '30':
+col1, col2: st.columns([4,1])
+with col1:
+    with st.expander('Publications:', expanded=True):
+        container = st.container()
+        previous_10 = today - dt.timedelta(days=10)
+        previous_20 = today - dt.timedelta(days=20)
+        previous_30 = today - dt.timedelta(days=30)
         rg = previous_30
         a=30
 
-    filter = (df_csv['Date published']>rg) & (df_csv['Date published']<today)
-    df_csv = df_csv.loc[filter]
+        range_day = st.radio('How many days do you want to go back?', ('30', '20', '10'))
 
-    df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-    df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
-    df_csv['Date published'] = df_csv['Date published'].fillna('No date')
-    df_csv.sort_values(by='Date published', ascending = False, inplace=True)
+        if range_day == '10':
+            rg = previous_10
+            a = 10
+        if range_day == '20':
+            rg = previous_20
+            a =20
+        if range_day == '30':
+            rg = previous_30
+            a=30
+
+        filter = (df_csv['Date published']>rg) & (df_csv['Date published']<today)
+        df_csv = df_csv.loc[filter]
+
+        df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+        df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
+        df_csv['Date published'] = df_csv['Date published'].fillna('No date')
+        df_csv.sort_values(by='Date published', ascending = False, inplace=True)
 
 
-    container.header('Sources published in the last ' + str(a) + ' days')
+        container.header('Sources published in the last ' + str(a) + ' days')
 
-    sort_by_type = st.checkbox('Sort by publication type', key='type')
-    types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
-    df_csv = df_csv[df_csv['Publication type'].isin(types)]
+        sort_by_type = st.checkbox('Sort by publication type', key='type')
+        types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
+        df_csv = df_csv[df_csv['Publication type'].isin(types)]
 
-    if df_csv['Title'].any() in ("", [], None, 0, False):
-        st.write('There is no publication in the last '+ str(a) +' days!')
+        if df_csv['Title'].any() in ("", [], None, 0, False):
+            st.write('There is no publication in the last '+ str(a) +' days!')
 
-    if sort_by_type:
-        df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
+        if sort_by_type:
+            df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
 
-        types2 = df_csv['Publication type'].unique()
-        types2 = pd.DataFrame(types2, columns=['Publication type'])
-        row_nu_types2 = len(types2.index)
-        for i in range(row_nu_types2):
-            st.subheader(types2['Publication type'].iloc[i])
-            b = types2['Publication type'].iloc[i]
-            df_csva = df_csv[df_csv['Publication type']==b]
-            df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ': ' + 
-                    df_csva['Title'] + ', [Publication link]'+ '('+ df_csva['Link to publication'] + ')' +
-                    ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
-                    ' (Published on: ' + df_csva['Date published new'] + ')'
-                    )
-            row_nu = len(df_csva.index)
+            types2 = df_csv['Publication type'].unique()
+            types2 = pd.DataFrame(types2, columns=['Publication type'])
+            row_nu_types2 = len(types2.index)
+            for i in range(row_nu_types2):
+                st.subheader(types2['Publication type'].iloc[i])
+                b = types2['Publication type'].iloc[i]
+                df_csva = df_csv[df_csv['Publication type']==b]
+                df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ': ' + 
+                        df_csva['Title'] + ', [Publication link]'+ '('+ df_csva['Link to publication'] + ')' +
+                        ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
+                        ' (Published on: ' + df_csva['Date published new'] + ')'
+                        )
+                row_nu = len(df_csva.index)
+                for i in range(row_nu):
+                    st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
+
+        else:
+            df_last = ('**'+ df_csv['Publication type']+ '**'+ ': ' + 
+                        df_csv['Title'] + ', [Publication link]'+ '('+ df_csv['Link to publication'] + ')' +
+                        ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                        ' (Published on: ' + df_csv['Date published new'] + ')'
+                        )
+            row_nu = len(df_csv.index)
             for i in range(row_nu):
-                st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
+                st.write(''+str(i+1)+') ' +df_last.iloc[i])
 
-    else:
-        df_last = ('**'+ df_csv['Publication type']+ '**'+ ': ' + 
-                    df_csv['Title'] + ', [Publication link]'+ '('+ df_csv['Link to publication'] + ')' +
-                    ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
-                    ' (Published on: ' + df_csv['Date published new'] + ')'
-                    )
-        row_nu = len(df_csv.index)
+with col2:
+    with st.expander('Events', expanded=True):
+        # Create a connection object.
+        conn = connect()
+
+        # Perform SQL query on the Google Sheet.
+        # Uses st.cache to only rerun when the query changes or after 10 min.
+        @st.cache(ttl=10)
+        def run_query(query):
+            rows = conn.execute(query, headers=1)
+            rows = rows.fetchall()
+            return rows
+
+        sheet_url = st.secrets["public_gsheets_url"]
+        rows = run_query(f'SELECT * FROM "{sheet_url}"')
+
+        data = []
+        columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
+
+        # Print results.
+        for row in rows:
+            data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
+
+        pd.set_option('display.max_colwidth', None)
+        df_gs = pd.DataFrame(data, columns=columns)
+        df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+        df_gs.sort_values(by='date', ascending = True, inplace=True)
+        df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
+        today = dt.date.today()
+        filter = (df_gs['date']>=today)
+        df_gs = df_gs.loc[filter]
+        df_gs = df_gs.head(3)
+        if df_gs['event_name'].any() in ("", [], None, 0, False):
+            st.write('No upcoming event!')
+        df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+        row_nu = len(df_gs.index)
         for i in range(row_nu):
-            st.write(''+str(i+1)+') ' +df_last.iloc[i])
-
-with st.expander('Events', expanded=True):
-    # Create a connection object.
-    conn = connect()
-
-    # Perform SQL query on the Google Sheet.
-    # Uses st.cache to only rerun when the query changes or after 10 min.
-    @st.cache(ttl=10)
-    def run_query(query):
-        rows = conn.execute(query, headers=1)
-        rows = rows.fetchall()
-        return rows
-
-    sheet_url = st.secrets["public_gsheets_url"]
-    rows = run_query(f'SELECT * FROM "{sheet_url}"')
-
-    data = []
-    columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
-
-    # Print results.
-    for row in rows:
-        data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
-
-    pd.set_option('display.max_colwidth', None)
-    df_gs = pd.DataFrame(data, columns=columns)
-    df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-    df_gs.sort_values(by='date', ascending = True, inplace=True)
-    df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
-    today = dt.date.today()
-    filter = (df_gs['date']>=today)
-    df_gs = df_gs.loc[filter]
-    df_gs = df_gs.head(3)
-    if df_gs['event_name'].any() in ("", [], None, 0, False):
-        st.write('No upcoming event!')
-    df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
-    row_nu = len(df_gs.index)
-    for i in range(row_nu):
-        st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
-    st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
+            st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+        st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
 st.write('---')
 components.html(
