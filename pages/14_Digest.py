@@ -74,7 +74,8 @@ today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Intelligence bibliogrpahy digest - Day: '+ str(today2))
 
 st.markdown('#### Contents')
-st.write('[Publications](#publications)')
+st.caption('[Publications](#publications)')
+st.caption('[Events](#events)')
 
 with st.expander('Publications:', expanded=True):
     st.header('Publications')
