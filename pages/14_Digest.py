@@ -199,6 +199,8 @@ with st.expander('Events', expanded=True):
     row_nu = len(df_gs.index)
     for i in range(row_nu):
         st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+        if display:
+            st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
 st.write('---')
