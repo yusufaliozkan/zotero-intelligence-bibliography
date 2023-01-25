@@ -86,7 +86,7 @@ with st.expander('Publications:', expanded=True):
     rg = previous_30
     a='30 days'
 
-    range_day = st.radio('Show sources published in the last', ('30 days', '20 days', '10 days'))
+    range_day = st.radio('Show sources published in the last:', ('30 days', '20 days', '10 days'))
 
     if range_day == '10 days':
         rg = previous_10
