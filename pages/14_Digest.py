@@ -190,7 +190,7 @@ with st.expander('Events', expanded=True):
     if range_day == '30':
         rg2 = next_30
         aa=30
-    filter_events = (df_gs['date']>rg2) & (df_gs['date']<today)
+    filter_events = (df_gs['date']<rg2) & (df_gs['date']>today)
     df_gs = df_gs.loc[filter_events]
     next_10
     if df_gs['event_name'].any() in ("", [], None, 0, False):
