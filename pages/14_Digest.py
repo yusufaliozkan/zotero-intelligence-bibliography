@@ -230,7 +230,7 @@ with st.expander('Conferences:', expanded=True):
         rg3 = next_3mo
         aa = 10
     if range_day == '6 months':
-        rg2 = next_6mo
+        rg3 = next_6mo
         rg3 =20
     filter_events = (df_gs['date']<rg3) & (df_gs['date']>=today)
     df_gs = df_gs.loc[filter_events]
