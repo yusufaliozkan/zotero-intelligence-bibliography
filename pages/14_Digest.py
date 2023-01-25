@@ -302,7 +302,7 @@ st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 st.write('---')
 
-df=df_csv.copy()
+df=df_last.copy()
 st.write(df)
 
 export_as_pdf = st.button("Export Report")
