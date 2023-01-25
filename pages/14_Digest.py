@@ -175,8 +175,7 @@ with st.expander('Events', expanded=True):
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
     df_gs
 
-    next_10 = today + dt.timedelta(days=10)
-    next_10
+    next_10 = today + dt.timedelta(days=10)    
     next_20 = today + dt.timedelta(days=20)
     next_30 = today + dt.timedelta(days=30)
     rg2 = next_30
@@ -193,7 +192,7 @@ with st.expander('Events', expanded=True):
         aa=30
     filter_events = (df_gs['date']>rg2) & (df_gs['date']<today)
     df_gs = df_gs.loc[filter_events]
-
+    next_10
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
