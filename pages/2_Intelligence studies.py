@@ -602,6 +602,7 @@ if st.button('Suggest random 5 sources'):
             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
             ' (Published on: ' +df['Date published'] + ')'
             )
+        df_items
 
     row_nu_1= len(df.index)
     for i in range(row_nu_1):
