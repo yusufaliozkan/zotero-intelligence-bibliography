@@ -272,7 +272,7 @@ with st.expander('Conferences:', expanded=ex):
             st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
             st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
 
-st.caption('[Go to top](#intelligence-studies-network-digest)')
+    st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Call for papers:', expanded=ex):
     st.header('Call for papers')
