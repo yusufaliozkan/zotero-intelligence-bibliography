@@ -219,7 +219,7 @@ with st.expander('Events:', expanded=ex):
             st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
-st.caption('[Go to top](#intelligence-studies-network-digest)')
+    st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Conferences:', expanded=ex):
     st.header('Conferences')
