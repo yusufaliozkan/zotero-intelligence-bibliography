@@ -586,8 +586,7 @@ with tab2:
 with tab3:
     if st.button('Suggest me 5 random sources'):
         df=df3.copy()
-        row_all = len(df.index)
-        row_all        
+        row_nu_1 = len(df.index)
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
         if row_all >5:
