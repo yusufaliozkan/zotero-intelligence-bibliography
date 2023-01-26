@@ -587,7 +587,7 @@ with tab3:
     df=df3.copy()
     df = df.reset_index()
     df = df.drop(['index'], axis=1)
-    df=df.sample(n=50000)
+    df=df.sample(n=5)
     if st.button('Suggest me another random 5 sources'):
         df=df.sample(n=5)
         df = df.reset_index()
