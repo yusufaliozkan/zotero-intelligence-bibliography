@@ -597,6 +597,11 @@ if df['FirstName2'].any() in ("", [], None, 0, False):
         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
         ' (Published on: ' +df['Date published'] + ')'
         )
+for i in range(row_nu_1):
+    st.write(''+str(i+1)+') ' +df_items.iloc[i])
+    df_items.fillna("nan") 
+    if display2:
+        st.caption(df['Abstract'].iloc[i])
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
