@@ -587,14 +587,13 @@ with tab3:
     if st.button('Suggest me 5 random sources'):
         df=df3.copy()
         row_all = len(df.index)
-        row_all
-        # if row_all <5:
+        row_all        
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
-        df=df.sample(n=5)
-        row_nu_1= len(df.index)
-        row_nu_1
-        df=df.sample(n=5)
+        if row_all <5:
+            df=df.sample(n=5)
+            row_nu_1= len(df.index)
+
         df = df.reset_index()
         if df['FirstName2'].any() in ("", [], None, 0, False):
             # st.write('no author')
