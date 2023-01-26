@@ -83,8 +83,13 @@ st.caption('[Events](#events)')
 st.caption('[Conferences](#conferences)')
 st.caption('[Call for papers](#call-for-papers)')
 
+ex=False
+expand = st.checkbox('Expand all', key='expand')
+if expand:
+    ex = True
 
-with st.expander('Publications:', expanded=True):
+
+with st.expander('Publications:', expanded=ex):
     st.header('Publications')
     previous_10 = today - dt.timedelta(days=10)
     previous_20 = today - dt.timedelta(days=20)
@@ -152,10 +157,9 @@ with st.expander('Publications:', expanded=True):
         row_nu = len(df_csv.index)
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
+    st.caption('[Go to top](#intelligence-studies-network-digest)')
 
-st.caption('[Go to top](#intelligence-studies-network-digest)')
-
-with st.expander('Events:', expanded=True):
+with st.expander('Events:', expanded=ex):
     st.header('Events')
     # Create a connection object.
     conn = connect()
@@ -215,9 +219,9 @@ with st.expander('Events:', expanded=True):
             st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
-st.caption('[Go to top](#intelligence-studies-network-digest)')
+    st.caption('[Go to top](#intelligence-studies-network-digest)')
 
-with st.expander('Conferences:', expanded=True):
+with st.expander('Conferences:', expanded=ex):
     st.header('Conferences')
     sheet_url2 = st.secrets["public_gsheets_url2"]
     rows = run_query(f'SELECT * FROM "{sheet_url2}"')
@@ -268,9 +272,9 @@ with st.expander('Conferences:', expanded=True):
             st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
             st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
 
-st.caption('[Go to top](#intelligence-studies-network-digest)')
+    st.caption('[Go to top](#intelligence-studies-network-digest)')
 
-with st.expander('Call for papers:', expanded=True):
+with st.expander('Call for papers:', expanded=ex):
     st.header('Call for papers')
     sheet_url3 = st.secrets["public_gsheets_url3"]
     rows = run_query(f'SELECT * FROM "{sheet_url3}"')
