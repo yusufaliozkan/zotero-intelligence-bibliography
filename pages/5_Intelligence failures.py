@@ -88,7 +88,7 @@ st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', uns
 container = st.container()
 
 # clist = df_collections['Name'].unique()
-tab1, tab2 = st.tabs(['Publications', 'Dashboard'])
+tab1, tab2, tab3 = st.tabs(['Publications', 'Dashboard', 'Source suggestion'])
 with tab1:
     col1, col2 = st.columns([5,1.6])
 
@@ -584,7 +584,61 @@ with tab2:
         plt.show()
         st.set_option('deprecation.showPyplotGlobalUse', False)
         st.pyplot() 
-                
+
+with tab3:
+        df=df2.copy()
+        row_nu_1 = len(df.index)
+        df = df.reset_index()
+        df = df.drop(['index'], axis=1)
+        if row_nu_1 >5:
+            df=df.sample(n=5)
+            row_nu_1= len(df.index)
+        df = df.reset_index()
+        if st.button('Suggest me 5 random sources'):
+            df=df2.copy()
+            row_nu_1 = len(df.index)
+            df = df.reset_index()
+            df = df.drop(['index'], axis=1)
+            if row_nu_1 >5:
+                df=df.sample(n=5)
+                row_nu_1= len(df.index)
+            df = df.reset_index()
+            if df['FirstName2'].any() in ("", [], None, 0, False):
+                # st.write('no author')
+                df['firstName'] = 'null'
+                df['lastName'] = 'null'
+
+                df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                    df['Title'] + ' '+ 
+                    ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
+                    "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+                    ' (Published on: ' +df['Date published'] + ')'
+                    )
+            else:
+                # st.write('author entered')
+                ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
+                df_fa = df['FirstName2']
+                df_fa = pd.DataFrame(df_fa.tolist())
+                df_fa = df_fa[0]
+                df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+                df_new = pd.json_normalize(df_fa, errors='ignore') 
+                df = pd.concat([df, df_new], axis=1)
+                df['firstName'] = df['firstName'].fillna('null')
+                df['lastName'] = df['lastName'].fillna('null')    
+                df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                            df['Title'] + ' '+ 
+                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+                            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+                            ' (Published on: ' +df['Date published'] + ')'
+                            )
+        for i in range(row_nu_1):
+            st.write(''+str(i+1)+') ' +df_items.iloc[i])
+            df_items.fillna("nan") 
+            if display2:
+                st.caption(df['Abstract'].iloc[i])
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
