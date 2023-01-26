@@ -585,7 +585,7 @@ with tab2:
 
 with tab3:
     if st.button('Suggest me 5 random sources'):
-        df=df3.copy()
+        df=df2.copy()
         row_nu_1 = len(df.index)
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
@@ -629,8 +629,6 @@ with tab3:
             df_items.fillna("nan") 
             if display2:
                 st.caption(df['Abstract'].iloc[i])
-
-
 
 components.html(
 """
