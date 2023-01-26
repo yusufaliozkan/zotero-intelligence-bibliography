@@ -585,7 +585,8 @@ with tab2:
 
 
 df=df3.copy()
-df=df.sample(n=5, random_state=1)
+if st.button('Suggest random 5 sources'):
+    df=df.sample(n=5, random_state=1)
 
 if df['FirstName2'].any() in ("", [], None, 0, False):
     # st.write('no author')
