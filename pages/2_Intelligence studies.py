@@ -585,6 +585,7 @@ with tab2:
 
 
 df=df3.copy()
+df['Title'].sample(n=5, random_state=1)
 if df['FirstName2'].any() in ("", [], None, 0, False):
     # st.write('no author')
     df['firstName'] = 'null'
