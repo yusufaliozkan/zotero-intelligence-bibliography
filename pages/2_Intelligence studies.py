@@ -585,6 +585,8 @@ with tab2:
 
 with tab3:
     df=df3.copy()
+    row_all = len(df.index)
+    row_all
     df = df.reset_index()
     df = df.drop(['index'], axis=1)
     df=df.sample(n=5)
