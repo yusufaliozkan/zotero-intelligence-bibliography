@@ -588,6 +588,7 @@ df=df3.copy()
 
 if st.button('Suggest random 5 sources'):
     df=df.sample(n=5)
+    df = df.reset_index()
     df
 
     if df['FirstName2'].any() in ("", [], None, 0, False):
@@ -595,14 +596,14 @@ if st.button('Suggest random 5 sources'):
         df['firstName'] = 'null'
         df['lastName'] = 'null'
 
-    df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-        df['Title'] + ' '+ 
-        ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
-        "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-        ' (Published on: ' +df['Date published'] + ')'
-        )
-    df_items
+        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+            df['Title'] + ' '+ 
+            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
+            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+            ' (Published on: ' +df['Date published'] + ')'
+            )
+        df_items
 
     row_nu_1= len(df.index)
     for i in range(row_nu_1):
