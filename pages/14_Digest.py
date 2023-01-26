@@ -83,8 +83,12 @@ st.caption('[Events](#events)')
 st.caption('[Conferences](#conferences)')
 st.caption('[Call for papers](#call-for-papers)')
 
+expand = st.checkbox('Expand all', key='expand')
+if expand:
+    ex = True
 
-with st.expander('Publications:', expanded=True):
+
+with st.expander('Publications:', expanded=ex):
     st.header('Publications')
     previous_10 = today - dt.timedelta(days=10)
     previous_20 = today - dt.timedelta(days=20)
