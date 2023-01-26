@@ -584,7 +584,7 @@ with tab2:
         st.pyplot() 
 
 with tab3:
-    if st.button('Suggest me another random 5 sources'):
+    if st.button('Suggest me 5 random sources'):
         df=df3.copy()
         row_all = len(df.index)
         row_all
