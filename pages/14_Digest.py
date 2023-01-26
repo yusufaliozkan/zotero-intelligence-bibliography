@@ -160,7 +160,7 @@ with st.expander('Publications:', expanded=ex):
 
 st.caption('[Go to top](#intelligence-studies-network-digest)')
 
-with st.expander('Events:', expanded=True):
+with st.expander('Events:', expanded=ex):
     st.header('Events')
     # Create a connection object.
     conn = connect()
@@ -222,7 +222,7 @@ with st.expander('Events:', expanded=True):
 
 st.caption('[Go to top](#intelligence-studies-network-digest)')
 
-with st.expander('Conferences:', expanded=True):
+with st.expander('Conferences:', expanded=ex):
     st.header('Conferences')
     sheet_url2 = st.secrets["public_gsheets_url2"]
     rows = run_query(f'SELECT * FROM "{sheet_url2}"')
@@ -275,7 +275,7 @@ with st.expander('Conferences:', expanded=True):
 
 st.caption('[Go to top](#intelligence-studies-network-digest)')
 
-with st.expander('Call for papers:', expanded=True):
+with st.expander('Call for papers:', expanded=ex):
     st.header('Call for papers')
     sheet_url3 = st.secrets["public_gsheets_url3"]
     rows = run_query(f'SELECT * FROM "{sheet_url3}"')
