@@ -11,6 +11,6 @@ At the moment this site shows the following:
 * The number of items and the library last update date.
 
 
-The webapp is available at [Intelligence bibliography](https://intelligence-bibliography.streamlit.app/).
+The webapp is available at [Intelligence bibliography](https://intelligence.streamlit.app/).
 
 Publications are also shown in [Intelligence studies network](https://www.intelligencenetwork.org/)
