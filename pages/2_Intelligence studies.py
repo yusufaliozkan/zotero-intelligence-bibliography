@@ -154,6 +154,7 @@ with tab1:
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
 
         df2=df.copy()
+        df3=df.copy()
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
 
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
@@ -582,6 +583,20 @@ with tab2:
         st.set_option('deprecation.showPyplotGlobalUse', False)
         st.pyplot() 
 
+
+df=df3.copy()
+if df['FirstName2'].any() in ("", [], None, 0, False):
+    # st.write('no author')
+    df['firstName'] = 'null'
+    df['lastName'] = 'null'
+
+    df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+        df['Title'] + ' '+ 
+        ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
+        "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+        ' (Published on: ' +df['Date published'] + ')'
+        )
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
