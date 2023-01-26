@@ -86,7 +86,7 @@ df_collections = df_collections.reset_index(drop=True)
 
 # clist = df_collections['Name'].unique()
 
-tab1, tab2, tab3 = st.tabs(['Publications', 'Dashboard, 'Source suggestion'])
+tab1, tab2, tab3 = st.tabs(['Publications', 'Dashboard', 'Source suggestion'])
 with tab1:
     col1, col2 = st.columns([5,1.6])
 
@@ -634,7 +634,7 @@ with tab3:
             df_items.fillna("nan") 
             if display2:
                 st.caption(df['Abstract'].iloc[i])
-                
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
