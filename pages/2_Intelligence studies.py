@@ -621,12 +621,12 @@ if st.button('Suggest random 5 sources'):
                     ' (Published on: ' +df['Date published'] + ')'
                     )
 
-    row_nu_1= len(df.index)
-    for i in range(row_nu_1):
-        st.write(''+str(i+1)+') ' +df_items.iloc[i])
-        df_items.fillna("nan") 
-        if display2:
-            st.caption(df['Abstract'].iloc[i])
+row_nu_1= len(df.index)
+for i in range(row_nu_1):
+    st.write(''+str(i+1)+') ' +df_items.iloc[i])
+    df_items.fillna("nan") 
+    if display2:
+        st.caption(df['Abstract'].iloc[i])
 
 
 
