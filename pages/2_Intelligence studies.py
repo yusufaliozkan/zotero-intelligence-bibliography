@@ -590,7 +590,7 @@ with tab3:
         row_all        
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
-        if row_all <5:
+        if row_all >5:
             df=df.sample(n=5)
             row_nu_1= len(df.index)
 
