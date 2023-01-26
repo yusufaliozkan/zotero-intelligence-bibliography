@@ -589,7 +589,7 @@ df=df.sample(n=5)
 if st.button('Suggest random 5 sources'):
     df=df.sample(n=5)
     df = df.reset_index()
-    df
+
     if df['FirstName2'].any() in ("", [], None, 0, False):
         # st.write('no author')
         df['firstName'] = 'null'
