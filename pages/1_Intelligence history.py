@@ -612,8 +612,6 @@ with tab3:
             row_nu_12= len(df.index)
         df = df.reset_index()
         row_nu_12 = len(df.index)
-        df = df.reset_index()
-        df = df.drop(['index'], axis=1)
         if row_nu_12 >5:
             df=df.sample(n=5)
             row_nu_12= len(df.index)
