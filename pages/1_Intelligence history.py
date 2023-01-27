@@ -648,6 +648,8 @@ with tab3:
                             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                             ' (Published on: ' +df['Date published'] + ')'
                             )
+        df = df.reset_index()
+        df = df.drop(['index'], axis=1)
         df
         for i in range(row_nu_1):
             st.write(''+str(i+1)+') ' +df_items.iloc[i])
