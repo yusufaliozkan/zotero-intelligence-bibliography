@@ -615,7 +615,6 @@ with tab3:
         if row_nu_12 >5:
             df=df.sample(n=5)
             row_nu_12= len(df.index)
-        df = df.reset_index()
         if df['FirstName2'].any() in ("", [], None, 0, False):
             # st.write('no author')
             df['firstName'] = 'null'
