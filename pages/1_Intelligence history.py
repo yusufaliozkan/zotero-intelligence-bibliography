@@ -600,23 +600,23 @@ with tab2:
 
 with tab3:
         df=df3.copy()
-        row_nu_1 = len(df3.index)
+        row_nu_12 = len(df3.index)
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
-        if row_nu_1 >5:
+        if row_nu_12 >5:
             df=df.sample(n=5)
             df = df.reset_index()
             df = df.drop(['index'], axis=1)
-            row_nu_1= len(df.index)
+            row_nu_12= len(df.index)
         df = df.reset_index()
         if st.button('Suggest me 5 random sources'):
             df=df2.copy()
-            row_nu_1 = len(df.index)
+            row_nu_12 = len(df.index)
             df = df.reset_index()
             df = df.drop(['index'], axis=1)
-            if row_nu_1 >5:
+            if row_nu_12 >5:
                 df=df.sample(n=5)
-                row_nu_1= len(df.index)
+                row_nu_12= len(df.index)
             df = df.reset_index()
             if df['FirstName2'].any() in ("", [], None, 0, False):
                 # st.write('no author')
@@ -648,7 +648,7 @@ with tab3:
                             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                             ' (Published on: ' +df['Date published'] + ')'
                             )
-        for i in range(row_nu_1):
+        for i in range(row_nu_12):
             st.write(''+str(i+1)+') ' +df_items.iloc[i])
             df_items.fillna("nan") 
             if display2:
