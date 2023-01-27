@@ -648,6 +648,8 @@ with tab3:
                             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                             ' (Published on: ' +df['Date published'] + ')'
                             )
+        row_nu_12
+        df
         for i in range(row_nu_12):
             st.write(''+str(i+1)+') ' +df_items.iloc[i])
             df_items.fillna("nan") 
