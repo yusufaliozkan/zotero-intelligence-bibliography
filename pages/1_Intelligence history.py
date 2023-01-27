@@ -218,7 +218,7 @@ with tab1:
             display2 = st.checkbox('Display abstracts')
 
             if sort_by_type:
-                df2=df.copy()
+                df3=df.copy()
                 df = df.sort_values(by=['Publication type'], ascending=True)
                 types = df['Publication type'].unique()
                 types = pd.DataFrame(types, columns=['Publication type'])
