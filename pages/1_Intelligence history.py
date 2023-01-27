@@ -600,6 +600,7 @@ with tab2:
 
 with tab3:
     if st.button('Suggest me 5 random sources'):
+        df=df3.copy()
         row_nu_12 = len(df3.index)
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
@@ -610,7 +611,6 @@ with tab3:
             df = df.drop(['index'], axis=1)
             row_nu_12= len(df.index)
         df = df.reset_index()
-        df=df3.copy()
         row_nu_12 = len(df.index)
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
