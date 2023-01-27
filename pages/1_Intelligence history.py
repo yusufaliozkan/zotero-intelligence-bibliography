@@ -602,7 +602,7 @@ with tab3:
         df=df3.copy()
         row_nu_12 = len(df3.index)
         df = df.reset_index()
-        df = df.drop(['index','level_0'], axis=1)
+        df = df.drop(['index'], axis=1)
         if row_nu_12 >5:
             df=df3.copy()
             df=df.sample(n=5)
