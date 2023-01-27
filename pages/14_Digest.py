@@ -75,7 +75,7 @@ df_csv = df_csv.drop(['Unnamed: 0'], axis=1)
 
 today = dt.date.today()
 today2 = dt.date.today().strftime('%d/%m/%Y')
-st.write('Intelligence studies network digest - Day: '+ str(today2))
+st.write('Your daily intelligence studies digest - Day: '+ str(today2))
 
 st.markdown('#### Contents')
 st.caption('[Publications](#publications)')
