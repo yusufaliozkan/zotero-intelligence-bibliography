@@ -585,6 +585,16 @@ with tab2:
         st.pyplot() 
 
 with tab3:
+    df=df2.copy()
+    row_nu_1 = len(df.index)
+    df = df.reset_index()
+    df = df.drop(['index'], axis=1)
+    if row_nu_1 >5:
+        df=df.sample(n=5)
+        row_nu_1= len(df.index)
+    df = df.reset_index()
+    st.info('It may take some time for the app to bring new results as it searches the entire database.')
+    if st.button('Suggest me 5 random sources'):
         df=df2.copy()
         row_nu_1 = len(df.index)
         df = df.reset_index()
@@ -593,28 +603,19 @@ with tab3:
             df=df.sample(n=5)
             row_nu_1= len(df.index)
         df = df.reset_index()
-        if st.button('Suggest me 5 random sources'):
-            df=df2.copy()
-            row_nu_1 = len(df.index)
-            df = df.reset_index()
-            df = df.drop(['index'], axis=1)
-            if row_nu_1 >5:
-                df=df.sample(n=5)
-                row_nu_1= len(df.index)
-            df = df.reset_index()
-        if df['FirstName2'].any() in ("", [], None, 0, False):
-            # st.write('no author')
-            df['firstName'] = 'null'
-            df['lastName'] = 'null'
+    if df['FirstName2'].any() in ("", [], None, 0, False):
+        # st.write('no author')
+        df['firstName'] = 'null'
+        df['lastName'] = 'null'
 
-            df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                df['Title'] + ' '+ 
-                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
-                "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-                ' (Published on: ' +df['Date published'] + ')'
-                )
-        else:
+        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+            df['Title'] + ' '+ 
+            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
+            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+            ' (Published on: ' +df['Date published'] + ')'
+            )
+    else:
             # st.write('author entered')
             ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
             df_fa = df['FirstName2']
@@ -632,11 +633,11 @@ with tab3:
                         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                         ' (Published on: ' +df['Date published'] + ')'
                         )
-        for i in range(row_nu_1):
-            st.write(''+str(i+1)+') ' +df_items.iloc[i])
-            df_items.fillna("nan") 
-            if display2:
-                st.caption(df['Abstract'].iloc[i])
+    for i in range(row_nu_1):
+        st.write(''+str(i+1)+') ' +df_items.iloc[i])
+        df_items.fillna("nan") 
+        if display2:
+            st.caption(df['Abstract'].iloc[i])
 
 components.html(
 """
