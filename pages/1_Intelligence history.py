@@ -650,7 +650,10 @@ with tab3:
                             ' (Published on: ' +df['Date published'] + ')'
                             )
         row_nu_12
+        df = df.reset_index()
+        df = df.drop(['index','level_0'], axis=1)
         df
+
         for i in range(row_nu_12):
             st.write(''+str(i+1)+') ' +df_items.iloc[i])
             df_items.fillna("nan") 
