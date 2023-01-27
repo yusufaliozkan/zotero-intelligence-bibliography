@@ -600,8 +600,9 @@ with tab2:
 with tab3:
         df=df3.copy()
         row_nu_1 = len(df3.index)
-        # df = df.reset_index()
-        # df = df.drop(['index'], axis=1)
+        df = df.reset_index()
+        df = df.drop(['index'], axis=1)
+        df
         if row_nu_1 >5:
             df=df.sample(n=5)
             row_nu_1= len(df.index)
