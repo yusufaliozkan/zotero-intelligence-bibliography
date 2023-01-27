@@ -156,6 +156,7 @@ with tab1:
         st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
         
         df2=df.copy()
+        df3=df.copy()
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original')
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df = df.reset_index()
@@ -597,7 +598,7 @@ with tab2:
         st.pyplot() 
 
 with tab3:
-        df=df2.copy()
+        df=df3.copy()
         row_nu_1 = len(df.index)
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
