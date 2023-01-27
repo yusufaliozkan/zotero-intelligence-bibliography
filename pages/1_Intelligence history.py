@@ -653,7 +653,7 @@ with tab3:
         df = df.reset_index()
         df = df.drop(['index','level_0'], axis=1)
         df
-
+        df_items2
         for i in range(row_nu_12):
             st.write(''+str(i+1)+') ' +df_items2.iloc[i])
             df_items2.fillna("nan") 
