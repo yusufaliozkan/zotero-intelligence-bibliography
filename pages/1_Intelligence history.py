@@ -624,7 +624,7 @@ with tab3:
                 df['firstName'] = 'null'
                 df['lastName'] = 'null'
 
-                df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                df_items2 = ('**'+ df['Publication type']+ '**'+ ': ' +
                     df['Title'] + ' '+ 
                     ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
                     "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
@@ -642,7 +642,7 @@ with tab3:
                 df = pd.concat([df, df_new], axis=1)
                 df['firstName'] = df['firstName'].fillna('null')
                 df['lastName'] = df['lastName'].fillna('null')    
-                df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                df_items2 = ('**'+ df['Publication type']+ '**'+ ': ' +
                             df['Title'] + ' '+ 
                             ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
                             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
@@ -655,8 +655,8 @@ with tab3:
         df
 
         for i in range(row_nu_12):
-            st.write(''+str(i+1)+') ' +df_items.iloc[i])
-            df_items.fillna("nan") 
+            st.write(''+str(i+1)+') ' +df_items2.iloc[i])
+            df_items2.fillna("nan") 
             if display2:
                 st.caption(df['Abstract'].iloc[i])
                 
