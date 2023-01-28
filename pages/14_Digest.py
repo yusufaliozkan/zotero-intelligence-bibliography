@@ -147,7 +147,6 @@ with st.expander('Publications:', expanded=ex):
             st.subheader(types2['Publication type'].iloc[i])
             b = types2['Publication type'].iloc[i]
             df_csva = df_csv[df_csv['Publication type']==b]
-            df_csva
             df_csva["Link to publication"].fillna("No link", inplace = True)
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
                     df_csva['Title'] + "'," +
@@ -161,7 +160,7 @@ with st.expander('Publications:', expanded=ex):
             row_nu = len(df_csva.index)
             for i in range(row_nu):
                 df_lasta=df_lasta.dropna().reset_index(drop=True)                
-                st.write(df_lasta.iloc[i])
+                st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
 
     else:
         df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
