@@ -143,7 +143,6 @@ with st.expander('Publications:', expanded=ex):
         types2 = df_csv['Publication type'].unique()
         types2 = pd.DataFrame(types2, columns=['Publication type'])
         row_nu_types2 = len(types2.index)
-        row_nu_types2
         for i in range(row_nu_types2):
             st.subheader(types2['Publication type'].iloc[i])
             b = types2['Publication type'].iloc[i]
