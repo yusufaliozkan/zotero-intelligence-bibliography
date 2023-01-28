@@ -193,6 +193,8 @@ with st.expander('Events:', expanded=ex):
     next_30 = today + dt.timedelta(days=30)
     rg2 = next_10
     aa='10 days'
+    st.write('<style>div.Widget.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+
     range_day = st.radio('Show events in the next:', ('10 days', '20 days', '30 days'), key='events')
     if range_day == '10 days':
         rg2 = next_10
