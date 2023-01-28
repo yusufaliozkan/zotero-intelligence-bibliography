@@ -138,6 +138,8 @@ with st.expander('Publications:', expanded=ex):
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication published in the last '+ str(a))
+    df_csv = df_csv.reset_index(inplace=True)
+    df_csv
 
     if sort_by_type:
         df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
@@ -168,8 +170,6 @@ with st.expander('Publications:', expanded=ex):
                     ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                     )
         row_nu = len(df_csv.index)
-        df_csv = df_csv.reset_index(inplace=True)
-        df_csv
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
     st.caption('[Go to top](#intelligence-studies-network-digest)')
