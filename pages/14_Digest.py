@@ -147,6 +147,7 @@ with st.expander('Publications:', expanded=ex):
             st.subheader(types2['Publication type'].iloc[i])
             b = types2['Publication type'].iloc[i]
             df_csva = df_csv[df_csv['Publication type']==b]
+            df_csva
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
                     df_csva['Title'] + "'," +
                     ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
@@ -156,7 +157,7 @@ with st.expander('Publications:', expanded=ex):
                     )
             # df_lasta=df_lasta.dropna().reset_index(drop=True)
             df_lasta
-            row_nu = len(df_csv.index)
+            row_nu = len(df_csva.index)
             for i in range(row_nu):
                 df_lasta=df_lasta.dropna().reset_index(drop=True)                
                 st.write(df_lasta.iloc[i])
