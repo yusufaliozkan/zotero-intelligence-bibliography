@@ -103,7 +103,7 @@ with st.expander('Publications:', expanded=ex):
 
 
     range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days'))
-    range_months = st.radio('ewew',('3 months', '6 months', '1 year'))
+    range_months = st.radio('',('3 months', '6 months', '1 year'))
     if range_day == '10 days':
         rg = previous_10
         a = '10 days'
