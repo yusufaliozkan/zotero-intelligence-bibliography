@@ -158,7 +158,7 @@ with st.expander('Publications:', expanded=ex):
                     )
             row_nu = len(df_csva.index)
             row_nu
-            for i in range(row_nu):
+            for i in range(row_nu_types2):
                 st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
 
     else:
