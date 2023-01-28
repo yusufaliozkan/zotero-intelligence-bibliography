@@ -156,7 +156,7 @@ with st.expander('Publications:', expanded=ex):
                     )
             # df_lasta=df_lasta.dropna().reset_index(drop=True)
             df_lasta
-            row_nu = len(df_csva.index)
+            row_nu = len(df_csv.index)
             for i in range(row_nu):
                 df_lasta=df_lasta.dropna().reset_index(drop=True)                
                 st.write(df_lasta.iloc[i])
