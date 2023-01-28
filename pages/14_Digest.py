@@ -208,15 +208,15 @@ with st.expander('Events:', expanded=ex):
     if range_day == '30 days':
         rg2 = next_30
         aa='30 days'
-    if range_day == '3 months':
+    if range_months == '3 months':
         rg2 = next_90
-        aa = '10 days'
-    if range_day == '6 months':
+        aa = '3 months'
+    if range_months == '6 months':
         rg2 = next_180
-        aa ='20 days'
-    if range_day == '1 year':
+        aa ='6 months'
+    if range_months == '1 year':
         rg2 = next_365
-        aa='30 days'
+        aa='1 year'
     filter_events = (df_gs['date']<rg2) & (df_gs['date']>=today)
     df_gs = df_gs.loc[filter_events]
 
