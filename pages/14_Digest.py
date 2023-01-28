@@ -191,6 +191,9 @@ with st.expander('Events:', expanded=ex):
     next_10 = today + dt.timedelta(days=10)    
     next_20 = today + dt.timedelta(days=20)
     next_30 = today + dt.timedelta(days=30)
+    next_90 = today + dt.timedelta(days=90)
+    next_180 = today + dt.timedelta(days=180)
+    next_365 = today + dt.timedelta(days=365)
     rg2 = next_10
     aa='10 days'
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
@@ -205,7 +208,15 @@ with st.expander('Events:', expanded=ex):
     if range_day == '30 days':
         rg2 = next_30
         aa='30 days'
-
+    if range_day == '3 months':
+        rg2 = next_90
+        aa = '10 days'
+    if range_day == '6 months':
+        rg2 = next_180
+        aa ='20 days'
+    if range_day == '1 year':
+        rg2 = next_365
+        aa='30 days'
     filter_events = (df_gs['date']<rg2) & (df_gs['date']>=today)
     df_gs = df_gs.loc[filter_events]
 
