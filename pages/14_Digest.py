@@ -94,11 +94,16 @@ with st.expander('Publications:', expanded=ex):
     previous_10 = today - dt.timedelta(days=10)
     previous_20 = today - dt.timedelta(days=20)
     previous_30 = today - dt.timedelta(days=30)
+    previous_90 = today - dt.timedelta(days=90)
+    previous_180 = today - dt.timedelta(days=180)
+    previous_360 = today - dt.timedelta(days=365)
     rg = previous_10
     a='10 days'
+    st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+
 
     range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days'))
-
+    range_months = st.radio('ewew',('3 months', '6 months', '1 year'))
     if range_day == '10 days':
         rg = previous_10
         a = '10 days'
@@ -108,6 +113,15 @@ with st.expander('Publications:', expanded=ex):
     if range_day == '30 days':
         rg = previous_30
         a='30 days'
+    if range_months == '3 months':
+        rg2 = next_90
+        aa = '3 months'
+    if range_months == '6 months':
+        rg2 = next_180
+        aa ='6 months'
+    if range_months == '1 year':
+        rg2 = next_365
+        aa='1 year'
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     df_csv = df_csv.loc[filter]
@@ -191,14 +205,9 @@ with st.expander('Events:', expanded=ex):
     next_10 = today + dt.timedelta(days=10)    
     next_20 = today + dt.timedelta(days=20)
     next_30 = today + dt.timedelta(days=30)
-    next_90 = today + dt.timedelta(days=90)
-    next_180 = today + dt.timedelta(days=180)
-    next_365 = today + dt.timedelta(days=365)
     rg2 = next_10
     aa='10 days'
-    st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
     range_day = st.radio('Show events in the next:', ('10 days', '20 days', '30 days'), key='events')
-    range_months = st.radio('ewew',('3 months', '6 months', '1 year'))
     if range_day == '10 days':
         rg2 = next_10
         aa = '10 days'
@@ -208,15 +217,6 @@ with st.expander('Events:', expanded=ex):
     if range_day == '30 days':
         rg2 = next_30
         aa='30 days'
-    if range_months == '3 months':
-        rg2 = next_90
-        aa = '3 months'
-    if range_months == '6 months':
-        rg2 = next_180
-        aa ='6 months'
-    if range_months == '1 year':
-        rg2 = next_365
-        aa='1 year'
     filter_events = (df_gs['date']<rg2) & (df_gs['date']>=today)
     df_gs = df_gs.loc[filter_events]
 
