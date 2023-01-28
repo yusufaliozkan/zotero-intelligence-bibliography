@@ -195,7 +195,7 @@ with st.expander('Events:', expanded=ex):
     aa='10 days'
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
     range_day = st.radio('Show events in the next:', ('10 days', '20 days', '30 days'), key='events')
-    range_months = st.radio('',('3 months', '6 months', '1 year'))
+    range_months = st.radio('ewew',('3 months', '6 months', '1 year'))
     if range_day == '10 days':
         rg2 = next_10
         aa = '10 days'
@@ -205,6 +205,7 @@ with st.expander('Events:', expanded=ex):
     if range_day == '30 days':
         rg2 = next_30
         aa='30 days'
+
     filter_events = (df_gs['date']<rg2) & (df_gs['date']>=today)
     df_gs = df_gs.loc[filter_events]
 
