@@ -170,6 +170,7 @@ with st.expander('Publications:', expanded=ex):
                     ' (Published on: ' + df_csv['Date published new'] + ')'+
                     ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                     )
+        df_last
         row_nu = len(df_csv.index)
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
