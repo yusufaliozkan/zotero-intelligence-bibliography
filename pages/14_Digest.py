@@ -141,7 +141,6 @@ with st.expander('Publications:', expanded=ex):
 
     if sort_by_type:
         df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
-        df_csv
         types2 = df_csv['Publication type'].unique()
         types2 = pd.DataFrame(types2, columns=['Publication type'])
         row_nu_types2 = len(types2.index)
@@ -170,6 +169,7 @@ with st.expander('Publications:', expanded=ex):
                     )
         row_nu = len(df_csv.index)
         row_nu
+        df_csv
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
     st.caption('[Go to top](#intelligence-studies-network-digest)')
