@@ -113,13 +113,13 @@ with st.expander('Publications:', expanded=ex):
         rg = previous_30
         a='30 days'
     if range_day == '3 months':
-        rg2 = previous_90
+        rg = previous_90
         aa = '3 months'
     if range_day == '6 months':
-        rg2 = previous_180
+        rg = previous_180
         aa ='6 months'
     if range_day == '1 year':
-        rg2 = previous_360
+        rg = previous_360
         aa='1 year'
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
