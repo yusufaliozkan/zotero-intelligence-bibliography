@@ -158,6 +158,7 @@ with st.expander('Publications:', expanded=ex):
             row_nu = len(df_csva.index)
             row_nu
             for i in range(row_nu):
+                df_lasta
                 st.write(df_lasta.iloc[i])
 
     else:
