@@ -114,17 +114,16 @@ with st.expander('Publications:', expanded=ex):
         a='30 days'
     if range_day == '3 months':
         rg = previous_90
-        aa = '3 months'
+        a = '3 months'
     if range_day == '6 months':
         rg = previous_180
-        aa ='6 months'
+        a ='6 months'
     if range_day == '1 year':
         rg = previous_360
-        aa='1 year'
+        a='1 year'
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     df_csv = df_csv.loc[filter]
-    df_csv
 
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
