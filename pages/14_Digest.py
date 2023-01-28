@@ -124,6 +124,7 @@ with st.expander('Publications:', expanded=ex):
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     df_csv = df_csv.loc[filter]
+    df_csv
 
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
