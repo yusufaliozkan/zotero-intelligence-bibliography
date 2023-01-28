@@ -155,7 +155,8 @@ with st.expander('Publications:', expanded=ex):
                     ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
                     )
             row_nu = len(df_csva.index)
-            row_nu
+            df_lasta
+
             for i in range(row_nu):
                 df_lasta=df_lasta.dropna().reset_index(drop=True)
                 df_lasta
