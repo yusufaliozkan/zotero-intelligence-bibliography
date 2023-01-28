@@ -102,8 +102,7 @@ with st.expander('Publications:', expanded=ex):
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days'))
-    range_months = st.radio('',('3 months', '6 months', '1 year'))
+    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year'))
     if range_day == '10 days':
         rg = previous_10
         a = '10 days'
@@ -113,13 +112,13 @@ with st.expander('Publications:', expanded=ex):
     if range_day == '30 days':
         rg = previous_30
         a='30 days'
-    if range_months == '3 months':
+    if range_day == '3 months':
         rg2 = previous_90
         aa = '3 months'
-    if range_months == '6 months':
+    if range_day == '6 months':
         rg2 = previous_180
         aa ='6 months'
-    if range_months == '1 year':
+    if range_day == '1 year':
         rg2 = previous_360
         aa='1 year'
 
