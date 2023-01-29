@@ -178,7 +178,7 @@ with st.expander('Publications:', expanded=ex):
     df_plot=df_plot.reset_index()
     df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
     fig = px.pie(df_plot, values='Count', names='Publication type')
-    fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.45, 'yanchor':'top'})
+    fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.45, 'yanchor':'top'})
     st.plotly_chart(fig, use_container_width = True)
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
