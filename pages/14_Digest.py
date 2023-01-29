@@ -280,7 +280,7 @@ with st.expander('Conferences:', expanded=ex):
     st.subheader('Conferences in the next ' + str(aaa))
     display = st.checkbox('Show details', key='conference')
     if df_con['conference_name'].any() in ("", [], None, 0, False):
-        st.write('No conference to display in the last '+ str(a))
+        st.write('There is no conference in the next '+ str(a))
 
     df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
     row_nu = len(df_con.index)
