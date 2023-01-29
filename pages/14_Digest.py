@@ -94,11 +94,15 @@ with st.expander('Publications:', expanded=ex):
     previous_10 = today - dt.timedelta(days=10)
     previous_20 = today - dt.timedelta(days=20)
     previous_30 = today - dt.timedelta(days=30)
+    previous_90 = today - dt.timedelta(days=90)
+    previous_180 = today - dt.timedelta(days=180)
+    previous_360 = today - dt.timedelta(days=365)
     rg = previous_10
     a='10 days'
+    st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days'))
 
+    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year'))
     if range_day == '10 days':
         rg = previous_10
         a = '10 days'
@@ -108,24 +112,37 @@ with st.expander('Publications:', expanded=ex):
     if range_day == '30 days':
         rg = previous_30
         a='30 days'
+    if range_day == '3 months':
+        rg = previous_90
+        a = '3 months'
+    if range_day == '6 months':
+        rg = previous_180
+        a ='6 months'
+    if range_day == '1 year':
+        rg = previous_360
+        a='1 year'
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
+    # rg2 = rg.dt.date.today().strftime('%d/%m/%Y')
     df_csv = df_csv.loc[filter]
 
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
+    df_csv['Date months'] = df_csv['Date published'].dt.strftime('%Y-%m')
     df_csv['Date published'] = df_csv['Date published'].fillna('No date')
     df_csv.sort_values(by='Date published', ascending = False, inplace=True)    
 
     sort_by_type = st.checkbox('Sort by publication type', key='type')
+    st.caption('See [trends](#trends) in the last ' + str(a))
     types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
-
+    df_csv["Link to publication"].fillna("No link", inplace = True)
     st.subheader('Sources published in the last ' + str(a))
+    num_items = len(df_csv)
+    st.write(str(num_items)+' sources were published in the last ' + str(a))
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication published in the last '+ str(a))
-
     if sort_by_type:
         df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
         types2 = df_csv['Publication type'].unique()
@@ -135,6 +152,7 @@ with st.expander('Publications:', expanded=ex):
             st.subheader(types2['Publication type'].iloc[i])
             b = types2['Publication type'].iloc[i]
             df_csva = df_csv[df_csv['Publication type']==b]
+            df_csva["Link to publication"].fillna("No link", inplace = True)
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
                     df_csva['Title'] + "'," +
                     ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
@@ -142,8 +160,10 @@ with st.expander('Publications:', expanded=ex):
                     ' (Published on: ' + df_csva['Date published new'] + ')' +
                     ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
                     )
+            # df_lasta=df_lasta.dropna().reset_index(drop=True)
             row_nu = len(df_csva.index)
             for i in range(row_nu):
+                df_lasta=df_lasta.dropna().reset_index(drop=True)                
                 st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
 
     else:
@@ -154,9 +174,116 @@ with st.expander('Publications:', expanded=ex):
                     ' (Published on: ' + df_csv['Date published new'] + ')'+
                     ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                     )
+        df_last=df_last.dropna().reset_index(drop=True)
         row_nu = len(df_csv.index)
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
+    st.subheader('Trends')
+    if df_csv['Publication type'].any() in ("", [], None, 0, False):
+        st.write('No data to visualise')
+    else:
+        trends = st.checkbox('Show trends', key='trends')
+        if trends:
+            df_plot= df_csv['Publication type'].value_counts()
+            df_plot=df_plot.reset_index()
+            df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+            fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
+            fig.update_layout(
+                autosize=False,
+                width=400,
+                height=400,)
+            fig.update_layout(title={'text':'Publication types in the last '+a, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+            st.plotly_chart(fig, use_container_width = True)
+
+            df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
+            df_dates = df_csv['Date published'].value_counts()
+            df_dates = df_dates.reset_index()
+            df_dates = df_dates.rename(columns={'index':'Publication date','Date published':'Count'})
+            df_dates = df_dates.sort_values(by='Publication date', ascending=True)
+            df_dates['sum'] = df_dates['Count'].cumsum()
+
+            df_months = df_csv['Date months'].value_counts()
+            df_months = df_months.reset_index()
+            df_months = df_months.rename(columns={'index':'Publication month','Date months':'Count'})
+            df_months = df_months.sort_values(by='Publication month', ascending=True)
+            df_months['sum'] = df_months['Count'].cumsum()
+
+            if range_day == '6 months' or range_day == '1 year':
+                fig = px.bar(df_months, x='Publication month', y='Count')
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(
+                    autosize=False,
+                    width=400,
+                    height=500,)
+                fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+                st.plotly_chart(fig, use_container_width = True)            
+            else:
+                fig = px.bar(df_dates, x='Publication date', y='Count')
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(
+                    autosize=False,
+                    width=400,
+                    height=500,)
+                fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+                st.plotly_chart(fig, use_container_width = True)
+
+            fig2 = px.line(df_dates, x='Publication date', y='sum')
+            fig2.update_layout(title={'text':'Publications by date in the last '+a+ ' (cumulative sum)', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            fig2.update_xaxes(tickangle=-70)
+            st.plotly_chart(fig2, use_container_width = True)
+
+            df=df_csv.copy()
+            def clean_text (text):
+                text = text.lower() # lowercasing
+                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                return text
+            df['clean_title'] = df['Title'].apply(clean_text)
+            df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+
+            def tokenization(text):
+                text = re.split('\W+', text)
+                return text
+            df['token_title']=df['clean_title'].apply(tokenization)
+            stopword = nltk.corpus.stopwords.words('english')
+
+            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
+                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
+                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
+                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                'examines', 'become', 'used', 'journal', 'london', 'review']
+            stopword.extend(SW)
+
+            def remove_stopwords(text):
+                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                return text
+            df['stopword']=df['token_title'].apply(remove_stopwords)
+
+            wn = nltk.WordNetLemmatizer()
+            def lemmatizer(text):
+                text = [wn.lemmatize(word) for word in text]
+                return text
+
+            df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
+
+            listdf = df['lemma_title']
+
+            df_list = [item for sublist in listdf for item in sublist]
+            string = pd.Series(df_list).str.cat(sep=' ')
+            wordcloud_texts = string
+            wordcloud_texts_str = str(wordcloud_texts)
+            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+            plt.figure(figsize=(20,8))
+            plt.axis('off')
+            plt.title('Top words of titles published in the last ' +a)
+            plt.imshow(wordcloud)
+            plt.axis("off")
+            plt.show()
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+            st.pyplot() 
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Events:', expanded=ex):
@@ -208,9 +335,8 @@ with st.expander('Events:', expanded=ex):
 
     st.subheader('Events in the next ' + str(aa))
     display = st.checkbox('Show details')
-
     if df_gs['event_name'].any() in ("", [], None, 0, False):
-        st.write('No upcoming event!')
+        st.write('No upcoming event in the next '+ str(a))
     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
     row_nu = len(df_gs.index)
     for i in range(row_nu):
@@ -218,6 +344,7 @@ with st.expander('Events:', expanded=ex):
         if display:
             st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
+
 
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
@@ -263,7 +390,8 @@ with st.expander('Conferences:', expanded=ex):
 
     st.subheader('Conferences in the next ' + str(aaa))
     display = st.checkbox('Show details', key='conference')
-
+    if df_con['conference_name'].any() in ("", [], None, 0, False):
+        st.write('No upcoming event in the next '+ str(aaa))
     df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
     row_nu = len(df_con.index)
     for i in range(row_nu):
