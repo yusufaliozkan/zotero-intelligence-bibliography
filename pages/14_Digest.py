@@ -123,6 +123,7 @@ with st.expander('Publications:', expanded=ex):
         a='1 year'
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
+    filter
     df_csv = df_csv.loc[filter]
 
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
