@@ -230,7 +230,6 @@ with st.expander('Publications:', expanded=ex):
             st.plotly_chart(fig2, use_container_width = True)
 
             df=df_csv.copy()
-            df
             def clean_text (text):
                 text = text.lower() # lowercasing
                 text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
