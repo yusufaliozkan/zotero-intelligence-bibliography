@@ -137,6 +137,7 @@ with st.expander('Publications:', expanded=ex):
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
     df_csv["Link to publication"].fillna("No link", inplace = True)
     st.subheader('Sources published in the last ' + str(a))
+    num_items = len(df_csv)
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication published in the last '+ str(a))
