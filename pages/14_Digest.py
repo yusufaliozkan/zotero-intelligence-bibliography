@@ -132,7 +132,7 @@ with st.expander('Publications:', expanded=ex):
     df_csv.sort_values(by='Date published', ascending = False, inplace=True)    
 
     sort_by_type = st.checkbox('Sort by publication type', key='type')
-    st.caption('[Trends](#trends)')
+    st.caption('See [trends](#trends) in the last ' + str(a))
     types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
     df_csv["Link to publication"].fillna("No link", inplace = True)
