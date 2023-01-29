@@ -173,20 +173,20 @@ with st.expander('Publications:', expanded=ex):
         row_nu = len(df_csv.index)
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
-    # st.subheader('Trends')
-    # df_csv
-    # if df_csv['Publication type'].any() in ("", [], None, 0, False):
-    #     st.write('No data to visualise')
-    # else:
-    #     df_plot= df_csv['Publication type'].value_counts()
-    #     df_plot=df_plot.reset_index()
-    #     df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
-    #     fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
-    #     fig.update_layout(
-    #         autosize=False,
-    #         width=400,
-    #         height=400,)
-    #     fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+    st.subheader('Trends')
+    df_csv
+    if df_csv['Publication type'].any() in ("", [], None, 0, False):
+        st.write('No data to visualise')
+    else:
+        df_plot= df_csv['Publication type'].value_counts()
+        df_plot=df_plot.reset_index()
+        df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+        fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
+        fig.update_layout(
+            autosize=False,
+            width=400,
+            height=400,)
+        fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.3, 'yanchor':'top'})
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Events:', expanded=ex):
