@@ -178,53 +178,55 @@ with st.expander('Publications:', expanded=ex):
     if df_csv['Publication type'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
     else:
-        df_plot= df_csv['Publication type'].value_counts()
-        df_plot=df_plot.reset_index()
-        df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
-        fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
-        fig.update_layout(
-            autosize=False,
-            width=400,
-            height=400,)
-        fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.3, 'yanchor':'top'})
-        st.plotly_chart(fig, use_container_width = True)
-
-        df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
-        df_dates = df_csv['Date published'].value_counts()
-        df_dates = df_dates.reset_index()
-        df_dates = df_dates.rename(columns={'index':'Publication date','Date published':'Count'})
-        df_dates = df_dates.sort_values(by='Publication date', ascending=True)
-        df_dates['sum'] = df_dates['Count'].cumsum()
-
-        df_months = df_csv['Date months'].value_counts()
-        df_months = df_months.reset_index()
-        df_months = df_months.rename(columns={'index':'Publication month','Date months':'Count'})
-        df_months = df_months.sort_values(by='Publication month', ascending=True)
-        df_months['sum'] = df_months['Count'].cumsum()
-
-        if range_day == '6 months' or range_day == '1 year':
-            fig = px.bar(df_months, x='Publication month', y='Count')
-            fig.update_xaxes(tickangle=-70)
+        trends = st.checkbox('Show trends', key='trends')
+        if trends:
+            df_plot= df_csv['Publication type'].value_counts()
+            df_plot=df_plot.reset_index()
+            df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+            fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
             fig.update_layout(
                 autosize=False,
                 width=400,
-                height=500,)
-            fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-            st.plotly_chart(fig, use_container_width = True)            
-        else:
-            fig = px.bar(df_dates, x='Publication date', y='Count')
-            fig.update_xaxes(tickangle=-70)
-            fig.update_layout(
-                autosize=False,
-                width=400,
-                height=500,)
-            fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+                height=400,)
+            fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.3, 'yanchor':'top'})
             st.plotly_chart(fig, use_container_width = True)
 
-        fig2 = px.line(df_dates, x='Publication date', y='sum')
-        fig2.update_layout(title={'text':'Publications by date in the last '+a+ ' (cumulative sum)', 'y':0.95, 'x':0.5, 'yanchor':'top'})
-        fig2.update_xaxes(tickangle=-70)
-        st.plotly_chart(fig2, use_container_width = True)        
+            df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
+            df_dates = df_csv['Date published'].value_counts()
+            df_dates = df_dates.reset_index()
+            df_dates = df_dates.rename(columns={'index':'Publication date','Date published':'Count'})
+            df_dates = df_dates.sort_values(by='Publication date', ascending=True)
+            df_dates['sum'] = df_dates['Count'].cumsum()
+
+            df_months = df_csv['Date months'].value_counts()
+            df_months = df_months.reset_index()
+            df_months = df_months.rename(columns={'index':'Publication month','Date months':'Count'})
+            df_months = df_months.sort_values(by='Publication month', ascending=True)
+            df_months['sum'] = df_months['Count'].cumsum()
+
+            if range_day == '6 months' or range_day == '1 year':
+                fig = px.bar(df_months, x='Publication month', y='Count')
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(
+                    autosize=False,
+                    width=400,
+                    height=500,)
+                fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+                st.plotly_chart(fig, use_container_width = True)            
+            else:
+                fig = px.bar(df_dates, x='Publication date', y='Count')
+                fig.update_xaxes(tickangle=-70)
+                fig.update_layout(
+                    autosize=False,
+                    width=400,
+                    height=500,)
+                fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+                st.plotly_chart(fig, use_container_width = True)
+
+            fig2 = px.line(df_dates, x='Publication date', y='sum')
+            fig2.update_layout(title={'text':'Publications by date in the last '+a+ ' (cumulative sum)', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            fig2.update_xaxes(tickangle=-70)
+            st.plotly_chart(fig2, use_container_width = True)        
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Events:', expanded=ex):
