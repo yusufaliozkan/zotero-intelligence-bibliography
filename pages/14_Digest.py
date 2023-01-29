@@ -230,6 +230,7 @@ with st.expander('Publications:', expanded=ex):
             st.plotly_chart(fig2, use_container_width = True)
 
         df=df_csv.copy()
+        df
         def clean_text (text):
             text = text.lower() # lowercasing
             text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
@@ -239,13 +240,11 @@ with st.expander('Publications:', expanded=ex):
         df['clean_title'] = df['Title'].apply(clean_text)
         df['clean_abstract'] = df['Abstract'].apply(clean_text)
         df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-        df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
 
         def tokenization(text):
             text = re.split('\W+', text)
             return text
         df['token_title']=df['clean_title'].apply(tokenization)
-        df['token_abstract']=df['clean_abstract'].apply(tokenization)
         stopword = nltk.corpus.stopwords.words('english')
 
         if collection_name=='01.6 WW2 (Second World War)':
