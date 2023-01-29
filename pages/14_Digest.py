@@ -224,6 +224,8 @@ with st.expander('Events:', expanded=ex):
 
     st.subheader('Events in the next ' + str(aa))
     display = st.checkbox('Show details')
+    if df_gs['event_name'].any() in ("", [], None, 0, False):
+        st.write('There is no evebt in the next '+ str(a))
 
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
@@ -281,7 +283,6 @@ with st.expander('Conferences:', expanded=ex):
     display = st.checkbox('Show details', key='conference')
     if df_con['conference_name'].any() in ("", [], None, 0, False):
         st.write('There is no conference in the next '+ str(a))
-
     df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
     row_nu = len(df_con.index)
     for i in range(row_nu):
