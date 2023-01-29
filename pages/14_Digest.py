@@ -229,96 +229,95 @@ with st.expander('Publications:', expanded=ex):
             fig2.update_xaxes(tickangle=-70)
             st.plotly_chart(fig2, use_container_width = True)
 
-        df=df_csv.copy()
-        df
-        def clean_text (text):
-            text = text.lower() # lowercasing
-            text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-            text = re.sub('[0-9_]', ' ', text) # this removes numbers
-            text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-            return text
-        df['clean_title'] = df['Title'].apply(clean_text)
-        df['clean_abstract'] = df['Abstract'].apply(clean_text)
-        df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+        # df=df_csv.copy()
+        # df
+        # def clean_text (text):
+        #     text = text.lower() # lowercasing
+        #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+        #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
+        #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+        #     return text
+        # df['clean_title'] = df['Title'].apply(clean_text)
+        # df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
 
-        def tokenization(text):
-            text = re.split('\W+', text)
-            return text
-        df['token_title']=df['clean_title'].apply(tokenization)
-        stopword = nltk.corpus.stopwords.words('english')
+        # def tokenization(text):
+        #     text = re.split('\W+', text)
+        #     return text
+        # df['token_title']=df['clean_title'].apply(tokenization)
+        # stopword = nltk.corpus.stopwords.words('english')
 
-        if collection_name=='01.6 WW2 (Second World War)':
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter', 'second',
-                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']
-        if collection_name=='01.4 WW1 (First Wold War)':
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
-                'new', 'first', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']        
-        else:
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
-                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']
-        stopword.extend(SW)
+        # if collection_name=='01.6 WW2 (Second World War)':
+        #     SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter', 'second',
+        #         'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
+        #         'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
+        #         'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+        #         'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+        #         'examines', 'become', 'used', 'journal', 'london', 'review']
+        # if collection_name=='01.4 WW1 (First Wold War)':
+        #     SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
+        #         'new', 'first', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
+        #         'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
+        #         'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+        #         'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+        #         'examines', 'become', 'used', 'journal', 'london', 'review']        
+        # else:
+        #     SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
+        #         'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
+        #         'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
+        #         'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+        #         'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+        #         'examines', 'become', 'used', 'journal', 'london', 'review']
+        # stopword.extend(SW)
 
-        def remove_stopwords(text):
-            text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-            text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-            return text
-        df['stopword']=df['token_title'].apply(remove_stopwords)
-        df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
+        # def remove_stopwords(text):
+        #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+        #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+        #     return text
+        # df['stopword']=df['token_title'].apply(remove_stopwords)
+        # df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
 
-        wn = nltk.WordNetLemmatizer()
-        def lemmatizer(text):
-            text = [wn.lemmatize(word) for word in text]
-            return text
+        # wn = nltk.WordNetLemmatizer()
+        # def lemmatizer(text):
+        #     text = [wn.lemmatize(word) for word in text]
+        #     return text
 
-        df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
-        df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
+        # df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
+        # df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
 
-        listdf = df['lemma_title']
-        listdf_abstract = df['lemma_abstract']
+        # listdf = df['lemma_title']
+        # listdf_abstract = df['lemma_abstract']
 
-        st.markdown('## Wordcloud')
-        wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
-        if wordcloud_opt=='Titles':
-            df_list = [item for sublist in listdf for item in sublist]
-            string = pd.Series(df_list).str.cat(sep=' ')
-            wordcloud_texts = string
-            wordcloud_texts_str = str(wordcloud_texts)
-            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-            plt.figure(figsize=(20,8))
-            plt.axis('off')
-            plt.title('Top words in title (collection: ' +collection_name+')')
-            plt.imshow(wordcloud)
-            plt.axis("off")
-            plt.show()
-            st.set_option('deprecation.showPyplotGlobalUse', False)
-            st.pyplot() 
-        else:
-            st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative.')
-            df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
-            string = pd.Series(df_list_abstract).str.cat(sep=' ')
-            wordcloud_texts = string
-            wordcloud_texts_str = str(wordcloud_texts)
-            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-            plt.figure(figsize=(20,8))
-            plt.axis('off')
-            plt.title('Top words in abstract (collection: ' +collection_name+')')
-            plt.imshow(wordcloud)
-            plt.axis("off")
-            plt.show()
-            st.set_option('deprecation.showPyplotGlobalUse', False)
-            st.pyplot() 
+        # st.markdown('## Wordcloud')
+        # wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+        # if wordcloud_opt=='Titles':
+        #     df_list = [item for sublist in listdf for item in sublist]
+        #     string = pd.Series(df_list).str.cat(sep=' ')
+        #     wordcloud_texts = string
+        #     wordcloud_texts_str = str(wordcloud_texts)
+        #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+        #     plt.figure(figsize=(20,8))
+        #     plt.axis('off')
+        #     plt.title('Top words in title (collection: ' +collection_name+')')
+        #     plt.imshow(wordcloud)
+        #     plt.axis("off")
+        #     plt.show()
+        #     st.set_option('deprecation.showPyplotGlobalUse', False)
+        #     st.pyplot() 
+        # else:
+        #     st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative.')
+        #     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
+        #     string = pd.Series(df_list_abstract).str.cat(sep=' ')
+        #     wordcloud_texts = string
+        #     wordcloud_texts_str = str(wordcloud_texts)
+        #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+        #     plt.figure(figsize=(20,8))
+        #     plt.axis('off')
+        #     plt.title('Top words in abstract (collection: ' +collection_name+')')
+        #     plt.imshow(wordcloud)
+        #     plt.axis("off")
+        #     plt.show()
+        #     st.set_option('deprecation.showPyplotGlobalUse', False)
+        #     st.pyplot() 
 
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
