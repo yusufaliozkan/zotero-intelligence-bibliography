@@ -178,7 +178,6 @@ with st.expander('Publications:', expanded=ex):
     df_plot=df_plot.reset_index()
     df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
     df_plot
-
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Events:', expanded=ex):
