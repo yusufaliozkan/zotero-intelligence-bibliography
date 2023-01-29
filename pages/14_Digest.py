@@ -204,7 +204,7 @@ with st.expander('Events:', expanded=ex):
     df_gs.sort_values(by='date', ascending = True, inplace=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
 
-    next_10 = today + dt.timedelta(days=10)    
+    next_10 = today + dt.timedelta(days=1)    
     next_20 = today + dt.timedelta(days=20)
     next_30 = today + dt.timedelta(days=30)
     rg2 = next_10
