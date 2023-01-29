@@ -174,6 +174,7 @@ with st.expander('Publications:', expanded=ex):
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
     st.subheader('Trends')
+    df_csv
     if df_csv['Publication type'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
     else:
