@@ -189,7 +189,7 @@ with st.expander('Publications:', expanded=ex):
         st.plotly_chart(fig, use_container_width = True)
 
         df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
-        df_csv['Date months'] = df_csv['Date published'].dt.strftime('%Y-%m')
+        # df_csv['Date months'] = df_csv['Date published'].dt.strftime('%Y-%m')
         df_dates = df_csv['Date published'].value_counts()
         df_dates = df_dates.reset_index()
         df_dates = df_dates.rename(columns={'index':'Publication date','Date published':'Count'})
