@@ -270,7 +270,6 @@ with st.expander('Publications:', expanded=ex):
         listdf = df['lemma_title']
 
         st.markdown('## Wordcloud')
-        wordcloud_opt = st.radio('Wordcloud of:', ('Titles'))
         if wordcloud_opt=='Titles':
             df_list = [item for sublist in listdf for item in sublist]
             string = pd.Series(df_list).str.cat(sep=' ')
