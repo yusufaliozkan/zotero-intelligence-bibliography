@@ -202,14 +202,24 @@ with st.expander('Publications:', expanded=ex):
         df_months = df_months.sort_values(by='Publication month', ascending=True)
         df_months['sum'] = df_months['Count'].cumsum()
 
-        fig = px.bar(df_dates, x='Publication date', y='Count')
-        fig.update_xaxes(tickangle=-70)
-        fig.update_layout(
-            autosize=False,
-            width=400,
-            height=500,)
-        fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-        st.plotly_chart(fig, use_container_width = True)
+        if range_day == '3 months':
+            fig = px.bar(df_months, x='Publication month', y='Count')
+            fig.update_xaxes(tickangle=-70)
+            fig.update_layout(
+                autosize=False,
+                width=400,
+                height=500,)
+            fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            st.plotly_chart(fig, use_container_width = True)            
+        else:
+            fig = px.bar(df_dates, x='Publication date', y='Count')
+            fig.update_xaxes(tickangle=-70)
+            fig.update_layout(
+                autosize=False,
+                width=400,
+                height=500,)
+            fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            st.plotly_chart(fig, use_container_width = True)
 
         fig2 = px.line(df_dates, x='Publication date', y='sum')
         fig2.update_layout(title={'text':'Publications by date in the last '+a+ ' (cumulative sum)', 'y':0.95, 'x':0.5, 'yanchor':'top'})
