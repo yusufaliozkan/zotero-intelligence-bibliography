@@ -102,7 +102,7 @@ with st.expander('Publications:', expanded=ex):
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year'))
+    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom'))
     if range_day == '10 days':
         rg = previous_10
         a = '10 days'
@@ -121,6 +121,9 @@ with st.expander('Publications:', expanded=ex):
     if range_day == '1 year':
         rg = previous_360
         a='1 year'
+    if range_day == 'Custom':
+        number = st.number_input('How many days do you want to go back:')
+        number
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     # rg2 = rg.dt.date.today().strftime('%d/%m/%Y')
