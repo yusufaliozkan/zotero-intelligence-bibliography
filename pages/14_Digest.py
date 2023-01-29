@@ -268,7 +268,6 @@ with st.expander('Publications:', expanded=ex):
 
             listdf = df['lemma_title']
 
-            st.markdown('## Wordcloud')
             df_list = [item for sublist in listdf for item in sublist]
             string = pd.Series(df_list).str.cat(sep=' ')
             wordcloud_texts = string
