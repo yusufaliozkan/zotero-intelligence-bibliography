@@ -194,7 +194,6 @@ with st.expander('Publications:', expanded=ex):
         df_dates = df_dates.rename(columns={'index':'Publication date','Date published':'Count'})
         df_dates = df_dates.sort_values(by='Publication date', ascending=True)
         df_dates['sum'] = df_dates['Count'].cumsum()
-        df_dates
 
         fig = px.bar(df_dates, x='Publication date', y='Count')
         fig.update_xaxes(tickangle=-70)
@@ -204,6 +203,11 @@ with st.expander('Publications:', expanded=ex):
             height=500,)
         fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
+
+        fig2 = px.line(df_dates, x='Publication date', y='Sum')
+        fig2.update_layout(title={'text':'Publications by date in the last: '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+        fig2.update_xaxes(tickangle=-70)
+        col2.plotly_chart(fig2, use_container_width = True)        
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Events:', expanded=ex):
