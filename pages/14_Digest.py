@@ -133,7 +133,7 @@ with st.expander('Publications:', expanded=ex):
     sort_by_type = st.checkbox('Sort by publication type', key='type')
     types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
-    df_csv
+    df_csv["Link to publication"].fillna("No link", inplace = True)
     st.subheader('Sources published in the last ' + str(a))
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
