@@ -277,7 +277,7 @@ with st.expander('Publications:', expanded=ex):
         wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
         plt.figure(figsize=(20,8))
         plt.axis('off')
-        plt.title('Top words in title (collection: ' +collection_name+')')
+        plt.title('Top words of titles published in the last ' +a+')')
         plt.imshow(wordcloud)
         plt.axis("off")
         plt.show()
