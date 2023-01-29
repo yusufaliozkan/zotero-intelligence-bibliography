@@ -174,8 +174,6 @@ with st.expander('Publications:', expanded=ex):
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
     st.caption('[Go to top](#intelligence-studies-network-digest)')
-    with st.expander('Trends'):
-        st.write('Incoming section')
 
 with st.expander('Events:', expanded=ex):
     st.header('Events')
