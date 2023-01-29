@@ -128,6 +128,7 @@ with st.expander('Publications:', expanded=ex):
         rg = previous_custom
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
+    rg
     rg2 = rg.dt.strftime('%d/%m/%Y')
     df_csv = df_csv.loc[filter]
 
