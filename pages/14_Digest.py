@@ -138,7 +138,7 @@ with st.expander('Publications:', expanded=ex):
     df_csv["Link to publication"].fillna("No link", inplace = True)
     st.subheader('Sources published in the last ' + str(a))
     num_items = len(df_csv)
-    num_items
+    st.write(str(num_items)+' sources were published in the last ' + str(a))
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication published in the last '+ str(a))
