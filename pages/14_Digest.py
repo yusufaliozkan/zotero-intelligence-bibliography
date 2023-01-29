@@ -270,20 +270,19 @@ with st.expander('Publications:', expanded=ex):
         listdf = df['lemma_title']
 
         st.markdown('## Wordcloud')
-        if wordcloud_opt=='Titles':
-            df_list = [item for sublist in listdf for item in sublist]
-            string = pd.Series(df_list).str.cat(sep=' ')
-            wordcloud_texts = string
-            wordcloud_texts_str = str(wordcloud_texts)
-            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-            plt.figure(figsize=(20,8))
-            plt.axis('off')
-            plt.title('Top words in title (collection: ' +collection_name+')')
-            plt.imshow(wordcloud)
-            plt.axis("off")
-            plt.show()
-            st.set_option('deprecation.showPyplotGlobalUse', False)
-            st.pyplot() 
+        df_list = [item for sublist in listdf for item in sublist]
+        string = pd.Series(df_list).str.cat(sep=' ')
+        wordcloud_texts = string
+        wordcloud_texts_str = str(wordcloud_texts)
+        wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+        plt.figure(figsize=(20,8))
+        plt.axis('off')
+        plt.title('Top words in title (collection: ' +collection_name+')')
+        plt.imshow(wordcloud)
+        plt.axis("off")
+        plt.show()
+        st.set_option('deprecation.showPyplotGlobalUse', False)
+        st.pyplot() 
 
 
     st.caption('[Go to top](#intelligence-studies-network-digest)')
