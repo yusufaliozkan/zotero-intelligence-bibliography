@@ -91,7 +91,7 @@ if expand:
 
 with st.expander('Publications:', expanded=ex):
     st.header('Publications')
-    previous_10 = today - dt.timedelta(days=10)
+    previous_10 = today - dt.timedelta(days=1)
     previous_20 = today - dt.timedelta(days=20)
     previous_30 = today - dt.timedelta(days=30)
     previous_90 = today - dt.timedelta(days=90)
