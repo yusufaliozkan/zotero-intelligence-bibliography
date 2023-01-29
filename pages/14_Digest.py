@@ -124,7 +124,7 @@ with st.expander('Publications:', expanded=ex):
     if range_day == 'Custom':
         number = st.number_input('How many days do you want to go back:', min_value=1, max_value=11000, value=365, step=1)
 
-        a = str(number)
+        a = str(int(number))
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     # rg2 = rg.dt.date.today().strftime('%d/%m/%Y')
