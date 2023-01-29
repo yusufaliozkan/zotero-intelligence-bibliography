@@ -191,10 +191,10 @@ with st.expander('Publications:', expanded=ex):
         df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
         df_dates = df_csv['Date published'].value_counts()
         df_dates = df_dates.reset_index()
+        df_dates
         df_dates = df_dates.rename(columns={'index':'Publication date','Date year':'Count'})
         df_dates
         df_dates = df_dates.sort_values(by='Publication date', ascending=True)
-        df_dates
         fig = px.bar(df_dates, x='Publication date', y='Count')
         fig.update_xaxes(tickangle=-70)
         fig.update_layout(
