@@ -204,7 +204,7 @@ with st.expander('Publications:', expanded=ex):
         fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
 
-        fig2 = px.line(df_dates, x='Publication date', y='Sum')
+        fig2 = px.line(df_dates, x='Publication date', y='sum')
         fig2.update_layout(title={'text':'Publications by date in the last: '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         fig2.update_xaxes(tickangle=-70)
         st.plotly_chart(fig2, use_container_width = True)        
