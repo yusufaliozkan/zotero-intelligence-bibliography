@@ -221,7 +221,7 @@ with st.expander('Publications:', expanded=ex):
                     autosize=False,
                     width=400,
                     height=500,)
-                fig.update_layout(title={'text':'Publications by date in the last '+a, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+                fig.update_layout(title={'text':'Publications by date in the last '+a+' ('+ rg2 +' - ' + today2+')', 'y':0.95, 'x':0.5, 'yanchor':'top'})
                 st.plotly_chart(fig, use_container_width = True)            
             else:
                 fig = px.bar(df_dates, x='Publication date', y='Count')
