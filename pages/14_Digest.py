@@ -174,6 +174,10 @@ with st.expander('Publications:', expanded=ex):
         for i in range(row_nu):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
     st.subheader('Trends')
+    df_plot= df['Publication type'].value_counts()
+    df_plot=df_plot.reset_index()
+    df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+    df_plot
 
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
