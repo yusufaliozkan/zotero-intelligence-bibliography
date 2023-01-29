@@ -190,13 +190,17 @@ with st.expander('Publications:', expanded=ex):
         st.plotly_chart(fig, use_container_width = True)
 
         df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
-        df_csv
-        df_dates = df_csv['Date months'].value_counts()
-        df_dates
+        df_dates = df_csv['Date published'].value_counts()
         df_dates = df_dates.reset_index()
         df_dates = df_dates.rename(columns={'index':'Publication date','Date published':'Count'})
         df_dates = df_dates.sort_values(by='Publication date', ascending=True)
         df_dates['sum'] = df_dates['Count'].cumsum()
+
+        df_months = df_csv['Date months'].value_counts()
+        df_months = df_months.reset_index()
+        df_months = df_months.rename(columns={'index':'Publication month','Date months':'Count'})
+        df_months = df_months.sort_values(by='Publication month', ascending=True)
+        df_months['sum'] = df_months['Count'].cumsum()
 
         fig = px.bar(df_dates, x='Publication date', y='Count')
         fig.update_xaxes(tickangle=-70)
