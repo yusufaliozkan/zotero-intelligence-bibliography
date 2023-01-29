@@ -177,9 +177,13 @@ with st.expander('Publications:', expanded=ex):
     df_plot= df_csv['Publication type'].value_counts()
     df_plot=df_plot.reset_index()
     df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
-    fig = px.pie(df_plot, values='Count', names='Publication type')
-    fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.45, 'yanchor':'top'})
-    st.plotly_chart(fig, use_container_width = True)
+    fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
+    fig.update_layout(
+        autosize=False,
+        width=400,
+        height=400,)
+    fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+    col2.plotly_chart(fig, use_container_width = True)
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Events:', expanded=ex):
