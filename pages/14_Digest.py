@@ -202,7 +202,7 @@ with st.expander('Publications:', expanded=ex):
         df_months = df_months.sort_values(by='Publication month', ascending=True)
         df_months['sum'] = df_months['Count'].cumsum()
 
-        if range_day == '3 months' or range_day == '6 months' or range_day == '12 months':
+        if range_day == '3 months' or range_day == '6 months' or range_day == '1 year':
             fig = px.bar(df_months, x='Publication month', y='Count')
             fig.update_xaxes(tickangle=-70)
             fig.update_layout(
