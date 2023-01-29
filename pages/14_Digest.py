@@ -187,6 +187,8 @@ with st.expander('Publications:', expanded=ex):
             height=400,)
         fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.3, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
+
+        df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
         df_dates = df_csv['Date published'].value_counts()
         df_dates = df_dates.reset_index()
         df_dates
