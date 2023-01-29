@@ -190,7 +190,7 @@ with st.expander('Publications:', expanded=ex):
 
         df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
         df_dates = df_csv['Date published'].value_counts()
-        df_Dates
+        df_dates
         df_dates = df_dates.reset_index()
         df_dates
         df_dates = df_dates.rename(columns={'index':'Publication date','Date':'Count'})
