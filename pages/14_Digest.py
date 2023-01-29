@@ -198,7 +198,7 @@ with st.expander('Publications:', expanded=ex):
                 autosize=False,
                 width=400,
                 height=400,)
-            fig.update_layout(title={'text':'Publication types in the last '+a+' ('+ rg2 +' - ' + today2+')', 'y':0.95, 'x':0.3, 'yanchor':'top'})
+            fig.update_layout(title={'text':'Publication types in the last '+a+' ('+ rg2 +' - ' + today2+')', 'y':0.95, 'x':0.2, 'yanchor':'top'})
             st.plotly_chart(fig, use_container_width = True)
 
             df_csv['Date published'] = df_csv['Date published'].dt.strftime('%Y-%m-%d')
