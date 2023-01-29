@@ -186,6 +186,7 @@ with st.expander('Publications:', expanded=ex):
             width=400,
             height=400,)
         fig.update_layout(title={'text':'Publications types in the last '+a, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+        st.plotly_chart(fig, use_container_width = True)
     st.caption('[Go to top](#intelligence-studies-network-digest)')
 
 with st.expander('Events:', expanded=ex):
