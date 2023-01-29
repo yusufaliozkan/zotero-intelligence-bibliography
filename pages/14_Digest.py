@@ -129,7 +129,6 @@ with st.expander('Publications:', expanded=ex):
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     rg2 = rg.strftime('%d/%m/%Y')
-    rg2
     df_csv = df_csv.loc[filter]
 
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
@@ -145,7 +144,7 @@ with st.expander('Publications:', expanded=ex):
     df_csv["Link to publication"].fillna("No link", inplace = True)
     st.subheader('Sources published in the last ' + str(a))
     num_items = len(df_csv)
-    st.write(str(num_items)+' sources were published in the last ' + str(a))
+    st.write(str(num_items)+' sources were published in the last ' + str(a) + '( between ' + today2 ' - ' + rg2 +')')
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication published in the last '+ str(a))
