@@ -132,6 +132,7 @@ with st.expander('Publications:', expanded=ex):
     date_sr = pd.to_datetime(pd.Series(rg))
     change_format = date_sr.dt.strftime('%d-%m-%Y')
     change_format
+    rg2 = rg.strftime('%d/%m/%Y')
     df_csv = df_csv.loc[filter]
 
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
