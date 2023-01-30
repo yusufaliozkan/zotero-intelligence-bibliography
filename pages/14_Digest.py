@@ -161,7 +161,7 @@ with st.expander('Publications:', expanded=ex):
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
                     df_csva['Title'] + "'," +
                     ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
-                    ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')' +
+                    if df_csv['Journal'].any() in ("", [], None, 0, False): '' else:' (Published in: ' + '*' + df_csva['Journal'] + '*' +')' +
                     ' (Published on: ' + df_csva['Date published new'] + ')' +
                     ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
                     )
