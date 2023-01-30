@@ -147,29 +147,35 @@ with st.expander('Publications:', expanded=ex):
     st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today2+'**')
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
-        st.write('There is no publication published in the last '+ str(a))
+        st.write('There is no publication published in the last ' + str(a))
+
     if sort_by_type:
-        df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
+        df_csv = df_csv.sort_values(by=['Publication type'], ascending=True)
         types2 = df_csv['Publication type'].unique()
         types2 = pd.DataFrame(types2, columns=['Publication type'])
         row_nu_types2 = len(types2.index)
+
         for i in range(row_nu_types2):
             st.subheader(types2['Publication type'].iloc[i])
             b = types2['Publication type'].iloc[i]
-            df_csva = df_csv[df_csv['Publication type']==b]
-            df_csva["Link to publication"].fillna("No link", inplace = True)
-            df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
-                    df_csva['Title'] + "'," +
-                    ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
-                    ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')' +
-                    ' (Published on: ' + df_csva['Date published new'] + ')' +
-                    ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
-                    )
-            # df_lasta=df_lasta.dropna().reset_index(drop=True)
+            df_csva = df_csv[df_csv['Publication type'] == b].dropna()
+            df_csva["Link to publication"].fillna("No link", inplace=True)
+
             row_nu = len(df_csva.index)
-            for i in range(row_nu):
-                df_lasta=df_lasta.dropna().reset_index(drop=True)                
-                st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
+            for j in range(row_nu):
+                publication_type = df_csva.iloc[j]['Publication type']
+                title = df_csva.iloc[j]['Title']
+                first_name = df_csva.iloc[j]['firstName']
+                last_name = df_csva.iloc[j]['lastName']
+                journal = df_csva.iloc[j]['Journal']
+                date_published = df_csva.iloc[j]['Date published new']
+                publication_link = df_csva.iloc[j]['Link to publication']
+
+                df_lasta = ('**{}**: \'{}\', (First author: *{}* *{}*), '.format(publication_type, title, first_name, last_name) +
+                            ('(Published in: *{}*)'.format(journal) if str(journal) != 'nan' else '') +
+                            '(Published on: {}), [Publication link]({})'.format(date_published, publication_link))
+
+                st.write('{}) {}'.format(j + 1, df_lasta))
 
     else:
         df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
