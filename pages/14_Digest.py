@@ -148,6 +148,7 @@ with st.expander('Publications:', expanded=ex):
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication published in the last '+ str(a))
+
     if sort_by_type:
         df_csv = df_csv.sort_values(by=['Publication type'], ascending = True)
         types2 = df_csv['Publication type'].unique()
@@ -321,6 +322,8 @@ with st.expander('Events:', expanded=ex):
     df_gs.sort_values(by='date', ascending = True, inplace=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
     df_gs['details'] = df_gs['details'].fillna('No details provided.')
+    df_gs = df_gs.fillna('')
+    df_gs['event_name']=df_gs['event_name'].str.strip()
 
     next_10 = today + dt.timedelta(days=10)    
     next_20 = today + dt.timedelta(days=20)
