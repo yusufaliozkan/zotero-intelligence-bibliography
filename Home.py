@@ -415,6 +415,32 @@ with tab1:
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
+        with st.expander('Conferences', expanded=True):
+            sheet_url2 = st.secrets["public_gsheets_url2"]
+            rows = run_query(f'SELECT * FROM "{sheet_url2}"')
+            data = []
+            columns = ['conference_name', 'organiser', 'link', 'date', 'date_end', 'venue', 'details', 'location']
+            for row in rows:
+                data.append((row.conference_name, row.organiser, row.link, row.date, row.date_end, row.venue, row.details, row.location))
+            pd.set_option('display.max_colwidth', None)
+            df_con = pd.DataFrame(data, columns=columns)
+            df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+            df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
+            df_con.sort_values(by='date', ascending = True, inplace=True)
+            df_con['details'] = df_con['details'].fillna('No details')
+            df_con['location'] = df_con['location'].fillna('No details')
+            filter = (df_con['date']>=today)
+            df_con = df_con.loc[filter]
+            if df_con['conference_name'].any() in ("", [], None, 0, False):
+                st.write('No upcoming conference!')
+            df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
+            row_nu = len(df_con.index)
+            for i in range(row_nu):
+                st.write(''+str(i+1)+') '+ df_con1.iloc[i])
+                if display:
+                    st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
+                    st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
+
         with st.expander('Digest', expanded=True):
             st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
         
