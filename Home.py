@@ -377,6 +377,7 @@ with tab1:
 
         with st.expander('Events & conferences', expanded=True):
             st.markdown('##### Events')
+            st.caption('See the next two events or conferences')
             conn = connect()
 
             # Perform SQL query on the Google Sheet.
