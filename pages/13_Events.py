@@ -101,6 +101,7 @@ with tab1:
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
     
     df_gs['details'] = df_gs['details'].fillna('No details')
+    df_gs = df_gs.fillna('')
     df_gs_plot = df_gs.copy()
     
     col1, col2 = st.columns(2)
