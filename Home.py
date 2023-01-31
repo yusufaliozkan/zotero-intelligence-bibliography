@@ -437,7 +437,7 @@ with tab1:
             df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
             row_nu = len(df_con.index)
             for i in range(row_nu):
-                st.write(''+str(i+1)+') '+ df_con1.iloc[i])
+                st.write( df_con1.iloc[i])
                 if display:
                     st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
                     st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
