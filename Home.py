@@ -402,6 +402,7 @@ with tab1:
             df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
             df_gs.sort_values(by='date', ascending = True, inplace=True)
             df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
+            df_gs = df_gs.fillna('')
             today = dt.date.today()
             filter = (df_gs['date']>=today)
             df_gs = df_gs.loc[filter]
