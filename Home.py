@@ -376,8 +376,7 @@ with tab1:
             st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
 
         with st.expander('Events & conferences', expanded=True):
-            st.markdown('##### Events')
-            st.caption('See the next two events or conferences')
+            st.markdown('##### Next event')
             conn = connect()
 
             # Perform SQL query on the Google Sheet.
@@ -407,7 +406,7 @@ with tab1:
             today = dt.date.today()
             filter = (df_gs['date']>=today)
             df_gs = df_gs.loc[filter]
-            df_gs = df_gs.head(2)
+            df_gs = df_gs.head(1)
             if df_gs['event_name'].any() in ("", [], None, 0, False):
                 st.write('No upcoming event!')
             df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
@@ -415,7 +414,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
 
-            st.markdown('##### Conferences')
+            st.markdown('##### Next conference')
             sheet_url2 = st.secrets["public_gsheets_url2"]
             rows = run_query(f'SELECT * FROM "{sheet_url2}"')
             data = []
@@ -432,7 +431,7 @@ with tab1:
             df_con = df_con.fillna('')            
             filter = (df_con['date']>=today)
             df_con = df_con.loc[filter]
-            df_con = df_con.head(2)
+            df_con = df_con.head(1)
             if df_con['conference_name'].any() in ("", [], None, 0, False):
                 st.write('No upcoming conference!')
             df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
