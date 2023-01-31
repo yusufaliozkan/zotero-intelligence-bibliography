@@ -406,7 +406,7 @@ with tab1:
             today = dt.date.today()
             filter = (df_gs['date']>=today)
             df_gs = df_gs.loc[filter]
-            df_gs = df_gs.head(3)
+            df_gs = df_gs.head(15)
             if df_gs['event_name'].any() in ("", [], None, 0, False):
                 st.write('No upcoming event!')
             df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
