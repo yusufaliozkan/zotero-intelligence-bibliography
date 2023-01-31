@@ -429,10 +429,10 @@ with tab1:
             df_con.sort_values(by='date', ascending = True, inplace=True)
             df_con['details'] = df_con['details'].fillna('No details')
             df_con['location'] = df_con['location'].fillna('No details')
-            df_con = df_con.fillna('')
-            df_con = df_con.head(2)
+            df_con = df_con.fillna('')            
             filter = (df_con['date']>=today)
             df_con = df_con.loc[filter]
+            df_con = df_con.head(2)
             if df_con['conference_name'].any() in ("", [], None, 0, False):
                 st.write('No upcoming conference!')
             df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
