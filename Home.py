@@ -444,7 +444,7 @@ with tab1:
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
         with st.expander('Digest', expanded=True):
-            st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
+            st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
         
 with tab2:
     st.header('Dashboard')
