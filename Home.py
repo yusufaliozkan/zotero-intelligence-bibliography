@@ -416,7 +416,7 @@ with tab1:
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
         with st.expander('Conferences', expanded=True):
-            st.markdown('### Conferences')
+            st.markdown('#### Conferences')
             sheet_url2 = st.secrets["public_gsheets_url2"]
             rows = run_query(f'SELECT * FROM "{sheet_url2}"')
             data = []
