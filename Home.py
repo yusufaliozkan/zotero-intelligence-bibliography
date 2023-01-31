@@ -375,8 +375,8 @@ with tab1:
             st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
             st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
 
-        with st.expander('Events', expanded=True):
-            # Create a connection object.
+        with st.expander('Events & conferences', expanded=True):
+            st.markdown('##### Events')
             conn = connect()
 
             # Perform SQL query on the Google Sheet.
@@ -415,8 +415,7 @@ with tab1:
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
-        with st.expander('Conferences', expanded=True):
-            st.markdown('#### Conferences')
+            st.markdown('##### Conferences')
             sheet_url2 = st.secrets["public_gsheets_url2"]
             rows = run_query(f'SELECT * FROM "{sheet_url2}"')
             data = []
