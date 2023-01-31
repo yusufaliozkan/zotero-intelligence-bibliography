@@ -322,7 +322,7 @@ with st.expander('Events:', expanded=ex):
     df_gs.sort_values(by='date', ascending = True, inplace=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
     df_gs['details'] = df_gs['details'].fillna('No details provided.')
-    df_gs['link'] = df_gs['link'].fillna('')
+    df_gs = df_gs.fillna('')
     df_gs['event_name']=df_gs['event_name'].str.strip()
 
     next_10 = today + dt.timedelta(days=10)    
