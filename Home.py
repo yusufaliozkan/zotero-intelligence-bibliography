@@ -413,7 +413,6 @@ with tab1:
             row_nu = len(df_gs.index)
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
-            st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
             st.markdown('##### Conferences')
             sheet_url2 = st.secrets["public_gsheets_url2"]
