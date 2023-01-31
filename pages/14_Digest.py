@@ -97,29 +97,37 @@ with st.expander('Publications:', expanded=ex):
     previous_90 = today - dt.timedelta(days=90)
     previous_180 = today - dt.timedelta(days=180)
     previous_360 = today - dt.timedelta(days=365)
-
-    date_range_dict = {
-        '10 days': previous_10,
-        '20 days': previous_20,
-        '30 days': previous_30,
-        '3 months': previous_90,
-        '6 months': previous_180,
-        '1 year': previous_360
-    }
-
+    rg = previous_10
+    a='10 days'
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    range_day = st.radio('Show sources published in the last:', date_range_dict.keys())
-    rg = date_range_dict[range_day]
-    a = range_day
 
+    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom'))
+    if range_day == '10 days':
+        rg = previous_10
+        a = '10 days'
+    if range_day == '20 days':
+        rg = previous_20
+        a ='20 days'
+    if range_day == '30 days':
+        rg = previous_30
+        a='30 days'
+    if range_day == '3 months':
+        rg = previous_90
+        a = '3 months'
+    if range_day == '6 months':
+        rg = previous_180
+        a ='6 months'
+    if range_day == '1 year':
+        rg = previous_360
+        a='1 year'
     if range_day == 'Custom':
         number = st.number_input('How many days do you want to go back:', min_value=10, max_value=11000, value=365, step=30)
         a = str(int(number)) + ' days'
         previous_custom = today - dt.timedelta(days=number)
         rg = previous_custom
 
-    filter = (df_csv['Date published'] > rg) & (df_csv['Date published'] <= today)
+    filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     rg2 = rg.strftime('%d/%m/%Y')
     df_csv = df_csv.loc[filter]
 
@@ -127,17 +135,60 @@ with st.expander('Publications:', expanded=ex):
     df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
     df_csv['Date months'] = df_csv['Date published'].dt.strftime('%Y-%m')
     df_csv['Date published'] = df_csv['Date published'].fillna('No date')
-    df_csv.sort_values(by='Date published', ascending=False, inplace=True)
+    df_csv.sort_values(by='Date published', ascending = False, inplace=True)    
 
     sort_by_type = st.checkbox('Sort by publication type', key='type')
     st.caption('See [trends](#trends) in the last ' + str(a))
-    types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
+    types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
-    df_csv["Link to publication"].fillna("No link", inplace=True)
+    df_csv["Link to publication"].fillna("No link", inplace = True)
     st.subheader('Sources published in the last ' + str(a))
     num_items = len(df_csv)
-    st.write('This list finds ' + str(num_items) + ' sources published between ' + '**' + rg2)
+    st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today2+'**')
 
+    if df_csv['Title'].any() in ("", [], None, 0, False):
+        st.write('There is no publication published in the last ' + str(a))
+
+    if sort_by_type:
+        df_csv = df_csv.sort_values(by=['Publication type'], ascending=True)
+        types2 = df_csv['Publication type'].unique()
+        types2 = pd.DataFrame(types2, columns=['Publication type'])
+        row_nu_types2 = len(types2.index)
+
+        for i in range(row_nu_types2):
+            st.subheader(types2['Publication type'].iloc[i])
+            b = types2['Publication type'].iloc[i]
+            df_csva = df_csv[df_csv['Publication type'] == b].dropna()
+            df_csva["Link to publication"].fillna("No link", inplace=True)
+
+            row_nu = len(df_csva.index)
+            for j in range(row_nu):
+                publication_type = df_csva.iloc[j]['Publication type']
+                title = df_csva.iloc[j]['Title']
+                first_name = df_csva.iloc[j]['firstName']
+                last_name = df_csva.iloc[j]['lastName']
+                journal = df_csva.iloc[j]['Journal']
+                date_published = df_csva.iloc[j]['Date published new']
+                publication_link = df_csva.iloc[j]['Link to publication']
+
+                df_lasta = ('**{}**: \'{}\', (First author: *{}* *{}*), '.format(publication_type, title, first_name, last_name) +
+                            ('(Published in: *{}*)'.format(journal) if str(journal) != 'nan' else '') +
+                            '(Published on: {}), [Publication link]({})'.format(date_published, publication_link))
+
+                st.write('{}) {}'.format(j + 1, df_lasta))
+
+    else:
+        df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
+                    df_csv['Title'] +  "',"  +
+                    ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                    ' (Published in: ' + '*' + df_csv['Journal'] +'*' + ')' +
+                    ' (Published on: ' + df_csv['Date published new'] + ')'+
+                    ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
+                    )
+        df_last=df_last.dropna().reset_index(drop=True)
+        row_nu = len(df_csv.index)
+        for i in range(row_nu):
+            st.write(''+str(i+1)+') ' +df_last.iloc[i])
 
     st.subheader('Trends')
     if df_csv['Publication type'].any() in ("", [], None, 0, False):
