@@ -406,7 +406,7 @@ with tab1:
             today = dt.date.today()
             filter = (df_gs['date']>=today)
             df_gs = df_gs.loc[filter]
-            df_gs = df_gs.head(3)
+            df_gs = df_gs.head(2)
             if df_gs['event_name'].any() in ("", [], None, 0, False):
                 st.write('No upcoming event!')
             df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
@@ -429,6 +429,8 @@ with tab1:
             df_con.sort_values(by='date', ascending = True, inplace=True)
             df_con['details'] = df_con['details'].fillna('No details')
             df_con['location'] = df_con['location'].fillna('No details')
+            df_con = df_con.fillna('')
+            df_con = df_con.head(2)
             filter = (df_con['date']>=today)
             df_con = df_con.loc[filter]
             if df_con['conference_name'].any() in ("", [], None, 0, False):
