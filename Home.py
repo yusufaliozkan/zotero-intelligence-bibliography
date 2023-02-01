@@ -791,6 +791,7 @@ with tab2:
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
 with st.expander():
+    st.subheader('Acknowledgements')
 
 st.write('---')
 components.html(
