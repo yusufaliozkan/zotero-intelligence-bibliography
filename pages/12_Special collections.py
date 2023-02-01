@@ -79,9 +79,8 @@ pd.set_option('display.max_colwidth', None)
 df_collections = pd.DataFrame(data2, columns=columns2)
 
 df_collections = df_collections.sort_values(by='Name')
-cols = ['98.', '11']
-df_collections=df_collections[df_collections['Name'].str.contains("98. | 11")]
-# df_collections = df_collections.iloc[2: , :]
+df_collections=df_collections[df_collections['Name'].str.contains("98.")]
+df_collections = df_collections.iloc[2: , :]
 
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 container = st.container()
