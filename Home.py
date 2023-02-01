@@ -356,8 +356,8 @@ with tab1:
         with st.expander('Acknowledgements'):
             st.subheader('Acknowledgements')
             st.write('The following sources are used to collate some of the items and events in this website:')
-            st.write("1. [King's Intelligence and Security Group digest](https://kisg.co.uk/kisg-digests)")
-            st.write("2. [International Association for Intelligence Education digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
+            st.write("1. [King's Intelligence and Security Group (KISG) digest](https://kisg.co.uk/kisg-digests)")
+            st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
 
     with col2:
         with st.expander("Collections in Zotero library", expanded=False):
