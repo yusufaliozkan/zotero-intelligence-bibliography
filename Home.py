@@ -172,13 +172,10 @@ with st.sidebar:
         st.info('''
         Source code of this app is available [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography).
         ''')
-    with st.expander('Disclaimer and acknowledgements'):
+    with st.expander('Disclaimer'):
         st.warning('''
         This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
         The list is created based on the creator's subjective views.
-        ''')
-        st.info('''
-        The following sources are used to collate some of the articles and events: [KISG digest](https://kisg.co.uk/kisg-digests), [IAFIE digest compiled by Filip Kovacevic](https://www.iafie.org/Login.aspx)
         ''')
     with st.expander('Contact us'):
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
