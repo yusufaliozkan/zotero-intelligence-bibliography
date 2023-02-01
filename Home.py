@@ -353,6 +353,8 @@ with tab1:
                 df_items.fillna("nan") 
                 # if display2:
                 #     st.caption(df['Abstract'].iloc[i])
+        with st.expander('Acknowledgements'):
+            st.subheader('Acknowledgements')
 
     with col2:
         with st.expander("Collections in Zotero library", expanded=False):
@@ -445,6 +447,7 @@ with tab1:
 
         with st.expander('Digest', expanded=True):
             st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
+
         
 with tab2:
     st.header('Dashboard')
@@ -790,8 +793,6 @@ with tab2:
 
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
-with st.expander('Acknowledgements'):
-    st.subheader('Acknowledgements')
 
 st.write('---')
 components.html(
