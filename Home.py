@@ -355,6 +355,8 @@ with tab1:
                 #     st.caption(df['Abstract'].iloc[i])
         with st.expander('Acknowledgements'):
             st.subheader('Acknowledgements')
+            st.write('The following sources are used to collate some of the items and events in this website:')
+            st.write("1. [King's Intelligence and Security Group digest](https://kisg.co.uk/kisg-digests)")
 
     with col2:
         with st.expander("Collections in Zotero library", expanded=False):
