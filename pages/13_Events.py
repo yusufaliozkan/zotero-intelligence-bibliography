@@ -139,7 +139,9 @@ with tab1:
     if organiser:
         organisers = df_gs['organiser'].unique()
         organisers = pd.DataFrame(organisers, columns=['Organisers'])
-        organisers
+        row_nu_organisers = len(organisers.index)
+        for i in range(row_nu_organisers):
+            st.subheader(organisers['Organisers'].iloc[i])
 
     else:
 
