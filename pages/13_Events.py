@@ -332,6 +332,10 @@ with tab1:
             for i in range(row_nu_organiser):
                 st.caption(organiser_plot_all['Organiser'].iloc[i])
 
+    if organiser:
+        organisers = df_gs['organiser'].unique()
+        organisers
+
 with tab2:
     st.subheader('Conferences')
     sheet_url2 = st.secrets["public_gsheets_url2"]
