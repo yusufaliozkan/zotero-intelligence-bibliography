@@ -111,10 +111,11 @@ with tab1:
         if online_event:
             online = ['Online event', 'Hybrid event']
             df_gs = df_gs[df_gs['venue'].isin(online)]
-        display = st.checkbox('Show details')
+        display = st.checkbox('Show details')      
     
     with col2:
         last_added = st.checkbox('Sort by most recently added')
+        organiser = st.checkbox('Sort by event organiser')
         
     st.write('See [Event visuals](#event-visuals)')
 
