@@ -137,7 +137,7 @@ with tab1:
             if display:
                 st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
 
-    if sort_by == Organiser:
+    if sort_by == 'Organiser':
         organisers = df_gs['organiser'].unique()
         organisers = pd.DataFrame(organisers, columns=['Organisers'])
         row_nu_organisers = len(organisers.index)
