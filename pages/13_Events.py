@@ -139,6 +139,7 @@ with tab1:
     if organiser:
         organisers = df_gs['organiser'].unique()
         organisers = pd.DataFrame(types, columns=['Organisers'])
+        organisers
 
     else:
 
