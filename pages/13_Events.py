@@ -142,7 +142,8 @@ with tab1:
         organisers = pd.DataFrame(organisers, columns=['Organisers'])
         row_nu_organisers = len(organisers.index)
         for i in range(row_nu_organisers):
-            st.subheader(organisers['Organisers'].iloc[i])
+            st.markdown('#### '+ organisers['Organisers'].iloc[i])
+            # st.subheader(organisers['Organisers'].iloc[i])
             c = organisers['Organisers'].iloc[i]
             df_o = df_gs[df_gs['organiser']==c]
             df_last = ('['+ df_o['event_name'] + ']'+ '('+ df_o['link'] + ')'', organised by ' + '**' + df_o['organiser'] + '**' + '. Date: ' + df_o['date_new'] + ', Venue: ' + df_o['venue'])
