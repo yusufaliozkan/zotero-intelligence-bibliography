@@ -135,6 +135,11 @@ with tab1:
             st.write(''+str(i+1)+') '+ df_last.iloc[i])
             if display:
                 st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+
+    if organiser:
+        organisers = df_gs['organiser'].unique()
+        organisers
+
     else:
 
         if '01' in df_gs['month'].values:
@@ -258,10 +263,6 @@ with tab1:
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
                     st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
-
-        if organiser:
-            organisers = df_gs['organiser'].unique()
-            organisers
 
         st.header('Past events')
         with st.expander('Expand to see the list'):
