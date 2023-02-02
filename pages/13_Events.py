@@ -142,6 +142,13 @@ with tab1:
         row_nu_organisers = len(organisers.index)
         for i in range(row_nu_organisers):
             st.subheader(organisers['Organisers'].iloc[i])
+            c = organisers['Organisers'].iloc[i]
+            df_o = df_gs[df_gs['organiser']==c]
+            df_last = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+            row_nu =len(df_gs.index)
+            for i in range(row_nu):
+                st.write(''+str(i+1)+') ' +df_last.iloc[i])
+                df_last.fillna('')
 
     else:
 
