@@ -259,6 +259,10 @@ with tab1:
                 if display:
                     st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
 
+        if organiser:
+            organisers = df_gs['organiser'].unique()
+            organisers
+
         st.header('Past events')
         with st.expander('Expand to see the list'):
             if st.checkbox('Events in 2023', key='2023'):
@@ -331,10 +335,6 @@ with tab1:
             organiser_plot_all=organiser_plot_all.sort_values('Organiser', ascending=True)
             for i in range(row_nu_organiser):
                 st.caption(organiser_plot_all['Organiser'].iloc[i])
-
-    if organiser:
-        organisers = df_gs['organiser'].unique()
-        organisers
 
 with tab2:
     st.subheader('Conferences')
