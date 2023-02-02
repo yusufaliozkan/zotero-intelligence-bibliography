@@ -114,8 +114,9 @@ with tab1:
         display = st.checkbox('Show details')      
     
     with col2:
-        last_added = st.checkbox('Sort by most recently added')
-        organiser = st.checkbox('Sort by event organiser')
+        # last_added = st.checkbox('Sort by most recently added')
+        # organiser = st.checkbox('Sort by event organiser')
+        sort_by = st.radio('Sort by', ['Date', 'Most recently added', 'Organiser'])
         
     st.write('See [Event visuals](#event-visuals)')
 
@@ -127,7 +128,7 @@ with tab1:
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
 
-    if last_added:
+    if sort_by == 'Most recently added':
         df_gs = df_gs.sort_index(ascending=False)
         df_last = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
         row_nu = len(df_gs.index)
@@ -136,7 +137,7 @@ with tab1:
             if display:
                 st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
 
-    if organiser:
+    if sort_by == Organiser:
         organisers = df_gs['organiser'].unique()
         organisers = pd.DataFrame(organisers, columns=['Organisers'])
         row_nu_organisers = len(organisers.index)
