@@ -443,7 +443,6 @@ with tab1:
                 st.write( df_con1.iloc[i])
                 if display:
                     st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
-                    st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
         with st.expander('Digest', expanded=True):
