@@ -441,8 +441,6 @@ with tab1:
             row_nu = len(df_con.index)
             for i in range(row_nu):
                 st.write( df_con1.iloc[i])
-                if display:
-                    st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
         with st.expander('Digest', expanded=True):
