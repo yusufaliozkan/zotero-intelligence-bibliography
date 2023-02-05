@@ -309,6 +309,7 @@ with tab1:
             today = dt.date.today()
             filter = (df_gs['date']>=today)
             df_gs = df_gs.loc[filter]
+            df_gs = df_gs.fillna('')
             df_gs = df_gs.head(3)
             if df_gs['event_name'].any() in ("", [], None, 0, False):
                 st.write('No upcoming event!')

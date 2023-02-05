@@ -111,10 +111,12 @@ with tab1:
         if online_event:
             online = ['Online event', 'Hybrid event']
             df_gs = df_gs[df_gs['venue'].isin(online)]
-        display = st.checkbox('Show details')
+        display = st.checkbox('Show details')      
     
     with col2:
-        last_added = st.checkbox('Sort by most recently added')
+        # last_added = st.checkbox('Sort by most recently added')
+        # organiser = st.checkbox('Sort by event organiser')
+        sort_by = st.radio('Sort by', ['Date', 'Most recently added', 'Organiser'])
         
     st.write('See [Event visuals](#event-visuals)')
 
@@ -126,7 +128,7 @@ with tab1:
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
 
-    if last_added:
+    if sort_by == 'Most recently added':
         df_gs = df_gs.sort_index(ascending=False)
         df_last = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
         row_nu = len(df_gs.index)
@@ -134,6 +136,24 @@ with tab1:
             st.write(''+str(i+1)+') '+ df_last.iloc[i])
             if display:
                 st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+
+    if sort_by == 'Organiser':
+        organisers = df_gs['organiser'].unique()
+        organisers = pd.DataFrame(organisers, columns=['Organisers'])
+        row_nu_organisers = len(organisers.index)
+        for i in range(row_nu_organisers):
+            st.markdown('#### '+ organisers['Organisers'].iloc[i])
+            # st.subheader(organisers['Organisers'].iloc[i])
+            c = organisers['Organisers'].iloc[i]
+            df_o = df_gs[df_gs['organiser']==c]
+            df_last = ('['+ df_o['event_name'] + ']'+ '('+ df_o['link'] + ')'', organised by ' + '**' + df_o['organiser'] + '**' + '. Date: ' + df_o['date_new'] + ', Venue: ' + df_o['venue'])
+            row_nu =len(df_o.index)
+            for i in range(row_nu):
+                st.write(''+str(i+1)+') ' +df_last.iloc[i])
+                df_last.fillna('')
+                if display:
+                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+
     else:
 
         if '01' in df_gs['month'].values:
@@ -258,78 +278,78 @@ with tab1:
                 if display:
                     st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
 
-        st.header('Past events')
-        with st.expander('Expand to see the list'):
-            if st.checkbox('Events in 2023', key='2023'):
-                if '2023' in df_gs2['year'].values:
-                    y2023 = df_gs2[df_gs2['year']=='2023']
-                    y2023['link'] = y2023['link'].fillna('')
-                    row_nu2 = len(y2023.index)
-                    df_gs3 = ('['+ y2023['event_name'] + ']'+ '('+ y2023['link'] + ')'', organised by ' + '**' + y2023['organiser'] + '**' + '. Date: ' + y2023['date_new'] + ', Venue: ' + y2023['venue'])
-                    row_nu = len(df_gs.index)
-                    for i in range(row_nu2):
-                        st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
-            if st.checkbox('Events in 2022', key='2022'):
-                if '2022' in df_gs2['year'].values:
-                    y2022 = df_gs2[df_gs2['year']=='2022']
-                    y2022['link'] = y2022['link'].fillna('')
-                    y2022 = y2022.drop_duplicates(subset=['event_name', 'link'], keep='first')
-                    row_nu2 = len(y2022.index)
-                    df_gs3 = ('['+ y2022['event_name'] + ']'+ '('+ y2022['link'] + ')'', organised by ' + '**' + y2022['organiser'] + '**' + '. Date: ' + y2022['date_new'] + ', Venue: ' + y2022['venue'])
-                    row_nu = len(df_gs.index)
-                    for i in range(row_nu2):
-                        st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
-        
-        st.header('Event visuals')
-        ap = ''
-        ap2 = ''
-        ap3 = ''
-        selector = st.checkbox('Select a year')
-        if selector:
-            slider = st.slider('Select a year', 2022,2023,2023)
-            slider = str(slider)
-            df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
-            ap = ' (in ' + slider+')'
-        
-        date_plot=df_gs_plot['month_year'].value_counts()
-        date_plot=date_plot.reset_index()
-        date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
-        date_plot=date_plot.sort_values(by='Date')
-        fig = px.bar(date_plot, x='Date', y='Count')
-        fig.update_xaxes(tickangle=-70)
-        fig.update_layout(
-            autosize=False,
-            width=400,
-            height=500)
-        fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-        st.plotly_chart(fig, use_container_width = True)
+    st.header('Past events')
+    with st.expander('Expand to see the list'):
+        if st.checkbox('Events in 2023', key='2023'):
+            if '2023' in df_gs2['year'].values:
+                y2023 = df_gs2[df_gs2['year']=='2023']
+                y2023['link'] = y2023['link'].fillna('')
+                row_nu2 = len(y2023.index)
+                df_gs3 = ('['+ y2023['event_name'] + ']'+ '('+ y2023['link'] + ')'', organised by ' + '**' + y2023['organiser'] + '**' + '. Date: ' + y2023['date_new'] + ', Venue: ' + y2023['venue'])
+                row_nu = len(df_gs.index)
+                for i in range(row_nu2):
+                    st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
+        if st.checkbox('Events in 2022', key='2022'):
+            if '2022' in df_gs2['year'].values:
+                y2022 = df_gs2[df_gs2['year']=='2022']
+                y2022['link'] = y2022['link'].fillna('')
+                y2022 = y2022.drop_duplicates(subset=['event_name', 'link'], keep='first')
+                row_nu2 = len(y2022.index)
+                df_gs3 = ('['+ y2022['event_name'] + ']'+ '('+ y2022['link'] + ')'', organised by ' + '**' + y2022['organiser'] + '**' + '. Date: ' + y2022['date_new'] + ', Venue: ' + y2022['venue'])
+                row_nu = len(df_gs.index)
+                for i in range(row_nu2):
+                    st.write(''+str(i+1)+') '+ df_gs3.iloc[i])
+    
+    st.header('Event visuals')
+    ap = ''
+    ap2 = ''
+    ap3 = ''
+    selector = st.checkbox('Select a year')
+    if selector:
+        slider = st.slider('Select a year', 2022,2023,2023)
+        slider = str(slider)
+        df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
+        ap = ' (in ' + slider+')'
+    
+    date_plot=df_gs_plot['month_year'].value_counts()
+    date_plot=date_plot.reset_index()
+    date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
+    date_plot=date_plot.sort_values(by='Date')
+    fig = px.bar(date_plot, x='Date', y='Count')
+    fig.update_xaxes(tickangle=-70)
+    fig.update_layout(
+        autosize=False,
+        width=400,
+        height=500)
+    fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    st.plotly_chart(fig, use_container_width = True)
 
-        organiser_plot = df_gs_plot['organiser'].value_counts()
-        organiser_plot=organiser_plot.reset_index()
-        organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
-        organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
-        organiser_plot_all=organiser_plot.copy()        
-        all = st.checkbox('Show all organisers')
-        if all:
-            organiser_plot=organiser_plot_all
-            ap2 = ' (all)'
-        else:
-            organiser_plot=organiser_plot.head(5)
-            ap3 = ' (top 5) '
-        fig = px.bar(organiser_plot, x='Organiser', y='Count', color='Organiser')
-        fig.update_xaxes(tickangle=-65)
-        fig.update_layout(
-            autosize=False,
-            width=400,
-            height=700,
-            showlegend=False)
-        fig.update_layout(title={'text':'Events by organisers' + ap + ap2 +ap3, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-        st.plotly_chart(fig, use_container_width = True)
-        with st.expander('See the list of event organisers'):
-            row_nu_organiser= len(organiser_plot_all.index)
-            organiser_plot_all=organiser_plot_all.sort_values('Organiser', ascending=True)
-            for i in range(row_nu_organiser):
-                st.caption(organiser_plot_all['Organiser'].iloc[i])
+    organiser_plot = df_gs_plot['organiser'].value_counts()
+    organiser_plot=organiser_plot.reset_index()
+    organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
+    organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
+    organiser_plot_all=organiser_plot.copy()        
+    all = st.checkbox('Show all organisers')
+    if all:
+        organiser_plot=organiser_plot_all
+        ap2 = ' (all)'
+    else:
+        organiser_plot=organiser_plot.head(5)
+        ap3 = ' (top 5) '
+    fig = px.bar(organiser_plot, x='Organiser', y='Count', color='Organiser')
+    fig.update_xaxes(tickangle=-65)
+    fig.update_layout(
+        autosize=False,
+        width=400,
+        height=700,
+        showlegend=False)
+    fig.update_layout(title={'text':'Events by organisers' + ap + ap2 +ap3, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+    st.plotly_chart(fig, use_container_width = True)
+    with st.expander('See the list of event organisers'):
+        row_nu_organiser= len(organiser_plot_all.index)
+        organiser_plot_all=organiser_plot_all.sort_values('Organiser', ascending=True)
+        for i in range(row_nu_organiser):
+            st.caption(organiser_plot_all['Organiser'].iloc[i])
 
 with tab2:
     st.subheader('Conferences')

@@ -172,13 +172,10 @@ with st.sidebar:
         st.info('''
         Source code of this app is available [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography).
         ''')
-    with st.expander('Disclaimer and acknowledgements'):
+    with st.expander('Disclaimer'):
         st.warning('''
         This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
         The list is created based on the creator's subjective views.
-        ''')
-        st.info('''
-        The following sources are used to collate some of the articles and events: [KISG digest](https://kisg.co.uk/kisg-digests), [IAFIE digest compiled by Filip Kovacevic](https://www.iafie.org/Login.aspx)
         ''')
     with st.expander('Contact us'):
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
@@ -255,7 +252,7 @@ with tab1:
                 #         st.caption('No theme to display!')
                 #     st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
-    # Collection list
+    # Items by Collection list
 
         st.header('Items by collection: ')
         clist = df_collections['Name'].unique()
@@ -353,6 +350,12 @@ with tab1:
                 df_items.fillna("nan") 
                 # if display2:
                 #     st.caption(df['Abstract'].iloc[i])
+        with st.expander('Acknowledgements'):
+            st.subheader('Acknowledgements')
+            st.write('The following sources are used to collate some of the items and events in this website:')
+            st.write("1. [King's Intelligence and Security Group (KISG) digest](https://kisg.co.uk/kisg-digests) compiled by David Schaefer")
+            st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
+            st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
 
     with col2:
         with st.expander("Collections in Zotero library", expanded=False):
@@ -438,13 +441,11 @@ with tab1:
             row_nu = len(df_con.index)
             for i in range(row_nu):
                 st.write( df_con1.iloc[i])
-                if display:
-                    st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
-                    st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
         with st.expander('Digest', expanded=True):
             st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
+
         
 with tab2:
     st.header('Dashboard')
@@ -757,6 +758,7 @@ with tab2:
         st.set_option('deprecation.showPyplotGlobalUse', False)
         st.pyplot() 
 
+    ## Bring everything in the library
     # types = zot.everything(zot.top())
 
     # data_t=[]
@@ -790,6 +792,7 @@ with tab2:
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
 
+st.write('---')
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
