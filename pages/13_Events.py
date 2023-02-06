@@ -307,7 +307,7 @@ with tab1:
     ap2 = ''
     ap3 = ''
     selector = st.checkbox('Select a year')
-    year = st.checkbox('Show in years')
+    year = st.checkbox('Show years only')
     if selector:
         slider = st.slider('Select a year', 2022,2023,2023)
         slider = str(slider)
