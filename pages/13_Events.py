@@ -317,9 +317,7 @@ with tab1:
     if year:
         date_plot=df_gs_plot['year'].value_counts()
         date_plot=date_plot.reset_index()
-        date_plot
         date_plot=date_plot.rename(columns={'index':'Year','year':'Count'})
-        date_plot
         date_plot=date_plot.sort_values(by='Year')
         fig = px.bar(date_plot, x='Year', y='Count')
         fig.update_xaxes(tickangle=-70)
@@ -331,7 +329,6 @@ with tab1:
         st.plotly_chart(fig, use_container_width = True)
     else:
         date_plot=df_gs_plot['month_year'].value_counts()
-        date_plot
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
         date_plot=date_plot.sort_values(by='Date')
