@@ -360,6 +360,7 @@ with tab2:
     # df['Date published'] = df['Date published'].fillna('No date')
 
     df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+    df
     df['Date year'] = df['Date published'].dt.strftime('%Y')
     df['Date year'] = df['Date year'].fillna('No date')
     df_year=df['Date year'].value_counts()
