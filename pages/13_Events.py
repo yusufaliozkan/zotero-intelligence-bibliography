@@ -316,20 +316,32 @@ with tab1:
     
     if year:
         date_plot=df_gs_plot['year'].value_counts()
+        date_plot
+        date_plot=date_plot.reset_index()
+        date_plot=date_plot.rename(columns={'index':'Date','year':'Count'})
+        date_plot=date_plot.sort_values(by='Year')
+        fig = px.bar(date_plot, x='Date', y='Count')
+        fig.update_xaxes(tickangle=-70)
+        fig.update_layout(
+            autosize=False,
+            width=400,
+            height=500)
+        fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+        st.plotly_chart(fig, use_container_width = True)
     else:
         date_plot=df_gs_plot['month_year'].value_counts()
-    date_plot
-    date_plot=date_plot.reset_index()
-    date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
-    date_plot=date_plot.sort_values(by='Date')
-    fig = px.bar(date_plot, x='Date', y='Count')
-    fig.update_xaxes(tickangle=-70)
-    fig.update_layout(
-        autosize=False,
-        width=400,
-        height=500)
-    fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-    st.plotly_chart(fig, use_container_width = True)
+        date_plot
+        date_plot=date_plot.reset_index()
+        date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
+        date_plot=date_plot.sort_values(by='Date')
+        fig = px.bar(date_plot, x='Date', y='Count')
+        fig.update_xaxes(tickangle=-70)
+        fig.update_layout(
+            autosize=False,
+            width=400,
+            height=500)
+        fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+        st.plotly_chart(fig, use_container_width = True)
 
     organiser_plot = df_gs_plot['organiser'].value_counts()
     organiser_plot=organiser_plot.reset_index()
