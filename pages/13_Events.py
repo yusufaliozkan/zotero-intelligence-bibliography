@@ -307,13 +307,17 @@ with tab1:
     ap2 = ''
     ap3 = ''
     selector = st.checkbox('Select a year')
+    year = st.checkbox('Show in years')
     if selector:
         slider = st.slider('Select a year', 2022,2023,2023)
         slider = str(slider)
         df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
         ap = ' (in ' + slider+')'
     
-    date_plot=df_gs_plot['month_year'].value_counts()
+    if year:
+        date_plot=df_gs_plot['year'].value_counts()
+    else:
+        date_plot=df_gs_plot['month_year'].value_counts()
     df_gs_plot
     date_plot=date_plot.reset_index()
     date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
