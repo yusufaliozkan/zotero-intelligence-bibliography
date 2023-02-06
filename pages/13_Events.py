@@ -321,7 +321,7 @@ with tab1:
         date_plot=date_plot.rename(columns={'index':'Year','year':'Count'})
         date_plot
         date_plot=date_plot.sort_values(by='Year')
-        fig = px.bar(date_plot, x='Date', y='Count')
+        fig = px.bar(date_plot, x='Year', y='Count')
         fig.update_xaxes(tickangle=-70)
         fig.update_layout(
             autosize=False,
