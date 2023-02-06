@@ -316,8 +316,8 @@ with tab1:
     
     if year:
         date_plot=df_gs_plot['year'].value_counts()
-        date_plot
         date_plot=date_plot.reset_index()
+        date_plot
         date_plot=date_plot.rename(columns={'index':'Date','year':'Count'})
         date_plot=date_plot.sort_values(by='Year')
         fig = px.bar(date_plot, x='Date', y='Count')
