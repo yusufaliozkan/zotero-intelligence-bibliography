@@ -318,7 +318,7 @@ with tab1:
         date_plot=df_gs_plot['year'].value_counts()
     else:
         date_plot=df_gs_plot['month_year'].value_counts()
-    df_gs_plot
+    date_plot
     date_plot=date_plot.reset_index()
     date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
     date_plot=date_plot.sort_values(by='Date')
