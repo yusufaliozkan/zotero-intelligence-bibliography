@@ -280,7 +280,8 @@ with tab1:
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
-        if st.checkbox('Events in 2023', key='2023'):
+        row_nu2_container = st.container()
+        if st.checkbox('Events in 2023' + row_nu2_container, key='2023'):
             row_nu2_container = st.container()
             if '2023' in df_gs2['year'].values:
                 y2023 = df_gs2[df_gs2['year']=='2023']
