@@ -280,9 +280,9 @@ with tab1:
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
-        if st.checkbox('Events in 2023', key='2023'):
-            row_nu2_container
+        if st.checkbox('Events in 2023', key='2023'):            
             if '2023' in df_gs2['year'].values:
+                row_nu2_container
                 y2023 = df_gs2[df_gs2['year']=='2023']
                 y2023['link'] = y2023['link'].fillna('')
                 row_nu2 = len(y2023.index)
