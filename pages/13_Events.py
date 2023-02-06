@@ -286,7 +286,7 @@ with tab1:
                 y2023 = df_gs2[df_gs2['year']=='2023']
                 y2023['link'] = y2023['link'].fillna('')
                 row_nu2 = len(y2023.index)
-                row_nu2_container = row_nu2
+                row_nu2_container.write(str(row_nu2))
                 df_gs3 = ('['+ y2023['event_name'] + ']'+ '('+ y2023['link'] + ')'', organised by ' + '**' + y2023['organiser'] + '**' + '. Date: ' + y2023['date_new'] + ', Venue: ' + y2023['venue'])
                 row_nu = len(df_gs.index)
                 for i in range(row_nu2):
