@@ -377,9 +377,9 @@ with tab2:
     # df['Date year'] = df['Date published'].dt.strftime('%Y')
     # df['Date year'] = df['Date year'].fillna('No date')
 
-
-    col1, col2 = st.columns(2)
     by_months = st.checkbox('Show by months')
+    col1, col2 = st.columns(2)
+    
     with col1:        
         df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
         df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
