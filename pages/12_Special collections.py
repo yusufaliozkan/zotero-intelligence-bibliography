@@ -377,20 +377,33 @@ with tab2:
     # df['Date year'] = df['Date year'].fillna('No date')
 
     by_months = st.checkbox('Show by months')
-    col1, col2 = st.columns(2)
-    
-    with col1:        
-        df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-        df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-        df_year=df_year.sort_values(by='Publication year', ascending=True)
-        fig = px.bar(df_year, x='Publication year', y='Count')
-        fig.update_xaxes(tickangle=-70)
-        fig.update_layout(
-            autosize=False,
-            width=400,
-            height=500,)
-        fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-        col1.plotly_chart(fig, use_container_width = True)
+    col1, col2 = st.columns(2)    
+    with col1:
+        if by_months:
+            df_month=df_month.rename(columns={'index':'Publication month','Date year':'Count'})
+            df_month
+            df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+            df_year=df_year.sort_values(by='Publication year', ascending=True)
+            fig = px.bar(df_year, x='Publication year', y='Count')
+            fig.update_xaxes(tickangle=-70)
+            fig.update_layout(
+                autosize=False,
+                width=400,
+                height=500,)
+            fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            col1.plotly_chart(fig, use_container_width = True)
+        else:
+            df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+            df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+            df_year=df_year.sort_values(by='Publication year', ascending=True)
+            fig = px.bar(df_year, x='Publication year', y='Count')
+            fig.update_xaxes(tickangle=-70)
+            fig.update_layout(
+                autosize=False,
+                width=400,
+                height=500,)
+            fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            col1.plotly_chart(fig, use_container_width = True)
 
     with col2:
         df_year['Sum'] = df_year['Count'].cumsum()
