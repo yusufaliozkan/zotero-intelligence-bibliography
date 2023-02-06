@@ -380,7 +380,7 @@ with tab2:
     col1, col2 = st.columns(2)    
     with col1:
         if by_months:
-            df_month=df_month.rename(columns={'index':'Publication month','Date year':'Count'})
+            df_month=df_month.rename(columns={'index':'Publication month','Date month':'Count'})
             df_month
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
