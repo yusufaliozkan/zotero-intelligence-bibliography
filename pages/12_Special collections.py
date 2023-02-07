@@ -406,11 +406,19 @@ with tab2:
             col1.plotly_chart(fig, use_container_width = True)
 
     with col2:
-        df_year['Sum'] = df_year['Count'].cumsum()
-        fig2 = px.line(df_year, x='Publication year', y='Sum')
-        fig2.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
-        fig2.update_xaxes(tickangle=-70)
-        col2.plotly_chart(fig2, use_container_width = True)
+        if by_months:
+            df_month['Sum'] = df_month['Count'].cumsum()
+            fig2 = px.line(df_month, x='Publication month', y='Sum')
+            fig2.update_layout(title={'text':'Publications by month: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            fig2.update_xaxes(tickangle=-70)
+            col2.plotly_chart(fig2, use_container_width = True)
+
+        else:
+            df_year['Sum'] = df_year['Count'].cumsum()
+            fig2 = px.line(df_year, x='Publication year', y='Sum')
+            fig2.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            fig2.update_xaxes(tickangle=-70)
+            col2.plotly_chart(fig2, use_container_width = True)
 
     col1, col2 = st.columns(2)
     with col1:
