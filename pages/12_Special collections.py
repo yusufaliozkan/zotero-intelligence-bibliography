@@ -368,6 +368,7 @@ with tab2:
 
     df_month = df['Date month'].value_counts()
     df_month= df_month.reset_index()
+    df['Date month'] = df['Date month'].fillna('No date')
     # df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
     # df['month'] = df['Date published'].dt.month
     # df['year'] = df['Date published'].dt.year
