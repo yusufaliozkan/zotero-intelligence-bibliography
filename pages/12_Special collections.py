@@ -377,7 +377,7 @@ with tab2:
     # df['Date year'] = df['Date published'].dt.strftime('%Y')
     # df['Date year'] = df['Date year'].fillna('No date')
 
-    by_year = st.checkbox('Show by publication month')
+    by_year = st.checkbox('Show by publication year')
     col1, col2 = st.columns(2)    
     with col1:
         if by_year:
