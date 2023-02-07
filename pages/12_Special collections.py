@@ -377,21 +377,20 @@ with tab2:
     # df['Date year'] = df['Date published'].dt.strftime('%Y')
     # df['Date year'] = df['Date year'].fillna('No date')
 
-    by_months = st.checkbox('Show by months')
+    by_months = st.checkbox('Show by publication month')
     col1, col2 = st.columns(2)    
     with col1:
         if by_months:
             df_month=df_month.rename(columns={'index':'Publication month','Date month':'Count'})
             df_month.drop(df_month[df_month['Publication month']== 'No date'].index, inplace = True)
-            df_month
-            df_year=df_year.sort_values(by='Publication year', ascending=True)
-            fig = px.bar(df_year, x='Publication year', y='Count')
+            df_month=df_month.sort_values(by='Publication month', ascending=True)
+            fig = px.bar(df_month, x='Publication month', y='Count')
             fig.update_xaxes(tickangle=-70)
             fig.update_layout(
                 autosize=False,
                 width=400,
                 height=500,)
-            fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            fig.update_layout(title={'text':'Publications by month: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
             col1.plotly_chart(fig, use_container_width = True)
         else:
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
