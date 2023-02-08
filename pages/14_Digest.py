@@ -177,13 +177,11 @@ with st.expander('Publications:', expanded=ex):
 
 
     else:
-        publication_info2 = ''
-        if df_csv['Publication type'].iloc[0] in ('Journal article', 'Magazine article', 'Newspaper article'):
-            publication_info2 = ' (Published in: ' + '*' + df_csv['Journal'] + '*' +')'
+
         df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                     df_csv['Title'] +  "',"  +
                     ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
-                    publication_info2 +
+                    ' (Published in: ' + '*' + df_csv['Journal'] +'*' + ')' +
                     ' (Published on: ' + df_csv['Date published new'] + ')'+
                     ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                     )
