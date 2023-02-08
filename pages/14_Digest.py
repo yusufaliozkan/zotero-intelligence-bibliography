@@ -159,9 +159,9 @@ with st.expander('Publications:', expanded=ex):
             b = types2['Publication type'].iloc[i]
             df_csva = df_csv[df_csv['Publication type']==b]
             df_csva["Link to publication"].fillna("No link", inplace = True)
-            publication_info = 't'
-            # if df_csva['Publication type'].iloc[0] == 'Journal article':
-            #     publication_info = ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')'
+            publication_info = ''
+            if df_csva['Publication type'].iloc[0] == 'Journal article':
+                publication_info = ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')'
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
                         df_csva['Title'] + "'," +
                         ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
