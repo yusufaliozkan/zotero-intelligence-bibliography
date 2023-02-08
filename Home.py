@@ -220,22 +220,21 @@ with tab1:
             # )
             row_nu_1= len(df_last.index)
             for i in range(row_nu_1):
-                st.write(''+str(i+1)+') ' +df_last.iloc[i])
-                df                
+                st.write(''+str(i+1)+') ' +df_last.iloc[i])              
                 if display:
                     a=''
                     b=''
                     c=''
                     if 'Name_x' in df:
                         a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
-                    if 'Name_y' in df:
-                        b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
-                        if df['Name_y'].iloc[i]=='':
-                            b=''
-                    if 'Name' in df:
-                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
-                        if df['Name'].iloc[i]=='':
-                            c=''
+                        if 'Name_y' in df:
+                            b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
+                            if df['Name_y'].iloc[i]=='':
+                                b=''
+                            if 'Name' in df:
+                                c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
+                                if df['Name'].iloc[i]=='':
+                                    c=''
                     else:
                         st.caption('No theme to display!')
                     st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
