@@ -178,7 +178,7 @@ with st.expander('Publications:', expanded=ex):
 
     else:
         publication_info2 = ''
-        if df_csv['Publication type'].iloc[0] in ('Journal article', 'Magazine article', 'Newspaper article'):
+        if df_csv['Publication type'].iloc[0] in ('Journal article', 'Magazine article', 'Newspaper article', 'Blog post'):
             publication_info = ' (Published in: ' + '*' + df_csv['Journal'] + '*' +')'
         df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                     df_csv['Title'] +  "',"  +
