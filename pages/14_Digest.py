@@ -174,21 +174,33 @@ with st.expander('Publications:', expanded=ex):
             for i in range(row_nu):
                 df_lasta=df_lasta.dropna().reset_index(drop=True)                
                 st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
-
-
     else:
-
         df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
-                    df_csv['Title'] +  "',"  +
-                    ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
-                    ' (Published in: ' + '*' + df_csv['Journal'] +'*' + ')' +
-                    ' (Published on: ' + df_csv['Date published new'] + ')'+
-                    ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
-                    )
-        df_last=df_last.dropna().reset_index(drop=True)
+                            df_csv['Title'] +  "',"  +
+                            ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                            ' (Published on: ' + df_csv['Date published new'] + ')' +
+                            ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
+                            )
+        df_last = df_last.dropna().reset_index(drop=True)
         row_nu = len(df_csv.index)
         for i in range(row_nu):
+            if df_csv['Publication type'].iloc[i] in ['Journal article', 'Magazine article']:
+                df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
+                    df_csv['Title'] +  "',"  +
+                    ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                    ' (Published in: ' + '*' + df_csv['Journal'] + '*' + ')' +
+                    ' (Published on: ' + df_csv['Date published new'] + ')' +
+                    ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
+                    )
+            else:
+                df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
+                    df_csv['Title'] +  "',"  +
+                    ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                    ' (Published on: ' + df_csv['Date published new'] + ')' +
+                    ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
+                    )
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
+
 
     st.subheader('Trends')
     if df_csv['Publication type'].any() in ("", [], None, 0, False):
