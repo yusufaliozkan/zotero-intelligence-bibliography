@@ -184,7 +184,7 @@ with st.expander('Publications:', expanded=ex):
         df_last = df_last.dropna().reset_index(drop=True)
         row_nu = len(df_csv.index)
         for i in range(row_nu):
-            if df_csv['Publication type'].iloc[i] in ['Journal article', 'Magazine article']:
+            if df_csv['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
                 df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                     df_csv['Title'] +  "',"  +
                     ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
