@@ -159,17 +159,13 @@ with st.expander('Publications:', expanded=ex):
             b = types2['Publication type'].iloc[i]
             df_csva = df_csv[df_csv['Publication type']==b]
             df_csva["Link to publication"].fillna("No link", inplace = True)
-            journal_part = ""
-            if df_csva['Journal'].notnull().any():
-                journal_part = ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')'
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
-                        df_csva['Title'] + "'," +
-                        ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
-                        journal_part +
-                        ' (Published on: ' + df_csva['Date published new'] + ')' +
-                        ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
-                        )
-
+                    df_csva['Title'] + "'," +
+                    ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
+                    ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')' +
+                    ' (Published on: ' + df_csva['Date published new'] + ')' +
+                    ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
+                    )
             # df_lasta=df_lasta.dropna().reset_index(drop=True)
             row_nu = len(df_csva.index)
             for i in range(row_nu):
