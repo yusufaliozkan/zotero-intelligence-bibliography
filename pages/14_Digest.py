@@ -320,7 +320,7 @@ with st.expander('Events:', expanded=ex):
     df_gs = pd.DataFrame(data, columns=columns)
     df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_gs.sort_values(by='date', ascending = True, inplace=True)
-    df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
+    df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
     df_gs['details'] = df_gs['details'].fillna('No details provided.')
     df_gs = df_gs.fillna('')
     df_gs['event_name']=df_gs['event_name'].str.strip()
