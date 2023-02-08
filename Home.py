@@ -221,7 +221,7 @@ with tab1:
             row_nu_1= len(df_last.index)
             for i in range(row_nu_1):
                 st.write(''+str(i+1)+') ' +df_last.iloc[i])
-                
+                df                
                 if display:
                     a=''
                     b=''
@@ -236,8 +236,8 @@ with tab1:
                         c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
                         if df['Name'].iloc[i]=='':
                             c=''
-                    # else:
-                    #     st.caption('No theme to display!')
+                    else:
+                        st.caption('No theme to display!')
                     st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
                     st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
 
