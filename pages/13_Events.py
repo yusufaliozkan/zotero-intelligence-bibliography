@@ -98,7 +98,7 @@ with tab1:
     df_gs['year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y')
     df_gs['month_year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m')
     df_gs.sort_values(by='date', ascending = True, inplace=True)
-    df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
+    df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
     
     df_gs['details'] = df_gs['details'].fillna('No details')
     df_gs = df_gs.fillna('')
@@ -294,7 +294,7 @@ with tab1:
             if '2022' in df_gs2['year'].values:
                 y2022 = df_gs2[df_gs2['year']=='2022']
                 y2022['link'] = y2022['link'].fillna('')
-                y2022 = y2022.drop_duplicates(subset=['event_name', 'link'], keep='first')
+                y2022 = y2022.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
                 row_nu2 = len(y2022.index)
                 df_gs3 = ('['+ y2022['event_name'] + ']'+ '('+ y2022['link'] + ')'', organised by ' + '**' + y2022['organiser'] + '**' + '. Date: ' + y2022['date_new'] + ', Venue: ' + y2022['venue'])
                 row_nu = len(df_gs.index)
