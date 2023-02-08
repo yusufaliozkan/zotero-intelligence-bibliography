@@ -161,7 +161,7 @@ with st.expander('Publications:', expanded=ex):
             df_csva["Link to publication"].fillna("No link", inplace = True)
             publication_info = ''
             list = ['Journal article', 'Magazine article']
-            if df_csva['Publication type'].loc[list]:
+            if df_csva['Publication type'].iloc[list]:
                 publication_info = ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')'
             df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
                         df_csva['Title'] + "'," +
