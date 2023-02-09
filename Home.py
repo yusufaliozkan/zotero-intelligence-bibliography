@@ -32,7 +32,7 @@ zot = zotero.Zotero(library_id, library_type)
 items = zot.top(limit=15)
 
 data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName']
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Journal']
 
 for item in items:
     data.append((item['data']['title'], 
@@ -44,7 +44,8 @@ for item in items:
     item['data'].get('date'), 
     item['data']['dateModified'],
     item['data']['collections'],
-    item['data']['creators']
+    item['data']['creators'],
+    item['data'].get('publisher')
     ))
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
