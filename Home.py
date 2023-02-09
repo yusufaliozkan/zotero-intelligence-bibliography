@@ -205,7 +205,6 @@ with tab1:
         with st.expander('Click to hide the list', expanded=True):
             display = st.checkbox('Display theme and abstract')
 
-            pub_info = ''
             if df['Publication type'].iloc[0] in ('Journal article'):
                 pub_info = ', (Published in: ' + '*' + df['Journal'] + '*' +'), '
 
