@@ -207,11 +207,12 @@ with tab1:
 
             pub_info = ''
             if df['Publication type'].iloc[0] in ('Journal article'):
-                pub_info = ' (Published in: ' + '*' + df['Journal'] + '*' +')'
+                pub_info = ', (Published in: ' + '*' + df['Journal'] + '*' +'), '
 
             df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
             '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
             ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+            pub_info+
             # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
             ' (Published on: ' + df['Date published']+', ' +
