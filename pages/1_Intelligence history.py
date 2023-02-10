@@ -126,7 +126,7 @@ with tab1:
 
         df = pd.DataFrame(data3, columns=columns3)
         
-        time.sleep(3600) # wait for 1 hour (3600 seconds)
+        time.sleep(2) # wait for 1 hour (3600 seconds)
 
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
         # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
