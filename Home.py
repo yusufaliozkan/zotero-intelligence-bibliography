@@ -206,22 +206,26 @@ with tab1:
             display = st.checkbox('Display theme and abstract')
 
             df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
-            '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
-            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-            # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-            ' (Published on: ' + df['Date published']+', ' +
-            'Added on: ' + df['Date added']+')'
-            )
-            # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + ' '+
-            # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-            # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-            # "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-            # ' (Added on: ' + df['Date added']+')'
-            # )
-            row_nu_1= len(df_last.index)
+                        '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
+                        ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                        # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
+                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+                        ' (Published on: ' + df['Date published']+', ' +
+                        'Added on: ' + df['Date added']+')'
+                        )
+                        # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + ' '+
+                        # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                        # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
+                        # "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+                        # ' (Added on: ' + df['Date added']+')'
+                        # )
+            row_nu_1 = len(df_last.index)
             for i in range(row_nu_1):
-                st.write(''+str(i+1)+') ' +df_last.iloc[i])              
+                publication_type = df['Publication type'].iloc[i]
+                if publication_type in ["Journal article", "Magazine article"]:
+                    st.write(f"{i+1}) " + df_last.iloc[i] + " (Published in: " + "*" + df['Journal'].iloc[i] + "*" + ")")
+                else:
+                    st.write(f"{i+1}) " + df_last.iloc[i])
                 if display:
                     a=''
                     b=''
@@ -239,7 +243,8 @@ with tab1:
                     else:
                         st.caption('No theme to display!')
                     st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                    st.caption('Abstract:'+'\n '+ df['Abstract'].iloc[i])
+       
+
 
                 # if display:
                 #     if 0 in df:
