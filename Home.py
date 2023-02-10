@@ -66,8 +66,7 @@ df = pd.concat([df, split_df, df_new], axis=1)
 df['firstName'] = df['firstName'].fillna('null')
 df['lastName'] = df['lastName'].fillna('null')
 
-
-    # Change type name
+# Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
 df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
 df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
