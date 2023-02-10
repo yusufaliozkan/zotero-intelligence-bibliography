@@ -92,8 +92,6 @@ df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
 df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 
-df
-
 # Bringing collections
 bbb = zot.collections()
 data3=[]
@@ -421,6 +419,8 @@ with tab1:
             row_nu = len(df_gs.index)
             for i in range(row_nu):
                 st.write(df_gs1.iloc[i])
+            
+            sheet_url4 = st.secrets['public_gsheets_url4']
 
             st.markdown('##### Next conference')
             sheet_url2 = st.secrets["public_gsheets_url2"]
