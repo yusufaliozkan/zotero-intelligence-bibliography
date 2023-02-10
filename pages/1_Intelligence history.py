@@ -227,18 +227,17 @@ with tab1:
                     st.subheader(types['Publication type'].iloc[i])
                     b = types['Publication type'].iloc[i]
                     df_a = df[df['Publication type']==b]
-                    df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
-                        df_a['Title'] + ' '+ 
-                        ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
-                        ' (Published on: ' +df_a['Date published'] + ') '+
-                        "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
-                        "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
-
-                        )
                     row_nu_1 = len(df_a.index)
                     for i in range(row_nu_1):
-                        if df_a['Publication type'].iloc[i] in ['Journal article', 'Magazine article']:
-                            st.write('' + str(i+1) + ') ' + df_items.iloc[i] + ' (Published in: ' + '*' + df_a['Journal'].iloc[i] + '*' + ')')
+                        if df_a['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
+                            df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
+                                df_a['Title'] + ' '+ 
+                                ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
+                                ' (Published on: ' +df_a['Date published'] + ') '+
+                                ' (Published in: ' + '*' + df_a['Journal'].iloc[i] + '*' + ')'+
+                                "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
+                                "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
+                                )
                         else:
                             st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                         df_items.fillna("nan") 
@@ -247,7 +246,7 @@ with tab1:
 
             else:           
                 for i in range(row_nu_1):
-                    if df['Publication type'].iloc[i] in ['Journal article', 'Magazine article']:
+                    if df['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
                         st.write('' + str(i+1) + ') ' + df_items.iloc[i] + ' (Published in: ' + '*' + df['Journal'].iloc[i] + '*' + ')')
                     else:
                         st.write('' + str(i+1) + ') ' + df_items.iloc[i])
