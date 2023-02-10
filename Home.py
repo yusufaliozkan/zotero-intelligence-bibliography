@@ -209,7 +209,7 @@ with tab1:
                         ' (Published on: ' + df['Date published']+', ' +
                         'Added on: ' + df['Date added']+')'+
                         '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
                         )
 
             row_nu_1 = len(df_last.index)
