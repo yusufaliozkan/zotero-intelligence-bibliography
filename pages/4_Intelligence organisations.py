@@ -211,8 +211,6 @@ with tab1:
             sort_by_type = st.checkbox('Sort by publication type', key='type')
             display2 = st.checkbox('Display abstracts')
 
-           sort_by_type = st.checkbox('Sort by publication type', key='type')
-            display2 = st.checkbox('Display abstracts')
             if sort_by_type:
                 df3=df.copy()
                 df = df.sort_values(by=['Publication type'], ascending=True)
