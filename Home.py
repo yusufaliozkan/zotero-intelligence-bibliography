@@ -19,6 +19,7 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
+import gsheetsdb as gdb
 import datetime as dt
 
 # Connecting Zotero with API
