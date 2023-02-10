@@ -216,7 +216,15 @@ with tab1:
             for i in range(row_nu_1):
                 publication_type = df['Publication type'].iloc[i]
                 if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                    st.write(f"{i+1}) " + df_last.iloc[i] + " (Published in: " + "*" + df['Pub_venue'].iloc[i] + "*" + ")")
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+', ' +
+                                " (Published in: " + "*" + df['Pub_venue'] + "*" +
+                                'Added on: ' + df['Date added']+')'+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
+                    st.write(f"{i+1}) " + df_last.iloc[i])
                 else:
                     st.write(f"{i+1}) " + df_last.iloc[i])
                 if display:
