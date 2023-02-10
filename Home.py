@@ -32,7 +32,7 @@ zot = zotero.Zotero(library_id, library_type)
 items = zot.top(limit=15)
 
 data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Journal']
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Pub_venue']
 
 for item in items:
     data.append((item['data']['title'], 
@@ -54,7 +54,6 @@ st.set_page_config(layout = "wide",
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 df
-items
 
 split_df= pd.DataFrame(df['Col key'].tolist())
 df_fa = df['FirstName']
@@ -224,7 +223,7 @@ with tab1:
             for i in range(row_nu_1):
                 publication_type = df['Publication type'].iloc[i]
                 if publication_type in ["Journal article", "Magazine article"]:
-                    st.write(f"{i+1}) " + df_last.iloc[i] + " (Published in: " + "*" + df['Journal'].iloc[i] + "*" + ")")
+                    st.write(f"{i+1}) " + df_last.iloc[i] + " (Published in: " + "*" + df['Pub_venue'].iloc[i] + "*" + ")")
                 else:
                     st.write(f"{i+1}) " + df_last.iloc[i])
                 if display:
