@@ -51,7 +51,6 @@ st.set_page_config(layout = "wide",
                     page_title='Intelligence bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
-items
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 df
