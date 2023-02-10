@@ -53,7 +53,6 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
-df
 
 split_df= pd.DataFrame(df['Col key'].tolist())
 df_fa = df['FirstName']
