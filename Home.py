@@ -222,7 +222,7 @@ with tab1:
             row_nu_1 = len(df_last.index)
             for i in range(row_nu_1):
                 publication_type = df['Publication type'].iloc[i]
-                if publication_type in ["Journal article", "Magazine article"]:
+                if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
                     st.write(f"{i+1}) " + df_last.iloc[i] + " (Published in: " + "*" + df['Pub_venue'].iloc[i] + "*" + ")")
                 else:
                     st.write(f"{i+1}) " + df_last.iloc[i])
