@@ -218,7 +218,7 @@ with tab1:
                 if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
                     df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                                 ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-                                ' (Published on: ' + df['Date published']+', ' +
+                                ' (Published on: ' + df['Date published']+'), ' +
                                 " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
                                 ' (Added on: ' + df['Date added']+') '+
                                 '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
