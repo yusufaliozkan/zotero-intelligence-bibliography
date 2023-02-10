@@ -229,10 +229,11 @@ with tab1:
                     df_a = df[df['Publication type']==b]
                     df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
                         df_a['Title'] + ' '+ 
-                        ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+                        ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
+                        ' (Published on: ' +df_a['Date published'] + ')'+
                         "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
-                        "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')' +
-                        ' (Published on: ' +df_a['Date published'] + ')'
+                        "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
+
                         )
                     row_nu_1 = len(df_a.index)
                     for i in range(row_nu_1):
