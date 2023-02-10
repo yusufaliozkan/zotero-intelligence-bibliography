@@ -220,7 +220,6 @@ with tab1:
                                 ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
                                 ' (Published on: ' + df['Date published']+'), ' +
                                 " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
-                                ' (Added on: ' + df['Date added']+') '+
                                 '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
                                 "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
                                 )
