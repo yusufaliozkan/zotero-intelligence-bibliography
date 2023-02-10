@@ -419,8 +419,6 @@ with tab1:
             for i in range(row_nu):
                 st.write(df_gs1.iloc[i])
             
-            gbd.init('public_gsheets_url4')
-
             st.markdown('##### Next conference')
             sheet_url2 = st.secrets["public_gsheets_url2"]
             rows = run_query(f'SELECT * FROM "{sheet_url2}"')
