@@ -217,7 +217,6 @@ with tab1:
 
             if sort_by_type:
                 df3=df.copy()
-                df = df.drop(columns=['index'])
                 df = df.sort_values(by=['Publication type'], ascending=True)
                 types = df['Publication type'].unique()
                 types = pd.DataFrame(types, columns=['Publication type'])
@@ -263,13 +262,13 @@ with tab1:
                             )                         
                         st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                     else:
-                        # df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                        #     df['Title'] + ' '+ 
-                        #     ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-                        #     ' (Published on: ' +df['Date published'] + ') '+
-                        #     "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                        #     "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
-                        #     )
+                        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                            df['Title'] + ' '+ 
+                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                            ' (Published on: ' +df['Date published'] + ') '+
+                            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                            )   
                         st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                     df_items.fillna("nan") 
                     if display2:
