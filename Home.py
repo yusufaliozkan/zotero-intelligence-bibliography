@@ -204,20 +204,14 @@ with tab1:
         with st.expander('Click to hide the list', expanded=True):
             display = st.checkbox('Display theme and abstract')
 
-            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
-                        '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
+            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-                        # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                         ' (Published on: ' + df['Date published']+', ' +
-                        'Added on: ' + df['Date added']+')'
+                        'Added on: ' + df['Date added']+')'+
+                        '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                         )
-                        # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + ' '+
-                        # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-                        # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-                        # "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-                        # ' (Added on: ' + df['Date added']+')'
-                        # )
+
             row_nu_1 = len(df_last.index)
             for i in range(row_nu_1):
                 publication_type = df['Publication type'].iloc[i]
