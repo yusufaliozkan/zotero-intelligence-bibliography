@@ -245,6 +245,31 @@ with tab1:
                         df_items.fillna("nan") 
                         if display2:
                             st.caption(df['Abstract'].iloc[i])
+            else:           
+                for i in range(row_nu_1):
+                    if df['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
+                        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                            df['Title'] + ' '+ 
+                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                            ' (Published on: ' +df['Date published'] + ') '+
+                            ' (Published in: ' + '*' + df['Journal'].iloc[i] + '*' + ') ' +
+                            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                            )                         
+                        st.write('' + str(i+1) + ') ' + df_items.iloc[i])
+                    else:
+                        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                            df['Title'] + ' '+ 
+                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                            ' (Published on: ' +df['Date published'] + ') '+
+                            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                            )   
+                        st.write('' + str(i+1) + ') ' + df_items.iloc[i])
+                    df_items.fillna("nan") 
+                    if display2:
+                        st.caption(df['Abstract'].iloc[i])
+                        
     with col2:
         with st.expander("Collections in Zotero library", expanded=False):
             bbb = zot.collections()
