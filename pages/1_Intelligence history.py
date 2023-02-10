@@ -241,7 +241,7 @@ with tab1:
                                 df_a['Title'] + ' '+ 
                                 ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
                                 ' (Published on: ' +df_a['Date published'] + ') '+
-                                ' (Published in: ' + '*' + df_a['Journal'].iloc[i] + '*' +
+                                ' (Published in: ' + '*' + df_a['Journal'].iloc[i] + '*' + ') ' +
                                 "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
                                 "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
                                 ) 
