@@ -263,6 +263,13 @@ with tab1:
                             )                         
                         st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                     else:
+                        df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
+                            df_a['Title'] + ' '+ 
+                            ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
+                            ' (Published on: ' +df_a['Date published'] + ') '+
+                            "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
+                            "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
+                            )
                         st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                     df_items.fillna("nan") 
                     if display2:
