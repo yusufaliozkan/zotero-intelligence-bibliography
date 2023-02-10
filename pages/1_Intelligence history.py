@@ -17,7 +17,8 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
-import datetime as dt     
+import datetime as dt   
+import time  
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
@@ -100,6 +101,8 @@ with tab1:
         pd.set_option('display.max_colwidth', None)
 
     # Collection items
+
+    while True:
         count_collection = zot.num_collectionitems(collection_code)
 
         items = zot.everything(zot.collection_items_top(collection_code))
@@ -122,6 +125,8 @@ with tab1:
         pd.set_option('display.max_colwidth', None)
 
         df = pd.DataFrame(data3, columns=columns3)
+        
+        time.sleep(3600) # wait for 1 hour (3600 seconds)
 
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
         # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
