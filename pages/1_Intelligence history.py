@@ -230,7 +230,7 @@ with tab1:
                     df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
                         df_a['Title'] + ' '+ 
                         ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
-                        ' (Published on: ' +df_a['Date published'] + ')'+
+                        ' (Published on: ' +df_a['Date published'] + ') '+
                         "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
                         "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
 
