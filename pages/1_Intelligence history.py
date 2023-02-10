@@ -262,7 +262,7 @@ with tab1:
                             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                             "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
                             )                         
-                        st.write('' + str(i+1) + ') ' + df_items.iloc[i] + ' (Published in: ' + '*' + df['Journal'].iloc[i] + '*' + ')')
+                        st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                     else:
                         st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                     df_items.fillna("nan") 
