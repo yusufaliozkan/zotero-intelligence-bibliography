@@ -255,7 +255,7 @@ with tab1:
                 for i in range(row_nu_1):
                     if df['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
                         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                            df_a['Title'] + ' '+ 
+                            df['Title'] + ' '+ 
                             ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
                             ' (Published on: ' +df['Date published'] + ') '+
                             ' (Published in: ' + '*' + df['Journal'].iloc[i] + '*' + ') ' +
