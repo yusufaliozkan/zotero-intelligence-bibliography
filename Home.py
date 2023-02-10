@@ -229,7 +229,7 @@ with tab1:
                     df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                                 ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
                                 ' (Published on: ' + df['Date published']+', ' +
-                                'Added on: ' + df['Date added']+')'+
+                                'Added on: ' + df['Date added']+') '+
                                 '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
                                 "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
                                 )
