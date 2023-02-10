@@ -225,6 +225,13 @@ with tab1:
                                 )
                     st.write(f"{i+1}) " + df_last.iloc[i])
                 else:
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+', ' +
+                                'Added on: ' + df['Date added']+')'+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
                     st.write(f"{i+1}) " + df_last.iloc[i])
                 if display:
                     a=''
