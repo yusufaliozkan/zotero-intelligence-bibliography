@@ -451,7 +451,6 @@ with tab1:
         with st.expander('Digest', expanded=True):
             st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
-        
 with tab2:
     st.header('Dashboard')
     number0 = st.slider('Select a number collections', 3,30,15)
