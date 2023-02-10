@@ -45,7 +45,7 @@ for item in items:
     item['data']['dateModified'],
     item['data']['collections'],
     item['data']['creators'],
-    item['data'].get('publisher')
+    item['data'].get('publicationTitle')
     ))
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence bibliography',
