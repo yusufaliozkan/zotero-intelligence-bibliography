@@ -53,6 +53,7 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
+df
 
 split_df= pd.DataFrame(df['Col key'].tolist())
 df_fa = df['FirstName']
@@ -89,7 +90,6 @@ df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
 df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
 df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
-
 
 # Bringing collections
 bbb = zot.collections()
