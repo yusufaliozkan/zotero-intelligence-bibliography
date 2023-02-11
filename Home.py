@@ -19,6 +19,7 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
+import gsheetsdb as gdb
 import datetime as dt
 
 # Connecting Zotero with API
@@ -54,6 +55,7 @@ st.set_page_config(layout = "wide",
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 
+
 split_df= pd.DataFrame(df['Col key'].tolist())
 df_fa = df['FirstName']
 df_fa = pd.DataFrame(df_fa.tolist())
@@ -64,8 +66,7 @@ df = pd.concat([df, split_df, df_new], axis=1)
 df['firstName'] = df['firstName'].fillna('null')
 df['lastName'] = df['lastName'].fillna('null')
 
-
-    # Change type name
+# Change type name
 df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
 df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
 df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
@@ -204,26 +205,34 @@ with tab1:
         with st.expander('Click to hide the list', expanded=True):
             display = st.checkbox('Display theme and abstract')
 
-            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + 
-                        '['+ df['Title'] + ']'+ '('+ df['Link to publication'] + ')' +
+            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-                        # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                         ' (Published on: ' + df['Date published']+', ' +
-                        'Added on: ' + df['Date added']+')'
+                        'Added on: ' + df['Date added']+')'+
+                        '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
                         )
-                        # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + ' '+
-                        # ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
-                        # "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+ 
-                        # "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-                        # ' (Added on: ' + df['Date added']+')'
-                        # )
+
             row_nu_1 = len(df_last.index)
             for i in range(row_nu_1):
                 publication_type = df['Publication type'].iloc[i]
                 if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                    st.write(f"{i+1}) " + df_last.iloc[i] + " (Published in: " + "*" + df['Pub_venue'].iloc[i] + "*" + ")")
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+') ' +
+                                " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
+                    st.write(f"{i+1}) " + df_last.iloc[i])
                 else:
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+', ' +
+                                'Added on: ' + df['Date added']+') '+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
                     st.write(f"{i+1}) " + df_last.iloc[i])
                 if display:
                     a=''
@@ -409,7 +418,7 @@ with tab1:
             row_nu = len(df_gs.index)
             for i in range(row_nu):
                 st.write(df_gs1.iloc[i])
-
+            
             st.markdown('##### Next conference')
             sheet_url2 = st.secrets["public_gsheets_url2"]
             rows = run_query(f'SELECT * FROM "{sheet_url2}"')
@@ -439,7 +448,6 @@ with tab1:
         with st.expander('Digest', expanded=True):
             st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
-        
 with tab2:
     st.header('Dashboard')
     number0 = st.slider('Select a number collections', 3,30,15)
@@ -783,7 +791,6 @@ with tab2:
     # plot2= df_types.head(10)
 
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
-
 
 st.write('---')
 components.html(

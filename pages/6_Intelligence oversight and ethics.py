@@ -215,7 +215,6 @@ with tab1:
 
             if sort_by_type:
                 df3=df.copy()
-                df = df.drop(columns=['index'])
                 df = df.sort_values(by=['Publication type'], ascending=True)
                 types = df['Publication type'].unique()
                 types = pd.DataFrame(types, columns=['Publication type'])
@@ -226,22 +225,49 @@ with tab1:
                     df_a = df[df['Publication type']==b]
                     df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
                         df_a['Title'] + ' '+ 
-                        ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+                        ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
+                        ' (Published on: ' +df_a['Date published'] + ') '+
                         "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
-                        "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')' +
-                        ' (Published on: ' +df_a['Date published'] + ')'
+                        "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
                         )
                     row_nu_1 = len(df_a.index)
                     for i in range(row_nu_1):
-                        st.write(''+str(i+1)+') ' +df_items.iloc[i])
+                        if df_a['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
+                            df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
+                                df_a['Title'] + ' '+ 
+                                ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
+                                ' (Published on: ' +df_a['Date published'] + ') '+
+                                ' (Published in: ' + '*' + df_a['Journal'].iloc[i] + '*' + ') ' +
+                                "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
+                                "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
+                                ) 
+                            st.write('' + str(i+1) + ') ' + df_items.iloc[i])
+                        else:
+                            st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                         df_items.fillna("nan") 
                         if display2:
                             st.caption(df['Abstract'].iloc[i])
-
-            else:
-           
+            else:           
                 for i in range(row_nu_1):
-                    st.write(''+str(i+1)+') ' +df_items.iloc[i])
+                    if df['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
+                        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                            df['Title'] + ' '+ 
+                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                            ' (Published on: ' +df['Date published'] + ') '+
+                            ' (Published in: ' + '*' + df['Journal'].iloc[i] + '*' + ') ' +
+                            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                            )                         
+                        st.write('' + str(i+1) + ') ' + df_items.iloc[i])
+                    else:
+                        df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+                            df['Title'] + ' '+ 
+                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
+                            ' (Published on: ' +df['Date published'] + ') '+
+                            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                            )   
+                        st.write('' + str(i+1) + ') ' + df_items.iloc[i])
                     df_items.fillna("nan") 
                     if display2:
                         st.caption(df['Abstract'].iloc[i])
