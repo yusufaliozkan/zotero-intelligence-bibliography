@@ -256,108 +256,102 @@ with tab1:
 
     # Items by Collection list
 
-        st.header('Items by collection: ')
-        clist = df_collections['Name'].unique()
-        collection_name = st.selectbox('Select a collection:', clist)
-        collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
+        # st.header('Items by collection: ')
+        # clist = df_collections['Name'].unique()
+        # collection_name = st.selectbox('Select a collection:', clist)
+        # collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
 
-        df_collections=df_collections['Name'].reset_index()
-        pd.set_option('display.max_colwidth', None)
+        # df_collections=df_collections['Name'].reset_index()
+        # pd.set_option('display.max_colwidth', None)
 
-        # Collection items
+        # # Collection items
 
-        count_collection = zot.num_collectionitems(collection_code)
+        # count_collection = zot.num_collectionitems(collection_code)
 
-        items = zot.everything(zot.collection_items_top(collection_code))
+        # items = zot.everything(zot.collection_items_top(collection_code))
 
-        data3=[]
-        columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2']
+        # data3=[]
+        # columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2']
 
-        for item in items:
-            data3.append((
-                item['data']['title'], 
-                item['data']['itemType'], 
-                item['data']['url'], 
-                item['data']['abstractNote'], 
-                item['links']['alternate']['href'],
-                item['data'].get('date'),
-                item['data']['creators']
-                )) 
-        pd.set_option('display.max_colwidth', None)
+        # for item in items:
+        #     data3.append((
+        #         item['data']['title'], 
+        #         item['data']['itemType'], 
+        #         item['data']['url'], 
+        #         item['data']['abstractNote'], 
+        #         item['links']['alternate']['href'],
+        #         item['data'].get('date'),
+        #         item['data']['creators']
+        #         )) 
+        # pd.set_option('display.max_colwidth', None)
 
-        df = pd.DataFrame(data3, columns=columns3)
+        # df = pd.DataFrame(data3, columns=columns3)
         
-        df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
-        df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
-        df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
-        df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
-        df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
-        df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
-        df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
-        df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
-        df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
-        df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
-        df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
-        df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
+        # df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
+        # df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
+        # df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
+        # df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
+        # df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
+        # df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
+        # df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
+        # df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
+        # df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
+        # df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
+        # df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
+        # df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
-        df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
-        df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
-        df['Date published'] = df['Date published'].fillna('No date')    
+        # df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
+        # df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+        # df['Date published'] = df['Date published'].fillna('No date')    
 
-        if df['FirstName2'].any() in ("", [], None, 0, False):
-            # st.write('no author')
-            df['firstName'] = 'null'
-            df['lastName'] = 'null'
+        # if df['FirstName2'].any() in ("", [], None, 0, False):
+        #     # st.write('no author')
+        #     df['firstName'] = 'null'
+        #     df['lastName'] = 'null'
 
-            df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                df['Title'] + ' '+ 
-                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
-                "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-                ' (Published on: ' +df['Date published'] + ')'
-                )
-        else:
-            # st.write('author entered')
-            ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
-            df_fa = df['FirstName2']
-            df_fa = pd.DataFrame(df_fa.tolist())
-            df_fa = df_fa[0]
-            df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
-            df_new = pd.json_normalize(df_fa, errors='ignore') 
-            df = pd.concat([df, df_new], axis=1)
-            df['firstName'] = df['firstName'].fillna('null')
-            df['lastName'] = df['lastName'].fillna('null')
+        #     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+        #         df['Title'] + ' '+ 
+        #         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
+        #         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+        #         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+        #         ' (Published on: ' +df['Date published'] + ')'
+        #         )
+        # else:
+        #     # st.write('author entered')
+        #     ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
+        #     df_fa = df['FirstName2']
+        #     df_fa = pd.DataFrame(df_fa.tolist())
+        #     df_fa = df_fa[0]
+        #     df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+        #     df_new = pd.json_normalize(df_fa, errors='ignore') 
+        #     df = pd.concat([df, df_new], axis=1)
+        #     df['firstName'] = df['firstName'].fillna('null')
+        #     df['lastName'] = df['lastName'].fillna('null')
             
-            df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                        df['Title'] + ' '+ 
-                        ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
-                        "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-                        ' (Published on: ' +df['Date published'] + ')'
-                        )
+        #     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+        #                 df['Title'] + ' '+ 
+        #                 ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+        #                 "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+        #                 "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+        #                 ' (Published on: ' +df['Date published'] + ')'
+        #                 )
 
-        row_nu_1= len(df.index)
-        if row_nu_1<15:
-            row_nu_1=row_nu_1
-        else:
-            row_nu_1=15
+        # row_nu_1= len(df.index)
+        # if row_nu_1<15:
+        #     row_nu_1=row_nu_1
+        # else:
+        #     row_nu_1=15
 
-        st.markdown('#### Collection theme: ' + collection_name)
-        st.caption('This collection has ' + str(count_collection) + ' items.')
-        with st.expander("Expand to see the list", expanded=False):
-            st.write('This list shows the last 15 added items. To see the full collection list click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
-            # display2 = st.checkbox('Display abstracts')
-            for i in range(row_nu_1):
-                st.write(''+str(i+1)+') ' +df_items.iloc[i])
-                df_items.fillna("nan") 
-                # if display2:
-                #     st.caption(df['Abstract'].iloc[i])
-        with st.expander('Acknowledgements'):
-            st.subheader('Acknowledgements')
-            st.write('The following sources are used to collate some of the items and events in this website:')
-            st.write("1. [King's Intelligence and Security Group (KISG) digest](https://kisg.co.uk/kisg-digests) compiled by David Schaefer")
-            st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
-            st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
+        # st.markdown('#### Collection theme: ' + collection_name)
+        # st.caption('This collection has ' + str(count_collection) + ' items.')
+        # with st.expander("Expand to see the list", expanded=False):
+        #     st.write('This list shows the last 15 added items. To see the full collection list click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
+        #     # display2 = st.checkbox('Display abstracts')
+        #     for i in range(row_nu_1):
+        #         st.write(''+str(i+1)+') ' +df_items.iloc[i])
+        #         df_items.fillna("nan") 
+        #         # if display2:
+        #         #     st.caption(df['Abstract'].iloc[i])
 
     with col2:
         with st.expander("Collections in Zotero library", expanded=False):
@@ -792,7 +786,16 @@ with tab2:
 
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
+
+
 st.write('---')
+with st.expander('Acknowledgements'):
+    st.subheader('Acknowledgements')
+    st.write('The following sources are used to collate some of the items and events in this website:')
+    st.write("1. [King's Intelligence and Security Group (KISG) digest](https://kisg.co.uk/kisg-digests) compiled by David Schaefer")
+    st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
+    st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
+
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
