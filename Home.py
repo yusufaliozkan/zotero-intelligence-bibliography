@@ -787,6 +787,8 @@ with tab2:
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
 
+
+st.write('---')
 with st.expander('Acknowledgements'):
     st.subheader('Acknowledgements')
     st.write('The following sources are used to collate some of the items and events in this website:')
@@ -794,7 +796,6 @@ with st.expander('Acknowledgements'):
     st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
     st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
 
-st.write('---')
 components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
