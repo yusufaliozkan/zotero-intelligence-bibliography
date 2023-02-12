@@ -352,12 +352,6 @@ with tab1:
         #         df_items.fillna("nan") 
         #         # if display2:
         #         #     st.caption(df['Abstract'].iloc[i])
-        with st.expander('Acknowledgements'):
-            st.subheader('Acknowledgements')
-            st.write('The following sources are used to collate some of the items and events in this website:')
-            st.write("1. [King's Intelligence and Security Group (KISG) digest](https://kisg.co.uk/kisg-digests) compiled by David Schaefer")
-            st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
-            st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
 
     with col2:
         with st.expander("Collections in Zotero library", expanded=False):
@@ -791,6 +785,14 @@ with tab2:
     # plot2= df_types.head(10)
 
     # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
+
+
+with st.expander('Acknowledgements'):
+    st.subheader('Acknowledgements')
+    st.write('The following sources are used to collate some of the items and events in this website:')
+    st.write("1. [King's Intelligence and Security Group (KISG) digest](https://kisg.co.uk/kisg-digests) compiled by David Schaefer")
+    st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
+    st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
 
 st.write('---')
 components.html(
