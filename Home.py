@@ -55,6 +55,7 @@ st.set_page_config(layout = "wide",
 pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 
+df['Abstract'] = df['Abstract'].fillna('No abstract')
 
 split_df= pd.DataFrame(df['Col key'].tolist())
 df_fa = df['FirstName']
@@ -140,7 +141,6 @@ if 0 in df:
 
 df = merged_df.copy()
 df = df.fillna('')
-df['Abstract'] = df['Abstract'].fillna('No abstract')
 
 # Streamlit app
 
