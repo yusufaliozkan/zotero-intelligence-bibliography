@@ -139,7 +139,7 @@ if 0 in df:
             ) 
 
 df = merged_df.copy()
-# df = df.fillna('')
+df = df.fillna('')
 df['Abstract'] = df['Abstract'].fillna('No abstract')
 
 # Streamlit app
