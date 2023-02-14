@@ -251,7 +251,7 @@ with tab1:
                     else:
                         st.caption('No theme to display!')
                     st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                    st.caption(df['Abstract'].iloc[i])
+                    st.caption('Abstract': df['Abstract'].iloc[i])
        
 
     # Items by Collection list
