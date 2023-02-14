@@ -91,7 +91,7 @@ df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
 df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 
-df['Abstract'] = df['Abstract'].fillna('No abstract')
+df['Abstract'] = df['Abstract'].fillna('No abstract', inplace=True)
 
 # Bringing collections
 bbb = zot.collections()
