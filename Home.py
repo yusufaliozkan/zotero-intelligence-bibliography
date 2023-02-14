@@ -91,8 +91,6 @@ df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
 df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
 df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 
-df['Abstract'] = df['Abstract'].fillna('No abstract')
-
 # Bringing collections
 bbb = zot.collections()
 data3=[]
@@ -142,6 +140,7 @@ if 0 in df:
 
 df = merged_df.copy()
 df = df.fillna('')
+df['Abstract'] = df['Abstract'].fillna('No abstract')
 
 # Streamlit app
 
