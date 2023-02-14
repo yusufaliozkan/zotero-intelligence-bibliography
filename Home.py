@@ -56,7 +56,7 @@ pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True)
-df
+df['Abstract'] = df['Abstract'].fillna('No abstract')
 
 split_df= pd.DataFrame(df['Col key'].tolist())
 df_fa = df['FirstName']
