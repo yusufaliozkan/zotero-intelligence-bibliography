@@ -35,8 +35,9 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 
+zot = zotero.Zotero(library_id, library_type)
+
 def zotero_data(library_id, library_type):
-    zot = zotero.Zotero(library_id, library_type)
     items = zot.top(limit=15)
 
     data=[]
