@@ -85,7 +85,7 @@ df_collections = df_collections.reset_index(drop=True)
 # df_collections = df_collections.iloc[1: , :]
 
 # clist = df_collections['Name'].unique()
-tab1, tab2, tab3 = st.tabs(['Publications', 'Dashboard', 'Source suggestion'])
+tab1, tab2, tab3 = st.tabs(['Publications', '📊 Dashboard', 'Source suggestion'])
 with tab1:
     col1, col2 = st.columns([5,1.6])
 

@@ -118,7 +118,7 @@ with tab1:
         # organiser = st.checkbox('Sort by event organiser')
         sort_by = st.radio('Sort by', ['Date', 'Most recently added', 'Organiser'])
         
-    st.write('See [Event visuals](#event-visuals)')
+    st.write('See [📊 Event visuals](#event-visuals)')
 
 
     filter = (df_gs['date']>=today)
