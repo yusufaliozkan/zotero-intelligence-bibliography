@@ -29,6 +29,12 @@ api_key = '' # api_key is only needed for private groups and libraries
 
 # Bringing recently changed items
 
+st.set_page_config(layout = "wide", 
+                    page_title='Intelligence bibliography',
+                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
+                    initial_sidebar_state="auto") 
+pd.set_option('display.max_colwidth', None)
+
 zot = zotero.Zotero(library_id, library_type)
 items = zot.top(limit=15)
 
@@ -48,11 +54,6 @@ for item in items:
     item['data']['creators'],
     item['data'].get('publicationTitle')
     ))
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence bibliography',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
-pd.set_option('display.max_colwidth', None)
 df = pd.DataFrame(data, columns=columns)
 
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
