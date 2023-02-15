@@ -9,7 +9,6 @@ from pandas.io.json import json_normalize
 from datetime import date, timedelta  
 import datetime
 from streamlit_extras.switch_page_button import switch_page
-import plotly.plotly
 import plotly.express as px
 import numpy as np
 import re
