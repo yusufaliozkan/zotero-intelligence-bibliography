@@ -138,7 +138,7 @@ with st.expander('Publications:', expanded=ex):
     df_csv.sort_values(by='Date published', ascending = False, inplace=True)    
 
     sort_by_type = st.checkbox('Sort by publication type', key='type')
-    st.caption('See [trends](#trends) in the last ' + str(a))
+    st.caption('See [📊 trends](#trends) in the last ' + str(a))
     types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
     df_csv["Link to publication"].fillna("No link", inplace = True)
@@ -202,7 +202,7 @@ with st.expander('Publications:', expanded=ex):
             st.write(''+str(i+1)+') ' +df_last.iloc[i])
 
 
-    st.subheader('Trends')
+    st.subheader('📊 Trends')
     if df_csv['Publication type'].any() in ("", [], None, 0, False):
         st.write('No data to visualise')
     else:
