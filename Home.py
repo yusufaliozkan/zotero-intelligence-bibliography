@@ -29,31 +29,33 @@ api_key = '' # api_key is only needed for private groups and libraries
 
 # Bringing recently changed items
 
-zot = zotero.Zotero(library_id, library_type)
-items = zot.top(limit=15)
+def zotero_data(library_id, library_type):
+    zot = zotero.Zotero(library_id, library_type)
+    items = zot.top(limit=15)
 
-data=[]
-columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Pub_venue']
+    data=[]
+    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Pub_venue']
 
-for item in items:
-    data.append((item['data']['title'], 
-    item['data']['itemType'], 
-    item['data']['url'], 
-    item['data']['abstractNote'], 
-    item['links']['alternate']['href'],
-    item['data']['dateAdded'],
-    item['data'].get('date'), 
-    item['data']['dateModified'],
-    item['data']['collections'],
-    item['data']['creators'],
-    item['data'].get('publicationTitle')
-    ))
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence bibliography',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
-pd.set_option('display.max_colwidth', None)
-df = pd.DataFrame(data, columns=columns)
+    for item in items:
+        data.append((item['data']['title'], 
+        item['data']['itemType'], 
+        item['data']['url'], 
+        item['data']['abstractNote'], 
+        item['links']['alternate']['href'],
+        item['data']['dateAdded'],
+        item['data'].get('date'), 
+        item['data']['dateModified'],
+        item['data']['collections'],
+        item['data']['creators'],
+        item['data'].get('publicationTitle')
+        ))
+    st.set_page_config(layout = "wide", 
+                        page_title='Intelligence bibliography',
+                        page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
+                        initial_sidebar_state="auto") 
+    pd.set_option('display.max_colwidth', None)
+    df = pd.DataFrame(data, columns=columns)
+    return df
 
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
 df['Abstract'] = df['Abstract'].fillna('No abstract')
