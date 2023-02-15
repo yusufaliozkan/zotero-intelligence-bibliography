@@ -35,29 +35,26 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
 
-def zotero_data(library_id, library_type):
-    zot = zotero.Zotero(library_id, library_type)
-    items = zot.top(limit=15)
+zot = zotero.Zotero(library_id, library_type)
+items = zot.top(limit=15)
 
-    data=[]
-    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Pub_venue']
+data=[]
+columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Pub_venue']
 
-    for item in items:
-        data.append((item['data']['title'], 
-        item['data']['itemType'], 
-        item['data']['url'], 
-        item['data']['abstractNote'], 
-        item['links']['alternate']['href'],
-        item['data']['dateAdded'],
-        item['data'].get('date'), 
-        item['data']['dateModified'],
-        item['data']['collections'],
-        item['data']['creators'],
-        item['data'].get('publicationTitle')
-        ))
-    df = pd.DataFrame(data, columns=columns)
-    return df
-
+for item in items:
+    data.append((item['data']['title'], 
+    item['data']['itemType'], 
+    item['data']['url'], 
+    item['data']['abstractNote'], 
+    item['links']['alternate']['href'],
+    item['data']['dateAdded'],
+    item['data'].get('date'), 
+    item['data']['dateModified'],
+    item['data']['collections'],
+    item['data']['creators'],
+    item['data'].get('publicationTitle')
+    ))
+df = pd.DataFrame(data, columns=columns)
 
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
 df['Abstract'] = df['Abstract'].fillna('No abstract')
