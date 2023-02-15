@@ -439,6 +439,7 @@ with tab3:
     df_cfp.sort_values(by='date', ascending = True, inplace=True)
 
     df_cfp['details'] = df_cfp['details'].fillna('No details')
+    df_cfp = df_cfp.fillna('')
     
     display = st.checkbox('Show details', key='cfp')
 
