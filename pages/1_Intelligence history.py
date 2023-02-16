@@ -344,7 +344,7 @@ with tab1:
             st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
 with tab2:
-    st.header('📊 Dashboard')
+    st.subheader('📊 Dashboard')
     st.markdown('#### Collection theme: ' + collection_name)
 
     if df['Title'].any() in ("", [], None, 0, False):
