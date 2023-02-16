@@ -87,7 +87,7 @@ st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', uns
 container = st.container()
 
 # clist = df_collections['Name'].unique()
-tab1, tab2, tab3 = st.tabs(['Publications', '📊 Dashboard', 'Source suggestion'])
+tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', 'Source suggestion'])
 with tab1:
     col1, col2 = st.columns([5,1.6])
     with col1:
