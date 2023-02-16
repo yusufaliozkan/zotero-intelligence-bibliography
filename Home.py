@@ -191,7 +191,7 @@ with st.sidebar:
     st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
 # Recently added items
 
-tab1, tab2 = st.tabs(['Publications', '📊 Dashboard'])
+tab1, tab2 = st.tabs(['📝 Publications', '📊 Dashboard'])
 with tab1:
     col1, col2 = st.columns([5,2]) 
     with col1:
