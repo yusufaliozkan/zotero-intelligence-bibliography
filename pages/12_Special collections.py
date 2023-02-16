@@ -670,7 +670,7 @@ with tab3:
         row_nu_1= len(df.index)
     df = df.reset_index()
     st.info('It may take some time for the app to bring new results as it searches the entire database.')
-    if st.button('Suggest me 5 random sources'):
+    if st.button('🔀 Suggest new sources'):
         df=df2.copy()
         row_nu_1 = len(df.index)
         df = df.reset_index()
