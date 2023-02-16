@@ -11,3 +11,4 @@ nltk==3.8.1
 wordcloud==1.8.2.2
 gsheetsdb==0.1.13.1
 fpdf2==2.6.1
+gspread==5.7.2
