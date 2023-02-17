@@ -226,7 +226,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '08' in df_gs['month'].values:
             st.markdown('#### Events in August')
@@ -236,7 +236,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '09' in df_gs['month'].values:
             st.markdown('#### Events in September')
@@ -246,7 +246,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '10' in df_gs['month'].values:
             st.markdown('#### Events in October')
@@ -256,7 +256,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '11' in df_gs['month'].values:
             st.markdown('#### Events in November')
@@ -266,7 +266,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '12' in df_gs['month'].values:
             st.markdown('#### Events in December')
@@ -276,7 +276,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
