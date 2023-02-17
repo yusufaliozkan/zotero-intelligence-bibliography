@@ -148,11 +148,11 @@ with tab1:
             df_o = df_gs[df_gs['organiser']==c]
             df_last = ('['+ df_o['event_name'] + ']'+ '('+ df_o['link'] + ')'', organised by ' + '**' + df_o['organiser'] + '**' + '. Date: ' + df_o['date_new'] + ', Venue: ' + df_o['venue'])
             row_nu =len(df_o.index)
-            for i in range(row_nu):
-                st.write(''+str(i+1)+') ' +df_last.iloc[i])
+            for j in range(row_nu):
+                st.write(''+str(i+1)+') ' +df_last.iloc[j])
                 df_last.fillna('')
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[j])
 
     else:
 
