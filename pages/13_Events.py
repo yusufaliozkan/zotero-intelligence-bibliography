@@ -176,7 +176,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '03' in df_gs['month'].values:
             st.markdown('#### Events in March')
@@ -186,7 +186,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '04' in df_gs['month'].values:
             st.markdown('#### Events in April')
@@ -196,7 +196,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '05' in df_gs['month'].values:
             st.markdown('#### Events in May')
@@ -206,7 +206,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '06' in df_gs['month'].values:
             st.markdown('#### Events in June')
@@ -216,7 +216,7 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                    st.caption('Details:'+'\n '+ mon['details'].iloc[i])
 
         if '07' in df_gs['month'].values:
             st.markdown('#### Events in July')
