@@ -152,7 +152,7 @@ with tab1:
                 st.write(''+str(j+1)+') ' +df_last.iloc[j])
                 df_last.fillna('')
                 if display:
-                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[j])
+                    st.caption('Details:'+'\n '+ df_o['details'].iloc[j])
 
     else:
 
