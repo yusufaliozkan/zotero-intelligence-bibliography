@@ -135,7 +135,7 @@ with tab1:
         for i in range(row_nu):
             st.write(''+str(i+1)+') '+ df_last.iloc[i])
             if display:
-                st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                st.caption('Details:'+'\n '+ df_gs['details'])
 
     if sort_by == 'Organiser':
         organisers = df_gs['organiser'].unique()
