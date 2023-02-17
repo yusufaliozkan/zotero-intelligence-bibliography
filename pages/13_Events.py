@@ -151,8 +151,8 @@ with tab1:
             for i in range(row_nu):
                 st.write(''+str(i+1)+') ' +df_last.iloc[i])
                 df_last.fillna('')
-            if display:
-                st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
+                if display:
+                    st.caption('Details:'+'\n '+ df_gs['details'].iloc[i])
 
     else:
 
