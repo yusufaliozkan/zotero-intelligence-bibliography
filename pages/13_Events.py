@@ -141,7 +141,6 @@ with tab1:
         organisers = df_gs['organiser'].unique()
         organisers = pd.DataFrame(organisers, columns=['Organisers'])
         row_nu_organisers = len(organisers.index)
-        organisers
         for i in range(row_nu_organisers):
             st.markdown('#### '+ organisers['Organisers'].iloc[i])
             # st.subheader(organisers['Organisers'].iloc[i])
