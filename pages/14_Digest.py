@@ -130,7 +130,7 @@ with st.expander('Publications:', expanded=ex):
         rg = st.date_input('From:', today-dt.timedelta(days=7), max_value=today-dt.timedelta(days=1))
         today = st.date_input('To:', today, max_value=today)
         a = today - rg
-        a = a.days
+        a = a.days + ' days'
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     rg2 = rg.strftime('%d/%m/%Y')
