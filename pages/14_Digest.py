@@ -129,6 +129,8 @@ with st.expander('Publications:', expanded=ex):
     if range_day == 'Custom (select date)':
         rg = st.date_input('From:', today-dt.timedelta(days=7))
         today = st.date_input('To:', today)
+        custom_dates = today - rg
+        custom_dates
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     rg2 = rg.strftime('%d/%m/%Y')
