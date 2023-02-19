@@ -129,7 +129,7 @@ with st.expander('Publications:', expanded=ex):
     if range_day == 'Custom (select date)':
         date1 = st.date_input('From:', today-dt.timedelta(days=7))
         date2 = st.date_input('To:', today)
-        a = date2-date1
+        a = str(date2-date1)
         a
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
