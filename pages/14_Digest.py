@@ -127,13 +127,10 @@ with st.expander('Publications:', expanded=ex):
         previous_custom = today - dt.timedelta(days=number)
         rg = previous_custom
     if range_day == 'Custom (select date)':
-        date1 = st.date_input('From:', today-dt.timedelta(days=7))
-        date2 = st.date_input('To:', today)
-        a = str(int(date2-date1))
-        a
+        rg = st.date_input('From:', today-dt.timedelta(days=7))
+        today = st.date_input('To:', today)
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
-    filter = (df_csv['Date published']>date1) & (df_csv['Date published']<=date2)
     rg2 = rg.strftime('%d/%m/%Y')
     df_csv = df_csv.loc[filter]
 
