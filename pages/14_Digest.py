@@ -102,7 +102,7 @@ with st.expander('Publications:', expanded=ex):
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom', 'Custom2'))
+    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom', 'Custom (select date)'))
     if range_day == '10 days':
         rg = previous_10
         a = '10 days'
@@ -121,7 +121,7 @@ with st.expander('Publications:', expanded=ex):
     if range_day == '1 year':
         rg = previous_360
         a='1 year'
-    if range_day == 'Custom':
+    if range_day == 'Custom (select date)':
         number = st.number_input('How many days do you want to go back:', min_value=10, max_value=11000, value=365, step=30)
         a = str(int(number)) + ' days'
         previous_custom = today - dt.timedelta(days=number)
