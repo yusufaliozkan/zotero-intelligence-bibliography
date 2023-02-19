@@ -131,7 +131,6 @@ with st.expander('Publications:', expanded=ex):
         today = st.date_input('To:', today, max_value=today)
         a = today - rg
         a = str(a.days) + ' days'
-        yrs = st.date_input('yes', )
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     rg2 = rg.strftime('%d/%m/%Y')
