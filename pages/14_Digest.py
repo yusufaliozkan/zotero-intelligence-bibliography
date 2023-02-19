@@ -102,7 +102,7 @@ with st.expander('Publications:', expanded=ex):
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom'))
+    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom', 'Custom2'))
     if range_day == '10 days':
         rg = previous_10
         a = '10 days'
@@ -126,6 +126,8 @@ with st.expander('Publications:', expanded=ex):
         a = str(int(number)) + ' days'
         previous_custom = today - dt.timedelta(days=number)
         rg = previous_custom
+    if range_day == 'Custom2':
+        date1 = st.date_input('From:', datetime.date())
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     rg2 = rg.strftime('%d/%m/%Y')
