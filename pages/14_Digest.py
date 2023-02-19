@@ -121,12 +121,12 @@ with st.expander('Publications:', expanded=ex):
     if range_day == '1 year':
         rg = previous_360
         a='1 year'
-    if range_day == 'Custom (select date)':
+    if range_day == 'Custom':
         number = st.number_input('How many days do you want to go back:', min_value=10, max_value=11000, value=365, step=30)
         a = str(int(number)) + ' days'
         previous_custom = today - dt.timedelta(days=number)
         rg = previous_custom
-    if range_day == 'Custom2':
+    if range_day == 'Custom (select date)':
         date1 = st.date_input('From:', today-dt.timedelta(days=7))
         date2 = st.date_input('To:', today)
 
