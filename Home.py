@@ -436,7 +436,7 @@ with tab1:
             df_con['details'] = df_con['details'].fillna('No details')
             df_con['location'] = df_con['location'].fillna('No details')
             df_con = df_con.fillna('')            
-            filter = (df_con['date']>=today)
+            filter = (df_con['date_end']>=today)
             df_con = df_con.loc[filter]
             df_con = df_con.head(1)
             if df_con['conference_name'].any() in ("", [], None, 0, False):
