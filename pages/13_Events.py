@@ -394,7 +394,7 @@ with tab2:
     with col2:
         last_added = st.checkbox('Sort by most recently added', key='conference2')
 
-    filter = (df_con['date']>=today)
+    filter = (df_con['date_end']>=today)
     df_con = df_con.loc[filter]
     if df_con['conference_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming conference!')
