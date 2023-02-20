@@ -127,7 +127,7 @@ with st.expander('Publications:', expanded=ex):
         previous_custom = today - dt.timedelta(days=number)
         rg = previous_custom
     if range_day == 'Custom (select date)':
-        rg = st.date_input('From:', today-dt.timedelta(days=7), max_value=today-dt.timedelta(days=2))
+        rg = st.date_input('From:', today-dt.timedelta(days=7), max_value=today-dt.timedelta(days=0))
         today = st.date_input('To:', today, max_value=today, min_value=rg)
         a = today - rg
         a = str(a.days) + ' days'
