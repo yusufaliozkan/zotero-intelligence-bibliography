@@ -147,7 +147,10 @@ with st.expander('Publications:', expanded=ex):
     types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
     df_csv["Link to publication"].fillna("No link", inplace = True)
-    st.subheader('Sources published in the last ' + str(a))
+    if range_day == 'Custom (select date)':
+        st.subheader('Sources published between ' + '**'+ rg2 +' - ' + today2+'**')
+    else:
+        st.subheader('Sources published in the last ' + str(a))
     num_items = len(df_csv)
     st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today2+'**')
 
