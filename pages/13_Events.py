@@ -152,7 +152,7 @@ with tab1:
                 if display:
                     st.caption('Details:'+'\n '+ df_o['details'].iloc[j])
 
-    else:
+    if sort_by == 'Date':
 
         if '01' in df_gs['month'].values:
             st.markdown('#### Events in January')
