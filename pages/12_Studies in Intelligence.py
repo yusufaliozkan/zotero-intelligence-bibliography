@@ -87,7 +87,7 @@ with tab1:
         rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
         data = []
-        columns = ['title', 'author', 'year', 'link']
+        columns = ['Title', 'Author', 'Year', 'Link']
 
         # Print results.
         for row in rows:
@@ -111,15 +111,15 @@ with tab1:
         st.caption('This collection has ' + str(len(df_sii.index)) + ' items.') # count_collection
 
         df_items = ('**'+ df_sii['Publication type']+ '**'+ ': ' +
-            df_sii['title'] + ' '+ 
-            ' (by ' + '*' + df_sii['author'] + '*'+ ') ' + 
-            "[[Publication link]]" +'('+ df_sii['link'] + ')' +'  '+
-            ' (Publication year: ' +str(df_sii['year']) + ')'
+            df_sii['Title'] + ' '+ 
+            ' (by ' + '*' + df_sii['Author'] + '*'+ ') ' + 
+            "[[Publication link]]" +'('+ df_sii['Link'] + ')' +'  '+
+            ' (Publication year: ' +str(df_sii['Year']) + ')'
                 )
 
         row_nu_1= len(df_sii.index)
 
-        df_download = df_sii[['title', 'Publication type', 'author', 'link', 'year']]
+        df_download = df_sii[['Publication type', 'Title', 'Author', 'Link', 'Year']]
 
         def convert_df(df):
             return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
