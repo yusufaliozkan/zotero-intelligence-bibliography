@@ -100,74 +100,14 @@ with tab1:
         df_sii['Publication type'] = types
         df_sii
 
-        
-        radio = container.radio('Select a collection', df_collections['Name'])
-        # collection_name = st.selectbox('Select a collection:', clist)
-        collection_name = radio
-        collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
-
-        df_collections=df_collections['Name'].reset_index()
-        pd.set_option('display.max_colwidth', None)
-
-        count_collection = zot.num_collectionitems(collection_code)
-
-        items = zot.everything(zot.collection_items_top(collection_code))
-
-        data3=[]
-        columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2', 'Publisher', 'Journal']
-
-        for item in items:
-            data3.append((
-                item['data']['title'], 
-                item['data']['itemType'], 
-                item['data']['url'], 
-                item['data']['abstractNote'], 
-                item['links']['alternate']['href'],
-                item['data'].get('date'),
-                item['data']['creators'],
-                item['data'].get('publisher'),
-                item['data'].get('publicationTitle')
-                )) 
-        pd.set_option('display.max_colwidth', None)
-
-        df = pd.DataFrame(data3, columns=columns3)
-
-        # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
-        # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
-        # df
-
-        df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
-        df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
-        df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
-        df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
-        df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
-        df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
-        df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
-        df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
-        df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
-        df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
-        df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
-        df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
-        df['Publication type'] = df['Publication type'].replace(['conferencePaper'], 'Conference paper')
-
-        df['Publisher'] = df['Publisher'].replace(['Taylor & Francis Group', 'Taylor and Francis', 'Taylor & Francis'], 'Taylor and Francis')
-        df['Publisher'] = df['Publisher'].replace(['Routledge', 'Routledge Handbooks Online'], 'Routledge')
-        df['Publisher'] = df['Publisher'].replace(['Praeger Security International', 'Praeger'], 'Praeger')
-
-        df['Journal'] = df['Journal'].replace(['International Journal of Intelligence and Counter-Intelligence', 'International Journal of Intelligence and Counterintelligence', 'International Journal of Intelligence and CounterIntelligence'], 'Intl Journal of Intelligence and Counterintelligence')
-        df['Journal'] = df['Journal'].replace(['Intelligence and national security', 'Intelligence and National Security', 'Intelligence & National Security'], 'Intelligence and National Security')
-
-        df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-        df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
-        df['Date published'] = df['Date published'].fillna('No date')
-        
+ 
         # sort = st.checkbox('Sort by publication date', disabled=False)
         # if sort:
         #     df['Date published'] = df['Date published'].astype('datetime64[ns]')
         #     df=df.sort_values(by='Date published', ascending=True)
 
-        st.markdown('#### Collection theme: ' + collection_name)
-        st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
+        st.markdown('#### Collection theme: Studies in Intelligence')
+        st.caption('This collection has ' + len(df_sii.index) + ' items (this number may include reviews attached to sources).') # count_collection
 
         df2 = df.copy()
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
