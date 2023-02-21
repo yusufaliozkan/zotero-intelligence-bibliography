@@ -149,6 +149,7 @@ with tab1:
             df_sii['year'] = df_sii['year'].astype(int)
             types = 'Journal article'
             df_sii['Publication type'] = types
+            df_sii
 
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
         # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
