@@ -26,11 +26,6 @@ st.set_page_config(layout = "wide",
 
 st.title("Studies in Intelligence")
 
-# Connecting Zotero with API
-library_id = '2514686' # intel 2514686
-library_type = 'group'
-api_key = '' # api_key is only needed for private groups and libraries
-
 
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
@@ -67,30 +62,45 @@ with st.sidebar:
     with st.expander('Contact us'):
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
 
-zot = zotero.Zotero(library_id, library_type)
-
-collections = zot.collections()
-data2=[]
-columns2 = ['Key','Name', 'Link']
-for item in collections:
-    data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
 
 pd.set_option('display.max_colwidth', None)
-df_collections = pd.DataFrame(data2, columns=columns2)
 
-df_collections = df_collections.sort_values(by='Name')
-df_collections=df_collections[df_collections['Name'].str.contains("98.")]
-df_collections = df_collections.iloc[2: , :]
 
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-container = st.container()
-
-# clist = df_collections['Name'].unique()
 
 tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', 'Source suggestion'])
 with tab1:
     col1, col2 = st.columns([5,1.6])
     with col1:
+
+        conn = connect()
+
+        # Perform SQL query on the Google Sheet.
+        # Uses st.cache to only rerun when the query changes or after 10 min.
+        @st.cache(ttl=10)
+        def run_query(query):
+            rows = conn.execute(query, headers=1)
+            rows = rows.fetchall()
+            return rows
+
+        sheet_url = st.secrets["public_gsheets_url_sii"]
+        rows = run_query(f'SELECT * FROM "{sheet_url}"')
+
+        data = []
+        columns = ['title', 'author', 'year', 'link']
+
+        # Print results.
+        for row in rows:
+            data.append((row.Title, row.Author, row.Year, row.Link))
+
+        pd.set_option('display.max_colwidth', None)
+        df_sii = pd.DataFrame(data, columns=columns)
+        df_sii['year'] = df_sii['year'].astype(int)
+        types = 'Journal article'
+        df_sii['Publication type'] = types
+        df_sii
+
+        
         radio = container.radio('Select a collection', df_collections['Name'])
         # collection_name = st.selectbox('Select a collection:', clist)
         collection_name = radio
