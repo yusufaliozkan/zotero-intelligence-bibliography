@@ -122,35 +122,6 @@ with tab1:
 
         df = pd.DataFrame(data3, columns=columns3)
 
-        if radio == '98.6 Studies in Intelligence':
-            st.write('test')
-            conn = connect()
-
-            # Perform SQL query on the Google Sheet.
-            # Uses st.cache to only rerun when the query changes or after 10 min.
-            @st.cache(ttl=10)
-            def run_query(query):
-                rows = conn.execute(query, headers=1)
-                rows = rows.fetchall()
-                return rows
-
-            sheet_url = st.secrets["public_gsheets_url_sii"]
-            rows = run_query(f'SELECT * FROM "{sheet_url}"')
-
-            data = []
-            columns = ['title', 'author', 'year', 'link']
-
-            # Print results.
-            for row in rows:
-                data.append((row.Title, row.Author, row.Year, row.Link))
-
-            pd.set_option('display.max_colwidth', None)
-            df_sii = pd.DataFrame(data, columns=columns)
-            df_sii['year'] = df_sii['year'].astype(int)
-            types = 'Journal article'
-            df_sii['Publication type'] = types
-            df_sii
-
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
         # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
         # df
