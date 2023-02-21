@@ -122,7 +122,7 @@ with tab1:
 
         df = pd.DataFrame(data3, columns=columns3)
 
-        if radio == '98.6 Studies in Intelligence':
+        if radio == '98.6 Studies in Intelligencef':
             st.write('test')
 
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
