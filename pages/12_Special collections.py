@@ -232,7 +232,6 @@ with tab1:
         #     row_nu_1=15
 
         df['First author'] = df['firstName'] + ' ' + df['lastName']
-        df
         df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link', 'Date published']]
 
         def convert_df(df):
