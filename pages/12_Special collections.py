@@ -147,6 +147,7 @@ with tab1:
             pd.set_option('display.max_colwidth', None)
             df_sii = pd.DataFrame(data, columns=columns)
             df_sii['year'] = df_sii['year'].astype(int)
+            df_sii
 
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
         # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
