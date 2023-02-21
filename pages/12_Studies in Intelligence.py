@@ -127,7 +127,7 @@ with tab1:
         csv = convert_df(df_download)
         # csv = df_download
         # # st.caption(collection_name)
-        st.download_button('💾 Download the collection', csv, collection_name+ '-'+today +'.csv', mime="text/csv", key='download-csv')
+        st.download_button('💾 Download the collection', csv, 'Studies in Intelligence'+ '-'+today +'.csv', mime="text/csv", key='download-csv')
 
         with st.expander("Expand to see the list", expanded=True):
             st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
