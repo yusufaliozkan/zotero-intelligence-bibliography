@@ -95,7 +95,7 @@ with tab1:
 
         pd.set_option('display.max_colwidth', None)
         df_sii = pd.DataFrame(data, columns=columns)
-        df_sii['year'] = df_sii['year'].astype(int)
+        df_sii['Year'] = df_sii['Year'].astype(int)
         types = 'Journal article'
         df_sii['Publication type'] = types
         df_sii = df_sii.dropna()
