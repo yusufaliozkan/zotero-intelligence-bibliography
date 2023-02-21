@@ -1,3 +1,6 @@
+streamlit run Home.py --server.enableWebsocketCompression=true
+
+
 from pyzotero import zotero
 import pandas as pd
 import streamlit as st
