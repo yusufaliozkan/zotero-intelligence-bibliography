@@ -114,7 +114,7 @@ with tab1:
             df_sii['title'] + ' '+ 
             ' (by ' + '*' + df_sii['author'] + '*'+ ') ' + 
             "[[Publication link]]" +'('+ df_sii['link'] + ')' +'  '+
-            ' (Publication year: ' +df_sii['year'] + ')'
+            ' (Publication year: ' +str(df_sii['year']) + ')'
                 )
 
         row_nu_1= len(df_sii.index)
