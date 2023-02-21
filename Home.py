@@ -1,4 +1,5 @@
-streamlit run Home.py --server.enableCORS=false
+streamlit run Home.py --server.enableWebsocketCompression=false
+
 
 from pyzotero import zotero
 import pandas as pd
