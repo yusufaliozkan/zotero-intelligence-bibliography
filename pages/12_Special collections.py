@@ -121,6 +121,7 @@ with tab1:
         pd.set_option('display.max_colwidth', None)
 
         df = pd.DataFrame(data3, columns=columns3)
+        df
 
         if radio == '98.6 Studies in Intelligence':
             st.write('test')
