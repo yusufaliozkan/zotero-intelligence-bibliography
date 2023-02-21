@@ -148,7 +148,8 @@ with st.expander('Publications:', expanded=ex):
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
     df_csv["Link to publication"].fillna("No link", inplace = True)
     if range_day == 'Custom (select date)':
-        st.subheader('Sources published between ' + '**'+ rg2 +' - ' + str(today)+'**')
+        today_2 = today.strftime('%d/%m/%Y')
+        st.subheader('Sources published between ' + '**'+ rg2 +' - ' + today_2+'**')
     else:
         st.subheader('Sources published in the last ' + str(a))
     num_items = len(df_csv)
