@@ -147,9 +147,8 @@ with tab1:
             pd.set_option('display.max_colwidth', None)
             df_sii = pd.DataFrame(data, columns=columns)
             df_sii['year'] = df_sii['year'].astype(int)
-            df_sii
-            df_sii['year'] = pd.to_datetime(df_sii['year'], dayfirst = True).dt.strftime('%Y')
-            df_sii
+            types = 'Journal article'
+            df_sii['Publication type'] = types
 
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
         # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
