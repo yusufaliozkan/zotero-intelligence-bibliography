@@ -1,5 +1,5 @@
 pandas==1.2.0
-streamlit==1.15.0
+streamlit==1.11.0
 pyzotero==1.5.5
 PyQt6==6.4.0
 IPython==6.0
