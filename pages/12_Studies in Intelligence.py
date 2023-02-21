@@ -107,7 +107,7 @@ with tab1:
         #     df=df.sort_values(by='Date published', ascending=True)
 
         st.markdown('#### Collection theme: Studies in Intelligence')
-        st.caption('This collection has ' + len(df_sii.index) + ' items (this number may include reviews attached to sources).') # count_collection
+        st.caption('This collection has ' + str(len(df_sii.index)) + ' items (this number may include reviews attached to sources).') # count_collection
 
         df2 = df.copy()
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
