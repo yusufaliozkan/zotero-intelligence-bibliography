@@ -102,7 +102,7 @@ with st.expander('Publications:', expanded=ex):
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom'))
+    range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom (days)', 'Custom (select date)'))
     if range_day == '10 days':
         rg = previous_10
         a = '10 days'
@@ -121,11 +121,16 @@ with st.expander('Publications:', expanded=ex):
     if range_day == '1 year':
         rg = previous_360
         a='1 year'
-    if range_day == 'Custom':
+    if range_day == 'Custom (days)':
         number = st.number_input('How many days do you want to go back:', min_value=10, max_value=11000, value=365, step=30)
         a = str(int(number)) + ' days'
         previous_custom = today - dt.timedelta(days=number)
         rg = previous_custom
+    if range_day == 'Custom (select date)':
+        rg = st.date_input('From:', today-dt.timedelta(days=7), max_value=today-dt.timedelta(days=0))
+        today = st.date_input('To:', today, max_value=today, min_value=rg)
+        a = today - rg
+        a = str(a.days) + ' days'
 
     filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
     rg2 = rg.strftime('%d/%m/%Y')
@@ -142,9 +147,15 @@ with st.expander('Publications:', expanded=ex):
     types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique())
     df_csv = df_csv[df_csv['Publication type'].isin(types)]
     df_csv["Link to publication"].fillna("No link", inplace = True)
-    st.subheader('Sources published in the last ' + str(a))
-    num_items = len(df_csv)
-    st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today2+'**')
+    if range_day == 'Custom (select date)':
+        num_items = len(df_csv)
+        today_2 = today.strftime('%d/%m/%Y')
+        st.subheader('Sources published between ' + '**'+ rg2 +' - ' + today_2+'**')
+        st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today_2+'**')
+    else:
+        num_items = len(df_csv)
+        st.subheader('Sources published in the last ' + str(a))
+        st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today2+'**')    
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication published in the last '+ str(a))

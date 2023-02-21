@@ -114,8 +114,6 @@ with tab1:
         display = st.checkbox('Show details')      
     
     with col2:
-        # last_added = st.checkbox('Sort by most recently added')
-        # organiser = st.checkbox('Sort by event organiser')
         sort_by = st.radio('Sort by', ['Date', 'Most recently added', 'Organiser'])
         
     st.write('See [📊 Event visuals](#event-visuals)')
@@ -154,7 +152,7 @@ with tab1:
                 if display:
                     st.caption('Details:'+'\n '+ df_o['details'].iloc[j])
 
-    else:
+    if sort_by == 'Date':
 
         if '01' in df_gs['month'].values:
             st.markdown('#### Events in January')
@@ -396,7 +394,7 @@ with tab2:
     with col2:
         last_added = st.checkbox('Sort by most recently added', key='conference2')
 
-    filter = (df_con['date']>=today)
+    filter = (df_con['date_end']>=today)
     df_con = df_con.loc[filter]
     if df_con['conference_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming conference!')
