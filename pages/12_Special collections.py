@@ -91,7 +91,7 @@ tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', 'Source sugge
 with tab1:
     col1, col2 = st.columns([5,1.6])
     with col1:
-        radio = container.radio('Select a collection', df_collections['Name'])
+        radio = container.radio('Select a collection', (df_collections['Name'], 'test'))
         # collection_name = st.selectbox('Select a collection:', clist)
         collection_name = radio
         collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
