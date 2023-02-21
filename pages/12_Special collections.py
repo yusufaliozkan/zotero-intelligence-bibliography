@@ -146,7 +146,6 @@ with tab1:
 
             pd.set_option('display.max_colwidth', None)
             df_sii = pd.DataFrame(data, columns=columns)
-            df_sii['Publication type'] = df_sii
             df_sii
 
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
