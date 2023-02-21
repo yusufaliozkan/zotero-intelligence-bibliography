@@ -98,6 +98,7 @@ with tab1:
         df_sii['year'] = df_sii['year'].astype(int)
         types = 'Journal article'
         df_sii['Publication type'] = types
+        df_sii = df_sii.dropna()
         df_sii
 
  
@@ -107,7 +108,7 @@ with tab1:
         #     df=df.sort_values(by='Date published', ascending=True)
 
         st.markdown('#### Collection theme: Studies in Intelligence')
-        st.caption('This collection has ' + str(len(df_sii.index)) + ' items (this number may include reviews attached to sources).') # count_collection
+        st.caption('This collection has ' + str(len(df_sii.index)) + ' items.') # count_collection
 
         df2 = df.copy()
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
