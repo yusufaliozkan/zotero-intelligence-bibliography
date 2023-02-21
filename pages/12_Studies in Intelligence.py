@@ -130,7 +130,6 @@ with tab1:
         st.download_button('💾 Download the collection', csv, 'Studies in Intelligence'+ '-'+today +'.csv', mime="text/csv", key='download-csv')
 
         with st.expander("Expand to see the list", expanded=True):
-            st.write('To see the collection in Zotero click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
 
             sort_by_type = st.checkbox('Sort by publication type', key='type')
             display2 = st.checkbox('Display abstracts')
