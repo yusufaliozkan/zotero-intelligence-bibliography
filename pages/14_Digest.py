@@ -150,10 +150,12 @@ with st.expander('Publications:', expanded=ex):
     if range_day == 'Custom (select date)':
         today_2 = today.strftime('%d/%m/%Y')
         st.subheader('Sources published between ' + '**'+ rg2 +' - ' + today_2+'**')
+        st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today_2+'**')
     else:
         st.subheader('Sources published in the last ' + str(a))
+        st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today2+'**')
     num_items = len(df_csv)
-    st.write('This list finds '+str(num_items)+' sources published between ' + '**'+ rg2 +' - ' + today2+'**')
+    
 
     if df_csv['Title'].any() in ("", [], None, 0, False):
         st.write('There is no publication published in the last '+ str(a))
