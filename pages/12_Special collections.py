@@ -148,7 +148,7 @@ with tab1:
             df_sii = pd.DataFrame(data, columns=columns)
             df_sii['year'] = df_sii['year'].astype(int)
             df_sii
-            df_sii['year'] = pd.to_datetime(df_sii['year'], dayfirst = True).dt.strftime('%d/%m/%Y')
+            df_sii['year'] = pd.to_datetime(df_sii['year'], dayfirst = True).dt.strftime('%Y')
             df_sii
 
         # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
