@@ -1,3 +1,5 @@
+streamlit run Home.py --server.enableCORS=false
+
 from pyzotero import zotero
 import pandas as pd
 import streamlit as st
