@@ -117,7 +117,7 @@ with tab1:
             ' (Publication year: ' +str(df_sii['Year']) + ')'
                 )
 
-        row_nu_1= len(df_sii.index)
+        row_nu = len(df_sii.index)
 
         df_download = df_sii[['Publication type', 'Title', 'Author', 'Link', 'Year']]
 
@@ -131,43 +131,19 @@ with tab1:
 
         with st.expander("Expand to see the list", expanded=True):
 
-            sort_by_type = st.checkbox('Sort by oldest to newest', key='oldest')
+            sort_oldest = st.checkbox('Sort by oldest to newest', key='oldest')
             display2 = st.checkbox('Display abstracts')
 
             if sort_by_type:
-                df3=df.copy()
-                df = df.sort_values(by=['Year'], ascending=True)
-                types = df['Publication type'].unique()
-                types = pd.DataFrame(types, columns=['Publication type'])
-                row_nu_types = len(types.index)
-                for i in range(row_nu_types):
-                    st.subheader(types['Publication type'].iloc[i])
-                    b = types['Publication type'].iloc[i]
-                    df_a = df[df['Publication type']==b]
-                    df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
-                        df_a['Title'] + ' '+ 
-                        ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
-                        ' (Published on: ' +df_a['Date published'] + ') '+
-                        "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
-                        "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
+                df_sii = df_sii.sort_values(by=['Year'], ascending=True)
+                df_items = ('**'+ df_sii['Publication type']+ '**'+ ': ' +
+                    df_sii['Title'] + ' '+ 
+                    ' (by ' + '*' + df_sii['Author'] + '*'+ ') ' + 
+                    "[[Publication link]]" +'('+ df_sii['Link'] + ')' +'  '+
+                    ' (Publication year: ' +str(df_sii['Year']) + ')'
                         )
-                    row_nu_1 = len(df_a.index)
-                    for i in range(row_nu_1):
-                        if df_a['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
-                            df_items = ('**'+ df_a['Publication type']+ '**'+ ': ' +
-                                df_a['Title'] + ' '+ 
-                                ' (by ' + '*' + df_a['firstName'] + '*'+ ' ' + '*' + df_a['lastName'] + '*' + ') ' +
-                                ' (Published on: ' +df_a['Date published'] + ') '+
-                                ' (Published in: ' + '*' + df_a['Journal'].iloc[i] + '*' + ') ' +
-                                "[[Publication link]]" +'('+ df_a['Link to publication'] + ')' +'  '+
-                                "[[Zotero link]]" +'('+ df_a['Zotero link'] + ')'
-                                ) 
-                            st.write('' + str(i+1) + ') ' + df_items.iloc[i])
-                        else:
-                            st.write('' + str(i+1) + ') ' + df_items.iloc[i])
-                        df_items.fillna("nan") 
-                        if display2:
-                            st.caption(df['Abstract'].iloc[i])
+                for i in range(row_nu):
+                    st.write('' + str(i+1) + ') ' + df_items.iloc[i])
             else:           
                 for i in range(row_nu_1):
                     if df['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
