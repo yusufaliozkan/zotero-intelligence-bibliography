@@ -121,7 +121,7 @@ with tab1:
 
         df_download = df_sii[['Publication type', 'Title', 'Author', 'Link', 'Year']]
 
-        def convert_df(df_sii):
+        def convert_df(df):
             return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
         today = datetime.date.today().isoformat()
         csv = convert_df(df_download)
