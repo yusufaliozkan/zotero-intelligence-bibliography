@@ -25,6 +25,7 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 
 st.title("Studies in Intelligence")
+st.write('Coming soon!')
 
 st.stop()
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
