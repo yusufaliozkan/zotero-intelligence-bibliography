@@ -99,13 +99,8 @@ with tab1:
         types = 'Journal article'
         df_sii['Publication type'] = types
         df_sii = df_sii.dropna()
+        df_sii['Year'] = str(df_sii['Year'])
         df_sii
-
- 
-        # sort = st.checkbox('Sort by publication date', disabled=False)
-        # if sort:
-        #     df['Date published'] = df['Date published'].astype('datetime64[ns]')
-        #     df=df.sort_values(by='Date published', ascending=True)
 
         st.markdown('#### Collection theme: Studies in Intelligence')
         st.caption('This collection has ' + str(len(df_sii.index)) + ' items.') # count_collection
