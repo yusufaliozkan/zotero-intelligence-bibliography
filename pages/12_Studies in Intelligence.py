@@ -132,8 +132,6 @@ with tab1:
         with st.expander("Expand to see the list", expanded=True):
 
             sort_oldest = st.checkbox('Sort by oldest to newest', key='oldest')
-            display2 = st.checkbox('Display abstracts')
-
             if sort_by_type:
                 df_sii = df_sii.sort_values(by=['Year'], ascending=True)
                 df_items = ('**'+ df_sii['Publication type']+ '**'+ ': ' +
