@@ -137,7 +137,18 @@ with tab1:
                         )
                 for i in range(row_nu):
                     st.write('' + str(i+1) + ') ' + df_items.iloc[i])
-            else:           
+            else:
+                df_sii = df_sii.sort_values(by=['Year'], ascending=False)
+                df_items = ('**'+ df_sii['Publication type']+ '**'+ ': ' +
+                    df_sii['Title'] + ' '+ 
+                    ' (by ' + '*' + df_sii['Author'] + '*'+ ') ' + 
+                    "[[Publication link]]" +'('+ df_sii['Link'] + ')' +'  '+
+                    ' (Publication year: ' +df_sii['Year'] + ')'
+                        )
+                for i in range(row_nu):
+                    st.write('' + str(i+1) + ') ' + df_items.iloc[i])
+
+
                 for i in range(row_nu_1):
                     if df['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
                         df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
