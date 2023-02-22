@@ -188,8 +188,8 @@ with st.sidebar:
         ''')
     with st.expander('Contact us'):
         st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
-        st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues)')
-    st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest).')
+        st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
+    st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
 # Recently added items
 
 tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
