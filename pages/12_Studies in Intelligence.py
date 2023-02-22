@@ -99,7 +99,7 @@ with tab1:
         types = 'Journal article'
         df_sii['Publication type'] = types
         df_sii = df_sii.dropna()
-        df_sii['Year'] = str(df_sii['Year'])
+        df_sii['Year'] = df_sii['Year'].astype(str)
         df_sii
 
         st.markdown('#### Collection theme: Studies in Intelligence')
