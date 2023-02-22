@@ -109,7 +109,7 @@ with tab1:
             df_sii['Title'] + ' '+ 
             ' (by ' + '*' + df_sii['Author'] + '*'+ ') ' + 
             "[[Publication link]]" +'('+ df_sii['Link'] + ')' +'  '+
-            ' (Publication year: ' +str(df_sii['Year']) + ')'
+            ' (Publication year: ' +df_sii['Year'] + ')'
                 )
 
         row_nu = len(df_sii.index)
