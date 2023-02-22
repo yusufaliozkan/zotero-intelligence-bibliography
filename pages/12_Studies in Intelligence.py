@@ -26,7 +26,7 @@ st.set_page_config(layout = "wide",
 
 st.title("Studies in Intelligence")
 
-
+st.stop()
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 with st.sidebar:
