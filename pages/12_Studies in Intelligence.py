@@ -121,7 +121,7 @@ with tab1:
 
         df_download = df_sii[['Publication type', 'Title', 'Author', 'Link', 'Year']]
 
-        def convert_df(df):
+        def convert_df(df_sii):
             return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
         today = datetime.date.today().isoformat()
         csv = convert_df(df_download)
@@ -131,12 +131,12 @@ with tab1:
 
         with st.expander("Expand to see the list", expanded=True):
 
-            sort_by_type = st.checkbox('Sort by publication type', key='type')
+            sort_by_type = st.checkbox('Sort by oldest to newest', key='oldest')
             display2 = st.checkbox('Display abstracts')
 
             if sort_by_type:
                 df3=df.copy()
-                df = df.sort_values(by=['Publication type'], ascending=True)
+                df = df.sort_values(by=['Year'], ascending=True)
                 types = df['Publication type'].unique()
                 types = pd.DataFrame(types, columns=['Publication type'])
                 row_nu_types = len(types.index)
