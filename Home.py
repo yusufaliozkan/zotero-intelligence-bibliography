@@ -163,7 +163,7 @@ Check it out the short guide for a quick intoduction.'''
 
 count = zot.count_items()
 
-col1, col2 = st.columns([1,9])
+col1, col2 = st.columns([1,10])
 with col1:
     hide = st.checkbox('Hide into')
 with col2:
