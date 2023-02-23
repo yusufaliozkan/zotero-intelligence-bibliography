@@ -370,18 +370,18 @@ with tab1:
                 ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
                 )
         with st.expander('Collections in this site', expanded=False):
-            st.caption('[Intelligence history](https://intelligence-bibliography.streamlit.app/Intelligence_history)')
-            st.caption('[Intelligence studies](https://intelligence-bibliography.streamlit.app/Intelligence_studies)')
-            st.caption('[Intelligence analysis](https://intelligence-bibliography.streamlit.app/Intelligence_analysis)')
-            st.caption('[Intelligence organisations](https://intelligence-bibliography.streamlit.app/Intelligence_organisations)')
+            st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
+            st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
+            st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
+            st.caption('[Intelligence organisations](https://intelligence.streamlit.app/Intelligence_organisations)')
             st.caption('[Intelligence failures](https://intelligence.streamlit.app/Intelligence_failures)')
-            st.caption('[Intelligence oversight and ethics](https://intelligence-bibliography.streamlit.app/Intelligence_oversight_and_ethics)')
-            st.caption('[Intelligence collection](https://intelligence-bibliography.streamlit.app/Intelligence_collection)')
-            st.caption('[Counterintelligence](https://intelligence-bibliography.streamlit.app/Counterintelligence)')
-            st.caption('[Covert action](https://intelligence-bibliography.streamlit.app/Covert_action)')
-            st.caption('[Intelligence and cybersphere](https://intelligence-bibliography.streamlit.app/Intelligence_and_cybersphere)')
+            st.caption('[Intelligence oversight and ethics](https://intelligence.streamlit.app/Intelligence_oversight_and_ethics)')
+            st.caption('[Intelligence collection](https://intelligence.streamlit.app/Intelligence_collection)')
+            st.caption('[Counterintelligence](https://intelligence.streamlit.app/Counterintelligence)')
+            st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
+            st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
             st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
-            st.caption('[Special collections](https://intelligence-bibliography.streamlit.app/Special_collections)')
+            st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
         with st.expander('Events & conferences', expanded=True):
             st.markdown('##### Next event')
