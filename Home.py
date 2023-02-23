@@ -162,11 +162,15 @@ The current page shows the recently added or updated items.
 Check it out the short guide for a quick intoduction.'''
 
 count = zot.count_items()
-hide = st.checkbox('Hide into')
-if hide:
-    st.write('')
-else:
-    st.write(into)
+
+col1, col2 = st.columns([1,7])
+with col1:
+    hide = st.checkbox('Hide into')
+with col2:
+    if hide:
+        st.write('')
+    else:
+        st.write(into)
 
 st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
