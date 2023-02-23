@@ -154,19 +154,18 @@ df = df.fillna('')
 st.title("Intelligence bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
-count = zot.count_items()
-col1, col2 = st.columns([1,5])
-with col1:
-    hide = st.checkbox('Hide into')
-    if hide:
-        st.write('')
-with col2:
+
+hide = st.checkbox('Hide into')
+if hide:
+    st.write('')
+else:
     st.write('''
-    Wellcome to **Intelligence bibliography**! 
-    This website lists different sources, events, conferences, and call for papers on intelligence history and intelligence studies. 
-    The current page shows the recently added or updated items. 
-    **If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: . 
-    Check it out the short guide for a quick intoduction.''')
+Wellcome to **Intelligence bibliography**! 
+This website lists different sources, events, conferences, and call for papers on intelligence history and intelligence studies. 
+The current page shows the recently added or updated items. 
+**If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: . 
+Check it out the short guide for a quick intoduction.''')
+
 st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
