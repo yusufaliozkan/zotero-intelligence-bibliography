@@ -154,7 +154,7 @@ df = df.fillna('')
 st.title("Intelligence bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
-
+count = zot.count_items()
 hide = st.checkbox('Hide into')
 if hide:
     st.write('')
