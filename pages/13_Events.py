@@ -17,8 +17,8 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
-import datetime as dt     
-
+import datetime as dt
+from urllib.parse import urlparse
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence bibliography',
