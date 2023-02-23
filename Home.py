@@ -155,6 +155,10 @@ st.title("Intelligence bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 count = zot.count_items()
+st.write('''
+Wellcome to 'Intelligence bibliography'! 
+This website lists different sources on intelligence history and intelligence studies. 
+The current page shows the recently''')
 st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
