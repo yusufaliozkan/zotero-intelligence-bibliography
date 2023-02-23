@@ -367,6 +367,10 @@ with tab1:
         for i in range(row_nu_organiser):
             st.caption(organiser_plot_all['Organiser'].iloc[i])
 
+    some_url = 'https://www.intelligencehistory.org/event-details/ariel-whitfield-sobel-theatre-performance-and-soe-setting-the-stage'
+    domain = urlparse(some_url).scheme + '://' + urlparse(url).hostname + '/'
+    st.write(domain)
+
 with tab2:
     st.subheader('Conferences')
     sheet_url2 = st.secrets["public_gsheets_url2"]
