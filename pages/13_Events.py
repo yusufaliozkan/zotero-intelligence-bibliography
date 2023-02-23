@@ -368,7 +368,7 @@ with tab1:
             st.caption(organiser_plot_all['Organiser'].iloc[i])
 
     some_url = 'https://www.intelligencehistory.org/event-details/ariel-whitfield-sobel-theatre-performance-and-soe-setting-the-stage'
-    domain = urlparse(some_url).scheme + '://' + urlparse(url).hostname + '/'
+    domain = urlparse(some_url).scheme + '://' + urlparse(some_url).hostname + '/'
     st.write(domain)
 
 with tab2:
