@@ -367,9 +367,6 @@ with tab1:
         for i in range(row_nu_organiser):
             st.caption(organiser_plot_all['Organiser'].iloc[i])
 
-    some_url = 'https://www.eventbrite.ca/e/accessing-historic-records-on-intelligence-and-international-affairs-tickets-516192173687'
-    domain = urlparse(some_url).scheme + '://' + urlparse(some_url).hostname + '/'
-    st.write(domain)
 
 with tab2:
     st.subheader('Conferences')
