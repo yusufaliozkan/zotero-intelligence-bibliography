@@ -17,8 +17,8 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
-import datetime as dt     
-
+import datetime as dt
+from urllib.parse import urlparse
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence bibliography',
@@ -366,6 +366,7 @@ with tab1:
         organiser_plot_all=organiser_plot_all.sort_values('Organiser', ascending=True)
         for i in range(row_nu_organiser):
             st.caption(organiser_plot_all['Organiser'].iloc[i])
+
 
 with tab2:
     st.subheader('Conferences')
