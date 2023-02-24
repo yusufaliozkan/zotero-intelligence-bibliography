@@ -153,7 +153,7 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence bibliography")
+st.title("Intelligence studies network")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
@@ -181,7 +181,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with st.sidebar:
         st.image(image, width=150)
-        st.sidebar.markdown("# Intelligence bibliography")
+        st.sidebar.markdown("# Intelligence studies network")
         with st.expander('About'):
             st.write('''This website lists secondary sources on intelligence studies and intelligence history.
             The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
