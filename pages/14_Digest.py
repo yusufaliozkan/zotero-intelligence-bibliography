@@ -23,7 +23,7 @@ import base64
 
 
 st.set_page_config(layout = "centered", 
-                    page_title='Intelligence bibliography',
+                    page_title='Intelligence studies network',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
@@ -37,7 +37,7 @@ with st.spinner('Preparing digest...'):
     with st.sidebar:
 
         st.image(image, width=150)
-        st.sidebar.markdown("# Intelligence bibliography")
+        st.sidebar.markdown("# Intelligence studies network")
         with st.expander('About'):
             st.write('''This website lists secondary sources on intelligence studies and intelligence history.
             The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
