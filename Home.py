@@ -170,9 +170,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
     count = zot.count_items()
 
     col1, col2 = st.columns([2,4])
-    with col1: 
+    with col2: 
         st.info(into)
-    with col2:
+    with col1:
         st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
