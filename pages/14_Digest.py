@@ -27,7 +27,8 @@ st.set_page_config(layout = "centered",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence studies network digest")
+st.title("Intelligence studies network")
+st.header('Digest')
 
 with st.spinner('Preparing digest...'):
 
