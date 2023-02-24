@@ -154,7 +154,7 @@ df = df.fillna('')
 # Streamlit app
 
 st.title("Intelligence studies network")
-st.header('Resources')
+st.header('Intelligence bibliography')
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
