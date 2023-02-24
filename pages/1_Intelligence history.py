@@ -106,28 +106,31 @@ with st.spinner('Retrieving data & updating dashboard...'):
             pd.set_option('display.max_colwidth', None)
 
         # Collection items
-            count_collection = zot.num_collectionitems(collection_code)
 
-            items = zot.everything(zot.collection_items_top(collection_code))
+            def zotero_history(library_id, library_type):
+                count_collection = zot.num_collectionitems(collection_code)
 
-            data3=[]
-            columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2', 'Publisher', 'Journal']
+                items = zot.everything(zot.collection_items_top(collection_code))
 
-            for item in items:
-                data3.append((
-                    item['data']['title'], 
-                    item['data']['itemType'], 
-                    item['data']['url'], 
-                    item['data']['abstractNote'], 
-                    item['links']['alternate']['href'],
-                    item['data'].get('date'),
-                    item['data']['creators'],
-                    item['data'].get('publisher'),
-                    item['data'].get('publicationTitle')
-                    )) 
-            pd.set_option('display.max_colwidth', None)
+                data3=[]
+                columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2', 'Publisher', 'Journal']
 
-            df = pd.DataFrame(data3, columns=columns3)
+                for item in items:
+                    data3.append((
+                        item['data']['title'], 
+                        item['data']['itemType'], 
+                        item['data']['url'], 
+                        item['data']['abstractNote'], 
+                        item['links']['alternate']['href'],
+                        item['data'].get('date'),
+                        item['data']['creators'],
+                        item['data'].get('publisher'),
+                        item['data'].get('publicationTitle')
+                        )) 
+                pd.set_option('display.max_colwidth', None)
+                df = pd.DataFrame(data3, columns=columns3)
+                return df
+            df = zotero_history(library_id, library_type)
 
             # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
             # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
