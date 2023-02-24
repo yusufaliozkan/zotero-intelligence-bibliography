@@ -164,6 +164,11 @@ The current page shows the recently added or updated items.
 The website has also a dynamic [digest](https://intelligence.streamlit.app/Digest) that you can tract latest publications & events.
 Check it out the short guide for a quick intoduction.'''
 
+
+with st.spinner('Wait for it...'):
+    time.sleep(5)
+st.success('Done!')
+
 count = zot.count_items()
 col1, col2 = st.columns([1,10])
 with col1:
