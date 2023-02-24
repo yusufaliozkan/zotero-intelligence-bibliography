@@ -165,7 +165,7 @@ The website has also a dynamic [digest](https://intelligence.streamlit.app/Diges
 Check it out the short guide for a quick intoduction.'''
 
 
-with st.spinner('Wait for it...'):
+with st.spinner('Data being retrieved...'):
 
     count = zot.count_items()
     col1, col2 = st.columns([1,10])
