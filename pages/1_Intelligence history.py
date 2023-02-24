@@ -72,6 +72,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     zot = zotero.Zotero(library_id, library_type)
 
+    @st.cache_data
     def zotero_collections(library_id, library_type):
         collections = zot.collections()
         data2=[]
