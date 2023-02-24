@@ -171,7 +171,7 @@ with col2:
     if hide:
         st.write('')
     else:
-        st.write(into)
+        st.info(into)
 
 st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
 st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
