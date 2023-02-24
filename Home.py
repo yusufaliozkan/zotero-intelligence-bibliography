@@ -168,10 +168,13 @@ Check it out the short guide for a quick intoduction.'''
 with st.spinner('Retrieving data & updating dashboard...'):
 
     count = zot.count_items()
-    st.info(into)
 
-    st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
-    st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+    col1, col2 = st.columns([2,4])
+    with col1: 
+        st.info(into)
+    with col1:
+        st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
+        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
