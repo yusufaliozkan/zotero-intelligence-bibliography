@@ -106,9 +106,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             pd.set_option('display.max_colwidth', None)
 
         # Collection items
+            count_collection = zot.num_collectionitems(collection_code)
             @st.cache_data
             def get_zotero_data(collection_code):
-                count_collection = zot.num_collectionitems(collection_code)
+                
 
                 items = zot.everything(zot.collection_items_top(collection_code))
 
