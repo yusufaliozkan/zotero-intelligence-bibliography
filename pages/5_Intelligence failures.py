@@ -27,6 +27,8 @@ st.set_page_config(layout = "wide",
 
 st.title("Intelligence failures")
 
+with st.spinner('Data being retrieved...'):
+
 # Connecting Zotero with API
 library_id = '2514686' # intel 2514686
 library_type = 'group'
