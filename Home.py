@@ -168,14 +168,7 @@ Check it out the short guide for a quick intoduction.'''
 with st.spinner('Retrieving data & updating dashboard...'):
 
     count = zot.count_items()
-    col1, col2 = st.columns([1,10])
-    with col1:
-        hide = st.checkbox('Hide intro')
-    with col2:
-        if hide:
-            st.write('')
-        else:
-            st.info(into)
+    st.info(into)
 
     st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
     st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
