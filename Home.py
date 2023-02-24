@@ -164,7 +164,7 @@ The website has also a dynamic [digest](https://intelligence.streamlit.app/Diges
 Check it out the short guide for a quick intoduction.'''
 
 count = zot.count_items()
-col1, col2 = st.columns([1,12])
+col1, col2 = st.columns([1,10])
 with col1:
     hide = st.checkbox('Hide intro')
 with col2:
