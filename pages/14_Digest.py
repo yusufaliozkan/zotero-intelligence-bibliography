@@ -29,7 +29,7 @@ st.set_page_config(layout = "centered",
 
 st.title("Intelligence studies network digest")
 
-with st.spinner('Retrieving data...'):
+with st.spinner('Preparing digest...'):
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
