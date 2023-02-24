@@ -26,7 +26,7 @@ st.set_page_config(layout = "wide",
 
 st.title("Intelligence studies")
 
-with st.spinner('Retrieving data...'):
+with st.spinner('Retrieving data and updating dashboard...'):
 
     # Connecting Zotero with API
     library_id = '2514686' # intel 2514686
