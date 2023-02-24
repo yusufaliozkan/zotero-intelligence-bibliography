@@ -158,7 +158,8 @@ into = '''
 Wellcome to **Intelligence bibliography**! 
 This website lists different sources, events, conferences, and call for papers on intelligence history and intelligence studies. 
 The current page shows the recently added or updated items. 
-**If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: . 
+**If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: .
+The website has also a dynamic [digest](https://intelligence.streamlit.app/Digest) that you can tract latest publications & events.
 Check it out the short guide for a quick intoduction.'''
 
 count = zot.count_items()
