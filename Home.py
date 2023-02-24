@@ -116,6 +116,7 @@ def zotero_collections2(library_id, library_type):
     return df_collections_2
 df_collections_2 = zotero_collections2(library_id, library_type)
 
+@st.cache_data
 def zotero_collections(library_id, library_type):
     collections = zot.collections()
     data2=[]
