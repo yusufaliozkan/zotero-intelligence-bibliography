@@ -844,20 +844,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     components.html(
         """
+        <h2>Comments</h2>
+        <p>Please share your thoughts and opinions about this article below.</p>
         <div id="disqus_thread"></div>
-<script>
+        <script>
 
-    var disqus_config = function () {
-    this.page.url = 'https://sites.google.com/view/intelstudiesnetwork/home';  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = '/intelstudiesnetwork/home'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://intelligence-studies-network.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>"""
+            var disqus_config = function () {
+            this.page.url = 'https://sites.google.com/view/intelstudiesnetwork/home';  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = '/intelstudiesnetwork/home'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+            };
+
+            (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = 'https://intelligence-studies-network.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        """
     )
