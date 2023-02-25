@@ -72,15 +72,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
 
     zot = zotero.Zotero(library_id, library_type)
-
-    collections = zot.collections()
-    data2=[]
-    columns2 = ['Key','Name', 'Link']
-    for item in collections:
-        data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
-
-    pd.set_option('display.max_colwidth', None)
-    df_collections = pd.DataFrame(data2, columns=columns2)
+    @st.cache_data
+    def zotero_collections(library_id, library_type):
+        collections = zot.collections()
+        data2=[]
+        columns2 = ['Key','Name', 'Link']
+        for item in collections:
+            data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
+        pd.set_option('display.max_colwidth', None)
+        df_collections = pd.DataFrame(data2, columns=columns2)
+        return df_collections
+    df_collections = zotero_collections(library_id, library_type)
 
     df_collections = df_collections.sort_values(by='Name')
     df_collections=df_collections[df_collections['Name'].str.contains("04")]
@@ -101,26 +103,27 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             count_collection = zot.num_collectionitems(collection_code)
 
-            items = zot.everything(zot.collection_items_top(collection_code))
-
-            data3=[]
-            columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2', 'Publisher', 'Journal']
-
-            for item in items:
-                data3.append((
-                    item['data']['title'], 
-                    item['data']['itemType'], 
-                    item['data']['url'], 
-                    item['data']['abstractNote'], 
-                    item['links']['alternate']['href'],
-                    item['data'].get('date'),
-                    item['data']['creators'],
-                    item['data'].get('publisher'),
-                    item['data'].get('publicationTitle')
-                    )) 
-            pd.set_option('display.max_colwidth', None)
-
-            df = pd.DataFrame(data3, columns=columns3)
+            st.cache_data
+            def get_zotero_data(collection_code):
+                items = zot.everything(zot.collection_items_top(collection_code))
+                data3=[]
+                columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2', 'Publisher', 'Journal']
+                for item in items:
+                    data3.append((
+                        item['data']['title'], 
+                        item['data']['itemType'], 
+                        item['data']['url'], 
+                        item['data']['abstractNote'], 
+                        item['links']['alternate']['href'],
+                        item['data'].get('date'),
+                        item['data']['creators'],
+                        item['data'].get('publisher'),
+                        item['data'].get('publicationTitle')
+                        )) 
+                pd.set_option('display.max_colwidth', None)
+                df = pd.DataFrame(data3, columns=columns3)
+                return df
+            df = get_zotero_data(collection_code)
 
             # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
             # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
@@ -275,13 +278,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             
         with col2:
             with st.expander("Collections in Zotero library", expanded=False):
-                bbb = zot.collections()
-                data3=[]
-                columns3 = ['Key','Name', 'Number', 'Link']
-                for item in bbb:
-                    data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
-                pd.set_option('display.max_colwidth', None)
-                df_collections_2 = pd.DataFrame(data3, columns=columns3)
+                st.cache_data
+                def zotero_collections2(library_id, library_type):
+                    bbb = zot.collections()
+                    data3=[]
+                    columns3 = ['Key','Name', 'Number', 'Link']
+                    for item in bbb:
+                        data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
+                    pd.set_option('display.max_colwidth', None)
+                    df_collections_2 = pd.DataFrame(data3, columns=columns3)
+                    return df_collections_2
+                df_collections_2 = zotero_collections2(library_id, library_type)
                 row_nu_collections = len(df_collections_2.index)
                 
                 for i in range(row_nu_collections):
