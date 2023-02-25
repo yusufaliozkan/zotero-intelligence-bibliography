@@ -130,7 +130,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 pd.set_option('display.max_colwidth', None)
                 df = pd.DataFrame(data3, columns=columns3)
                 return df
-            df get_zotero_data(collection_code)
+            df = get_zotero_data(collection_code)
 
             # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
             # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
