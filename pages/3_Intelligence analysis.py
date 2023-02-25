@@ -74,14 +74,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     zot = zotero.Zotero(library_id, library_type)
 
-    collections = zot.collections()
-    data2=[]
-    columns2 = ['Key','Name', 'Link']
-    for item in collections:
-        data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
-
-    pd.set_option('display.max_colwidth', None)
-    df_collections = pd.DataFrame(data2, columns=columns2)
+    @st.cache_data
+    def zotero_collections(library_id, library_type):
+        collections = zot.collections()
+        data2=[]
+        columns2 = ['Key','Name', 'Link']
+        for item in collections:
+            data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
+        pd.set_option('display.max_colwidth', None)
+        df_collections = pd.DataFrame(data2, columns=columns2)
+        return df_collections
+    df_collections = zotero_collectionc(library_id)
 
     df_collections = df_collections.sort_values(by='Name')
     df_collections=df_collections[df_collections['Name'].str.contains("03")]
