@@ -844,7 +844,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     components.html(
         """
-        <div id="disqus_thread" style="height: 500px; overflow-y: auto;"></div>
+        <div id="disqus_thread" style="height: 1000px; overflow-y: auto;"></div>
         <script>
 
             var disqus_config = function () {
