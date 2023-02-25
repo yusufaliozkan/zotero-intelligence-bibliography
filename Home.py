@@ -22,8 +22,6 @@ from gsheetsdb import connect
 import gsheetsdb as gdb
 import datetime as dt
 import time
-from streamlit_disqus import st_disqus
-
 
 
 # Connecting Zotero with API
@@ -843,8 +841,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
     """
     )
-
-    st_disqus("streamlit-disqus-demo")
 
     components.html(
         """
