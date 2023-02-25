@@ -174,7 +174,6 @@ The current page shows the recently added or updated items.
 The website has also a dynamic [digest](https://intelligence.streamlit.app/Digest) that you can tract latest publications & events.
 Check it out the short guide for a quick intoduction.'''
 
-progress_bar = st.progress(0)
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
@@ -863,4 +862,4 @@ with st.spinner('Retrieving data & updating dashboard...'):
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
         """
     )
-progress_bar.empty()
+    
