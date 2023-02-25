@@ -284,7 +284,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         with col2:
             with st.expander("Collections in Zotero library", expanded=False):
-                @st.cache_data:
+                @st.cache_data
                 def zotero_collections2(library_id, library_type):
                     bbb = zot.collections()
                     data3=[]
