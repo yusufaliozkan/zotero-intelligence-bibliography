@@ -289,7 +289,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     pd.set_option('display.max_colwidth', None)
                     df_collections_2 = pd.DataFrame(data3, columns=columns3)
                     return df_collections_2
-                df_collections_2 - zotero_collections2(library_key, library_id)
+                df_collections_2 = zotero_collections2(library_key, library_id)
                 row_nu_collections = len(df_collections_2.index)
                 
                 for i in range(row_nu_collections):
