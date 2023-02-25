@@ -280,7 +280,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col2:
             with st.expander("Collections in Zotero library", expanded=False):
                 @st.cache_data
-                def zotero_collections2(library_id, library_key):
+                def zotero_collections2(library_id, library_type):
                     bbb = zot.collections()
                     data3=[]
                     columns3 = ['Key','Name', 'Number', 'Link']
@@ -289,7 +289,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     pd.set_option('display.max_colwidth', None)
                     df_collections_2 = pd.DataFrame(data3, columns=columns3)
                     return df_collections_2
-                df_collections_2 = zotero_collections2(library_id, library_key)
+                df_collections_2 = zotero_collections2(library_id, library_type)
 
                 row_nu_collections = len(df_collections_2.index)
                 
