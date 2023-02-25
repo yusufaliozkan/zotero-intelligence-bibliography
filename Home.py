@@ -844,6 +844,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     """
     )
 
+    st_disqus("streamlit-disqus-demo")
+
     components.html(
         """
         <div id="disqus_thread" style="height: 500px; overflow-y: auto;"></div>
