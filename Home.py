@@ -104,7 +104,7 @@ df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 
 # Bringing collections
 
-@st.cache_data
+@st.cache_data(ttl=10)
 def zotero_collections2(library_id, library_type):
     bbb = zot.collections()
     data3=[]
