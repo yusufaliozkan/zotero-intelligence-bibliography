@@ -172,7 +172,7 @@ This website lists different sources, events, conferences, and call for papers o
 The current page shows the recently added or updated items. 
 **If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: .
 The website has also a dynamic [digest](https://intelligence.streamlit.app/Digest) that you can tract latest publications & events.
-Check it out the short guide for a quick intoduction.'''
+Check it out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction.'''
 
 
 with st.spinner('Retrieving data & updating dashboard...'):
