@@ -39,7 +39,7 @@ pd.set_option('display.max_colwidth', None)
 
 zot = zotero.Zotero(library_id, library_type)
 
-@st.cache_data
+@st.cache_data(ttl=10)
 def zotero_data(library_id, library_type):
     items = zot.top(limit=15)
 
