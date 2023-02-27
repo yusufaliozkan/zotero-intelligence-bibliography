@@ -39,7 +39,7 @@ pd.set_option('display.max_colwidth', None)
 
 zot = zotero.Zotero(library_id, library_type)
 
-@st.cache_data
+@st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
     items = zot.top(limit=15)
 
@@ -104,7 +104,7 @@ df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 
 # Bringing collections
 
-@st.cache_data
+@st.cache_data(ttl=600)
 def zotero_collections2(library_id, library_type):
     bbb = zot.collections()
     data3=[]
@@ -172,7 +172,7 @@ This website lists different sources, events, conferences, and call for papers o
 The current page shows the recently added or updated items. 
 **If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: .
 The website has also a dynamic [digest](https://intelligence.streamlit.app/Digest) that you can tract latest publications & events.
-Check it out the short guide for a quick intoduction.'''
+Check it out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction.'''
 
 
 with st.spinner('Retrieving data & updating dashboard...'):
@@ -840,24 +840,4 @@ with st.spinner('Retrieving data & updating dashboard...'):
     src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
     © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
     """
-    )
-
-    components.html(
-        """
-        <div id="disqus_thread"></div>
-<script>
-
-    var disqus_config = function () {
-    this.page.url = 'https://sites.google.com/view/intelstudiesnetwork/home';  // Replace PAGE_URL with your page's canonical URL variable
-    this.page.identifier = '/intelstudiesnetwork/home'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-    };
-    
-    (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://intelligence-studies-network.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>"""
-    )
+    )    
