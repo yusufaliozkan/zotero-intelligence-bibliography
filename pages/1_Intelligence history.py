@@ -72,7 +72,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     zot = zotero.Zotero(library_id, library_type)
 
-    @st.cache_data(ttl=60)
+    @st.cache_data(ttl=300)
     def zotero_collections(library_id, library_type):
         collections = zot.collections()
         data2=[]
@@ -107,7 +107,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         # Collection items
             count_collection = zot.num_collectionitems(collection_code)
-            @st.cache_data(ttl=60)
+            @st.cache_data(ttl=300)
             def get_zotero_data(collection_code):
                 
 
@@ -288,7 +288,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         with col2:
             with st.expander("Collections in Zotero library", expanded=False):
-                @st.cache_data(ttl=60)
+                @st.cache_data(ttl=300)
                 def zoterto_collections2(library_id, library_type):
                     bbb = zot.collections()
                     data3=[]
