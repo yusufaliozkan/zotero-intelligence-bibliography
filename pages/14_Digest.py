@@ -135,7 +135,7 @@ with st.spinner('Preparing digest...'):
             today = st.date_input('To:', today, max_value=today, min_value=rg)
             a = today - rg
             a = str(a.days) + ' days'
-        filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
+        # filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
         if range_day =='Upcoming publications':
             rg = today
 
