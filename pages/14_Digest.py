@@ -106,7 +106,7 @@ with st.spinner('Preparing digest...'):
         st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-        range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom (days)', 'Custom (select date)'))
+        range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom (days)', 'Custom (select date)', 'Upcoming publications'))
         if range_day == '10 days':
             rg = previous_10
             a = '10 days'
@@ -135,8 +135,11 @@ with st.spinner('Preparing digest...'):
             today = st.date_input('To:', today, max_value=today, min_value=rg)
             a = today - rg
             a = str(a.days) + ' days'
-
         filter = (df_csv['Date published']>rg) & (df_csv['Date published']<=today)
+        if range_day =='Upcoming publications':
+            rg = today
+
+        filter = (df_csv['Date published']>rg)
         rg2 = rg.strftime('%d/%m/%Y')
         df_csv = df_csv.loc[filter]
 
