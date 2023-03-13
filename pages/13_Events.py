@@ -121,16 +121,16 @@ with tab1:
     df_forms = pd.DataFrame(data, columns=columns)
     df_forms
 
-    # df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-    # df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
-    # df_gs['year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y')
-    # df_gs['month_year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m')
-    # df_gs.sort_values(by='date', ascending = True, inplace=True)
-    # df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+    df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+    df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
+    df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
+    df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
+    df_forms.sort_values(by='date', ascending = True, inplace=True)
+    df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
     
-    # df_gs['details'] = df_gs['details'].fillna('No details')
-    # df_gs = df_gs.fillna('')
-    # df_gs_plot = df_gs.copy()
+    df_forms['details'] = df_forms['details'].fillna('No details')
+    df_forms = df_forms.fillna('')
+    df_forms
     
     col1, col2 = st.columns(2)
 
