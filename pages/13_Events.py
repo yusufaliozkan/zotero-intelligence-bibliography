@@ -119,7 +119,6 @@ with tab1:
 
     pd.set_option('display.max_colwidth', None)
     df_forms = pd.DataFrame(data, columns=columns)
-    df_forms
 
     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
@@ -131,6 +130,7 @@ with tab1:
     df_forms['details'] = df_forms['details'].fillna('No details')
     df_forms = df_forms.fillna('')
     df_forms
+    df_gs
     
     col1, col2 = st.columns(2)
 
