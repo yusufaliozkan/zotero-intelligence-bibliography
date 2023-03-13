@@ -107,7 +107,7 @@ with tab1:
     df_gs_plot = df_gs.copy()
 
 
-    sheet_url_forms = st.secrets["public_gsheets_url_forms "]
+    sheet_url_forms = st.secrets["public_gsheets_url_forms"]
     rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
 
     data = []
