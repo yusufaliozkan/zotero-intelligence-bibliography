@@ -105,6 +105,32 @@ with tab1:
     df_gs['details'] = df_gs['details'].fillna('No details')
     df_gs = df_gs.fillna('')
     df_gs_plot = df_gs.copy()
+
+
+    sheet_url_forms = st.secrets["public_gsheets_url_forms "]
+    rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
+
+    data = []
+    columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
+
+    # Print results.
+    for row in rows:
+        data.append((row.Event name, row.Event organiser, row.Link to the event, row.Date of event, row.Event venue, row.Details))
+
+    pd.set_option('display.max_colwidth', None)
+    df_forms = pd.DataFrame(data, columns=columns)
+    df_forms
+
+    # df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+    # df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
+    # df_gs['year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y')
+    # df_gs['month_year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m')
+    # df_gs.sort_values(by='date', ascending = True, inplace=True)
+    # df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+    
+    # df_gs['details'] = df_gs['details'].fillna('No details')
+    # df_gs = df_gs.fillna('')
+    # df_gs_plot = df_gs.copy()
     
     col1, col2 = st.columns(2)
 
