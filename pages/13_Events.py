@@ -115,7 +115,7 @@ with tab1:
 
     # Print results.
     for row in rows:
-        data.append((row.Event name, row.Event organiser, row.Link to the event, row.Date of event, row.Event venue, row.Details))
+        data.append((row.Event_name, row.Event organiser, row.Link to the event, row.Date of event, row.Event venue, row.Details))
 
     pd.set_option('display.max_colwidth', None)
     df_forms = pd.DataFrame(data, columns=columns)
