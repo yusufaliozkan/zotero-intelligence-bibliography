@@ -131,7 +131,7 @@ with tab1:
     df_forms = df_forms.fillna('')
 
     df_gs = pd.concat([df_gs, df_forms], axis=0)
-    df_gs = df_gs.reset_index(inplace=True)
+    df_gs = df_gs.reset_index(drop=True,inplace=True)
     df_gs
     
     col1, col2 = st.columns(2)
