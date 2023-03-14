@@ -183,7 +183,7 @@ with tab1:
                     st.caption('Details:'+'\n '+ df_o['details'].iloc[j])
 
     if sort_by == 'Date':
-
+        df_gs = df_gs.sort_values(by='date')
         if '01' in df_gs['month'].values:
             st.markdown('#### Events in January')
             mon = df_gs[df_gs['month']=='01']
