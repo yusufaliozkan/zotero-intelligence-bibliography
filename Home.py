@@ -438,6 +438,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 pd.set_option('display.max_colwidth', None)
                 df_gs = pd.DataFrame(data, columns=columns)
                 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_gs
 
                 df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
                 df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
