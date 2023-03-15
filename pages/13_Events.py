@@ -109,14 +109,11 @@ with tab1:
 
     sheet_url_forms = st.secrets["public_gsheets_url_forms"]
     rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
-
     data = []
     columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
-
     # Print results.
     for row in rows:
         data.append((row.Event_name, row.Event_organiser, row.Link_to_the_event, row.Date_of_event, row.Event_venue, row.Details))
-
     pd.set_option('display.max_colwidth', None)
     df_forms = pd.DataFrame(data, columns=columns)
 
