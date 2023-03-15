@@ -451,9 +451,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_gs = pd.concat([df_gs, df_forms], axis=0)
                 df_gs = df_gs.reset_index(drop=True)
                 df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-                
-                df_gs.sort_values(by='date', ascending = True, inplace=True)
-                df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
+
+                # df_gs.sort_values(by='date', ascending = True, inplace=True)
+                # df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
                 df_gs = df_gs.fillna('')
                 today = dt.date.today()
                 filter = (df_gs['date']>=today)
