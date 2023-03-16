@@ -744,7 +744,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     width=1100, height=700) # Adjust the size of the map here
         # Display the map
         fig.show()
-        st.pyplot() 
+        st.plotly_chart() 
 
         st.write('---')
         df=df_csv.copy()
