@@ -507,6 +507,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with tab2:
         st.header('Dashboard')
+        df_countries = pd.read_csv('countries.csv')
         number0 = st.slider('Select a number collections', 3,30,15)
         df_collections_2.set_index('Name', inplace=True)
         df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
