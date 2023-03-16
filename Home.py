@@ -749,7 +749,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col2:
             st.markdown('##### Top 10 country names mentioned in titles')
             for i, row in enumerate(df_countries.values):
-                st.write(f"{i+1}. {row[0]}, {row[1]}, {row[2]}")
+                st.write(f"{i+1}. {row[0]}, {row[1]}")
             st.dataframe(df_countries.head(10))
 
         st.write('---')
