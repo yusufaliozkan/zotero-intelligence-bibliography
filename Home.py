@@ -747,7 +747,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig.show()
             col1.plotly_chart(fig) 
         with col2:
-            st.markdown('### Top 10 country names mentioned in titles')
+            st.markdown('##### Top 10 country names mentioned in titles')
             st.dataframe(df_countries.head(10))
 
         st.write('---')
