@@ -344,6 +344,31 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 pd.set_option('display.max_colwidth', None)
                 df_gs = pd.DataFrame(data, columns=columns)
                 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+
+                sheet_url_forms = st.secrets["public_gsheets_url_forms"]
+                rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
+                data = []
+                columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
+                # Print results.
+                for row in rows:
+                    data.append((row.Event_name, row.Event_organiser, row.Link_to_the_event, row.Date_of_event, row.Event_venue, row.Details))
+                pd.set_option('display.max_colwidth', None)
+                df_forms = pd.DataFrame(data, columns=columns)
+
+                df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
+                df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
+                df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
+                df_forms.sort_values(by='date', ascending = True, inplace=True)
+                df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+                
+                df_forms['details'] = df_forms['details'].fillna('No details')
+                df_forms = df_forms.fillna('')
+                df_gs = pd.concat([df_gs, df_forms], axis=0)
+                df_gs = df_gs.reset_index(drop=True)
+                df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+
+                
                 df_gs.sort_values(by='date', ascending = True, inplace=True)
                 today = dt.date.today()
                 filter = (df_gs['date']>=today)
