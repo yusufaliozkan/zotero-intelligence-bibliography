@@ -747,7 +747,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig.show()
             col1.plotly_chart(fig, use_container_width=True) 
         with col2:
-            st.markdown('##### Top 10 country names mentioned in titles')
+            st.markdown('##### Top 15 country names mentioned in titles')
             fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h')
             col2.plotly_chart(fig, use_container_width=True)
 
