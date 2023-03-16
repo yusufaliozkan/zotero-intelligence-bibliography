@@ -748,6 +748,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width=True) 
         with col2:
             st.markdown('##### Top 10 country names mentioned in titles')
+            fig = px.bar(df_countries.head(10), x='Count', y='Country', orientation='h')
+            col2.plotly_chart(fig, use_container_width=True)
             for i, row in enumerate(df_countries.head(10).values):
                 st.caption(f"{i+1}. {row[0]}: {row[1]} times")
 
