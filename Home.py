@@ -738,7 +738,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     for i in range(row_nu_collections):
                         st.caption(df_journal['Journal'].iloc[i]
                         )
-
+        df_countries
+        
         st.write('---')
         df=df_csv.copy()
         def clean_text (text):
