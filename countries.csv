@@ -1,74 +1,74 @@
-,Country,Count
-25,UK,200
-3,United States,168
-0,Ukraine,87
-1,Russia,55
-8,Israel,27
-14,Germany,27
-33,Japan,20
-6,Australia,19
-47,Iraq,16
-12,France,13
-35,Ireland,12
-20,Canada,12
-16,Oman,12
-9,India,11
-50,Egypt,9
-48,Turkey,9
-40,China,8
-27,New Zealand,7
-29,Austria,6
-34,Cyprus,6
-38,Cuba,6
-19,Afghanistan,5
-21,Brazil,5
-24,South Africa,5
-26,United Kingdom,5
-13,Pakistan,5
-22,Spain,4
-37,Nigeria,3
-52,Singapore,3
-56,Sweden,3
-39,Italy,3
-36,Niger,3
-7,Mali,3
-30,Slovakia,3
-4,Belgium,2
-58,Argentina,2
-60,Finland,2
-51,Greece,2
-5,Denmark,2
-49,Norway,2
-44,Colombia,2
-15,Serbia,2
-66,Sudan,1
-65,Myanmar,1
-64,Hong Kong,1
-2,Angola,1
-63,Morocco,1
-62,Georgia,1
-61,Algeria,1
-67,South Sudan,1
-68,Philippines,1
-69,Gibraltar,1
-70,Nepal,1
-59,Uruguay,1
-71,Chile,1
-57,United Arab Emirates,1
-32,Switzerland,1
-55,Netherlands,1
-54,Kuwait,1
-53,Indonesia,1
-31,Ghana,1
-10,Sri Lanka,1
-46,Latvia,1
-45,Poland,1
-43,Somalia,1
-42,Dominican Republic,1
-41,Dominica,1
-11,Bangladesh,1
-17,Romania,1
-18,North Macedonia,1
-23,Libya,1
-28,Bulgaria,1
-72,Albania,1
+Country,Count
+UK,200
+United States,168
+Ukraine,87
+Russia,55
+Israel,27
+Germany,27
+Japan,20
+Australia,19
+Iraq,16
+France,13
+Ireland,12
+Canada,12
+Oman,12
+India,11
+Egypt,9
+Turkey,9
+China,8
+New Zealand,7
+Austria,6
+Cyprus,6
+Cuba,6
+Afghanistan,5
+Brazil,5
+South Africa,5
+United Kingdom,5
+Pakistan,5
+Spain,4
+Nigeria,3
+Singapore,3
+Sweden,3
+Italy,3
+Niger,3
+Mali,3
+Slovakia,3
+Belgium,2
+Argentina,2
+Finland,2
+Greece,2
+Denmark,2
+Norway,2
+Colombia,2
+Serbia,2
+Sudan,1
+Myanmar,1
+Hong Kong,1
+Angola,1
+Morocco,1
+Georgia,1
+Algeria,1
+South Sudan,1
+Philippines,1
+Gibraltar,1
+Nepal,1
+Uruguay,1
+Chile,1
+United Arab Emirates,1
+Switzerland,1
+Netherlands,1
+Kuwait,1
+Indonesia,1
+Ghana,1
+Sri Lanka,1
+Latvia,1
+Poland,1
+Somalia,1
+Dominican Republic,1
+Dominica,1
+Bangladesh,1
+Romania,1
+North Macedonia,1
+Libya,1
+Bulgaria,1
+Albania,1
