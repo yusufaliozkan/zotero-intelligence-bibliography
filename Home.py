@@ -745,7 +745,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         width=1100, height=700) # Adjust the size of the map here
             # Display the map
             fig.show()
-            col1.plotly_chart(fig) 
+            col1.plotly_chart(fig, use_container_width=True) 
         with col2:
             st.markdown('##### Top 10 country names mentioned in titles')
             for i, row in enumerate(df_countries.head(10).values):
