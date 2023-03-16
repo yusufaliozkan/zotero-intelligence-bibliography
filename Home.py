@@ -743,8 +743,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     title='Country mentions in titles', color_continuous_scale='Viridis',
                     width=1100, height=700) # Adjust the size of the map here
         # Display the map
-
-        st.plotly_chart() 
+        fig.show()
+        st.plotly_chart(fig) 
 
         st.write('---')
         df=df_csv.copy()
