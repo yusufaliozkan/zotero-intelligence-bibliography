@@ -748,7 +748,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width=True) 
         with col2:
             st.markdown('##### Top 15 country names mentioned in titles')
-            fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=800)
+            fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=700)
             col2.plotly_chart(fig, use_container_width=True)
 
         st.write('---')
