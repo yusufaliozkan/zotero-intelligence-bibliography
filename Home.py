@@ -737,14 +737,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     for i in range(row_nu_collections):
                         st.caption(df_journal['Journal'].iloc[i]
                         )
-
-        df_countries = pd.read_csv('countries.csv')
-        fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='Count', 
-                    title='Country mentions in titles', color_continuous_scale='Viridis',
-                    width=1100, height=700) # Adjust the size of the map here
-        # Display the map
-        fig.show()
-        st.plotly_chart(fig) 
+        col1, col2 = st.columns([5,1])
+        with col1:
+            df_countries = pd.read_csv('countries.csv')
+            fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='Count', 
+                        title='Country mentions in titles', color_continuous_scale='Viridis',
+                        width=1100, height=700) # Adjust the size of the map here
+            # Display the map
+            fig.show()
+            col1.plotly_chart(fig) 
+        with col2:
+            df_countries.head(10)
 
         st.write('---')
         df=df_csv.copy()
