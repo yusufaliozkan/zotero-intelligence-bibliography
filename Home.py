@@ -747,7 +747,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig.show()
             col1.plotly_chart(fig) 
         with col2:
-            df_countries.head(10)
+            st.dataframe(df_countries.head(10))
 
         st.write('---')
         df=df_csv.copy()
