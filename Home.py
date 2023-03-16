@@ -738,7 +738,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.caption(df_journal['Journal'].iloc[i]
                         )
         df_countries = pd.read_csv('countries.csv')
-        df_countries
+        fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='Count', 
+                    title='Country mentions in titles', color_continuous_scale='Viridis',
+                    width=1100, height=700) # Adjust the size of the map here
+        # Display the map
+        fig.show()
 
         st.write('---')
         df=df_csv.copy()
