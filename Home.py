@@ -506,8 +506,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
     with tab2:
-        st.header('Dashboard')
-        df_countries = pd.read_csv('countries.csv')
+        st.header('Dashboard')        
         number0 = st.slider('Select a number collections', 3,30,15)
         df_collections_2.set_index('Name', inplace=True)
         df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
@@ -738,8 +737,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     for i in range(row_nu_collections):
                         st.caption(df_journal['Journal'].iloc[i]
                         )
+        df_countries = pd.read_csv('countries.csv')
         df_countries
-        
+
         st.write('---')
         df=df_csv.copy()
         def clean_text (text):
