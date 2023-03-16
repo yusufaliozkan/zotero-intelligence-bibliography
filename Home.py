@@ -737,7 +737,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     for i in range(row_nu_collections):
                         st.caption(df_journal['Journal'].iloc[i]
                         )
-        col1, col2 = st.columns([5,2])
+        col1, col2 = st.columns([6,2])
         with col1:
             df_countries = pd.read_csv('countries.csv')
             fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='Count', 
