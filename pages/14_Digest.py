@@ -484,6 +484,7 @@ with st.spinner('Preparing digest...'):
 
         df_cfp['date_new'] = pd.to_datetime(df_cfp['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
         df_cfp.sort_values(by='date', ascending = True, inplace=True)
+        df_cfp = df_cfp.drop_duplicates(subset=['name', 'link', 'date'], keep='first')
 
         df_cfp['details'] = df_cfp['details'].fillna('No details')
         
