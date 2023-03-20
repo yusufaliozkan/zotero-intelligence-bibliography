@@ -487,6 +487,7 @@ with st.spinner('Preparing digest...'):
         df_cfp = df_cfp.drop_duplicates(subset=['name', 'link', 'date'], keep='first')
 
         df_cfp['details'] = df_cfp['details'].fillna('No details')
+        df_cfp = df_cfp.fillna('')
         
         display = st.checkbox('Show details', key='cfp')
 
