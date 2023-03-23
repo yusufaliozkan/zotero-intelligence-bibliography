@@ -44,9 +44,11 @@ def zotero_data(library_id, library_type):
     items = zot.top(limit=15)
 
     data=[]
-    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Pub_venue']
+    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Creators', 'Pub_venue']
 
     for item in items:
+        creators = item['data']['creators']
+        creators_str = ", ".join([creator.get('firstName', '') + ' ' + creator.get('lastName', '') for creator in creators])
         data.append((item['data']['title'], 
         item['data']['itemType'], 
         item['data']['url'], 
@@ -56,7 +58,7 @@ def zotero_data(library_id, library_type):
         item['data'].get('date'), 
         item['data']['dateModified'],
         item['data']['collections'],
-        item['data']['creators'],
+        creators_str,
         item['data'].get('publicationTitle')
         ))
     df = pd.DataFrame(data, columns=columns)
