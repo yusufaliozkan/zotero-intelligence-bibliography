@@ -204,7 +204,6 @@ with tab1:
     st.header('Past events')
     with st.expander('Expand to see the list'):
         years = df_gs2['year'].unique()[::-1]
-
         for year in years:
             if st.checkbox(f"Events in {year}", key=year):
                 if year in df_gs2['year'].values:
