@@ -44,11 +44,9 @@ def zotero_data(library_id, library_type):
     items = zot.top(limit=15)
 
     data=[]
-    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue']
+    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'FirstName', 'Pub_venue']
 
     for item in items:
-        creators = item['data']['creators']
-        creators_str = ", ".join([creator.get('firstName', '') + ' ' + creator.get('lastName', '') for creator in creators])
         data.append((item['data']['title'], 
         item['data']['itemType'], 
         item['data']['url'], 
@@ -58,7 +56,7 @@ def zotero_data(library_id, library_type):
         item['data'].get('date'), 
         item['data']['dateModified'],
         item['data']['collections'],
-        creators_str,
+        item['data']['creators'],
         item['data'].get('publicationTitle')
         ))
     df = pd.DataFrame(data, columns=columns)
@@ -70,25 +68,28 @@ df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To repla
 df['Abstract'] = df['Abstract'].fillna('No abstract')
 
 split_df= pd.DataFrame(df['Col key'].tolist())
-df = pd.concat([df, split_df], axis=1)
-df['Authors'] = df['Authors'].fillna('null')
+df_fa = df['FirstName']
+df_fa = pd.DataFrame(df_fa.tolist())
+df_fa = df_fa[0]
+df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+df_new = pd.json_normalize(df_fa, errors='ignore') 
+df = pd.concat([df, split_df, df_new], axis=1)
+df['firstName'] = df['firstName'].fillna('null')
+df['lastName'] = df['lastName'].fillna('null')
 
 # Change type name
-type_map = {
-    'thesis': 'Thesis',
-    'journalArticle': 'Journal article',
-    'book': 'Book',
-    'bookSection': 'Book chapter',
-    'blogPost': 'Blog post',
-    'videoRecording': 'Video',
-    'podcast': 'Podcast',
-    'magazineArticle': 'Magazine article',
-    'webpage': 'Webpage',
-    'newspaperArticle': 'Newspaper article',
-    'report': 'Report',
-    'forumPost': 'Forum post'
-}
-df['Publication type'] = df['Publication type'].replace(type_map)
+df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
+df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
+df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
+df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
+df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
+df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
+df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
+df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
+df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
+df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
+df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
+df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
 
 df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
 df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
@@ -105,55 +106,58 @@ df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 
 @st.cache_data(ttl=600)
 def zotero_collections2(library_id, library_type):
-    collections = zot.collections()
-    data = [(item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']) for item in collections]
-    df_collections = pd.DataFrame(data, columns=['Key', 'Name', 'Number', 'Link'])
-    return df_collections
+    bbb = zot.collections()
+    data3=[]
+    columns3 = ['Key','Name', 'Number', 'Link']
+    for item in bbb:
+        data3.append((item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']))
+    pd.set_option('display.max_colwidth', None)
+    df_collections_2 = pd.DataFrame(data3, columns=columns3)
+    return df_collections_2
 df_collections_2 = zotero_collections2(library_id, library_type)
 
 @st.cache_data
 def zotero_collections(library_id, library_type):
     collections = zot.collections()
-    data2 = [(item['data']['key'], item['data']['name'], item['links']['alternate']['href']) for item in collections]
-    df_collections = pd.DataFrame(data2, columns=['Key', 'Name', 'Link'])
+    data2=[]
+    columns2 = ['Key','Name', 'Link']
+    for item in collections:
+        data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
     pd.set_option('display.max_colwidth', None)
-    return df_collections.sort_values(by='Name')
+    df_collections = pd.DataFrame(data2, columns=columns2)
+    return df_collections
 df_collections = zotero_collections(library_id, library_type)
+
+df_collections = df_collections.sort_values(by='Name')
 
 # df['Col1Name'] = df['col1'].map(df_collections['Name'])
 
-df = df.merge(df_collections, left_on=0, right_on='Key', how='left').merge(
-    df_collections, left_on=1, right_on='Key', how='left'
-).merge(df_collections, left_on=2, right_on='Key', how='left').fillna('')
+if 0 in df:
+    merged_df = pd.merge(
+        left=df,
+        right=df_collections,
+        left_on=0,
+        right_on='Key',
+        how='left'
+    )
+    if 1 in merged_df:
+        merged_df = pd.merge(
+            left=merged_df,
+            right=df_collections,
+            left_on=1,
+            right_on='Key',
+            how='left'
+        )
+        if 2 in merged_df:
+            merged_df = pd.merge(
+                left=merged_df,
+                right=df_collections,
+                left_on=2,
+                right_on='Key',
+                how='left'
+            ) 
 
-#To be deleted
-# if 0 in df:
-#     merged_df = pd.merge(
-#         left=df,
-#         right=df_collections,
-#         left_on=0,
-#         right_on='Key',
-#         how='left'
-#     )
-#     if 1 in merged_df:
-#         merged_df = pd.merge(
-#             left=merged_df,
-#             right=df_collections,
-#             left_on=1,
-#             right_on='Key',
-#             how='left'
-#         )
-#         if 2 in merged_df:
-#             merged_df = pd.merge(
-#                 left=merged_df,
-#                 right=df_collections,
-#                 left_on=2,
-#                 right_on='Key',
-#                 how='left'
-#             ) 
-# df = merged_df.copy()
-#To be deleted
-
+df = merged_df.copy()
 df = df.fillna('')
 
 # Streamlit app
@@ -223,11 +227,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2 = st.columns([5,2]) 
         with col1:
             st.header('Recently added or updated items: ')
-            df['Abstract'] = df['Abstract'].str.strip()
-            df['Abstract'] = df['Abstract'].fillna('No abstract')
-            
-            df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
-            df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
+                
+            df_download = df.iloc[:, [0,1,2,4,5,6,14,15]] 
+            df_download['First author'] = df['firstName'] + ' ' + df['lastName']
+            df_download = df_download[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
 
             def convert_df(df):
                 return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
@@ -242,7 +245,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 display = st.checkbox('Display theme and abstract')
 
                 df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                            ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
                             ' (Published on: ' + df['Date published']+', ' +
                             'Added on: ' + df['Date added']+')'+
                             '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
@@ -254,7 +257,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     publication_type = df['Publication type'].iloc[i]
                     if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
                         df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                    ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
                                     ' (Published on: ' + df['Date published']+') ' +
                                     " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
                                     '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
@@ -263,7 +266,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write(f"{i+1}) " + df_last.iloc[i])
                     else:
                         df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                    ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' +
                                     ' (Published on: ' + df['Date published']+', ' +
                                     'Added on: ' + df['Date added']+') '+
                                     '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
@@ -288,6 +291,106 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.caption('No theme to display!')
                         st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
                         st.caption('Abstract: '+ df['Abstract'].iloc[i])
+        
+
+        # Items by Collection list
+
+            # st.header('Items by collection: ')
+            # clist = df_collections['Name'].unique()
+            # collection_name = st.selectbox('Select a collection:', clist)
+            # collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
+
+            # df_collections=df_collections['Name'].reset_index()
+            # pd.set_option('display.max_colwidth', None)
+
+            # # Collection items
+
+            # count_collection = zot.num_collectionitems(collection_code)
+
+            # items = zot.everything(zot.collection_items_top(collection_code))
+
+            # data3=[]
+            # columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2']
+
+            # for item in items:
+            #     data3.append((
+            #         item['data']['title'], 
+            #         item['data']['itemType'], 
+            #         item['data']['url'], 
+            #         item['data']['abstractNote'], 
+            #         item['links']['alternate']['href'],
+            #         item['data'].get('date'),
+            #         item['data']['creators']
+            #         )) 
+            # pd.set_option('display.max_colwidth', None)
+
+            # df = pd.DataFrame(data3, columns=columns3)
+            
+            # df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
+            # df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
+            # df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
+            # df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
+            # df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
+            # df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
+            # df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
+            # df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
+            # df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
+            # df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
+            # df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
+            # df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
+
+            # df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
+            # df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+            # df['Date published'] = df['Date published'].fillna('No date')    
+
+            # if df['FirstName2'].any() in ("", [], None, 0, False):
+            #     # st.write('no author')
+            #     df['firstName'] = 'null'
+            #     df['lastName'] = 'null'
+
+            #     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+            #         df['Title'] + ' '+ 
+            #         ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
+            #         "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+            #         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+            #         ' (Published on: ' +df['Date published'] + ')'
+            #         )
+            # else:
+            #     # st.write('author entered')
+            #     ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
+            #     df_fa = df['FirstName2']
+            #     df_fa = pd.DataFrame(df_fa.tolist())
+            #     df_fa = df_fa[0]
+            #     df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+            #     df_new = pd.json_normalize(df_fa, errors='ignore') 
+            #     df = pd.concat([df, df_new], axis=1)
+            #     df['firstName'] = df['firstName'].fillna('null')
+            #     df['lastName'] = df['lastName'].fillna('null')
+                
+            #     df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
+            #                 df['Title'] + ' '+ 
+            #                 ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+            #                 "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
+            #                 "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
+            #                 ' (Published on: ' +df['Date published'] + ')'
+            #                 )
+
+            # row_nu_1= len(df.index)
+            # if row_nu_1<15:
+            #     row_nu_1=row_nu_1
+            # else:
+            #     row_nu_1=15
+
+            # st.markdown('#### Collection theme: ' + collection_name)
+            # st.caption('This collection has ' + str(count_collection) + ' items.')
+            # with st.expander("Expand to see the list", expanded=False):
+            #     st.write('This list shows the last 15 added items. To see the full collection list click [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/collections/' + collection_code + ')')
+            #     # display2 = st.checkbox('Display abstracts')
+            #     for i in range(row_nu_1):
+            #         st.write(''+str(i+1)+') ' +df_items.iloc[i])
+            #         df_items.fillna("nan") 
+            #         # if display2:
+            #         #     st.caption(df['Abstract'].iloc[i])
 
         with col2:
             with st.expander("Collections in Zotero library", expanded=False):
