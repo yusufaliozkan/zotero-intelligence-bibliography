@@ -128,8 +128,7 @@ with tab1:
     df_gs = pd.concat([df_gs, df_forms], axis=0)
     df_gs = df_gs.reset_index(drop=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-    df_gs 
-    
+        
     col1, col2 = st.columns(2)
 
     with col1:
@@ -154,7 +153,6 @@ with tab1:
 
     if sort_by == 'Most recently added':
         df_gs = df_gs.sort_index(ascending=False)
-        df_gs
         df_last = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
         row_nu = len(df_gs.index)
         for i in range(row_nu):
