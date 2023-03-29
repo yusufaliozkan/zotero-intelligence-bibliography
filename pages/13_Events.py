@@ -128,8 +128,7 @@ with tab1:
     df_gs = pd.concat([df_gs, df_forms], axis=0)
     df_gs = df_gs.reset_index(drop=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-    df_gs.sort_values(by='date', ascending = True, inplace=True)
-    
+        
     col1, col2 = st.columns(2)
 
     with col1:
@@ -179,6 +178,7 @@ with tab1:
                     st.caption('Details:'+'\n '+ df_o['details'].iloc[j])
 
     if sort_by == 'Date':
+        df_gs.sort_values(by='date', ascending = True, inplace=True)
         month_dict = {'01': 'January',
             '02': 'February',
             '03': 'March',
