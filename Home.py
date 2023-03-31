@@ -696,7 +696,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         listdf = df['lemma_title']
         listdf_abstract = df['lemma_abstract']
 
-        st.markdown('## Wordcloud')
+        st.subheader('Wordcloud')
         wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
         if wordcloud_opt=='Titles':
             df_list = [item for sublist in listdf for item in sublist]
