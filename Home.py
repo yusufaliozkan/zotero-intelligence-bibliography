@@ -647,6 +647,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.markdown('##### Top 15 country names mentioned in titles')
             fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=600)
             col2.plotly_chart(fig, use_container_width=True)
+        
+        st.write('---')
+        st.subheader('Named Entity Recognition analysis')
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            gpe_counts = pd.read_csv('gpe.csv')
+            fig = px.bar(gpe_counts.head(15), x='GPE', y='count', height=600, title="Top 15 locations mentioned in title & abstract")
+            fig.update_xaxes(tickangle=-65)
+            col1.plotly_chart(fig, use_container_width=True)
+        with col2:
+            person_counts = pd.read_csv('person.csv')
+            fig = px.bar(person_counts.head(15), x='PERSON', y='count', height=600, title="Top 15 person mentioned in title & abstract")
+            fig.update_xaxes(tickangle=-65)
+            col2.plotly_chart(fig, use_container_width=True)
+        with col3:
+            org_counts = pd.read_csv('org.csv')
+            fig = px.bar(org_counts.head(15), x='ORG', y='count', height=600, title="Top 15 organisations mentioned in title & abstract")
+            fig.update_xaxes(tickangle=-65)
+            col3.plotly_chart(fig, use_container_width=True)
 
         st.write('---')
         df=df_csv.copy()
@@ -694,7 +713,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         listdf = df['lemma_title']
         listdf_abstract = df['lemma_abstract']
 
-        st.markdown('## Wordcloud')
+        st.subheader('Wordcloud')
         wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
         if wordcloud_opt=='Titles':
             df_list = [item for sublist in listdf for item in sublist]
