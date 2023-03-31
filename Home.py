@@ -648,6 +648,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=600)
             col2.plotly_chart(fig, use_container_width=True)
 
+        st.subheader('Named Entiry Recognition analysis')
+
         st.write('---')
         df=df_csv.copy()
         def clean_text (text):
