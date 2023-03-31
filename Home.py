@@ -655,11 +655,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             gpe_counts = pd.read_csv('gpe.csv')
             st.markdown('##### Locations')
             fig = px.bar(gpe_counts.head(15), x='GPE', y='count', height=600)
+            fig.update_xaxes(tickangle=-65)
             col1.plotly_chart(fig, use_container_width=True)
         with col2:
             person_counts = pd.read_csv('person.csv')
             st.markdown('##### Person')
             fig = px.bar(person_counts.head(15), x='PERSON', y='count', height=600)
+            fig.update_xaxes(tickangle=-65)
             col2.plotly_chart(fig, use_container_width=True)
         with col3:
             org_counts = pd.read_csv('org.csv')
