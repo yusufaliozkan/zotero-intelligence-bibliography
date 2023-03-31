@@ -653,7 +653,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2, col3 = st.columns(3)
         with col1:
             gpe_counts = pd.read_csv('gpe.csv')
-            st.markdown('##### Locations')
+            st.markdown('##### Top 15 locations mentioned in title & abstract')
             fig = px.bar(gpe_counts.head(15), x='GPE', y='count', height=600)
             fig.update_xaxes(tickangle=-65)
             col1.plotly_chart(fig, use_container_width=True)
