@@ -665,7 +665,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             org_counts = pd.read_csv('org.csv')
             st.markdown('##### Location')
             fig = px.bar(org_counts.head(15), x='ORG', y='count', height=600)
-            fig.update_xaxes(tickangle=-70)
+            fig.update_xaxes(tickangle=-65)
             col3.plotly_chart(fig, use_container_width=True)
 
         st.write('---')
