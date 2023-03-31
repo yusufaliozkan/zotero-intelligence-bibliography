@@ -647,7 +647,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.markdown('##### Top 15 country names mentioned in titles')
             fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=600)
             col2.plotly_chart(fig, use_container_width=True)
-
+        
+        st.write('---')
         st.subheader('Named Entiry Recognition analysis')
 
         st.write('---')
