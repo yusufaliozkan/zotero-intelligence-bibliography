@@ -653,17 +653,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2, col3 = st.columns(3)
         with col1:
             gpe_counts = pd.read_csv('gpe.csv')
-            st.markdown('##### Location')
+            st.markdown('##### Locations')
             fig = px.bar(gpe_counts.head(15), x='GPE', y='count', height=600)
             col1.plotly_chart(fig, use_container_width=True)
         with col2:
             person_counts = pd.read_csv('person.csv')
-            st.markdown('##### Location')
+            st.markdown('##### Person')
             fig = px.bar(person_counts.head(15), x='PERSON', y='count', height=600)
             col2.plotly_chart(fig, use_container_width=True)
         with col3:
             org_counts = pd.read_csv('org.csv')
-            st.markdown('##### Location')
+            st.markdown('##### Organisations')
             fig = px.bar(org_counts.head(15), x='ORG', y='count', height=600)
             fig.update_xaxes(tickangle=-65)
             col3.plotly_chart(fig, use_container_width=True)
