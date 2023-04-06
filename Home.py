@@ -120,14 +120,6 @@ def zotero_collections(library_id, library_type):
     return df_collections.sort_values(by='Name')
 df_collections = zotero_collections(library_id, library_type)
 
-# df['Col1Name'] = df['col1'].map(df_collections['Name'])
-
-## The following snippet to be amended
-# df = df.merge(df_collections, left_on=0, right_on='Key', how='left').merge(
-#     df_collections, left_on=1, right_on='Key', how='left'
-# ).merge(df_collections, left_on=2, right_on='Key', how='left').fillna('')
-## End of code
-
 #To be deleted
 if 0 in df:
     merged_df = pd.merge(
