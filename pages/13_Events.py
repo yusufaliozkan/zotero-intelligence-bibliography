@@ -103,8 +103,7 @@ with tab1:
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
     
     df_gs['details'] = df_gs['details'].fillna('No details')
-    df_gs = df_gs.fillna('')
-    df_gs_plot = df_gs.copy()
+    df_gs = df_gs.fillna('')    
 
     sheet_url_forms = st.secrets["public_gsheets_url_forms"]
     rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
@@ -128,6 +127,7 @@ with tab1:
     df_gs = pd.concat([df_gs, df_forms], axis=0)
     df_gs = df_gs.reset_index(drop=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+    df_gs_plot = df_gs.copy()
         
     col1, col2 = st.columns(2)
 
