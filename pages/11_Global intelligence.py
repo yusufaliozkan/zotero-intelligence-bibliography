@@ -132,18 +132,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
             # df
 
-            df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
-            df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
-            df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
-            df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
-            df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
-            df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
-            df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
-            df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
-            df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
-            df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
-            df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
-            df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
+            # Change type name
+            type_map = {
+                'thesis': 'Thesis',
+                'journalArticle': 'Journal article',
+                'book': 'Book',
+                'bookSection': 'Book chapter',
+                'blogPost': 'Blog post',
+                'videoRecording': 'Video',
+                'podcast': 'Podcast',
+                'magazineArticle': 'Magazine article',
+                'webpage': 'Webpage',
+                'newspaperArticle': 'Newspaper article',
+                'report': 'Report',
+                'forumPost': 'Forum post',
+                'conferencePaper' : 'Conference paper',
+                'presentation' : 'Presentation'
+            }
+            df['Publication type'] = df['Publication type'].replace(type_map)
 
             df['Publisher'] = df['Publisher'].replace(['Taylor & Francis Group', 'Taylor and Francis', 'Taylor & Francis'], 'Taylor and Francis')
             df['Publisher'] = df['Publisher'].replace(['Routledge', 'Routledge Handbooks Online'], 'Routledge')
