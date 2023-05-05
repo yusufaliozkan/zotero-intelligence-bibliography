@@ -156,20 +156,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             }
             df['Publication type'] = df['Publication type'].replace(type_map)
 
-            # df['Publication type'] = df['Publication type'].replace(['thesis'], 'Thesis')
-            # df['Publication type'] = df['Publication type'].replace(['journalArticle'], 'Journal article')
-            # df['Publication type'] = df['Publication type'].replace(['book'], 'Book')
-            # df['Publication type'] = df['Publication type'].replace(['bookSection'], 'Book chapter')
-            # df['Publication type'] = df['Publication type'].replace(['blogPost'], 'Blog post')
-            # df['Publication type'] = df['Publication type'].replace(['videoRecording'], 'Video')
-            # df['Publication type'] = df['Publication type'].replace(['podcast'], 'Podcast')
-            # df['Publication type'] = df['Publication type'].replace(['magazineArticle'], 'Magazine article')
-            # df['Publication type'] = df['Publication type'].replace(['webpage'], 'Webpage')
-            # df['Publication type'] = df['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
-            # df['Publication type'] = df['Publication type'].replace(['report'], 'Report')
-            # df['Publication type'] = df['Publication type'].replace(['forumPost'], 'Forum post')
-            # df['Publication type'] = df['Publication type'].replace(['presentation'], 'Presentation')
-
             df['Publisher'] = df['Publisher'].replace(['Taylor & Francis Group', 'Taylor and Francis', 'Taylor & Francis'], 'Taylor and Francis')
             df['Publisher'] = df['Publisher'].replace(['Routledge', 'Routledge Handbooks Online'], 'Routledge')
             df['Publisher'] = df['Publisher'].replace(['Praeger Security International', 'Praeger'], 'Praeger')
