@@ -86,7 +86,8 @@ type_map = {
     'webpage': 'Webpage',
     'newspaperArticle': 'Newspaper article',
     'report': 'Report',
-    'forumPost': 'Forum post'
+    'forumPost': 'Forum post',
+    'conferencePaper' : 'Conference paper'
 }
 df['Publication type'] = df['Publication type'].replace(type_map)
 
