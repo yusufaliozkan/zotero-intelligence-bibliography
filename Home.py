@@ -271,6 +271,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         c=''
                         if 'Name_x' in df:
                             a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
+                            if df['Name_x'].iloc[i]=='':
+                                a=''
                         if 'Name_y' in df:
                             b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
                             if df['Name_y'].iloc[i]=='':
@@ -281,6 +283,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 c=''
                         else:
                             st.caption('No theme to display!')
+
                         st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
                         st.caption('Abstract: '+ df['Abstract'].iloc[i])
 
