@@ -275,10 +275,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
                                 if df['Name_y'].iloc[i]=='':
                                     b=''
-                                    if 'Name' in df:
-                                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
-                                        if df['Name'].iloc[i]=='':
-                                            c=''
+                        if 'Name' in df:
+                            c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
+                            if df['Name'].iloc[i]=='':
+                                c=''
                         else:
                             st.caption('No theme to display!')
                         st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
