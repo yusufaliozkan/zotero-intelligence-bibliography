@@ -231,7 +231,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             today = datetime.date.today().isoformat()
             a = 'intelligence-bibliography-' + today
             st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
-
+            df
             with st.expander('Click to hide the list', expanded=True):
                 display = st.checkbox('Display theme and abstract')
 
