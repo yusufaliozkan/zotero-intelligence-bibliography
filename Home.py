@@ -279,9 +279,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     if df['Name'].iloc[i]=='':
                                         c=''
                         else:
-                            st.caption('No theme to display!')
-                        st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                        st.caption('Abstract: '+ df['Abstract'].iloc[i])
+                            st.write('No theme to display!')
+                        st.write('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                        st.write('Abstract: '+ df['Abstract'].iloc[i])
 
         with col2:
             with st.expander("Collections in Zotero library", expanded=False):
