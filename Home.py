@@ -264,7 +264,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
                                     )
                         st.write(f"{i+1}) " + df_last.iloc[i])
-                    df
+                    
                     if display:
                         df
                         a=''
