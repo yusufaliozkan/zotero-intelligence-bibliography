@@ -264,27 +264,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
                                     )
                         st.write(f"{i+1}) " + df_last.iloc[i])
+                    df
                     if display:
-                        theme_parts = []
-                        abstract = df['Abstract'].iloc[i]
-
-                        if 'Name_x' in df and df['Name_x'].iloc[i]:
-                            theme_parts.append(f"[{df['Name_x'].iloc[i]}]({df['Link_x'].iloc[i]})")
-
-                            if 'Name_y' in df and df['Name_y'].iloc[i]:
-                                theme_parts.append(f"[{df['Name_y'].iloc[i]}]({df['Link_y'].iloc[i]})")
-
-                            elif 'Name' in df and df['Name'].iloc[i]:
-                                theme_parts.append(f"[{df['Name'].iloc[i]}]({df['Link'].iloc[i]})")
-
-                        if theme_parts:
-                            themes = ' '.join(theme_parts)
-                            st.caption(f"Theme(s):\n{themes}")
+                        a=''
+                        b=''
+                        c=''
+                        if 'Name_x' in df:
+                            a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
+                            if 'Name_y' in df:
+                                b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
+                                if df['Name_y'].iloc[i]=='':
+                                    b=''
+                                    if 'Name' in df:
+                                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
+                                        if df['Name'].iloc[i]=='':
+                                            c=''
                         else:
                             st.caption('No theme to display!')
-
-                        st.caption(f"Abstract: {abstract}")
-
+                        st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                        st.caption('Abstract: '+ df['Abstract'].iloc[i])
 
         with col2:
             with st.expander("Collections in Zotero library", expanded=False):
