@@ -266,7 +266,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write(f"{i+1}) " + df_last.iloc[i])
                     
                     if display:
-                        df
                         a=''
                         b=''
                         c=''
