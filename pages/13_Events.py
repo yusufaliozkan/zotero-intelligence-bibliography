@@ -124,6 +124,7 @@ with tab1:
     
     df_forms['details'] = df_forms['details'].fillna('No details')
     df_forms = df_forms.fillna('')
+    df_forms = df_forms.sort_index(ascending=True)
     df_gs = pd.concat([df_gs, df_forms], axis=0)
     df_gs = df_gs.reset_index(drop=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
