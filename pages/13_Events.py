@@ -67,6 +67,7 @@ with st.sidebar:
 today = dt.date.today()
 today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Today is: '+ str(today2))
+container = st.container()
 
 # Create a connection object.
 conn = connect()
@@ -114,6 +115,17 @@ with tab1:
         data.append((row.Event_name, row.Event_organiser, row.Link_to_the_event, row.Date_of_event, row.Event_venue, row.Details))
     pd.set_option('display.max_colwidth', None)
     df_forms = pd.DataFrame(data, columns=columns)
+
+    data2 = []
+    columns2 = ['timestamp']
+    # Print results.
+    for row in rows:
+        data2.append((row.Timestamp))
+    pd.set_option('display.max_colwidth', None)
+    df_forms2 = pd.DataFrame(data2, columns=columns2)
+    df_forms2['date_new'] = pd.to_datetime(df_forms2['timestamp'], dayfirst = True).dt.strftime('%d/%m/%Y - %H:%M')
+    df_forms2 = df_forms2.sort_index(ascending=False)
+    container.write('The events last updated on ' + '**'+ df_forms2.loc[0]['date_new']+'**')
 
     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
