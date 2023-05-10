@@ -152,6 +152,7 @@ with tab1:
         st.write('No upcoming event!')
 
     if sort_by == 'Most recently added':
+        df_gs
         df_gs = df_gs.sort_index(ascending=False)
         df_gs
         df_last = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
