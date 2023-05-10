@@ -125,6 +125,7 @@ with tab1:
     df_forms2 = pd.DataFrame(data2, columns=columns2)
     df_forms2['date_new'] = pd.to_datetime(df_forms2['timestamp'], dayfirst = True).dt.strftime('%d/%m/%Y - %H:%M')
     df_forms2 = df_forms2.sort_index(ascending=False)
+    df_forms2 = df_forms2.reset_index(drop=True)
     container.write('The events last updated on ' + '**'+ df_forms2.loc[0]['date_new']+'**')
 
     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
