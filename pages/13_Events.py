@@ -67,6 +67,7 @@ with st.sidebar:
 today = dt.date.today()
 today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Today is: '+ str(today2))
+container = st.container()
 
 # Create a connection object.
 conn = connect()
@@ -115,6 +116,18 @@ with tab1:
     pd.set_option('display.max_colwidth', None)
     df_forms = pd.DataFrame(data, columns=columns)
 
+    data2 = []
+    columns2 = ['timestamp']
+    # Print results.
+    for row in rows:
+        data2.append((row.Timestamp))
+    pd.set_option('display.max_colwidth', None)
+    df_forms2 = pd.DataFrame(data2, columns=columns2)
+    df_forms2['date_new'] = pd.to_datetime(df_forms2['timestamp'], dayfirst = True).dt.strftime('%d/%m/%Y - %H:%M')
+    df_forms2 = df_forms2.sort_index(ascending=False)
+    df_forms2 = df_forms2.reset_index(drop=True)
+    container.write('The events last updated on ' + '**'+ df_forms2.loc[0]['date_new']+'**')
+
     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
     df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
@@ -124,6 +137,7 @@ with tab1:
     
     df_forms['details'] = df_forms['details'].fillna('No details')
     df_forms = df_forms.fillna('')
+    df_forms = df_forms.sort_index(ascending=True)
     df_gs = pd.concat([df_gs, df_forms], axis=0)
     df_gs = df_gs.reset_index(drop=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
