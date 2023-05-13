@@ -1,16 +1,16 @@
 ,ORG,count
-0,CIA,145
+0,CIA,147
 1,KGB,31
 2,SIS,26
 3,FBI,23
 4,Foreign Office,18
 5,British Intelligence,17
-6,Schar School of Policy and Government,16
-7,Allied,16
+6,Allied,16
+7,Schar School of Policy and Government,16
 8,Joint Intelligence Committee,16
 9,NSA,15
 10,SOE,14
-11,NATO,13
+11,NATO,14
 12,AI,12
-13,EU,9
-14,Intelligence Failure,9
+13,Intelligence Services,9
+14,George Mason University,9
