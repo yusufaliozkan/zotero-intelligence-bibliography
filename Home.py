@@ -718,7 +718,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             string = pd.Series(df_list).str.cat(sep=' ')
             wordcloud_texts = string
             wordcloud_texts_str = str(wordcloud_texts)
-            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, font = ImageFont, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
             plt.figure(figsize=(20,8))
             plt.axis('off')
             plt.title('Top words in title (Intelligence bibliography collection)')
