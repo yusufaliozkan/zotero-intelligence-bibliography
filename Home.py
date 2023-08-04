@@ -711,37 +711,37 @@ with st.spinner('Retrieving data & updating dashboard...'):
         listdf = df['lemma_title']
         listdf_abstract = df['lemma_abstract']
 
-        st.subheader('Wordcloud')
-        wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
-        if wordcloud_opt=='Titles':
-            df_list = [item for sublist in listdf for item in sublist]
-            string = pd.Series(df_list).str.cat(sep=' ')
-            wordcloud_texts = string
-            wordcloud_texts_str = str(wordcloud_texts)
-            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, font = ImageFont, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-            plt.figure(figsize=(20,8))
-            plt.axis('off')
-            plt.title('Top words in title (Intelligence bibliography collection)')
-            plt.imshow(wordcloud)
-            plt.axis("off")
-            plt.show()
-            st.set_option('deprecation.showPyplotGlobalUse', False)
-            st.pyplot() 
-        else:
-            st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
-            df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
-            string = pd.Series(df_list_abstract).str.cat(sep=' ')
-            wordcloud_texts = string
-            wordcloud_texts_str = str(wordcloud_texts)
-            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-            plt.figure(figsize=(20,8))
-            plt.axis('off')
-            plt.title('Top words in abstract (Intelligence bibliography collection)')
-            plt.imshow(wordcloud)
-            plt.axis("off")
-            plt.show()
-            st.set_option('deprecation.showPyplotGlobalUse', False)
-            st.pyplot() 
+        # st.subheader('Wordcloud')
+        # wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+        # if wordcloud_opt=='Titles':
+        #     df_list = [item for sublist in listdf for item in sublist]
+        #     string = pd.Series(df_list).str.cat(sep=' ')
+        #     wordcloud_texts = string
+        #     wordcloud_texts_str = str(wordcloud_texts)
+        #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, font = ImageFont, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+        #     plt.figure(figsize=(20,8))
+        #     plt.axis('off')
+        #     plt.title('Top words in title (Intelligence bibliography collection)')
+        #     plt.imshow(wordcloud)
+        #     plt.axis("off")
+        #     plt.show()
+        #     st.set_option('deprecation.showPyplotGlobalUse', False)
+        #     st.pyplot() 
+        # else:
+        #     st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
+        #     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
+        #     string = pd.Series(df_list_abstract).str.cat(sep=' ')
+        #     wordcloud_texts = string
+        #     wordcloud_texts_str = str(wordcloud_texts)
+        #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+        #     plt.figure(figsize=(20,8))
+        #     plt.axis('off')
+        #     plt.title('Top words in abstract (Intelligence bibliography collection)')
+        #     plt.imshow(wordcloud)
+        #     plt.axis("off")
+        #     plt.show()
+        #     st.set_option('deprecation.showPyplotGlobalUse', False)
+        #     st.pyplot() 
 
         ## Bring everything in the library
         # types = zot.everything(zot.top())
