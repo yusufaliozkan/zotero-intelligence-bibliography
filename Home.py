@@ -711,7 +711,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         listdf = df['lemma_title']
         listdf_abstract = df['lemma_abstract']
+        text = 'Fun, fun, awesome, awesome, tubular, astounding, superb, great, amazing, amazing, amazing, amazing'
 
+        # Create and generate a word cloud image:
+        wordcloud = WordCloud().generate(text)
+
+        # Display the generated image:
+        plt.imshow(wordcloud, interpolation='bilinear')
+        plt.axis("off")
+        plt.show()
+        st.pyplot()
         st.subheader('Wordcloud')
         wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
         if wordcloud_opt=='Titles':
