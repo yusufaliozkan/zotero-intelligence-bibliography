@@ -1,5 +1,5 @@
 pandas==1.2.0
-streamlit==1.21.0
+streamlit==1.25.0
 pyzotero==1.5.5
 PyQt6==6.4.0
 IPython==6.0
@@ -8,7 +8,8 @@ Altair==4.2.0
 streamlit-extras==0.2.4
 plotly==5.13.1
 nltk==3.8.1
-wordcloud==1.8.2.2
+wordcloud==1.8.1
 gsheetsdb==0.1.13.1
 fpdf2==2.6.1
 gspread==5.7.2
+Pillow==9.5.0
