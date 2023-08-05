@@ -22,6 +22,7 @@ from gsheetsdb import connect
 import gsheetsdb as gdb
 import datetime as dt
 import time
+import PIL
 
 
 # Connecting Zotero with API
