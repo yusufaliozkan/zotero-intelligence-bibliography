@@ -23,7 +23,7 @@ import gsheetsdb as gdb
 import datetime as dt
 import time
 import PIL
-
+from PIL import Image, ImageDraw, ImageFilter
 
 # Connecting Zotero with API
 library_id = '2514686'
