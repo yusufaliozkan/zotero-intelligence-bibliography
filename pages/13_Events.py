@@ -192,7 +192,6 @@ with tab1:
                     st.caption('Details:'+'\n '+ df_o['details'].iloc[j])
 
     if sort_by == 'Date':
-            # Convert the 'month' column to a datetime format
         df_gs['date'] = pd.to_datetime(df_gs['date'])
 
         # Sort the DataFrame by the date
@@ -201,9 +200,13 @@ with tab1:
         # Create a column for the month name
         df_gs['month_name'] = df_gs['date'].dt.strftime('%B')
 
+        # Create a column for the year
+        df_gs['year'] = df_gs['date'].dt.strftime('%Y')
+
         # Iterate through unique month names
         for month_name in df_gs['month_name'].unique():
-            st.markdown(f'#### Events in {month_name}')
+            year = df_gs[df_gs['month_name'] == month_name]['year'].iloc[0]
+            st.markdown(f'#### Events in {month_name} {year}')
             mon = df_gs[df_gs['month_name'] == month_name]
             df_mon = mon[['event_name', 'link', 'organiser', 'date_new', 'venue', 'details']]
             row_nu = len(df_mon.index)
