@@ -259,7 +259,11 @@ with tab1:
     selector = st.checkbox('Select a year')
     year = st.checkbox('Show years only')
     if selector:
-        slider = st.slider('Select a year', 2022,2023,2024)
+        max_year = df_gs['date'].dt.year.max()
+        min_year = df_gs['date'].dt.year.min()
+        current_year = pd.Timestamp.now().year
+
+        slider = st.slider('Select a year', min_year, max_year, max_year)
         slider = str(slider)
         df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
         ap = ' (in ' + slider+')'
