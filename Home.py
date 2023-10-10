@@ -712,70 +712,70 @@ with st.spinner('Retrieving data & updating dashboard...'):
         listdf = df['lemma_title']
         listdf_abstract = df['lemma_abstract']
 
-        # st.subheader('Wordcloud')
-        # wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
-        # if wordcloud_opt=='Titles':
-        #     df_list = [item for sublist in listdf for item in sublist]
-        #     string = pd.Series(df_list).str.cat(sep=' ')
-        #     wordcloud_texts = string
-        #     wordcloud_texts_str = str(wordcloud_texts)
-        #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-        #     plt.figure(figsize=(20,8))
-        #     plt.axis('off')
-        #     plt.title('Top words in title (Intelligence bibliography collection)')
-        #     plt.imshow(wordcloud)
-        #     plt.axis("off")
-        #     plt.show()
-        #     st.set_option('deprecation.showPyplotGlobalUse', False)
-        #     st.pyplot() 
-        # else:
-        #     st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
-        #     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
-        #     string = pd.Series(df_list_abstract).str.cat(sep=' ')
-        #     wordcloud_texts = string
-        #     wordcloud_texts_str = str(wordcloud_texts)
-        #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-        #     plt.figure(figsize=(20,8))
-        #     plt.axis('off')
-        #     plt.title('Top words in abstract (Intelligence bibliography collection)')
-        #     plt.imshow(wordcloud)
-        #     plt.axis("off")
-        #     plt.show()
-        #     st.set_option('deprecation.showPyplotGlobalUse', False)
-        #     st.pyplot() 
+        st.subheader('Wordcloud')
+        wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+        if wordcloud_opt=='Titles':
+            df_list = [item for sublist in listdf for item in sublist]
+            string = pd.Series(df_list).str.cat(sep=' ')
+            wordcloud_texts = string
+            wordcloud_texts_str = str(wordcloud_texts)
+            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+            plt.figure(figsize=(20,8))
+            plt.axis('off')
+            plt.title('Top words in title (Intelligence bibliography collection)')
+            plt.imshow(wordcloud)
+            plt.axis("off")
+            plt.show()
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+            st.pyplot() 
+        else:
+            st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
+            df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
+            string = pd.Series(df_list_abstract).str.cat(sep=' ')
+            wordcloud_texts = string
+            wordcloud_texts_str = str(wordcloud_texts)
+            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+            plt.figure(figsize=(20,8))
+            plt.axis('off')
+            plt.title('Top words in abstract (Intelligence bibliography collection)')
+            plt.imshow(wordcloud)
+            plt.axis("off")
+            plt.show()
+            st.set_option('deprecation.showPyplotGlobalUse', False)
+            st.pyplot() 
 
-        ## Bring everything in the library
-        # types = zot.everything(zot.top())
+        # Bring everything in the library
+        types = zot.everything(zot.top())
 
-        # data_t=[]
-        # columns_t = ['Publication type']
+        data_t=[]
+        columns_t = ['Publication type']
 
-        # for item in types:
-        #     data_t.append((item['data']['itemType']))
+        for item in types:
+            data_t.append((item['data']['itemType']))
 
-        # pd.set_option('display.max_colwidth', None)
-        # df_t = pd.DataFrame(data_t, columns=columns_t)
+        pd.set_option('display.max_colwidth', None)
+        df_t = pd.DataFrame(data_t, columns=columns_t)
 
-        # df_t['Publication type'] = df_t['Publication type'].replace(['thesis'], 'Thesis')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['journalArticle'], 'Journal article')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['book'], 'Book')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['bookSection'], 'Book chapter')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['blogPost'], 'Blog post')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['videoRecording'], 'Video')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['podcast'], 'Podcast')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['magazineArticle'], 'Magazine article')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['webpage'], 'Webpage')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
-        # df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report')
+        df_t['Publication type'] = df_t['Publication type'].replace(['thesis'], 'Thesis')
+        df_t['Publication type'] = df_t['Publication type'].replace(['journalArticle'], 'Journal article')
+        df_t['Publication type'] = df_t['Publication type'].replace(['book'], 'Book')
+        df_t['Publication type'] = df_t['Publication type'].replace(['bookSection'], 'Book chapter')
+        df_t['Publication type'] = df_t['Publication type'].replace(['blogPost'], 'Blog post')
+        df_t['Publication type'] = df_t['Publication type'].replace(['videoRecording'], 'Video')
+        df_t['Publication type'] = df_t['Publication type'].replace(['podcast'], 'Podcast')
+        df_t['Publication type'] = df_t['Publication type'].replace(['magazineArticle'], 'Magazine article')
+        df_t['Publication type'] = df_t['Publication type'].replace(['webpage'], 'Webpage')
+        df_t['Publication type'] = df_t['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
+        df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report')
 
 
-        # df_types = pd.DataFrame(df_t['Publication type'].value_counts())
+        df_types = pd.DataFrame(df_t['Publication type'].value_counts())
 
-        # st.header('Items in the library by type: ')
-        # df_types = df_types.sort_values(['Publication type'], ascending=[False])
-        # plot2= df_types.head(10)
+        st.header('Items in the library by type: ')
+        df_types = df_types.sort_values(['Publication type'], ascending=[False])
+        plot2= df_types.head(10)
 
-        # st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
+        st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
 
 
