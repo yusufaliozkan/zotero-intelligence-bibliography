@@ -192,29 +192,48 @@ with tab1:
                     st.caption('Details:'+'\n '+ df_o['details'].iloc[j])
 
     if sort_by == 'Date':
-        df_gs.sort_values(by='date', ascending = True, inplace=True)
-        month_dict = {'01': 'January',
-            '02': 'February',
-            '03': 'March',
-            '04': 'April',
-            '05': 'May',
-            '06': 'June',
-            '07': 'July',
-            '08': 'August',
-            '09': 'September',
-            '10': 'October',
-            '11': 'November',
-            '12': 'December'}
-        for month_num, month_name in month_dict.items():
-            if month_num in df_gs['month'].values:
-                st.markdown(f'#### Events in {month_name}')
-                mon = df_gs[df_gs['month']==month_num] 
-                df_mon = mon[['event_name', 'link', 'organiser', 'date_new', 'venue', 'details']]
-                row_nu = len(df_mon.index)
-                for i in range(row_nu):
-                    st.write(f"{i+1}) [{df_mon.iloc[i]['event_name']}]({df_mon.iloc[i]['link']}) organised by **{df_mon.iloc[i]['organiser']}**. Date: {df_mon.iloc[i]['date_new']}, Venue: {df_mon.iloc[i]['venue']}")
-                    if display:
-                        st.caption(f"Details:\n{df_mon.iloc[i]['details']}")
+            # Convert the 'month' column to a datetime format
+        df_gs['date'] = pd.to_datetime(df_gs['date'])
+
+        # Sort the DataFrame by the date
+        df_gs.sort_values(by='date', ascending=True, inplace=True)
+
+        # Create a column for the month name
+        df_gs['month_name'] = df_gs['date'].dt.strftime('%B')
+
+        # Iterate through unique month names
+        for month_name in df_gs['month_name'].unique():
+            st.markdown(f'#### Events in {month_name}')
+            mon = df_gs[df_gs['month_name'] == month_name]
+            df_mon = mon[['event_name', 'link', 'organiser', 'date_new', 'venue', 'details']]
+            row_nu = len(df_mon.index)
+            for i in range(row_nu):
+                st.write(f"{i+1}) [{df_mon.iloc[i]['event_name']}]({df_mon.iloc[i]['link']}) organised by **{df_mon.iloc[i]['organiser']}**. Date: {df_mon.iloc[i]['date_new']}, Venue: {df_mon.iloc[i]['venue']}")
+                if display:
+                    st.caption(f"Details:\n{df_mon.iloc[i]['details']}")
+        # df_gs.sort_values(by='date', ascending = True, inplace=True)
+        # month_dict = {'01': 'January',
+        #     '02': 'February',
+        #     '03': 'March',
+        #     '04': 'April',
+        #     '05': 'May',
+        #     '06': 'June',
+        #     '07': 'July',
+        #     '08': 'August',
+        #     '09': 'September',
+        #     '10': 'October',
+        #     '11': 'November',
+        #     '12': 'December'}
+        # for month_num, month_name in month_dict.items():
+        #     if month_num in df_gs['month'].values:
+        #         st.markdown(f'#### Events in {month_name}')
+        #         mon = df_gs[df_gs['month']==month_num] 
+        #         df_mon = mon[['event_name', 'link', 'organiser', 'date_new', 'venue', 'details']]
+        #         row_nu = len(df_mon.index)
+        #         for i in range(row_nu):
+        #             st.write(f"{i+1}) [{df_mon.iloc[i]['event_name']}]({df_mon.iloc[i]['link']}) organised by **{df_mon.iloc[i]['organiser']}**. Date: {df_mon.iloc[i]['date_new']}, Venue: {df_mon.iloc[i]['venue']}")
+        #             if display:
+        #                 st.caption(f"Details:\n{df_mon.iloc[i]['details']}")
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
