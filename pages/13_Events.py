@@ -237,7 +237,7 @@ with tab1:
     selector = st.checkbox('Select a year')
     year = st.checkbox('Show years only')
     if selector:
-        slider = st.slider('Select a year', 2022,2023,2023)
+        slider = st.slider('Select a year', 2022,2023,2024)
         slider = str(slider)
         df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
         ap = ' (in ' + slider+')'
