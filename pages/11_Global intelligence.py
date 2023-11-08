@@ -129,8 +129,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df = pd.DataFrame(data3, columns=columns3)
                 return df
             df = get_zotero_data(collection_code)
-            df['FirstName2'] = df['FirstName2'].fillna('No author')
-            df
+
             # df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
             # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
             # df
@@ -189,18 +188,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 # st.write('author entered')
                 ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
-                # df_fa = df['FirstName2']
-                # df_fa = pd.DataFrame(df_fa.tolist())
-                # df_fa = df_fa[0]
-                # df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
-                # df_new = pd.json_normalize(df_fa, errors='ignore') 
-                # df = pd.concat([df, df_new], axis=1)
-                # df['firstName'] = df['firstName'].fillna('null')
-                # df['lastName'] = df['lastName'].fillna('null')
+                df_fa = df['FirstName2']
+                df_fa = pd.DataFrame(df_fa.tolist())
+                df_fa = df_fa[0]
+                df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
+                df_new = pd.json_normalize(df_fa, errors='ignore') 
+                df = pd.concat([df, df_new], axis=1)
+                df['firstName'] = df['firstName'].fillna('null')
+                df['lastName'] = df['lastName'].fillna('null')
                 
                 df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                             df['Title'] + ' '+ 
-                            ' (by ' + '*' + df['FirstName2'] + '*'') ' + # IT CANNOT READ THE NAN VALUES
+                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
                             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                             ' (Published on: ' +df['Date published'] + ')'
@@ -212,8 +211,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # else:
             #     row_nu_1=15
 
-            # df['First author'] = df['firstName'] + ' ' + df['lastName']
-            df_download = df[['Title', 'Publication type', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
+            df['First author'] = df['firstName'] + ' ' + df['lastName']
+            df_download = df[['Title', 'Publication type', 'First author', 'Link to publication', 'Zotero link', 'Date published']]
 
             def convert_df(df):
                 return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
