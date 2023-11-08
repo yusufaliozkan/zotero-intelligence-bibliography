@@ -200,7 +200,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                             df['Title'] + ' '+ 
-                            ' (by ' + '*' + df['FirstName2'] + '*') ' + # IT CANNOT READ THE NAN VALUES
+                            ' (by ' + '*' + df['FirstName2'] + '*'') ' + # IT CANNOT READ THE NAN VALUES
                             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                             ' (Published on: ' +df['Date published'] + ')'
