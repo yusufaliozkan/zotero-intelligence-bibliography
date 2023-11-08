@@ -112,9 +112,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2', 'Publisher', 'Journal']
 
                 for item in items:
+                    creators = item['data']['creators']
+                    creators_str = ", ".join([creator.get('firstName', '') + ' ' + creator.get('lastName', '') for creator in creators])
                     data3.append((
-                        creators = item['data']['creators']
-                        creators_str = ", ".join([creator.get('firstName', '') + ' ' + creator.get('lastName', '') for creator in creators])
                         item['data']['title'], 
                         item['data']['itemType'], 
                         item['data']['url'], 
