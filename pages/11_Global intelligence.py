@@ -113,13 +113,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 for item in items:
                     data3.append((
+                        creators = item['data']['creators']
+                        creators_str = ", ".join([creator.get('firstName', '') + ' ' + creator.get('lastName', '') for creator in creators])
                         item['data']['title'], 
                         item['data']['itemType'], 
                         item['data']['url'], 
                         item['data']['abstractNote'], 
                         item['links']['alternate']['href'],
                         item['data'].get('date'),
-                        item['data']['creators'],
+                        creators_str,
                         item['data'].get('publisher'),
                         item['data'].get('publicationTitle')
                         )) 
