@@ -109,9 +109,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             def get_zotero_data(collection_code):
                 items = zot.everything(zot.collection_items_top(collection_code))
                 data3=[]
-                columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2', 'Publisher', 'Journal']
+                columns3=['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date published', 'FirstName2', 'Full author list', 'Publisher', 'Journal']
 
                 for item in items:
+                    creators = item['data']['creators']
+                    creators_str = ", ".join([creator.get('firstName', '') + ' ' + creator.get('lastName', '') for creator in creators])
                     data3.append((
                         item['data']['title'], 
                         item['data']['itemType'], 
@@ -120,6 +122,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         item['links']['alternate']['href'],
                         item['data'].get('date'),
                         item['data']['creators'],
+                        creators_str,
                         item['data'].get('publisher'),
                         item['data'].get('publicationTitle')
                         )) 
