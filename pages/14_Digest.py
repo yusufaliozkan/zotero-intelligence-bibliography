@@ -75,6 +75,8 @@ with st.spinner('Preparing digest...'):
     df_csv['firstName'] =df_csv['firstName'].fillna('')
     df_csv['lastName'] =df_csv['lastName'].fillna('')
 
+    df_csv
+
     df_csv = df_csv.drop(['Unnamed: 0'], axis=1)
 
     today = dt.date.today()
