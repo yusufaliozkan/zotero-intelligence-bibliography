@@ -167,7 +167,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             st.markdown('#### Collection theme: ' + collection_name)
             st.caption('This collection has ' + str(count_collection) + ' items (this number may include reviews attached to sources).') # count_collection
-            st.caption('This collection lists academic sources that are non-UK/US on intelligence.')
 
             df2 = df.copy()
             types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique())
