@@ -86,7 +86,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections = zotero_collections(library_id, library_type)
 
     df_collections = df_collections.sort_values(by='Name')
-    df_collections=df_collections[df_collections['Name'].str.contains("Global")].reset_index()
+    df_collections=df_collections[df_collections['Name'].str.contains("AI and")].reset_index()
     # clist = df_collections['Name'].unique()
 
     tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', 'Source suggestion'])
