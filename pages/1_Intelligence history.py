@@ -152,7 +152,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 'report': 'Report',
                 'forumPost': 'Forum post',
                 'conferencePaper' : 'Conference paper',
-                'presentation' : 'Presentation'
+                'presentation' : 'Presentation',
+                'audioRecording':'Podcast'
             }
             df['Publication type'] = df['Publication type'].replace(type_map)
 
