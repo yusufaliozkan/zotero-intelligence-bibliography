@@ -289,7 +289,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.caption('Abstract: '+ df['Abstract'].iloc[i])
 
         with col2:
-            with st.expander('Collections in this site', expanded=True):
+            with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
                 st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
