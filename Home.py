@@ -758,20 +758,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
 
-    # search_term = st.text_input('Enter keyword or phrase to search')
+    search_term = st.text_input('Enter keyword or phrase to search')
 
-    # # Display outputs based on the search term
-    # if search_term:
-    #     filtered_df = df_csv[df_csv['Title'].str.contains(search_term, case=False, na=False)]
-    #     filtered_df = filtered_df.reset_index(drop=True)
+    # Display outputs based on the search term
+    if search_term:
+        filtered_df = df_csv[df_csv['Title'].str.contains(search_term, case=False, na=False)]
+        filtered_df = filtered_df.reset_index(drop=True)
 
-    #     if not filtered_df.empty:
-    #         st.write("Matching articles:")
-    #         st.write(filtered_df)
-    #     else:
-    #         st.write("No articles found with the given keyword/phrase.")
-    # else:
-    #     st.write("Please enter a keyword or phrase to search.")
+        if not filtered_df.empty:
+            st.write("Matching articles:")
+            st.write(filtered_df)
+        else:
+            st.write("No articles found with the given keyword/phrase.")
+    else:
+        st.write("Please enter a keyword or phrase to search.")
 
     df_csv = pd.DataFrame(data)
 
