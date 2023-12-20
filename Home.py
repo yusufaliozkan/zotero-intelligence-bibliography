@@ -765,41 +765,38 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
         st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
 
-
     links = {
-    'Link 1': 'https://www.example1.com',
-    'Link 2': 'https://www.example2.com',
-    'Link 3': 'https://www.example3.com',
-    'Link 4': 'https://www.example4.com',
-    'Link 5': 'https://www.example5.com',
-    'Link 6': 'https://www.example6.com',
-    'Link 7': 'https://www.example7.com',
-    'Link 8': 'https://www.example8.com',
-    'Link 9': 'https://www.example9.com',
-    'Link 10': 'https://www.example10.com',
-    'Link 11': 'https://www.example11.com',
-    'Link 12': 'https://www.example12.com',
-    'Link 13': 'https://www.example13.com',
-    'Link 14': 'https://www.example14.com',
-    'Link 15': 'https://www.example15.com',
+        'Link 1': 'https://www.example1.com',
+        'Link 2': 'https://www.example2.com',
+        'Link 3': 'https://www.example3.com',
+        'Link 4': 'https://www.example4.com',
+        'Link 5': 'https://www.example5.com',
+        'Link 6': 'https://www.example6.com',
+        'Link 7': 'https://www.example7.com',
+        'Link 8': 'https://www.example8.com',
+        'Link 9': 'https://www.example9.com',
+        'Link 10': 'https://www.example10.com',
+        'Link 11': 'https://www.example11.com',
+        'Link 12': 'https://www.example12.com',
+        'Link 13': 'https://www.example13.com',
+        'Link 14': 'https://www.example14.com',
+        'Link 15': 'https://www.example15.com',
     }
 
     # Create a grid layout for buttons
     col1, col2, col3, col4, col5 = st.columns(5)
 
-    for i, (name, link) in enumerate(links.items()):
-        if i < 5:
-            with col1:
-                if st.button(name):
-                    st.markdown(f"[{name}]({link})")
-        elif i < 10:
-            with col2:
-                if st.button(name):
-                    st.markdown(f"[{name}]({link})")
-        elif i < 15:
-            with col3:
-                if st.button(name):
-                    st.markdown(f"[{name}]({link})")
+    for name, link in links.items():
+        if col1.button(name):
+            st.markdown(f'<script>window.location.href="{link}"</script>', unsafe_allow_html=True)
+        elif col2.button(name):
+            st.markdown(f'<script>window.location.href="{link}"</script>', unsafe_allow_html=True)
+        elif col3.button(name):
+            st.markdown(f'<script>window.location.href="{link}"</script>', unsafe_allow_html=True)
+        elif col4.button(name):
+            st.markdown(f'<script>window.location.href="{link}"</script>', unsafe_allow_html=True)
+        elif col5.button(name):
+            st.markdown(f'<script>window.location.href="{link}"</script>', unsafe_allow_html=True)
 
     components.html(
     """
