@@ -773,8 +773,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # else:
     #     st.write("Please enter a keyword or phrase to search.")
 
-    df_csv = pd.DataFrame(data)
-
     # Function to format the entries
     def format_entry(row):
         return (
