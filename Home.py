@@ -781,7 +781,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         if not filtered_df.empty:
             st.write("Matching articles:")
-            st.write(filtered_df[['Title']])
+            st.write(filtered_df)
         else:
             st.write("No articles found with the given keyword/phrase.")
     else:
