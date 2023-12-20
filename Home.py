@@ -282,9 +282,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
                         if df['Name'].iloc[i]=='':
                             c=''
+                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
                     if not any([a, b, c]):
                         st.caption('No theme to display!')
-                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                    
                     st.caption('Abstract: '+ df['Abstract'].iloc[i])
 
         with col2:
