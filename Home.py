@@ -791,6 +791,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # Display formatted entries based on the search term
     if search_term:
         filtered_df = df_csv[df_csv['Title'].str.contains(search_term, case=False, na=False)]
+        filtered_df
 
         if not filtered_df.empty:
             st.write("Matching articles:")
