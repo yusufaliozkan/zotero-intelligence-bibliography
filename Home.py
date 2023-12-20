@@ -775,14 +775,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     # Function to format the entries
     def format_entry(row):
-        return (
-            '**' + row['Publication type'] + '**' + ': ' +
-            row['Title'] + ' ' +
-            '(Published in: ' + '*' + row['Journal'] + '*' + ') ' +
-            '[[Publication link]](' + row['Link to publication'] + ') ' +
-            '[[Zotero link]](' + row['Zotero link'] + ')'
-        )
+        publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+        title = str(row['Title']) if pd.notnull(row['Title']) else ''
+        first_name = str(row['firstName']) if pd.notnull(row['firstName']) else ''
+        last_name = str(row['lastName']) if pd.notnull(row['lastName']) else ''
+        date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+        journal = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+        link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+        zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
 
+        return (
+            '**' + publication_type + '**' + ': ' +
+            title + ' ' +
+            '(by ' + '*' + first_name + '* ' + '*' + last_name + '*' + ') ' +
+            '(Published on: ' + date_published + ') ' +
+            '(Published in: ' + '*' + journal + '*' + ') ' +
+            '[[Publication link]](' + link_to_publication + ') ' +
+            '[[Zotero link]](' + zotero_link + ')'
+        )
     # Title input from the user
     search_term = st.text_input('Enter keyword or phrase to search')
 
