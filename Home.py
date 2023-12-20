@@ -784,7 +784,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with st.expander('Acknowledgements'):
         st.subheader('Acknowledgements')
         st.write('The following sources are used to collate some of the items and events in this website:')
-        st.write("1. [King's Intelligence and Security Group (KISG) digest](https://kisg.co.uk/kisg-digests) compiled by David Schaefer")
+        st.write("1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by David Schaefer")
         st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
         st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
 
