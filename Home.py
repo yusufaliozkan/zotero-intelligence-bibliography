@@ -756,26 +756,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
-    links = {
-        'Intelligence history': 'https://intelligence.streamlit.app/Intelligence_history',
-        'Intelligence studies': 'https://intelligence.streamlit.app/Intelligence_studies',
-        'Intelligence analysis': 'https://intelligence.streamlit.app/Intelligence_analysis',
-        'Intelligence organisations': 'https://intelligence.streamlit.app/Intelligence_organisations',
-        'Intelligence failures': 'https://intelligence.streamlit.app/Intelligence_failures',
-        'Intelligence oversight and ethics': 'https://intelligence.streamlit.app/Intelligence_oversight_and_ethics',
-        'Intelligence collection': 'https://intelligence.streamlit.app/Intelligence_collection',
-        'Counterintelligence': 'https://intelligence.streamlit.app/Counterintelligence',
-        'Covert action': 'https://intelligence.streamlit.app/Covert_action',
-        'Intelligence and cybersphere': 'https://intelligence.streamlit.app/Intelligence_and_cybersphere',
-        'Global intelligence': 'https://intelligence.streamlit.app/Global_intelligence',
-        'Special collections': 'https://intelligence.streamlit.app/Special_collections'
-    }
-
-    # Display links as buttons
-    for name, link in links.items():
-        if st.button(name):
-            st.markdown(f"[{name}]({link})")
-
     st.write('---')
     with st.expander('Acknowledgements'):
         st.subheader('Acknowledgements')
