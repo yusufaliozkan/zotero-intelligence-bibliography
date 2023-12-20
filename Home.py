@@ -773,6 +773,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         df_types = pd.DataFrame(df_t['Publication type'].value_counts())
 
         st.header('Items in the library by type: ')
+        df_csv
         df_types = df_types.sort_values(['Publication type'], ascending=[False])
         plot2= df_types.head(10)
 
