@@ -24,6 +24,7 @@ import datetime as dt
 import time
 import PIL
 from PIL import Image, ImageDraw, ImageFilter
+import json
 
 # Connecting Zotero with API
 library_id = '2514686'
