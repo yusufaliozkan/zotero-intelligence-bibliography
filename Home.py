@@ -758,7 +758,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
     df_csv
-    types = st.multiselect('Publication type', df_csv['Publication type'].unique(),df_csv['Publication type'].unique(), key='original')
+    types = st.multiselect('Publication type', df_csv['Title'].unique(),df_csv['Title'].unique(), key='original')
 
     st.write('---')
     with st.expander('Acknowledgements'):
