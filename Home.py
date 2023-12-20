@@ -780,7 +780,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         return (
             '**' + row['Publication type'] + '**' + ': ' +
             row['Title'] + ' ' +
-            '(by ' + '*' + row['firstName'] + '* ' + '*' + row['lastName'] + '*' + ') ' +
             '(Published on: ' + row['Date published'] + ') ' +
             '(Published in: ' + '*' + row['Journal'] + '*' + ') ' +
             '[[Publication link]](' + row['Link to publication'] + ') ' +
