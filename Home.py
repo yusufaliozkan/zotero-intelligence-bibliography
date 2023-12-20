@@ -757,6 +757,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
+    df_csv
+
     st.write('---')
     with st.expander('Acknowledgements'):
         st.subheader('Acknowledgements')
@@ -764,7 +766,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.write("1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by David Schaefer")
         st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
         st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
-
 
     components.html(
     """
