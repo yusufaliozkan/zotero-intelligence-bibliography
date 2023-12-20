@@ -773,12 +773,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # else:
     #     st.write("Please enter a keyword or phrase to search.")
 
-    # Function to format the entries
+    def extract_authors(authors):
+        try:
+            author_list = json.loads(authors)
+            author_names = [author['firstName'] + ' ' + author['lastName'] for author in author_list if author['creatorType'] == 'author']
+            return ', '.join(author_names)
+        except (json.JSONDecodeError, KeyError):
+            return ''  # Return an empty string if unable to parse or extract authors
+
     def format_entry(row):
         publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
         title = str(row['Title']) if pd.notnull(row['Title']) else ''
-        first_name = str(row['firstName']) if pd.notnull(row['firstName']) else ''
-        last_name = str(row['lastName']) if pd.notnull(row['lastName']) else ''
+        authors = extract_authors(row['FirstName2'])
         date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
         journal = str(row['Journal']) if pd.notnull(row['Journal']) else ''
         link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
@@ -787,7 +793,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         return (
             '**' + publication_type + '**' + ': ' +
             title + ' ' +
-            '(by ' + '*' + first_name + '* ' + '*' + last_name + '*' + ') ' +
+            '(by ' + '*' + authors + '*' + ') ' +
             '(Published on: ' + date_published + ') ' +
             '(Published in: ' + '*' + journal + '*' + ') ' +
             '[[Publication link]](' + link_to_publication + ') ' +
