@@ -184,7 +184,7 @@ display = st.checkbox('Display theme and abstract')
 # Displaying last 10 unique items
 for index, row in last_10_unique_items.iterrows():
     display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
-                   f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
+                   f"(Published on: {row['Date published']}) " \
                    f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
     
     st.write(f"{index + 1}) {display_text}")
