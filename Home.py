@@ -257,41 +257,42 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Search in database')
             search_term = st.text_input('Search keywords or author names')
             if search_term:
-                search_terms = search_term.split()  # Split the search terms
-                filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
-                df_csv = pd.read_csv('all_items.csv')
-                filtered_df = df_csv[
-                    (df_csv['Title'].str.contains(filters, case=False, na=False)) |
-                    (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
-                ]
+                with st.expander('Click to expand', expanded=True):
+                    search_terms = search_term.split()  # Split the search terms
+                    filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+                    df_csv = pd.read_csv('all_items.csv')
+                    filtered_df = df_csv[
+                        (df_csv['Title'].str.contains(filters, case=False, na=False)) |
+                        (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
+                    ]
 
-                if not filtered_df.empty:
-                    num_items = len(filtered_df)
-                    st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
-                    
-                    # Your existing code for displaying articles
-                    download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
-                    download_filtered = download_filtered.reset_index(drop=True)
+                    if not filtered_df.empty:
+                        num_items = len(filtered_df)
+                        st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
+                        
+                        # Your existing code for displaying articles
+                        download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                        download_filtered = download_filtered.reset_index(drop=True)
 
-                    def convert_df(download_filtered):
-                        return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                    csv = convert_df(download_filtered)
-                    # csv = df_download
-                    # # st.caption(collection_name)
-                    today = datetime.date.today().isoformat()
-                    a = 'search-result-' + today
-                    st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+                        def convert_df(download_filtered):
+                            return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                        csv = convert_df(download_filtered)
+                        # csv = df_download
+                        # # st.caption(collection_name)
+                        today = datetime.date.today().isoformat()
+                        a = 'search-result-' + today
+                        st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
-                    articles_list = []  # Store articles in a list
-                    for index, row in filtered_df.iterrows():
-                        formatted_entry = format_entry(row)
-                        articles_list.append(formatted_entry)  # Append formatted entry to the list
+                        articles_list = []  # Store articles in a list
+                        for index, row in filtered_df.iterrows():
+                            formatted_entry = format_entry(row)
+                            articles_list.append(formatted_entry)  # Append formatted entry to the list
 
-                    # Display the numbered list using Markdown syntax
-                    for i, article in enumerate(articles_list, start=1):
-                        st.markdown(f"{i}. {article}")
-                else:
-                    st.write("No articles found with the given keyword/phrase.")
+                        # Display the numbered list using Markdown syntax
+                        for i, article in enumerate(articles_list, start=1):
+                            st.markdown(f"{i}. {article}")
+                    else:
+                        st.write("No articles found with the given keyword/phrase.")
             else:
                 st.write("Please enter a keyword or author name to search.")
 
@@ -311,7 +312,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_all_items
 
-            st.header('Recently added or updated items: ')
+            st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
             
