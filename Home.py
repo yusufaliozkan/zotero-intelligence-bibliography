@@ -221,7 +221,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col1:
 
             # SEARCH KEYWORD OR AUTHOR NAMES
-
             def format_entry(row):
                 publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                 title = str(row['Title']) if pd.notnull(row['Title']) else ''
@@ -244,7 +243,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     published_source = ''
 
                 # Extracting year from the 'Date published' column
-                year_published = pd.to_datetime(date_published).year if date_published else ''
+                year_published = pd.to_datetime(date_published, utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                year_published = year_published.dt.strftime('%d-%m-%Y').fillna('No date') if not year_published.isnull().all() else ''
 
                 return (
                     '**' + publication_type + '**' + ': ' +
@@ -263,9 +263,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 search_terms = search_term.split()  # Split the search terms
                 filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
                 df_csv = pd.read_csv('all_items.csv')
-                df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                df_csv['Date published'] = df_csv['Date published'].dt.strftime('%d-%m-%Y')
-                df_csv['Date published'] = df_csv['Date published'].fillna('No date')
                 filtered_df = df_csv[
                     (df_csv['Title'].str.contains(filters, case=False, na=False)) |
                     (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
