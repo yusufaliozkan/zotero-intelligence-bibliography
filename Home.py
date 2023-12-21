@@ -779,9 +779,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
         title = str(row['Title']) if pd.notnull(row['Title']) else ''
         authors = str(row['FirstName2'])
         date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-        journal = str(row['Journal']) if pd.notnull(row['Journal']) else ''
         link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
         zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+        journal_or_publisher = ''
+
+        if publication_type == 'Journal article':
+            journal_or_publisher = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+        elif publication_type == 'Book':
+            journal_or_publisher = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
         # Extracting year from the 'Date published' column
         year_published = pd.to_datetime(date_published).year if date_published else ''
@@ -790,8 +795,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             '**' + publication_type + '**' + ': ' +
             title + ' ' +
             '(by ' + '*' + authors + '*' + ') ' +
-            '(Published on: ' + str(year_published) + ') ' +  # Show only the year
-            '(Published in: ' + '*' + journal + '*' + ') ' +
+            '(Published on: ' + str(year_published) + ') ' +
+            '(Published in: ' + '*' + journal_or_publisher + '*' + ') ' +  # Use journal or publisher based on type
             '[[Publication link]](' + link_to_publication + ') ' +
             '[[Zotero link]](' + zotero_link + ')'
         )
