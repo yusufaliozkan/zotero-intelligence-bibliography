@@ -779,32 +779,57 @@ with st.spinner('Retrieving data & updating dashboard...'):
         title = str(row['Title']) if pd.notnull(row['Title']) else ''
         authors = str(row['FirstName2'])
         date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-        journal = str(row['Journal']) if pd.notnull(row['Journal']) else ''
         link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
         zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+        published_by_or_in = ''
+        published_source = ''
+
+        if publication_type == 'Journal article':
+            published_by_or_in = 'Published in'
+            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+        elif publication_type == 'Book':
+            published_by_or_in = 'Published by'
+            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+        else:
+            # For other types, leave the fields empty
+            published_by_or_in = ''
+            published_source = ''
+
+        # Extracting year from the 'Date published' column
+        year_published = pd.to_datetime(date_published).year if date_published else ''
 
         return (
             '**' + publication_type + '**' + ': ' +
             title + ' ' +
             '(by ' + '*' + authors + '*' + ') ' +
-            '(Published on: ' + date_published + ') ' +
-            '(Published in: ' + '*' + journal + '*' + ') ' +
+            '(Publication year: ' + str(year_published) + ') ' +
+            ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
             '[[Publication link]](' + link_to_publication + ') ' +
             '[[Zotero link]](' + zotero_link + ')'
         )
+
     # Title input from the user
     search_term = st.text_input('Enter keyword or phrase to search')
-
-    # Display formatted entries based on the search term
     if search_term:
-        filtered_df = df_csv[df_csv['Title'].str.contains(search_term, case=False, na=False)]
-        filtered_df
+        search_terms = search_term.split()  # Split the search terms
+        filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+
+        filtered_df = df_csv[
+            (df_csv['Title'].str.contains(filters, case=False, na=False)) |
+            (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
+        ]
 
         if not filtered_df.empty:
+            filtered_df
             st.write("Matching articles:")
+            articles_list = []  # Store articles in a list
             for index, row in filtered_df.iterrows():
                 formatted_entry = format_entry(row)
-                st.markdown(formatted_entry)
+                articles_list.append(formatted_entry)  # Append formatted entry to the list
+
+            # Display the numbered list using Markdown syntax
+            for i, article in enumerate(articles_list, start=1):
+                st.markdown(f"{i}. {article}")
         else:
             st.write("No articles found with the given keyword/phrase.")
     else:
