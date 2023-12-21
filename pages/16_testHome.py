@@ -161,14 +161,16 @@ df_duplicated = pd.read_csv('all_items_duplicated.csv')
 duplicated_data = df_duplicated.copy()
 
 st.header('Recently added or updated items: ')
-df_duplicated
 
-# Display unique items along with their themes
-unique_items = df_duplicated.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
-unique_items
+# Sorting the DataFrame by 'Date added' in descending order
+df_sorted = df_duplicated.sort_values(by='Date added', ascending=False)
+
+# Selecting the last 10 items
+last_10_items = df_sorted.head(10)
+
 display = st.checkbox('Display theme and abstract')
 
-for index, row in unique_items.iterrows():
+for index, row in last_10_items.iterrows():
     display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
                    f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
                    f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
