@@ -274,11 +274,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     download_filtered = download_filtered.reset_index(drop=True)
                     filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], errors='coerce')
                     
-                    # Drop rows with NaN values in the 'Date published' column
+                    # Drop rows with NaT (invalid datetime) values in the 'Date published' column
                     filtered_df = filtered_df.dropna(subset=['Date published'])
                     
-                    # Sort DataFrame by 'Date published'
-                    filtered_df = filtered_df.sort_values(by='Date published', ascending=False)  
+                    # Sort DataFrame by 'Date published' (if there are valid dates)
+                    if not filtered_df.empty:
+                        filtered_df = filtered_df.sort_values(by='Date published', ascending=False)  # Sort by 'Date 
 
                     def convert_df(download_filtered):
                         return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
