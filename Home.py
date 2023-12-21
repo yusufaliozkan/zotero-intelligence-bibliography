@@ -303,23 +303,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
             unique_collections = df_csv_collections['Collection_Name'].unique()
-            selected_collections = st.selectbox('Select Collection(s)', unique_collections)
-            if not selected_collections:
+            selected_collection = st.selectbox('Select Collection(s)', unique_collections)
+
+            if not selected_collection:
                 st.write('Pick a collection to see items')
             else:
                 filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
                 filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                
                 with st.expander('Click to expand', expanded=False):
                     def convert_df(filtered_collection_df):
-                        return filtered_collection_df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                        return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
+
                     csv = convert_df(filtered_collection_df)
-                    # csv = df_download
-                    # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
                     num_items_collections = len(filtered_collection_df)
                     st.write(f"{num_items_collections} sources found")
-                    a = 'selected_collections_' + today
-                    st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')                    
+                    a = f'selected_collection_{today}'
+                    st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                    
                     for index, row in filtered_collection_df.iterrows():
                         display_text = (
                             f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
