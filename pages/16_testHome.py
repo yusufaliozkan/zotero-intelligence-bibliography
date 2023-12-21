@@ -124,33 +124,37 @@ def zotero_collections(library_id, library_type):
     return df_collections.sort_values(by='Name')
 df_collections = zotero_collections(library_id, library_type)
 
-#To be deleted
-if 0 in df:
-    merged_df = pd.merge(
-        left=df,
-        right=df_collections,
-        left_on=0,
-        right_on='Key',
-        how='left'
-    )
-    if 1 in merged_df:
-        merged_df = pd.merge(
-            left=merged_df,
-            right=df_collections,
-            left_on=1,
-            right_on='Key',
-            how='left'
-        )
-        if 2 in merged_df:
-            merged_df = pd.merge(
-                left=merged_df,
-                right=df_collections,
-                left_on=2,
-                right_on='Key',
-                how='left'
-            ) 
-df = merged_df.copy()
-#To be deleted
+def duplicate_rows_by_col_key(df, df_collections):
+    # Duplicate rows based on 'Col key'
+    duplicated_rows = []
+    for index, row in df.iterrows():
+        if isinstance(row['Col key'], list):
+            for key in row['Col key']:
+                new_row = row.copy()
+                collection_info = df_collections[df_collections['Key'] == key]
+                if not collection_info.empty:
+                    new_row['Collection_Key'] = key
+                    new_row['Collection_Name'] = collection_info.iloc[0]['Name']
+                    new_row['Collection_Link'] = collection_info.iloc[0]['Link']
+                    duplicated_rows.append(new_row)
+        else:
+            key = row['Col key']
+            new_row = row.copy()
+            collection_info = df_collections[df_collections['Key'] == key]
+            if not collection_info.empty:
+                new_row['Collection_Key'] = key
+                new_row['Collection_Name'] = collection_info.iloc[0]['Name']
+                new_row['Collection_Link'] = collection_info.iloc[0]['Link']
+                duplicated_rows.append(new_row)
+
+    # Create a new DataFrame with duplicated rows
+    duplicated_df = pd.DataFrame(duplicated_rows)
+
+    return duplicated_df
+df = zotero_data(library_id, library_type)
+df_collections_2 = zotero_collections2(library_id, library_type)
+duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
+duplicated_data
 
 df = df.fillna('')
 
