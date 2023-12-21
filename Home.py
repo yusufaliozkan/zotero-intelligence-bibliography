@@ -808,23 +808,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
             '[[Zotero link]](' + zotero_link + ')'
         )
 
+    # Title input from the user
     search_term = st.text_input('Enter keyword or phrase to search')
-
-    # Boolean search options
-    boolean_options = st.multiselect('Choose boolean search options:', ['AND', 'OR'])
-
-    # Display formatted entries based on the search term and boolean options
     if search_term:
-        search_terms = search_term.split()  # Split the search terms
+        search_terms = re.findall(r'\bAND\b|\bOR\b|\bNOT\b|\b\w+\b', search_term.upper())  # Extract search terms and boolean operators
+        valid_operators = ['AND', 'OR', 'NOT']
         
-        if 'AND' in boolean_options:
-            filters = '&'.join(f"({col}.str.contains('{term}', case=False, na=False))" for term in search_terms for col in ['Title', 'FirstName2'])
-        elif 'OR' in boolean_options:
-            filters = '|'.join(f"({col}.str.contains('{term}', case=False, na=False))" for term in search_terms for col in ['Title', 'FirstName2'])
-        else:
-            filters = '|'.join(search_terms)
+        filters = ""
+        for term in search_terms:
+            if term in valid_operators:
+                filters += f" {term} "
+            else:
+                filters += f"({term})"
 
-        filtered_df = df_csv[df_csv.eval(filters)]
+        try:
+            filtered_df = df_csv[df_csv.eval(filters)]
+        except ValueError:
+            filtered_df = pd.DataFrame()  # Empty DataFrame if the query syntax is invalid
 
         if not filtered_df.empty:
             st.write("Matching articles:")
