@@ -317,9 +317,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Recently added or updated items: ')
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
-
-            with st.expander('Click to expand', expanded=False):
-                df
             
             df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
             df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
