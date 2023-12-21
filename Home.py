@@ -819,7 +819,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         else:
             st.write("No articles found with the given keyword/phrase.")
     else:
-        st.write("Please enter a keyword or phrase to search.")
+        st.write("Please enter a keyword or author name to search.")
 
     st.write('---')
     with st.expander('Acknowledgements'):
