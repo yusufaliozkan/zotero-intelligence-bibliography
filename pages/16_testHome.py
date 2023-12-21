@@ -162,6 +162,8 @@ st.header('Recently added or updated items: ')
 # Display unique items along with their themes
 unique_items = duplicated_data.drop_duplicates(subset=['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
 
+display = st.checkbox('Display theme and abstract')
+
 for index, row in unique_items.iterrows():
     display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['Authors']}*) " \
                    f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
@@ -169,16 +171,20 @@ for index, row in unique_items.iterrows():
     
     st.write(f"{index + 1}) {display_text}")
     
-    display_themes = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Name']
-    display_theme_links = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Link']
-    
-    themes_to_display = set(zip(display_themes, display_theme_links))
-    if themes_to_display:
-        st.caption('Themes:')
-        for theme, link in themes_to_display:
-            if theme and link:
-                st.caption(f'- [{theme}]({link})')
-
+    if display:
+        display_themes = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Name']
+        display_theme_links = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Link']
+        
+        themes_to_display = set(zip(display_themes, display_theme_links))
+        
+        if themes_to_display:
+            themes_caption = 'Theme(s):'
+            for theme, link in themes_to_display:
+                if theme and link:
+                    themes_caption += f"\n- [{theme}]({link})"
+            
+            st.caption(themes_caption)
+            st.caption(f'Abstract: {row["Abstract"]}')
 # END OF TEST
 
 df = df.fillna('')
