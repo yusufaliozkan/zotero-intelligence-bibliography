@@ -811,10 +811,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # Title input from the user
     search_term = st.text_input('Enter keyword or phrase to search')
 
-    # Display formatted entries based on the search term
     if search_term:
-        filtered_df = df_csv[df_csv['Title'].str.contains(search_term, case=False, na=False)]
-        filtered_df
+        filtered_df = df_csv[
+            (df_csv['Title'].str.contains(search_term, case=False, na=False)) |
+            (df_csv['FirstName2'].str.contains(search_term, case=False, na=False))
+        ]
 
         if not filtered_df.empty:
             st.write("Matching articles:")
