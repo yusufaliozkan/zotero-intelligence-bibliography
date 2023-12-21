@@ -24,6 +24,7 @@ import datetime as dt
 import time
 import PIL
 from PIL import Image, ImageDraw, ImageFilter
+import json
 
 # Connecting Zotero with API
 library_id = '2514686'
@@ -42,7 +43,7 @@ zot = zotero.Zotero(library_id, library_type)
 
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
-    items = zot.top(limit=15)
+    items = zot.top(limit=10)
 
     data=[]
     columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue']
@@ -176,7 +177,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with st.expander('Intro'):
             st.info(into)
     with col1:
-        st.write('There are '+  '**'+str(count)+ '**' + ' items in the [Intelligence bibliography Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/items).')
+        st.write('There are '+  '**'+str(count)+ '**' + ' items in this library.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
@@ -234,68 +235,62 @@ with st.spinner('Retrieving data & updating dashboard...'):
             a = 'intelligence-bibliography-' + today
             st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
             
-            with st.expander('Click to hide the list', expanded=True):
-                display = st.checkbox('Display theme and abstract')
+            display = st.checkbox('Display theme and abstract')
 
-                df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                            ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                            ' (Published on: ' + df['Date published']+', ' +
-                            'Added on: ' + df['Date added']+')'+
-                            '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                            )
+            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                        ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                        ' (Published on: ' + df['Date published']+', ' +
+                        'Added on: ' + df['Date added']+')'+
+                        '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                        )
+            
+            row_nu_1 = len(df_last.index)
+            for i in range(row_nu_1):
+                publication_type = df['Publication type'].iloc[i]
+                if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+') ' +
+                                " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
+                    st.write(f"{i+1}) " + df_last.iloc[i])
+                else:
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+', ' +
+                                'Added on: ' + df['Date added']+') '+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
+                    st.write(f"{i+1}) " + df_last.iloc[i])
                 
-                row_nu_1 = len(df_last.index)
-                for i in range(row_nu_1):
-                    publication_type = df['Publication type'].iloc[i]
-                    if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                    ' (Published on: ' + df['Date published']+') ' +
-                                    " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
-                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                    )
-                        st.write(f"{i+1}) " + df_last.iloc[i])
-                    else:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                    ' (Published on: ' + df['Date published']+', ' +
-                                    'Added on: ' + df['Date added']+') '+
-                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                    )
-                        st.write(f"{i+1}) " + df_last.iloc[i])
+                if display:
+                    a=''
+                    b=''
+                    c=''
+                    if 'Name_x' in df:
+                        a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
+                        if df['Name_x'].iloc[i]=='':
+                            a=''
+                    if 'Name_y' in df:
+                        b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
+                        if df['Name_y'].iloc[i]=='':
+                            b=''
+                    if 'Name' in df:
+                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
+                        if df['Name'].iloc[i]=='':
+                            c=''
+                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                    if not any([a, b, c]):
+                        st.caption('No theme to display!')
                     
-                    if display:
-                        a=''
-                        b=''
-                        c=''
-                        if 'Name_x' in df:
-                            a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
-                            if df['Name_x'].iloc[i]=='':
-                                a=''
-                        if 'Name_y' in df:
-                            b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
-                            if df['Name_y'].iloc[i]=='':
-                                b=''
-                        if 'Name' in df:
-                            c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
-                            if df['Name'].iloc[i]=='':
-                                c=''
-                        if not any([a, b, c]):
-                            st.caption('No theme to display!')
-                        st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                        st.caption('Abstract: '+ df['Abstract'].iloc[i])
+                    st.caption('Abstract: '+ df['Abstract'].iloc[i])
 
         with col2:
-            with st.expander("Collections in Zotero library", expanded=False):
-                row_nu_collections = len(df_collections_2.index)        
-                for i in range(row_nu_collections):
-                    st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
-                    ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
-                    )
-            with st.expander('Collections in this site', expanded=False):
+            with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
                 st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
@@ -307,7 +302,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
                 st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
                 st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
+                st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
                 st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
+            with st.expander("Collections in Zotero library", expanded=False):
+                row_nu_collections = len(df_collections_2.index)        
+                for i in range(row_nu_collections):
+                    st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
+                    ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
+                    )
 
             with st.expander('Events & conferences', expanded=True):
                 st.markdown('##### Next event')
@@ -746,45 +748,81 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.pyplot() 
 
         # Bring everything in the library
-        types = zot.everything(zot.top())
 
-        data_t=[]
-        columns_t = ['Publication type']
-
-        for item in types:
-            data_t.append((item['data']['itemType']))
-
-        pd.set_option('display.max_colwidth', None)
-        df_t = pd.DataFrame(data_t, columns=columns_t)
-
-        df_t['Publication type'] = df_t['Publication type'].replace(['thesis'], 'Thesis')
-        df_t['Publication type'] = df_t['Publication type'].replace(['journalArticle'], 'Journal article')
-        df_t['Publication type'] = df_t['Publication type'].replace(['book'], 'Book')
-        df_t['Publication type'] = df_t['Publication type'].replace(['bookSection'], 'Book chapter')
-        df_t['Publication type'] = df_t['Publication type'].replace(['blogPost'], 'Blog post')
-        df_t['Publication type'] = df_t['Publication type'].replace(['videoRecording'], 'Video')
-        df_t['Publication type'] = df_t['Publication type'].replace(['podcast'], 'Podcast')
-        df_t['Publication type'] = df_t['Publication type'].replace(['magazineArticle'], 'Magazine article')
-        df_t['Publication type'] = df_t['Publication type'].replace(['webpage'], 'Webpage')
-        df_t['Publication type'] = df_t['Publication type'].replace(['newspaperArticle'], 'Newspaper article')
-        df_t['Publication type'] = df_t['Publication type'].replace(['report'], 'Report')
-
-
-        df_types = pd.DataFrame(df_t['Publication type'].value_counts())
+        df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
 
         st.header('Items in the library by type: ')
+        
         df_types = df_types.sort_values(['Publication type'], ascending=[False])
         plot2= df_types.head(10)
 
         st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
 
+    # search_term = st.text_input('Enter keyword or phrase to search')
+
+    # # Display outputs based on the search term
+    # if search_term:
+    #     filtered_df = df_csv[df_csv['Title'].str.contains(search_term, case=False, na=False)]
+    #     filtered_df = filtered_df.reset_index(drop=True)
+
+    #     if not filtered_df.empty:
+    #         st.write("Matching articles:")
+    #         st.write(filtered_df)
+    #     else:
+    #         st.write("No articles found with the given keyword/phrase.")
+    # else:
+    #     st.write("Please enter a keyword or phrase to search.")
+
+    def extract_authors(authors):
+        try:
+            author_list = json.loads(authors)
+            author_names = [author['firstName'] + ' ' + author['lastName'] for author in author_list if author['creatorType'] == 'author']
+            return ', '.join(author_names)
+        except (json.JSONDecodeError, KeyError):
+            return ''
+
+    def format_entry(row):
+        publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+        title = str(row['Title']) if pd.notnull(row['Title']) else ''
+        authors = extract_authors(row['FirstName2'])
+        date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+        journal = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+        link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+        zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+
+        return (
+            '**' + publication_type + '**' + ': ' +
+            title + ' ' +
+            '(by ' + '*' + authors + '*' + ') ' +
+            '(Published on: ' + date_published + ') ' +
+            '(Published in: ' + '*' + journal + '*' + ') ' +
+            '[[Publication link]](' + link_to_publication + ') ' +
+            '[[Zotero link]](' + zotero_link + ')'
+        )
+    # Title input from the user
+    search_term = st.text_input('Enter keyword or phrase to search')
+
+    # Display formatted entries based on the search term
+    if search_term:
+        filtered_df = df_csv[df_csv['Title'].str.contains(search_term, case=False, na=False)]
+        filtered_df
+
+        if not filtered_df.empty:
+            st.write("Matching articles:")
+            for index, row in filtered_df.iterrows():
+                formatted_entry = format_entry(row)
+                st.markdown(formatted_entry)
+        else:
+            st.write("No articles found with the given keyword/phrase.")
+    else:
+        st.write("Please enter a keyword or phrase to search.")
 
     st.write('---')
     with st.expander('Acknowledgements'):
         st.subheader('Acknowledgements')
         st.write('The following sources are used to collate some of the items and events in this website:')
-        st.write("1. [King's Intelligence and Security Group (KISG) digest](https://kisg.co.uk/kisg-digests) compiled by David Schaefer")
+        st.write("1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by David Schaefer")
         st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
         st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
 
