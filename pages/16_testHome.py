@@ -163,7 +163,7 @@ st.header('Recently added or updated items: ')
 df_duplicated
 
 # Display unique items along with their themes
-unique_items = df_duplicated.drop_duplicates(subset=['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
+unique_items = df_duplicated.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
 unique_items
 display = st.checkbox('Display theme and abstract')
 
