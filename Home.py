@@ -255,7 +255,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
             st.header('Search in database')
-            search_term = st.text_input('Search keywords or author names')
+            search_term = st.text_input('Search keywords in titles or author names')
             if search_term:
                 search_terms = search_term.split()  # Split the search terms
                 filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
