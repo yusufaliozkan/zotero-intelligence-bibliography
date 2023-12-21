@@ -791,7 +791,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             published_by_or_in = 'Published by'
             published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
         else:
-            continue
+            return formatted_entry
 
         # Extracting year from the 'Date published' column
         year_published = pd.to_datetime(date_published).year if date_published else ''
