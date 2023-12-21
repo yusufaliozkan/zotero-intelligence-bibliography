@@ -179,7 +179,7 @@ with st.spinner('Preparing digest...'):
                 df_lasta = (
                     '**' + df_csva['Publication type'] + '**' + ": '" +
                     df_csva['Title'] + "'," +
-                    ' (First author: ' + '*' + df_csva['FirstName2'].astype(str) + '*' + ')' +
+                    ' (Author(s): ' + '*' + df_csva['FirstName2'].astype(str) + '*' + ')' +
                     # Concatenate 'publication_info' if it's required here
                     # publication_info +
                     ' (Published on: ' + df_csva['Date published new'].astype(str) + ')' +
@@ -193,7 +193,7 @@ with st.spinner('Preparing digest...'):
         else:
             df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                                 df_csv['Title'] +  "',"  +
-                                ' (First author: ' + '*' + df_csv['FirstName2'] + '*'+ ') ' +
+                                ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*'+ ') ' +
                                 ' (Published on: ' + df_csv['Date published new'] + ')' +
                                 ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                                 )
@@ -203,7 +203,7 @@ with st.spinner('Preparing digest...'):
                 if df_csv['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
                     df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                         df_csv['Title'] +  "',"  +
-                        ' (First author: ' + '*' + df_csv['FirstName2'] + '*' +') ' +
+                        ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*' +') ' +
                         ' (Published in: ' + '*' + df_csv['Journal'] + '*' + ')' +
                         ' (Published on: ' + df_csv['Date published new'] + ')' +
                         ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
@@ -211,7 +211,7 @@ with st.spinner('Preparing digest...'):
                 else:
                     df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                         df_csv['Title'] +  "',"  +
-                        ' (First author: ' + '*' + df_csv['FirstName2'] + '*'+') ' +
+                        ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*'+') ' +
                         ' (Published on: ' + df_csv['Date published new'] + ')' +
                         ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                         )
