@@ -349,9 +349,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Create a copy of the DataFrame
             duplicated_data = df_duplicated.copy()
 
-            # Set up Streamlit header
-            st.header('Recently added or updated items: ')
-
             # Sorting the DataFrame by 'Date added' in descending order
             df_sorted = df_duplicated.sort_values(by='Date added', ascending=False)
 
