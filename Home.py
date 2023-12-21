@@ -247,7 +247,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     '**' + publication_type + '**' + ': ' +
                     title + ' ' +
                     '(by ' + '*' + authors + '*' + ') ' +
-                    '(Publication year: ' + str(date_published) + ') ' +
+                    '(Publication date: ' + str(date_published) + ') ' +
                     ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
                     '[[Publication link]](' + link_to_publication + ') ' +
                     '[[Zotero link]](' + zotero_link + ')'
@@ -270,10 +270,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
                     
                     # Your existing code for displaying articles
-                    filtered_df
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
-                    download_filtered
 
                     def convert_df(download_filtered):
                         return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
