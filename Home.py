@@ -783,13 +783,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
         link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
         zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
 
+        # Extracting year from the 'Date published' column
         year_published = pd.to_datetime(date_published).year if date_published else ''
 
         return (
             '**' + publication_type + '**' + ': ' +
             title + ' ' +
             '(by ' + '*' + authors + '*' + ') ' +
-            '(Published in: ' + year_published + ') ' +
+            '(Published on: ' + str(year_published) + ') ' +  # Show only the year
             '(Published in: ' + '*' + journal + '*' + ') ' +
             '[[Publication link]](' + link_to_publication + ') ' +
             '[[Zotero link]](' + zotero_link + ')'
