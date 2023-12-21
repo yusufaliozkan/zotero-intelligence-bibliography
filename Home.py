@@ -296,6 +296,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 st.write("Please enter a keyword or author name to search.")
 
+            with st.expander('All items in database', expanded=True):
+                df_all_items = pd.read_csv('all_items.csv')
+                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                df_all_items
 
             st.header('Recently added or updated items: ')
             df['Abstract'] = df['Abstract'].str.strip()
