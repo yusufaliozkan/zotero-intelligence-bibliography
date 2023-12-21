@@ -176,13 +176,15 @@ with st.spinner('Preparing digest...'):
                 publication_info = ''
                 if df_csva['Publication type'].iloc[0] in ('Journal article', 'Magazine article', 'Newspaper article'):
                     publication_info = ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')'
-                df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
-                            df_csva['Title'] + "'," +
-                            ' (First author: ' + '*' + df_csva['FirstName2'] + '*')  +
-                            publication_info +
-                            ' (Published on: ' + df_csva['Date published new'] + ')' +
-                            ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
-                            )
+                df_lasta = (
+                    '**' + df_csva['Publication type'] + '**' + ": '" +
+                    df_csva['Title'] + "'," +
+                    ' (First author: ' + '*' + df_csva['FirstName2'].astype(str) + '*' + ')' +
+                    # Concatenate 'publication_info' if it's required here
+                    # publication_info +
+                    ' (Published on: ' + df_csva['Date published new'].astype(str) + ')' +
+                    ", [Publication link](" + df_csva['Link to publication'] + ')'
+                )
                 # df_lasta=df_lasta.dropna().reset_index(drop=True)
                 row_nu = len(df_csva.index)
                 for i in range(row_nu):
