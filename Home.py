@@ -321,7 +321,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     today = datetime.date.today().isoformat()
                     num_items_collections = len(filtered_collection_df)
                     st.write(f"{num_items_collections} sources found")
-                    a = f'selected_collection_{today}'
+                    a = f'{selected_collection today}'
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
                     
                     for index, row in filtered_collection_df.iterrows():
