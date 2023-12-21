@@ -319,6 +319,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.markdown('#### Collection theme: ' + selected_collection)
                     st.write(f"See the collection in [Zotero]({collection_link})")
                     types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
+                    filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
                     def convert_df(filtered_collection_df):
                         return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
 
