@@ -780,7 +780,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             author_names = [author['firstName'] + ' ' + author['lastName'] for author in author_list if author['creatorType'] == 'author']
             return ', '.join(author_names)
         except (json.JSONDecodeError, KeyError):
-            return ''  # Return an empty string if unable to parse or extract authors
+            return ''
 
     def format_entry(row):
         publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
