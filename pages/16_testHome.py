@@ -168,7 +168,7 @@ unique_items
 display = st.checkbox('Display theme and abstract')
 
 for index, row in unique_items.iterrows():
-    display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['Authors']}*) " \
+    display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
                    f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
                    f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
     
