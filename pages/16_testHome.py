@@ -157,50 +157,7 @@ df_collections = zotero_collections(library_id, library_type)
 # # Duplicating rows based on 'Col key' and collections information
 # duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
 
-df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
-# Preprocess date columns
-df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], errors='coerce')
-df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], utc=True).dt.tz_convert('Europe/London')
-df_duplicated['Date published'] = df_duplicated['Date published'].dt.strftime('%d-%m-%Y')
-df_duplicated['Date published'] = df_duplicated['Date published'].fillna('No date')
-
-# Create a copy of the DataFrame
-duplicated_data = df_duplicated.copy()
-
-# Set up Streamlit header
-st.header('Recently added or updated items: ')
-
-# Sorting the DataFrame by 'Date added' in descending order
-df_sorted = df_duplicated.sort_values(by='Date added', ascending=False)
-
-# Selecting the last 10 unique items based on specified columns
-last_10_unique_items = df_sorted.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']).head(10)
-last_10_unique_items = last_10_unique_items.reset_index(drop=True)
-
-# Checkbox for displaying themes and abstracts
-display = st.checkbox('Display theme and abstract')
-
-# Displaying last 10 unique items
-for index, row in last_10_unique_items.iterrows():
-    display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
-                   f"(Published on: {row['Date published']}) " \
-                   f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
-    
-    st.write(f"{index + 1}) {display_text}")
-    
-    if display:
-        display_themes = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Name']
-        display_theme_links = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Link']
-        
-        themes_to_display = set(zip(display_themes, display_theme_links))
-        
-        if themes_to_display:
-            themes = " | ".join([f"[{theme}]({link})" for theme, link in themes_to_display if theme and link])
-            if themes.strip() != "":
-                st.caption(f'Themes: {themes}')
-                
-            st.caption(f'Abstract: {row["Abstract"]}')
 # END OF TEST
 
 df_duplicated = pd.read_csv('all_items_duplicated.csv')
@@ -366,74 +323,65 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all_items
 
             st.header('Recently added or updated items: ')
-            df['Abstract'] = df['Abstract'].str.strip()
-            df['Abstract'] = df['Abstract'].fillna('No abstract')
+            # df['Abstract'] = df['Abstract'].str.strip()
+            # df['Abstract'] = df['Abstract'].fillna('No abstract')
             
-            df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
-            df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
+            # df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
+            # df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
 
-            def convert_df(df):
-                return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-            csv = convert_df(df_download)
-            # csv = df_download
-            # # st.caption(collection_name)
-            today = datetime.date.today().isoformat()
-            a = 'recently-added-' + today
-            st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
-            
+            # def convert_df(df):
+            #     return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+            # csv = convert_df(df_download)
+            # # csv = df_download
+            # # # st.caption(collection_name)
+            # today = datetime.date.today().isoformat()
+            # a = 'recently-added-' + today
+            # st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
+
+            df_duplicated = pd.read_csv('all_items_duplicated.csv')
+
+            # Preprocess date columns
+            df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], errors='coerce')
+            df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], utc=True).dt.tz_convert('Europe/London')
+            df_duplicated['Date published'] = df_duplicated['Date published'].dt.strftime('%d-%m-%Y')
+            df_duplicated['Date published'] = df_duplicated['Date published'].fillna('No date')
+
+            # Create a copy of the DataFrame
+            duplicated_data = df_duplicated.copy()
+
+            # Set up Streamlit header
+            st.header('Recently added or updated items: ')
+
+            # Sorting the DataFrame by 'Date added' in descending order
+            df_sorted = df_duplicated.sort_values(by='Date added', ascending=False)
+
+            # Selecting the last 10 unique items based on specified columns
+            last_10_unique_items = df_sorted.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']).head(10)
+            last_10_unique_items = last_10_unique_items.reset_index(drop=True)
+
+            # Checkbox for displaying themes and abstracts
             display = st.checkbox('Display theme and abstract')
 
-            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                        ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                        ' (Published on: ' + df['Date published']+', ' +
-                        'Added on: ' + df['Date added']+')'+
-                        '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                        )
-            
-            row_nu_1 = len(df_last.index)
-            for i in range(row_nu_1):
-                publication_type = df['Publication type'].iloc[i]
-                if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                ' (Published on: ' + df['Date published']+') ' +
-                                " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
-                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                )
-                    st.write(f"{i+1}) " + df_last.iloc[i])
-                else:
-                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                ' (Published on: ' + df['Date published']+', ' +
-                                'Added on: ' + df['Date added']+') '+
-                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                )
-                    st.write(f"{i+1}) " + df_last.iloc[i])
+            # Displaying last 10 unique items
+            for index, row in last_10_unique_items.iterrows():
+                display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
+                            f"(Published on: {row['Date published']}) " \
+                            f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
+                
+                st.write(f"{index + 1}) {display_text}")
                 
                 if display:
-                    a=''
-                    b=''
-                    c=''
-                    if 'Name_x' in df:
-                        a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
-                        if df['Name_x'].iloc[i]=='':
-                            a=''
-                    if 'Name_y' in df:
-                        b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
-                        if df['Name_y'].iloc[i]=='':
-                            b=''
-                    if 'Name' in df:
-                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
-                        if df['Name'].iloc[i]=='':
-                            c=''
-                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                    if not any([a, b, c]):
-                        st.caption('No theme to display!')
+                    display_themes = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Name']
+                    display_theme_links = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Link']
                     
-                    st.caption('Abstract: '+ df['Abstract'].iloc[i])
+                    themes_to_display = set(zip(display_themes, display_theme_links))
+                    
+                    if themes_to_display:
+                        themes = " | ".join([f"[{theme}]({link})" for theme, link in themes_to_display if theme and link])
+                        if themes.strip() != "":
+                            st.caption(f'Themes: {themes}')
+                            
+                        st.caption(f'Abstract: {row["Abstract"]}')
 
         with col2:
             with st.expander('Collections', expanded=True):
