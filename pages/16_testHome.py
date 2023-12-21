@@ -293,6 +293,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'].isin(selected_collections)] if selected_collections else df
             filtered_collection_df
 
+            for index, row in filtered_collection_df.iterrows():
+                display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
+                            f"(Published on: {row['Date published']}) " \
+                            f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
+                
+                st.write(f"{index + 1}) {display_text}")
+                
+
             st.header('Recently added or updated items: ')
             # df['Abstract'] = df['Abstract'].str.strip()
             # df['Abstract'] = df['Abstract'].fillna('No abstract')
