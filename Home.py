@@ -310,21 +310,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'].isin(selected_collections)]
                 filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                 with st.expander('Click to expand', expanded=False):
-                def convert_df(filtered_collection_df):
-                    return filtered_collection_df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv = convert_df(filtered_collection_df)
-                # csv = df_download
-                # # st.caption(collection_name)
-                today = datetime.date.today().isoformat()
-                a = selected_collections + today
-                st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')                    
-                    for index, row in filtered_collection_df.iterrows():
-                        display_text = (
-                            f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
-                            f"(Published on: {row['Date published']}) "
-                            f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
-                        )
-                        st.write(f"{index + 1}) {display_text}")
+                    def convert_df(filtered_collection_df):
+                        return filtered_collection_df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                    csv = convert_df(filtered_collection_df)
+                    # csv = df_download
+                    # # st.caption(collection_name)
+                    today = datetime.date.today().isoformat()
+                    a = selected_collections + today
+                    st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')                    
+                        for index, row in filtered_collection_df.iterrows():
+                            display_text = (
+                                f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
+                                f"(Published on: {row['Date published']}) "
+                                f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
+                            )
+                            st.write(f"{index + 1}) {display_text}")
 
             st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
