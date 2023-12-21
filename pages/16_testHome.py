@@ -178,11 +178,7 @@ for index, row in unique_items.iterrows():
         themes_to_display = set(zip(display_themes, display_theme_links))
         
         if themes_to_display:
-            themes = ""
-            for theme, link in themes_to_display:
-                if theme and link:
-                    themes += f"[{theme}]({link}) "
-            
+            themes = ", ".join([f"[{theme}]({link})" for theme, link in themes_to_display if theme and link])
             if themes.strip() != "":
                 st.caption(f'Themes: {themes}')
                 
