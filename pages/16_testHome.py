@@ -288,9 +288,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             st.header('Items in collections')
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
-            df_csv_collections
             unique_collections = df_csv_collections['Collection_Name'].unique()
-            unique_collections
+            selected_collections = st.multiselect('Select Collection(s)', unique_collections)
 
             st.header('Recently added or updated items: ')
             # df['Abstract'] = df['Abstract'].str.strip()
