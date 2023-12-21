@@ -227,14 +227,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 title = str(row['Title']) if pd.notnull(row['Title']) else ''
                 authors = str(row['FirstName2'])
                 date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                
-                try:
-                    # Attempt to parse the date, extract the year, and set it to the 'year_published' variable
-                    year_published = pd.to_datetime(date_published).year if date_published else ''
-                except (ValueError, pd.errors.ParserError):
-                    # Set 'Date published' to null if there's an error parsing the date
-                    row['Date published'] = None
-                    year_published = ''  # Set year to empty string
                 link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
                 zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
                 published_by_or_in = ''
@@ -271,6 +263,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 search_terms = search_term.split()  # Split the search terms
                 filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
                 df_csv = pd.read_csv('all_items.csv')
+                df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                df_csv['Date published'] = df_csv['Date published'].dt.strftime('%d-%m-%Y')
+                df_csv['Date published'] = df_csv['Date published'].fillna('No date')
                 filtered_df = df_csv[
                     (df_csv['Title'].str.contains(filters, case=False, na=False)) |
                     (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
