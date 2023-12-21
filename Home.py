@@ -272,6 +272,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # Your existing code for displaying articles
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
+                    filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'])
+                    filtered_df = filtered_df.sort_values(by='Date published', ascending=False)
 
                     def convert_df(download_filtered):
                         return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
