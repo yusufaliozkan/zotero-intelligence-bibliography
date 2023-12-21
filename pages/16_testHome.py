@@ -124,33 +124,66 @@ def zotero_collections(library_id, library_type):
     return df_collections.sort_values(by='Name')
 df_collections = zotero_collections(library_id, library_type)
 
-#To be deleted
-if 0 in df:
-    merged_df = pd.merge(
-        left=df,
-        right=df_collections,
-        left_on=0,
-        right_on='Key',
-        how='left'
-    )
-    if 1 in merged_df:
-        merged_df = pd.merge(
-            left=merged_df,
-            right=df_collections,
-            left_on=1,
-            right_on='Key',
-            how='left'
-        )
-        if 2 in merged_df:
-            merged_df = pd.merge(
-                left=merged_df,
-                right=df_collections,
-                left_on=2,
-                right_on='Key',
-                how='left'
-            ) 
-df = merged_df.copy()
-#To be deleted
+def duplicate_rows_by_col_key(df, df_collections):
+    # Duplicate rows based on 'Col key'
+    duplicated_rows = []
+    for index, row in df.iterrows():
+        if isinstance(row['Col key'], list):
+            for key in row['Col key']:
+                new_row = row.copy()
+                collection_info = df_collections[df_collections['Key'] == key]
+                if not collection_info.empty:
+                    new_row['Collection_Key'] = key
+                    new_row['Collection_Name'] = collection_info.iloc[0]['Name']
+                    new_row['Collection_Link'] = collection_info.iloc[0]['Link']
+                    duplicated_rows.append(new_row)
+        else:
+            key = row['Col key']
+            new_row = row.copy()
+            collection_info = df_collections[df_collections['Key'] == key]
+            if not collection_info.empty:
+                new_row['Collection_Key'] = key
+                new_row['Collection_Name'] = collection_info.iloc[0]['Name']
+                new_row['Collection_Link'] = collection_info.iloc[0]['Link']
+                duplicated_rows.append(new_row)
+
+    # Create a new DataFrame with duplicated rows
+    duplicated_df = pd.DataFrame(duplicated_rows)
+
+    return duplicated_df
+df = zotero_data(library_id, library_type)
+df_collections_2 = zotero_collections2(library_id, library_type)
+
+# Duplicating rows based on 'Col key' and collections information
+duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
+
+st.header('Recently added or updated items: ')
+
+# Display unique items along with their themes
+unique_items = duplicated_data.drop_duplicates(subset=['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
+
+display = st.checkbox('Display theme and abstract')
+
+for index, row in unique_items.iterrows():
+    display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['Authors']}*) " \
+                   f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
+                   f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
+    
+    st.write(f"{index + 1}) {display_text}")
+    
+    if display:
+        display_themes = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Name']
+        display_theme_links = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Link']
+        
+        themes_to_display = set(zip(display_themes, display_theme_links))
+        
+        if themes_to_display:
+            themes = " | ".join([f"[{theme}]({link})" for theme, link in themes_to_display if theme and link])
+            if themes.strip() != "":
+                st.caption(f'Themes: {themes}')
+                
+            st.caption(f'Abstract: {row["Abstract"]}')
+# END OF TEST
 
 df = df.fillna('')
 

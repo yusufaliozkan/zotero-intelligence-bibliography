@@ -268,19 +268,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if not filtered_df.empty:
                     num_items = len(filtered_df)
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
-                    
-                    # Your existing code for displaying articles
+
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
 
                     def convert_df(download_filtered):
-                        return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                        return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                    
                     csv = convert_df(download_filtered)
-                    # csv = df_download
-                    # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
                     a = 'search-result-' + today
                     st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
+                    if num_items > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
+                        if show_first_50:
+                            filtered_df = filtered_df.head(50)
 
                     articles_list = []  # Store articles in a list
                     for index, row in filtered_df.iterrows():
@@ -290,6 +293,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # Display the numbered list using Markdown syntax
                     for i, article in enumerate(articles_list, start=1):
                         st.markdown(f"{i}. {article}")
+
                 else:
                     st.write("No articles found with the given keyword/phrase.")
             else:
@@ -311,7 +315,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_all_items
 
-            st.header('Recently added or updated items: ')
+            st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
             
