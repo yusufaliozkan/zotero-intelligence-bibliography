@@ -243,14 +243,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     published_by_or_in = ''
                     published_source = ''
 
-                # Extracting year from the 'Date published' column
-                year_published = pd.to_datetime(date_published).year if date_published else ''
-
                 return (
                     '**' + publication_type + '**' + ': ' +
                     title + ' ' +
                     '(by ' + '*' + authors + '*' + ') ' +
-                    '(Publication year: ' + str(year_published) + ') ' +
+                    '(Publication year: ' + str(date_published) + ') ' +
                     ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
                     '[[Publication link]](' + link_to_publication + ') ' +
                     '[[Zotero link]](' + zotero_link + ')'
