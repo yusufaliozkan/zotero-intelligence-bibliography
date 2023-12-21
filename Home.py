@@ -269,33 +269,57 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     num_items = len(filtered_df)
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
 
-                    if num_items > 100:
-                        show_first_100 = st.checkbox("Show only first 100 items")
-                        if show_first_100:
-                            filtered_df = filtered_df.head(100)
+                    if num_items > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items", value=True)
+                        if not show_first_50:
+                            st.write("Displaying all items:")
+                            articles_list = []
+                            for index, row in filtered_df.iterrows():
+                                formatted_entry = format_entry(row)
+                                articles_list.append(formatted_entry)  # Append formatted entry to the list
+                            st.selectbox('Select an item', articles_list)
 
-                    download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
-                    download_filtered = download_filtered.reset_index(drop=True)
+                        else:
+                            download_filtered = filtered_df.head(50)[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                            download_filtered = download_filtered.reset_index(drop=True)
 
-                    def convert_df(download_filtered):
-                        return download_filtered.to_csv(index=False).encode('utf-8-sig')
-                    
-                    csv = convert_df(download_filtered)
-                    today = datetime.date.today().isoformat()
-                    a = 'search-result-' + today
-                    st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+                            def convert_df(download_filtered):
+                                return download_filtered.to_csv(index=False).encode('utf-8-sig')
 
-                    articles_list = []  # Store articles in a list
-                    for index, row in filtered_df.iterrows():
-                        formatted_entry = format_entry(row)
-                        articles_list.append(formatted_entry)  # Append formatted entry to the list
+                            csv = convert_df(download_filtered)
+                            today = datetime.date.today().isoformat()
+                            a = 'search-result-' + today
+                            st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
-                    # Display the numbered list using Markdown syntax
-                    for i, article in enumerate(articles_list, start=1):
-                        st.markdown(f"{i}. {article}")
+                            articles_list = []  # Store articles in a list
+                            for index, row in filtered_df.head(50).iterrows():
+                                formatted_entry = format_entry(row)
+                                articles_list.append(formatted_entry)  # Append formatted entry to the list
 
-                    if num_items > 100 and not show_first_100:
-                        st.selectbox('Select an item', articles_list)
+                            # Display the numbered list using Markdown syntax
+                            for i, article in enumerate(articles_list, start=1):
+                                st.markdown(f"{i}. {article}")
+
+                    else:
+                        download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                        download_filtered = download_filtered.reset_index(drop=True)
+
+                        def convert_df(download_filtered):
+                            return download_filtered.to_csv(index=False).encode('utf-8-sig')
+
+                        csv = convert_df(download_filtered)
+                        today = datetime.date.today().isoformat()
+                        a = 'search-result-' + today
+                        st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
+                        articles_list = []  # Store articles in a list
+                        for index, row in filtered_df.iterrows():
+                            formatted_entry = format_entry(row)
+                            articles_list.append(formatted_entry)  # Append formatted entry to the list
+
+                        # Display the numbered list using Markdown syntax
+                        for i, article in enumerate(articles_list, start=1):
+                            st.markdown(f"{i}. {article}")
 
                 else:
                     st.write("No articles found with the given keyword/phrase.")
