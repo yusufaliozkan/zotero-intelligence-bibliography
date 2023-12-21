@@ -316,7 +316,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # csv = df_download
                     # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
-                    a = selected_collections + today
+                    a = 'selected_collections_' + today
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')                    
                     for index, row in filtered_collection_df.iterrows():
                         display_text = (
