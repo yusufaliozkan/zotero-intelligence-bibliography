@@ -821,9 +821,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         if not filtered_df.empty:
             st.write("Matching articles:")
+            articles_list = []  # Store articles in a list
             for index, row in filtered_df.iterrows():
                 formatted_entry = format_entry(row)
-                st.markdown(formatted_entry)
+                articles_list.append(formatted_entry)  # Append formatted entry to the list
+
+            # Display the numbered list using Markdown syntax
+            for i, article in enumerate(articles_list, start=1):
+                st.markdown(f"{i}. {article}")
         else:
             st.write("No articles found with the given keyword/phrase.")
     else:
