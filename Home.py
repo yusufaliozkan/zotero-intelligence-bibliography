@@ -269,10 +269,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     num_items = len(filtered_df)
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
 
-                    if num_items > 100:
-                        show_first_100 = st.checkbox("Show only first 100 items")
-                        if show_first_100:
-                            filtered_df = filtered_df.head(100)
+                    if num_items > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)")
+                        if show_first_50:
+                            filtered_df = filtered_df.head(50)
 
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
