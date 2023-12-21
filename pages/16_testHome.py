@@ -160,6 +160,11 @@ df_collections = zotero_collections(library_id, library_type)
 df_duplicated = pd.read_csv('all_items_duplicated.csv')
 duplicated_data = df_duplicated.copy()
 
+df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], errors='coerce')
+df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'],utc=True).dt.tz_convert('Europe/London')
+df_duplicated['Date published'] = df_duplicated['Date published'].dt.strftime('%d-%m-%Y')
+df_duplicated['Date published'] = df_duplicated['Date published'].fillna('No date')
+
 st.header('Recently added or updated items: ')
 
 # Sorting the DataFrame by 'Date added' in descending order
