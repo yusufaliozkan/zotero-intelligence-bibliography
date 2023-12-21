@@ -310,7 +310,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # csv = df_download
             # # st.caption(collection_name)
             today = datetime.date.today().isoformat()
-            a = 'intelligence-bibliography-' + today
+            a = 'recently-added-' + today
             st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
             
             display = st.checkbox('Display theme and abstract')
