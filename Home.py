@@ -281,7 +281,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
                     a = 'search-result-' + today
-                    st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv')
+                    st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
                     articles_list = []  # Store articles in a list
                     for index, row in filtered_df.iterrows():
@@ -308,7 +308,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # # st.caption(collection_name)
                 today = datetime.date.today().isoformat()
                 a = 'intelligence-bibliography-all-' + today
-                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
+                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
 
                 df_all_items
 
@@ -326,7 +326,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # # st.caption(collection_name)
             today = datetime.date.today().isoformat()
             a = 'recently-added-' + today
-            st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
+            st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
             
             display = st.checkbox('Display theme and abstract')
 
