@@ -303,7 +303,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
             unique_collections = df_csv_collections['Collection_Name'].unique()
-            selected_collections = st.multiselect('Select Collection(s)', unique_collections)
+            selected_collections = st.selectbox('Select Collection(s)', unique_collections)
             if not selected_collections:
                 st.write('Pick a collection to see items')
             else:
