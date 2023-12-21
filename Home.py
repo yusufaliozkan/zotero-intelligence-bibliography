@@ -820,6 +820,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         ]
 
         if not filtered_df.empty:
+            filtered_df
             st.write("Matching articles:")
             articles_list = []  # Store articles in a list
             for index, row in filtered_df.iterrows():
