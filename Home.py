@@ -269,11 +269,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     num_items = len(filtered_df)
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
 
-                    if num_items > 50:
-                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
-                        if show_first_50:
-                            filtered_df = filtered_df.head(50)
-
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
 
@@ -284,6 +279,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     today = datetime.date.today().isoformat()
                     a = 'search-result-' + today
                     st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
+                    if num_items > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
+                        if show_first_50:
+                            filtered_df = filtered_df.head(50)
 
                     articles_list = []  # Store articles in a list
                     for index, row in filtered_df.iterrows():
