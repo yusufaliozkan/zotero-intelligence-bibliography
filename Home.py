@@ -313,7 +313,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
                 filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
-                collection_link = numeric_start_collections[numeric_start_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
+                collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
                 
                 with st.expander('Click to expand', expanded=False):
                     st.markdown('#### Collection theme: ' + selected_collection)
@@ -335,7 +335,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
                         )
                         st.write(f"{index + 1}) {display_text}")
-
             st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
