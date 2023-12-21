@@ -227,6 +227,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 title = str(row['Title']) if pd.notnull(row['Title']) else ''
                 authors = str(row['FirstName2'])
                 date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                
+                try:
+                    # Attempt to parse the date, extract the year, and set it to the 'year_published' variable
+                    year_published = pd.to_datetime(date_published).year if date_published else ''
+                except (ValueError, pd.errors.ParserError):
+                    # Set 'Date published' to null if there's an error parsing the date
+                    row['Date published'] = None
+                    year_published = ''  # Set year to empty string
                 link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
                 zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
                 published_by_or_in = ''
