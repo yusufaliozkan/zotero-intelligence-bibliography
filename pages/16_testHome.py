@@ -286,6 +286,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_all_items
 
+            st.header('Items in collections')
+            unique_collections = df_csv['Collection_Name'].unique()
+            unique_collections
+
             st.header('Recently added or updated items: ')
             # df['Abstract'] = df['Abstract'].str.strip()
             # df['Abstract'] = df['Abstract'].fillna('No abstract')
