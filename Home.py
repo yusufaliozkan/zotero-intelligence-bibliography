@@ -810,7 +810,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     # Title input from the user
     search_term = st.text_input('Enter keyword or phrase to search')
-
     if search_term:
         search_terms = search_term.split()  # Split the search terms
         filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
