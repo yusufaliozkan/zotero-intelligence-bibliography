@@ -171,7 +171,7 @@ for index, row in unique_items.iterrows():
     
     themes_to_display = duplicated_data[duplicated_data['Title'] == row['Title']][['Collection_Name', 'Collection_Link']]
     
-    themes = " ".join([f"[{theme}]({link})" for theme, link in zip(themes_to_display['Collection_Name'], themes_to_display['Collection_Link'])])
+    themes = " ".join([f"[{theme}]" for theme in themes_to_display['Collection_Name']])
     
     st.write(f"{index + 1}) {display_text} Themes: {themes}")
     
