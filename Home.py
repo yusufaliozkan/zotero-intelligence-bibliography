@@ -317,7 +317,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 with st.expander('Click to expand', expanded=False):
                     st.markdown('#### Collection theme: ' + selected_collection)
-                    st.write(f"See the collection in Zotero: {collection_link}")
+                    st.write(f"See the collection in [Zotero]({collection_link})")
                     def convert_df(filtered_collection_df):
                         return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
 
@@ -335,6 +335,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
                         )
                         st.write(f"{index + 1}) {display_text}")
+
             st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
