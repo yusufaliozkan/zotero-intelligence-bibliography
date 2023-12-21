@@ -301,7 +301,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             st.header('Search collections')
 
-            with st.expander('Click to expand', expanded=False):
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
             unique_collections = df_csv_collections['Collection_Name'].unique()
             selected_collections = st.multiselect('Select Collection(s)', unique_collections)
