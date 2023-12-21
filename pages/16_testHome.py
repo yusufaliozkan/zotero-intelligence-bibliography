@@ -287,7 +287,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all_items
 
             st.header('Items in collections')
-            df_csv_collections = pd.read_csv('all_items.csv')
+            df_csv_collections = pd.read_csv('all_items_duplicated.csv')
             df_csv_collections
             unique_collections = df_csv_collections['Collection_Name'].unique()
             unique_collections
