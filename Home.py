@@ -273,6 +273,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
                     
                     # Your existing code for displaying articles
+                    download_filtered
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
                     download_filtered
