@@ -159,23 +159,30 @@ df_collections = zotero_collections(library_id, library_type)
 
 df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
+# Preprocess date columns
 df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], errors='coerce')
-df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'],utc=True).dt.tz_convert('Europe/London')
+df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], utc=True).dt.tz_convert('Europe/London')
 df_duplicated['Date published'] = df_duplicated['Date published'].dt.strftime('%d-%m-%Y')
 df_duplicated['Date published'] = df_duplicated['Date published'].fillna('No date')
 
+# Create a copy of the DataFrame
 duplicated_data = df_duplicated.copy()
 
+# Set up Streamlit header
 st.header('Recently added or updated items: ')
 
-# Display unique items along with their themes
-unique_items = df_duplicated.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
-unique_items
+# Sorting the DataFrame by 'Date added' in descending order
+df_sorted = df_duplicated.sort_values(by='Date added', ascending=False)
 
+# Selecting the last 10 unique items based on specified columns
+last_10_unique_items = df_sorted.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']).head(10)
+last_10_unique_items = last_10_unique_items.reset_index(drop=True)
 
+# Checkbox for displaying themes and abstracts
 display = st.checkbox('Display theme and abstract')
 
-for index, row in unique_items.iterrows():
+# Displaying last 10 unique items
+for index, row in last_10_unique_items.iterrows():
     display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
                    f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
                    f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
