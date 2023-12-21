@@ -242,9 +242,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     published_by_or_in = ''
                     published_source = ''
 
-                # Extracting year from the 'Date published' column
-                year_published = pd.to_datetime(date_published, utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                year_published = year_published.dt.strftime('%d-%m-%Y').fillna('No date') if not year_published.isnull().all() else ''
+                # Convert 'Date published' to a consistent date format
+                try:
+                    year_published = pd.to_datetime(date_published, utc=True, errors='coerce')
+                    year_published = year_published.dt.tz_convert('Europe/London').dt.strftime('%d-%m-%Y').fillna('No date')
+                except:
+                    year_published = 'No date'  # Handle errors during conversion
 
                 return (
                     '**' + publication_type + '**' + ': ' +
