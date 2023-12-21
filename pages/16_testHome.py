@@ -169,24 +169,14 @@ for index, row in unique_items.iterrows():
                    f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
                    f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
     
-    st.write(f"{index + 1}) {display_text}")
+    themes_to_display = duplicated_data[duplicated_data['Title'] == row['Title']][['Collection_Name', 'Collection_Link']]
+    
+    themes = " ".join([f"[{theme}]({link})" for theme, link in zip(themes_to_display['Collection_Name'], themes_to_display['Collection_Link'])])
+    
+    st.write(f"{index + 1}) {display_text} Themes: {themes}")
     
     if display:
-        display_themes = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Name']
-        display_theme_links = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Link']
-        
-        themes_to_display = set(zip(display_themes, display_theme_links))
-        
-        if themes_to_display:
-            themes = ""
-            for theme, link in themes_to_display:
-                if theme and link:
-                    themes += f"[{theme}]({link}) "
-            
-            if themes.strip() != "":
-                st.caption(f'Themes: {themes}')
-                
-            st.caption(f'Abstract: {row["Abstract"]}')
+        st.caption(f'Abstract: {row["Abstract"]}')
 # END OF TEST
 
 df = df.fillna('')
