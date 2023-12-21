@@ -305,12 +305,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_collections = [''] + list(df_csv_collections['Collection_Name'].unique())  # Adding an empty string as the first option
 
             selected_collection = st.selectbox('Select Collection(s)', unique_collections)
-            
+
             if not selected_collection or selected_collection == '':
                 st.write('Pick a collection to see items')
             else:
                 filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
-                filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
                 
                 with st.expander('Click to expand', expanded=False):
                     st.markdown('#### Collection theme: ' + selected_collection)
