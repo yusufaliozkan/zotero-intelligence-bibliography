@@ -806,7 +806,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
         ]
 
         if not filtered_df.empty:
-            filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+            download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+            download_filtered = download_filtered.reset_index(drop=True)
+            download_filtered
             st.write("Matching articles:")
             articles_list = []  # Store articles in a list
             for index, row in filtered_df.iterrows():
