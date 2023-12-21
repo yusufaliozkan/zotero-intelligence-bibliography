@@ -158,27 +158,20 @@ df_collections = zotero_collections(library_id, library_type)
 # duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
 
 df_duplicated = pd.read_csv('all_items_duplicated.csv')
+
 duplicated_data = df_duplicated.copy()
 
-df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], errors='coerce')
-df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'],utc=True).dt.tz_convert('Europe/London')
-df_duplicated['Date published'] = df_duplicated['Date published'].dt.strftime('%d-%m-%Y')
-df_duplicated['Date published'] = df_duplicated['Date published'].fillna('No date')
-
 st.header('Recently added or updated items: ')
+df_duplicated
 
-# Sorting the DataFrame by 'Date added' in descending order
-df_sorted = df_duplicated.sort_values(by='Date added', ascending=False)
-
-# Selecting the last 10 items
-last_10_items = df_sorted.head(10)
-last_10_items = last_10_items.reset_index(drop=True)
-
+# Display unique items along with their themes
+unique_items = df_duplicated.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
+unique_items
 display = st.checkbox('Display theme and abstract')
 
-for index, row in last_10_items.iterrows():
+for index, row in unique_items.iterrows():
     display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
-                   f"(Published on: {row['Date published']}) " \
+                   f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
                    f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
     
     st.write(f"{index + 1}) {display_text}")
