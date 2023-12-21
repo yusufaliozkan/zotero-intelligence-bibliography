@@ -317,7 +317,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
                     a = 'selected_collections_' + today
-                    st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')                    
+                    st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')                    
                     for index, row in filtered_collection_df.iterrows():
                         display_text = (
                             f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
