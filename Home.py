@@ -221,6 +221,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col1:
 
             # SEARCH KEYWORD OR AUTHOR NAMES
+
             def format_entry(row):
                 publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                 title = str(row['Title']) if pd.notnull(row['Title']) else ''
@@ -243,8 +244,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     published_source = ''
 
                 # Extracting year from the 'Date published' column
-                year_published = pd.to_datetime(date_published, utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                year_published = year_published.dt.strftime('%d-%m-%Y').fillna('No date') if not year_published.isnull().all() else ''
+                year_published = pd.to_datetime(date_published).year if date_published else ''
 
                 return (
                     '**' + publication_type + '**' + ': ' +
