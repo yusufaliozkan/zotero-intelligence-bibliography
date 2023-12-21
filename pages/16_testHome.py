@@ -159,14 +159,20 @@ df_collections = zotero_collections(library_id, library_type)
 
 df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
+df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], errors='coerce')
+df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'],utc=True).dt.tz_convert('Europe/London')
+df_duplicated['Date published'] = df_duplicated['Date published'].dt.strftime('%d-%m-%Y')
+df_duplicated['Date published'] = df_duplicated['Date published'].fillna('No date')
+
 duplicated_data = df_duplicated.copy()
 
 st.header('Recently added or updated items: ')
-df_duplicated
 
 # Display unique items along with their themes
 unique_items = df_duplicated.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
 unique_items
+
+
 display = st.checkbox('Display theme and abstract')
 
 for index, row in unique_items.iterrows():
