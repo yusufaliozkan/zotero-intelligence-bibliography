@@ -300,6 +300,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('Click to expand', expanded=False):
                 df_all_items = pd.read_csv('all_items.csv')
                 df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+
+                def convert_df(df_all_items):
+                    return df_all_items.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                csv = convert_df(df_all_items)
+                # csv = df_download
+                # # st.caption(collection_name)
+                today = datetime.date.today().isoformat()
+                a = 'intelligence-bibliography-all-' + today
+                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv')
+
                 df_all_items
 
             st.header('Recently added or updated items: ')
