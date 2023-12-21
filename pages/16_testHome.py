@@ -156,6 +156,7 @@ df_collections_2 = zotero_collections2(library_id, library_type)
 
 # Duplicating rows based on 'Col key' and collections information
 duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
+duplicated_data
 
 st.header('Recently added or updated items: ')
 
