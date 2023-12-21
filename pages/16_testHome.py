@@ -185,6 +185,8 @@ for index, row in unique_items.iterrows():
             st.caption(f'Abstract: {row["Abstract"]}')
 # END OF TEST
 
+df_duplicated = pd.read_csv('all_items_duplicated.csv')
+
 df = df.fillna('')
 
 # Streamlit app
