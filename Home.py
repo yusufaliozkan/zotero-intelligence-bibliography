@@ -265,15 +265,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
                 ]
 
+                types2 = st.multiselect('Publication types', filtered_df['Publication type'].unique(),filtered_df['Publication type'].unique(), key='original2')
+                filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+
                 if not filtered_df.empty:
                     num_items = len(filtered_df)
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
 
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
-
-                    # types2 = st.multiselect('Publication types', filtered_df['Publication type'].unique(),filtered_df['Publication type'].unique(), key='original2')
-                    # filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
 
                     def convert_df(download_filtered):
                         return download_filtered.to_csv(index=False).encode('utf-8-sig')
