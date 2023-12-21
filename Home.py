@@ -783,7 +783,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
         published_by_or_in = ''
         published_source = ''
-        formatted_entry = ''
 
         if publication_type == 'Journal article':
             published_by_or_in = 'Published in'
@@ -792,12 +791,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             published_by_or_in = 'Published by'
             published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
         else:
-            return formatted_entry  # Return an empty string for other types
+            # For other types, include the publication type
+            published_by_or_in = ''
 
         # Extracting year from the 'Date published' column
         year_published = pd.to_datetime(date_published).year if date_published else ''
 
-        formatted_entry = (
+        return (
             '**' + publication_type + '**' + ': ' +
             title + ' ' +
             '(by ' + '*' + authors + '*' + ') ' +
@@ -806,8 +806,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             '[[Publication link]](' + link_to_publication + ') ' +
             '[[Zotero link]](' + zotero_link + ')'
         )
-
-        return formatted_entry
 
     # Title input from the user
     search_term = st.text_input('Enter keyword or phrase to search')
