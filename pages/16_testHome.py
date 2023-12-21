@@ -290,16 +290,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
             unique_collections = df_csv_collections['Collection_Name'].unique()
             selected_collections = st.multiselect('Select Collection(s)', unique_collections)
-            filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'].isin(selected_collections)] if selected_collections else df
-            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-            for index, row in filtered_collection_df.iterrows():
-                display_text = (
-                    f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
-                    f"(Published on: {row['Date published']}) "
-                    f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
-                )
-
-                st.write(f"{index + 1}) {display_text}")
+            if not selected_collections:
+                st.write('Pick a collection to see items')
+            else:
+                filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'].isin(selected_collections)]
+                filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                for index, row in filtered_collection_df.iterrows():
+                    display_text = (
+                        f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
+                        f"(Published on: {row['Date published']}) "
+                        f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
+                    )
+                    st.write(f"{index + 1}) {display_text}")
                 
 
             st.header('Recently added or updated items: ')
