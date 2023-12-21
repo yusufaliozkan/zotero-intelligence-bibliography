@@ -124,8 +124,6 @@ def zotero_collections(library_id, library_type):
     return df_collections.sort_values(by='Name')
 df_collections = zotero_collections(library_id, library_type)
 
-df_duplicated = pd.read_csv('all_items_duplicated.csv')
-
 # def duplicate_rows_by_col_key(df, df_collections):
 #     # Duplicate rows based on 'Col key'
 #     duplicated_rows = []
@@ -158,6 +156,9 @@ df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
 # # Duplicating rows based on 'Col key' and collections information
 # duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
+
+df_duplicated = pd.read_csv('all_items_duplicated.csv')
+duplicated_data = df_duplicated.copy()
 
 st.header('Recently added or updated items: ')
 df_duplicated
