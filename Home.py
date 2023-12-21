@@ -795,6 +795,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         )
 
     # Title input from the user
+    st.header('Search in database')
     search_term = st.text_input('Search keywords or author names')
     if search_term:
         search_terms = search_term.split()  # Split the search terms
