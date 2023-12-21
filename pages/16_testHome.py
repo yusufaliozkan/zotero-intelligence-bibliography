@@ -291,6 +291,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_collections = df_csv_collections['Collection_Name'].unique()
             selected_collections = st.multiselect('Select Collection(s)', unique_collections)
             filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'].isin(selected_collections)] if selected_collections else df
+            filtered_collection_df
 
             st.header('Recently added or updated items: ')
             # df['Abstract'] = df['Abstract'].str.strip()
