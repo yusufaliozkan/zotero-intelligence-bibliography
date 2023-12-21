@@ -810,21 +810,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     # Title input from the user
     search_term = st.text_input('Enter keyword or phrase to search')
-    if search_term:
-        search_terms = re.findall(r'\bAND\b|\bOR\b|\bNOT\b|\b\w+\b', search_term.upper())  # Extract search terms and boolean operators
-        valid_operators = ['AND', 'OR', 'NOT']
-        
-        filters = ""
-        for term in search_terms:
-            if term in valid_operators:
-                filters += f" {term} "
-            else:
-                filters += f"({term})"
 
-        try:
-            filtered_df = df_csv[df_csv.eval(filters)]
-        except ValueError:
-            filtered_df = pd.DataFrame()  # Empty DataFrame if the query syntax is invalid
+    if search_term:
+        search_terms = search_term.split()  # Split the search terms
+        filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+
+        filtered_df = df_csv[
+            (df_csv['Title'].str.contains(filters, case=False, na=False)) |
+            (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
+        ]
 
         if not filtered_df.empty:
             st.write("Matching articles:")
