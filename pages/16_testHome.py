@@ -289,7 +289,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Items in collections')
             df_csv_collections = pd.read_csv('all_items.csv')
             df_csv_collections
-            unique_collections = df_csv['Collection_Name'].unique()
+            unique_collections = df_csv_collections['Collection_Name'].unique()
             unique_collections
 
             st.header('Recently added or updated items: ')
