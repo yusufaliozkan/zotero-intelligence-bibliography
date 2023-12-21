@@ -269,28 +269,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 ]
 
                 if not filtered_df.empty:
+                    num_items = len(filtered_df)
+                    st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
+                    
+                    # Your existing code for displaying articles
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
 
-                    st.write("Matching articles:")
-
                     def convert_df(download_filtered):
-                        return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                    csv = convert_df(download_filtered)
-                    # csv = df_download
-                    # # st.caption(collection_name)
-                    today = datetime.date.today().isoformat()
-                    a = 'search-result-' + today
-                    st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
-
-                    articles_list = []  # Store articles in a list
-                    for index, row in filtered_df.iterrows():
-                        formatted_entry = format_entry(row)
-                        articles_list.append(formatted_entry)  # Append formatted entry to the list
-
-                    # Display the numbered list using Markdown syntax
-                    for i, article in enumerate(articles_list, start=1):
-                        st.markdown(f"{i}. {article}")
+                        return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character, Â cp1252
+                    
+                    # ... (rest of your code)
                 else:
                     st.write("No articles found with the given keyword/phrase.")
             else:
