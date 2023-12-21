@@ -153,61 +153,31 @@ def duplicate_rows_by_col_key(df, df_collections):
     return duplicated_df
 df = zotero_data(library_id, library_type)
 df_collections_2 = zotero_collections2(library_id, library_type)
+
+# Duplicating rows based on 'Col key' and collections information
 duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
-duplicated_data
 
 st.header('Recently added or updated items: ')
 
-# Updated DataFrame for display
-display_df = duplicated_data.copy()
-display_df['Abstract'] = display_df['Abstract'].str.strip()
-display_df['Abstract'] = display_df['Abstract'].fillna('No abstract')
+# Display unique items along with their themes
+unique_items = duplicated_data.drop_duplicates(subset=['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
 
-df_download = display_df[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
-
-def convert_df(df):
-    return df.to_csv(index=False).encode('utf-8-sig')
-
-csv = convert_df(df_download)
-today = datetime.date.today().isoformat()
-file_name = 'recently-added-' + today + '.csv'
-
-st.download_button('💾 Download recently added items', csv, file_name, mime="text/csv", key='download-csv-3')
-
-display = st.checkbox('Display theme and abstract')
-
-for index, row in display_df.iterrows():
-    publication_type = row['Publication type']
-    theme = row['Collection_Name']
-    theme_link = row['Collection_Link']
-    
-    if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-        display_text = (
-            f"**{publication_type}**: {row['Title']}, "
-            f"(by *{row['Authors']}*) "
-            f"(Published on: {row['Date published']}) "
-            f"(Published in: *{row['Pub_venue']}*) "
-            f"[[Publication link]]({row['Link to publication']}) "
-            f"[[Zotero link]]({row['Zotero link']})"
-        )
-    else:
-        display_text = (
-            f"**{publication_type}**: {row['Title']}, "
-            f"(by *{row['Authors']}*) "
-            f"(Published on: {row['Date published']}, "
-            f"Added on: {row['Date added']}) "
-            f"[[Publication link]]({row['Link to publication']}) "
-            f"[[Zotero link]]({row['Zotero link']})"
-        )
+for index, row in unique_items.iterrows():
+    display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['Authors']}*) " \
+                   f"(Published on: {row['Date published']}, Added on: {row['Date added']}) " \
+                   f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
     
     st.write(f"{index + 1}) {display_text}")
     
-    if display:
-        if theme and theme_link:
-            st.caption(f'Theme(s): [{theme}]({theme_link})')
-        else:
-            st.caption('No theme to display!')
-        st.caption('Abstract: ' + row['Abstract'])
+    display_themes = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Name']
+    display_theme_links = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Link']
+    
+    themes_to_display = set(zip(display_themes, display_theme_links))
+    if themes_to_display:
+        st.caption('Themes:')
+        for theme, link in themes_to_display:
+            if theme and link:
+                st.caption(f'- [{theme}]({link})')
 
 # END OF TEST
 
