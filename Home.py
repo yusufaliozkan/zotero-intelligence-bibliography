@@ -299,21 +299,39 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 st.write("Please enter a keyword or author name to search.")
 
-            st.header('All items in database')
-            with st.expander('Click to expand', expanded=False):
-                df_all_items = pd.read_csv('all_items.csv')
-                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+            st.header('Search collections')
 
-                def convert_df(df_all_items):
-                    return df_all_items.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv = convert_df(df_all_items)
-                # csv = df_download
-                # # st.caption(collection_name)
-                today = datetime.date.today().isoformat()
-                a = 'intelligence-bibliography-all-' + today
-                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
+            df_csv_collections = pd.read_csv('all_items_duplicated.csv')
+            numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
+            unique_collections = [''] + list(df_csv_collections['Collection_Name'].unique())  # Adding an empty string as the first option
+            select_options = [''] + sorted(list(numeric_start_collections))
+            selected_collection = st.selectbox('Select Collection(s)', select_options)
 
-                df_all_items
+            if not selected_collection or selected_collection == '':
+                st.write('Pick a collection to see items')
+            else:
+                filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
+                filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+                
+                with st.expander('Click to expand', expanded=False):
+                    st.markdown('#### Collection theme: ' + selected_collection)
+                    def convert_df(filtered_collection_df):
+                        return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
+
+                    csv = convert_df(filtered_collection_df)
+                    today = datetime.date.today().isoformat()
+                    num_items_collections = len(filtered_collection_df)
+                    st.write(f"{num_items_collections} sources found")
+                    a = f'{selected_collection}_{today}'
+                    st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                    
+                    for index, row in filtered_collection_df.iterrows():
+                        display_text = (
+                            f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
+                            f"(Published on: {row['Date published']}) "
+                            f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
+                        )
+                        st.write(f"{index + 1}) {display_text}")
 
             st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
@@ -385,6 +403,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     
                     st.caption('Abstract: '+ df['Abstract'].iloc[i])
 
+            st.header('All items in database')
+            with st.expander('Click to expand', expanded=False):
+                df_all_items = pd.read_csv('all_items.csv')
+                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+
+                def convert_df(df_all_items):
+                    return df_all_items.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                csv = convert_df(df_all_items)
+                # csv = df_download
+                # # st.caption(collection_name)
+                today = datetime.date.today().isoformat()
+                a = 'intelligence-bibliography-all-' + today
+                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
+
+                df_all_items
+
         with col2:
             with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
@@ -400,12 +434,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
                 st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
                 st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
-            with st.expander("Collections in Zotero library", expanded=False):
-                row_nu_collections = len(df_collections_2.index)        
-                for i in range(row_nu_collections):
-                    st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
-                    ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
-                    )
 
             with st.expander('Events & conferences', expanded=True):
                 st.markdown('##### Next event')
