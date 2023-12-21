@@ -167,6 +167,7 @@ df_sorted = df_duplicated.sort_values(by='Date added', ascending=False)
 
 # Selecting the last 10 items
 last_10_items = df_sorted.head(10)
+last_10_items = last_10_items.reset_index(drop=True)
 
 display = st.checkbox('Display theme and abstract')
 
