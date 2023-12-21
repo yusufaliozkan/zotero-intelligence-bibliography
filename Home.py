@@ -318,13 +318,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     today = datetime.date.today().isoformat()
                     a = selected_collections + today
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')                    
-                        for index, row in filtered_collection_df.iterrows():
-                            display_text = (
-                                f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
-                                f"(Published on: {row['Date published']}) "
-                                f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
-                            )
-                            st.write(f"{index + 1}) {display_text}")
+                    for index, row in filtered_collection_df.iterrows():
+                        display_text = (
+                            f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
+                            f"(Published on: {row['Date published']}) "
+                            f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
+                        )
+                        st.write(f"{index + 1}) {display_text}")
 
             st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
