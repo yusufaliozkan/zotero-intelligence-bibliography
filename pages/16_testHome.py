@@ -124,44 +124,8 @@ def zotero_collections(library_id, library_type):
     return df_collections.sort_values(by='Name')
 df_collections = zotero_collections(library_id, library_type)
 
-# def duplicate_rows_by_col_key(df, df_collections):
-#     # Duplicate rows based on 'Col key'
-#     duplicated_rows = []
-#     for index, row in df.iterrows():
-#         if isinstance(row['Col key'], list):
-#             for key in row['Col key']:
-#                 new_row = row.copy()
-#                 collection_info = df_collections[df_collections['Key'] == key]
-#                 if not collection_info.empty:
-#                     new_row['Collection_Key'] = key
-#                     new_row['Collection_Name'] = collection_info.iloc[0]['Name']
-#                     new_row['Collection_Link'] = collection_info.iloc[0]['Link']
-#                     duplicated_rows.append(new_row)
-#         else:
-#             key = row['Col key']
-#             new_row = row.copy()
-#             collection_info = df_collections[df_collections['Key'] == key]
-#             if not collection_info.empty:
-#                 new_row['Collection_Key'] = key
-#                 new_row['Collection_Name'] = collection_info.iloc[0]['Name']
-#                 new_row['Collection_Link'] = collection_info.iloc[0]['Link']
-#                 duplicated_rows.append(new_row)
-
-#     # Create a new DataFrame with duplicated rows
-#     duplicated_df = pd.DataFrame(duplicated_rows)
-
-#     return duplicated_df
-# df = zotero_data(library_id, library_type)
-# df_collections_2 = zotero_collections2(library_id, library_type)
-
-# # Duplicating rows based on 'Col key' and collections information
-# duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
-
 
 # END OF TEST
-
-df_duplicated = pd.read_csv('all_items_duplicated.csv')
-df_duplicated
 
 df = df.fillna('')
 
