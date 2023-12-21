@@ -234,23 +234,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if publication_type == 'Journal article':
                     published_by_or_in = 'Published in'
                     published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    # Handle date format for Journal articles (format: dd/mm/yyyy)
-                    date_published = pd.to_datetime(date_published, format='%d/%m/%Y', errors='coerce')
-                elif publication_type == 'Document':
+                elif publication_type == 'Book':
                     published_by_or_in = 'Published by'
                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                    # Handle date format for Documents (format: dd/mm/yyyy)
-                    date_published = pd.to_datetime(date_published, format='%d/%m/%Y', errors='coerce')
-                elif publication_type == 'Blog post':
-                    # Handle date format for Blog posts (format: dd/mm/yyyy)
-                    date_published = pd.to_datetime(date_published, format='%d/%m/%Y', errors='coerce')
                 else:
                     # For other types, leave the fields empty
                     published_by_or_in = ''
                     published_source = ''
 
                 # Extracting year from the 'Date published' column
-                year_published = date_published.dt.strftime('%d-%m-%Y').fillna('No date') if not date_published.isnull().all() else ''
+                year_published = pd.to_datetime(date_published, utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                year_published = year_published.dt.strftime('%d-%m-%Y').fillna('No date') if not year_published.isnull().all() else ''
 
                 return (
                     '**' + publication_type + '**' + ': ' +
