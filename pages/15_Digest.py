@@ -72,8 +72,7 @@ with st.spinner('Preparing digest...'):
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.date
     df_csv['Publisher'] =df_csv['Publisher'].fillna('')
     df_csv['Journal'] =df_csv['Journal'].fillna('')
-    df_csv['firstName'] =df_csv['firstName'].fillna('')
-    df_csv['lastName'] =df_csv['lastName'].fillna('')
+    df_csv['FirstName2'] =df_csv['FirstName2'].fillna('')
 
     df_csv = df_csv.drop(['Unnamed: 0'], axis=1)
 
@@ -177,13 +176,15 @@ with st.spinner('Preparing digest...'):
                 publication_info = ''
                 if df_csva['Publication type'].iloc[0] in ('Journal article', 'Magazine article', 'Newspaper article'):
                     publication_info = ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')'
-                df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
-                            df_csva['Title'] + "'," +
-                            ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
-                            publication_info +
-                            ' (Published on: ' + df_csva['Date published new'] + ')' +
-                            ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
-                            )
+                df_lasta = (
+                    '**' + df_csva['Publication type'] + '**' + ": '" +
+                    df_csva['Title'] + "'," +
+                    ' (Author(s): ' + '*' + df_csva['FirstName2'].astype(str) + '*' + ')' +
+                    # Concatenate 'publication_info' if it's required here
+                    # publication_info +
+                    ' (Published on: ' + df_csva['Date published new'].astype(str) + ')' +
+                    ", [Publication link](" + df_csva['Link to publication'] + ')'
+                )
                 # df_lasta=df_lasta.dropna().reset_index(drop=True)
                 row_nu = len(df_csva.index)
                 for i in range(row_nu):
@@ -192,7 +193,7 @@ with st.spinner('Preparing digest...'):
         else:
             df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                                 df_csv['Title'] +  "',"  +
-                                ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                                ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*'+ ') ' +
                                 ' (Published on: ' + df_csv['Date published new'] + ')' +
                                 ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                                 )
@@ -202,7 +203,7 @@ with st.spinner('Preparing digest...'):
                 if df_csv['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
                     df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                         df_csv['Title'] +  "',"  +
-                        ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                        ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*' +') ' +
                         ' (Published in: ' + '*' + df_csv['Journal'] + '*' + ')' +
                         ' (Published on: ' + df_csv['Date published new'] + ')' +
                         ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
@@ -210,7 +211,7 @@ with st.spinner('Preparing digest...'):
                 else:
                     df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
                         df_csv['Title'] +  "',"  +
-                        ' (First author: ' + '*' + df_csv['firstName'] + '*'+ ' ' + '*' + df_csv['lastName'] + '*' + ') ' +
+                        ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*'+') ' +
                         ' (Published on: ' + df_csv['Date published new'] + ')' +
                         ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                         )
