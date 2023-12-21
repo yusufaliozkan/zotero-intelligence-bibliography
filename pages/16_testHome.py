@@ -164,7 +164,7 @@ df_duplicated
 
 # Display unique items along with their themes
 unique_items = df_duplicated.drop_duplicates(subset=['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
-
+unique_items
 display = st.checkbox('Display theme and abstract')
 
 for index, row in unique_items.iterrows():
