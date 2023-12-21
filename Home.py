@@ -802,7 +802,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             '**' + publication_type + '**' + ': ' +
             title + ' ' +
             '(by ' + '*' + authors + '*' + ') ' +
-            '(Published on: ' + str(year_published) + ') ' +
+            '(Publication year: ' + str(year_published) + ') ' +
             '(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' +
             '[[Publication link]](' + link_to_publication + ') ' +
             '[[Zotero link]](' + zotero_link + ')'
