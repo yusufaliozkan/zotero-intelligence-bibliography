@@ -72,8 +72,7 @@ with st.spinner('Preparing digest...'):
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.date
     df_csv['Publisher'] =df_csv['Publisher'].fillna('')
     df_csv['Journal'] =df_csv['Journal'].fillna('')
-    df_csv['firstName'] =df_csv['firstName'].fillna('')
-    df_csv['lastName'] =df_csv['lastName'].fillna('')
+    df_csv['FirstName2'] =df_csv['FirstName2'].fillna('')
 
     df_csv = df_csv.drop(['Unnamed: 0'], axis=1)
 
@@ -179,7 +178,7 @@ with st.spinner('Preparing digest...'):
                     publication_info = ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')'
                 df_lasta = ('**'+ df_csva['Publication type']+ '**'+ ": '" + 
                             df_csva['Title'] + "'," +
-                            ' (First author: ' + '*' + df_csva['firstName'] + '*'+ ' ' + '*' + df_csva['lastName'] + '*' + ') ' +
+                            ' (First author: ' + '*' + df_csva['FirstName2'] + '*'+ ' ' + '*' + df_csva['FirstName2'] + '*' + ') ' +
                             publication_info +
                             ' (Published on: ' + df_csva['Date published new'] + ')' +
                             ", [Publication link]"+ '('+ df_csva['Link to publication'] + ')'
