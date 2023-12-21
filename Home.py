@@ -179,8 +179,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with col1:
         df_csv = pd.read_csv('all_items.csv')
         num_rows = df_csv.shape[0]
-        num_rows
-        st.write('There are '+  '**'+str(count)+ '**' + ' items in this library.')
+        st.write(f'There are **{num_rows}** rows in this library.')
+        # st.write('There are '+  '**'+str(count)+ '**' + ' items in this library.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
