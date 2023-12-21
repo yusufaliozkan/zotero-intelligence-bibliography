@@ -256,17 +256,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Title input from the user
             st.header('Search in database')
             search_term = st.text_input('Search keywords in titles or author names')
+
             if search_term:
                 search_terms = search_term.split()  # Split the search terms
                 filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
                 df_csv = pd.read_csv('all_items.csv')
+
                 filtered_df = df_csv[
                     (df_csv['Title'].str.contains(filters, case=False, na=False)) |
                     (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
                 ]
 
-                types2 = st.multiselect('Publication types', filtered_df['Publication type'].unique(),filtered_df['Publication type'].unique(), key='original2')
-                filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+                types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                types2 = st.multiselect('Publication types', types, types, key='original2')
+
+                if types2:
+                    filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
 
                 if not filtered_df.empty:
                     num_items = len(filtered_df)
