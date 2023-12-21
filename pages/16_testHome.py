@@ -160,6 +160,7 @@ df_duplicated = pd.read_csv('all_items_duplicated.csv')
 # duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
 
 st.header('Recently added or updated items: ')
+df_duplicated
 
 # Display unique items along with their themes
 unique_items = df_duplicated.drop_duplicates(subset=['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added'])
