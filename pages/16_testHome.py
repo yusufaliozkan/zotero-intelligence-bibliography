@@ -156,7 +156,6 @@ df_collections_2 = zotero_collections2(library_id, library_type)
 
 # Duplicating rows based on 'Col key' and collections information
 duplicated_data = duplicate_rows_by_col_key(df, df_collections_2)
-duplicated_data
 
 st.header('Recently added or updated items: ')
 
@@ -179,12 +178,14 @@ for index, row in unique_items.iterrows():
         themes_to_display = set(zip(display_themes, display_theme_links))
         
         if themes_to_display:
-            themes_caption = 'Theme(s):'
+            themes = ""
             for theme, link in themes_to_display:
                 if theme and link:
-                    themes_caption += f"\n- [{theme}]({link})"
+                    themes += f"[{theme}]({link}) "
             
-            st.caption(themes_caption)
+            if themes.strip() != "":
+                st.caption(f'Themes: {themes}')
+                
             st.caption(f'Abstract: {row["Abstract"]}')
 # END OF TEST
 
