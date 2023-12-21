@@ -305,7 +305,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
             unique_collections = [''] + list(df_csv_collections['Collection_Name'].unique())  # Adding an empty string as the first option
 
-            selected_collection = st.selectbox('Select Collection(s)', unique_collections)
+            selected_collection = st.selectbox('Select Collection(s)', numeric_start_collections)
 
             if not selected_collection or selected_collection == '':
                 st.write('Pick a collection to see items')
