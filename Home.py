@@ -813,9 +813,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     if search_term:
         search_terms = search_term.split()  # Split the search terms
-        filters = '&'.join(f"({col}.str.contains('{term}', case=False, na=False))" for term in search_terms for col in ['Title', 'FirstName2'])
+        filters = '&'.join(search_terms)  # Create a filter with logical OR between search terms
 
-        filtered_df = df_csv[df_csv.eval(filters)]
+        filtered_df = df_csv[
+            (df_csv['Title'].str.contains(filters, case=False, na=False)) |
+            (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
+        ]
 
         if not filtered_df.empty:
             st.write("Matching articles:")
