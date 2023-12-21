@@ -312,9 +312,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
                 filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+
+                collection_link = numeric_start_collections[numeric_start_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
                 
                 with st.expander('Click to expand', expanded=False):
                     st.markdown('#### Collection theme: ' + selected_collection)
+                    st.write(f"See the collection in Zotero: {collection_link}")
                     def convert_df(filtered_collection_df):
                         return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
 
