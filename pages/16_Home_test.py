@@ -124,33 +124,7 @@ def zotero_collections(library_id, library_type):
     return df_collections.sort_values(by='Name')
 df_collections = zotero_collections(library_id, library_type)
 
-#To be deleted
-if 0 in df:
-    merged_df = pd.merge(
-        left=df,
-        right=df_collections,
-        left_on=0,
-        right_on='Key',
-        how='left'
-    )
-    if 1 in merged_df:
-        merged_df = pd.merge(
-            left=merged_df,
-            right=df_collections,
-            left_on=1,
-            right_on='Key',
-            how='left'
-        )
-        if 2 in merged_df:
-            merged_df = pd.merge(
-                left=merged_df,
-                right=df_collections,
-                left_on=2,
-                right_on='Key',
-                how='left'
-            ) 
-df = merged_df.copy()
-#To be deleted
+
 
 df = df.fillna('')
 
