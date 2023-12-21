@@ -400,12 +400,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
                 st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
                 st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
-            with st.expander("Collections in Zotero library", expanded=False):
-                row_nu_collections = len(df_collections_2.index)        
-                for i in range(row_nu_collections):
-                    st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
-                    ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
-                    )
 
             with st.expander('Events & conferences', expanded=True):
                 st.markdown('##### Next event')
