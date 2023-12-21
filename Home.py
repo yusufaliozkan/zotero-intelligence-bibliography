@@ -270,7 +270,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
 
                     if num_items > 50:
-                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)")
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
                         if show_first_50:
                             filtered_df = filtered_df.head(50)
 
