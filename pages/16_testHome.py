@@ -291,7 +291,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_collections = df_csv_collections['Collection_Name'].unique()
             selected_collections = st.multiselect('Select Collection(s)', unique_collections)
             filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'].isin(selected_collections)] if selected_collections else df
-            filtered_collection_df
+            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
             for index, row in filtered_collection_df.iterrows():
                 display_text = (
                     f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
