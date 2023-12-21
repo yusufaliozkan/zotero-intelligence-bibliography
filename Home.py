@@ -812,9 +812,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
     search_term = st.text_input('Enter keyword or phrase to search')
 
     if search_term:
+        search_terms = search_term.split()  # Split the search terms
+        filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+
         filtered_df = df_csv[
-            (df_csv['Title'].str.contains(search_term, case=False, na=False)) |
-            (df_csv['FirstName2'].str.contains(search_term, case=False, na=False))
+            (df_csv['Title'].str.contains(filters, case=False, na=False)) |
+            (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
         ]
 
         if not filtered_df.empty:
