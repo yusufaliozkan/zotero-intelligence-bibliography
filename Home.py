@@ -782,6 +782,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
         zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
         published_by_or_in = ''
+        published_source = ''
 
         if publication_type == 'Journal article':
             published_by_or_in = 'Published in'
@@ -789,6 +790,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
         elif publication_type == 'Book':
             published_by_or_in = 'Published by'
             published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+        else:
+            # For other types, include the publication type
+            published_by_or_in = 'Publication type'
+            published_source = publication_type
 
         # Extracting year from the 'Date published' column
         year_published = pd.to_datetime(date_published).year if date_published else ''
