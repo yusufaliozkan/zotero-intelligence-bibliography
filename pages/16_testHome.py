@@ -186,6 +186,7 @@ for index, row in unique_items.iterrows():
 # END OF TEST
 
 df_duplicated = pd.read_csv('all_items_duplicated.csv')
+df_duplicated
 
 df = df.fillna('')
 
