@@ -294,9 +294,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     for i, article in enumerate(articles_list, start=1):
                         st.markdown(f"{i}. {article}")
 
-                    if num_items > 100 and not show_first_50:
-                        st.selectbox('Select an item', articles_list)
-
                 else:
                     st.write("No articles found with the given keyword/phrase.")
             else:
