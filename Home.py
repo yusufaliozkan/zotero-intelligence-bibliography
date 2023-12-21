@@ -305,8 +305,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_collections = [''] + list(df_csv_collections['Collection_Name'].unique())  # Adding an empty string as the first option
 
             selected_collection = st.selectbox('Select Collection(s)', unique_collections)
-            selected_collection
-
+            
             if not selected_collection or selected_collection == '':
                 st.write('Pick a collection to see items')
             else:
@@ -314,6 +313,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                 
                 with st.expander('Click to expand', expanded=False):
+                    st.markdown('#### Collection theme: ' + selected_collection)
                     def convert_df(filtered_collection_df):
                         return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
 
