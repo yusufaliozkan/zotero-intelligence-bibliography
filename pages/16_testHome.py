@@ -373,7 +373,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df_authors
 
                 with st.expaner('Click to expand', expanded=False):
-                    st.markdown('### Author name:')
+                    st.markdown('#### Collection theme: ' + selected_collection)
 
 
             # SEARCH IN COLLECTIONS
