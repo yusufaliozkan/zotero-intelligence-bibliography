@@ -320,25 +320,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         # Create a regex pattern to find the search terms in the text
                         pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
 
-                        # Get the theme as 'light' or 'dark'
-                        current_theme = st.get_theme()
-
-                        # Define default highlight color (light yellow)
-                        highlight_color_light = "#CAC5FF"  # Light purple for light mode
-                        highlight_color_dark = "#90caf9"  # Light blue for dark mode
-
-                        # Determine the highlight color based on the current theme
-                        highlight_color = (
-                            highlight_color_dark if current_theme == "dark" else highlight_color_light
-                        )
-
-                        # Use the highlight_color variable in your code for text highlighting
+                        # Use HTML tags to highlight the terms in the text, excluding URLs
                         highlighted_text = pattern.sub(
-                            lambda match: f'<span style="background-color: {highlight_color};">{match.group(0)}</span>'
-                            if match.group(0) not in urls
-                            else match.group(0),
+                            lambda match: f'<span style="background-color: #CAC5FF;">{match.group(0)}</span>' 
+                                        if match.group(0) not in urls else match.group(0),
                             text
                         )
+
                         # Restore the original URLs in the highlighted text
                         for index, url in enumerate(urls):
                             highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
