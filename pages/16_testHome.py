@@ -364,6 +364,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('Select an author to see items')
             else:
                 filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
+                filtered_collection_df_authors
 
             # SEARCH IN COLLECTIONS
 
