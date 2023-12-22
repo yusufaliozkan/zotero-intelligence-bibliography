@@ -347,14 +347,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 st.write("Please enter a keyword or author name to search.")
 
-            # SEARCH IN COLLECTIONS
+            # SEARCH AUTHORS
+            st.header('Search author')
             df_authors = pd.read_csv('all_items.csv')
             df_authors['FirstName2'].fillna('', inplace=True)
             df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
             df_authors = df_authors.explode('Author_name')
             df_authors.reset_index(drop=True, inplace=True)
             df_authors
+            unique_authors = [''] + list(df_authors['Author_name'].unique())
+            select_options_author = [''] + sorted(list(unique_authors))
+            selected_author = st.selectbox('Select author', select_options_author)
 
+            # SEARCH IN COLLECTIONS
 
             st.header('Search collections')
 
