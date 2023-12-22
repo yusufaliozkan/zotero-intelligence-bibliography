@@ -258,13 +258,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             search_term = st.text_input('Search keywords in titles or author names')
 
             if search_term:
-                search_terms = search_term.split()  # Split the search terms
+                search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                 filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+
                 df_csv = pd.read_csv('all_items.csv')
 
                 filtered_df = df_csv[
-                    (df_csv['Title'].str.contains(filters, case=False, na=False)) |
-                    (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
+                    (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
+                    (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
                 ]
                 
                 filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
@@ -304,16 +305,49 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     for index, row in filtered_df.iterrows():
                         formatted_entry = format_entry(row)
                         articles_list.append(formatted_entry)  # Append formatted entry to the list
+        
+                    def highlight_terms(text, terms):
+                        # Regular expression pattern to identify URLs
+                        url_pattern = r'https?://\S+'
+
+                        # Find all URLs in the text
+                        urls = re.findall(url_pattern, text)
+                        
+                        # Replace URLs in the text with placeholders to avoid highlighting
+                        for url in urls:
+                            text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
+
+                        # Create a regex pattern to find the search terms in the text
+                        pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
+
+                        # Use HTML tags to highlight the terms in the text, excluding URLs
+                        highlighted_text = pattern.sub(
+                            lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
+                                        if match.group(0) not in urls else match.group(0),
+                            text
+                        )
+
+                        # Restore the original URLs in the highlighted text
+                        for index, url in enumerate(urls):
+                            highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+
+                        return highlighted_text
+                        
+                        return highlighted_text
 
                     # Display the numbered list using Markdown syntax
+
                     for i, article in enumerate(articles_list, start=1):
-                        st.markdown(f"{i}. {article}")
+                        # Highlight the search terms in the article entry before displaying it
+                        highlighted_article = highlight_terms(article, search_terms)
+                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
 
                 else:
                     st.write("No articles found with the given keyword/phrase.")
             else:
                 st.write("Please enter a keyword or author name to search.")
 
+            # SEARCH IN COLLECTIONS
             st.header('Search collections')
 
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
@@ -354,13 +388,35 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
                     
                     for index, row in filtered_collection_df.iterrows():
-                        display_text = (
-                            f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
-                            f"(Published on: {row['Date published']}) "
-                            f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
-                        )
-                        st.write(f"{index + 1}) {display_text}")
+                        publication_type = row['Publication type']
+                        title = row['Title']
+                        authors = row['FirstName2']
+                        date_published = row['Date published']
+                        link_to_publication = row['Link to publication']
+                        zotero_link = row['Zotero link']
 
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        else:
+                            published_by_or_in = ''
+                            published_source = ''
+
+                        formatted_entry = (
+                            '**' + str(publication_type) + '**' + ': ' +
+                            str(title) + ' ' +
+                            '(by ' + '*' + str(authors) + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + str(link_to_publication) + ') ' +
+                            '[[Zotero link]](' + str(zotero_link) + ')'
+                        )
+                        st.write(f"{index + 1}) {formatted_entry}")
+
+            # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')

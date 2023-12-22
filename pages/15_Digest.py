@@ -94,24 +94,16 @@ with st.spinner('Preparing digest...'):
 
     with st.expander('Publications:', expanded=ex):
         st.header('Publications')
-        previous_10 = today - dt.timedelta(days=10)
-        previous_20 = today - dt.timedelta(days=20)
         previous_30 = today - dt.timedelta(days=30)
         previous_90 = today - dt.timedelta(days=90)
         previous_180 = today - dt.timedelta(days=180)
         previous_360 = today - dt.timedelta(days=365)
-        rg = previous_10
-        a='10 days'
+        rg = previous_30
+        a='30 days'
         st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-        range_day = st.radio('Show sources published in the last:', ('10 days', '20 days', '30 days','3 months', '6 months', '1 year', 'Custom (days)', 'Custom (select date)'))
-        if range_day == '10 days':
-            rg = previous_10
-            a = '10 days'
-        if range_day == '20 days':
-            rg = previous_20
-            a ='20 days'
+        range_day = st.radio('Show sources published in the last:', ('30 days','3 months', '6 months', '1 year', 'Custom (days)', 'Custom (select date)'))
         if range_day == '30 days':
             rg = previous_30
             a='30 days'
