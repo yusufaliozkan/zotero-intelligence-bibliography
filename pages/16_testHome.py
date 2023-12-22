@@ -364,6 +364,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('Select an author to see items')
             else:
                 filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
+
+                filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].dt.strftime('%Y-%m-%d')
+                filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].fillna('')
+                filtered_collection_df_authors['No date flag'] = filtered_collection_df_authors['Date published'].isnull().astype(np.uint8)
+                filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                 filtered_collection_df_authors
 
             # SEARCH IN COLLECTIONS
