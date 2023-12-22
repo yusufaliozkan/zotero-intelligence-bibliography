@@ -305,10 +305,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     for index, row in filtered_df.iterrows():
                         formatted_entry = format_entry(row)
                         articles_list.append(formatted_entry)  # Append formatted entry to the list
+        
+                    def highlight_terms(text, terms):
+                        # Create a regex pattern to find the search terms in the text
+                        pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
+                        
+                        # Use HTML tags to highlight the terms in the text
+                        highlighted_text = pattern.sub(lambda match: f"<mark>{match.group(0)}</mark>", text)
+                        
+                        return highlighted_text
 
                     # Display the numbered list using Markdown syntax
+
                     for i, article in enumerate(articles_list, start=1):
-                        st.markdown(f"{i}. {article}")
+                        # Highlight the search terms in the article entry before displaying it
+                        highlighted_article = highlight_terms(article, search_terms)
+                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
 
                 else:
                     st.write("No articles found with the given keyword/phrase.")
