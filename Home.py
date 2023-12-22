@@ -264,7 +264,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_df = df_csv[
                     (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
                     (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
-                ]
+                ] 
                 
                 filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
