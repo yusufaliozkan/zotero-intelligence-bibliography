@@ -306,30 +306,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         formatted_entry = format_entry(row)
                         articles_list.append(formatted_entry)  # Append formatted entry to the list
         
-                    def highlight_terms(text, terms, links):
+                    def highlight_terms(text, terms):
+                        # Create a regex pattern to find the search terms in the text
                         pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
-
-                        non_html_parts = re.split(r'(<[^>]*>)', text)
-                        highlighted_text = ''
-
-                        for part in non_html_parts:
-                            if not re.match(r'<[^>]*>', part):  # Check if the part is not an HTML tag
-                                if any(link in part for link in links):
-                                    highlighted_text += part  # Skip highlighting if link found
-                                else:
-                                    highlighted_part = pattern.sub(lambda match: f'<span style="background-color: lightyellow;">{match.group(0)}</span>', part)
-                                    highlighted_text += highlighted_part
-                            else:
-                                highlighted_text += part
-
+                        
+                        # Use HTML tags to highlight the terms in the text
+                        highlighted_text = pattern.sub(lambda match: f"<mark>{match.group(0)}</mark>", text)
+                        
                         return highlighted_text
-                    links = filtered_df['Link to publication'].fillna('').tolist()
 
                     # Display the numbered list using Markdown syntax
 
                     for i, article in enumerate(articles_list, start=1):
-                        # Highlight the search terms in the article entry, excluding links
-                        highlighted_article = highlight_terms(article, search_terms, links)
+                        # Highlight the search terms in the article entry before displaying it
+                        highlighted_article = highlight_terms(article, search_terms)
                         st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
 
                 else:
