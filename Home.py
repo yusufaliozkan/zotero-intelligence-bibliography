@@ -310,8 +310,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         # Create a regex pattern to find the search terms in the text
                         pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
                         
-                        # Use HTML tags to highlight the terms in the text
-                        highlighted_text = pattern.sub(lambda match: f"<mark>{match.group(0)}</mark>", text)
+                        # Use HTML tags to highlight the terms in the text with a light yellow background
+                        highlighted_text = pattern.sub(lambda match: f'<span style="background-color: lightyellow;">{match.group(0)}</span>', text)
                         
                         return highlighted_text
 
