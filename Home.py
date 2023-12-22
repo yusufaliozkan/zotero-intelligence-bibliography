@@ -307,12 +307,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         articles_list.append(formatted_entry)  # Append formatted entry to the list
         
                     def highlight_terms(text, terms):
-                        # Create a regex pattern to find the search terms in the text
+                        # Separate text from links using regex pattern
+                        text_parts = re.split(r'(<a.*?\/a>)', text)
+                        non_link_text = [part for part in text_parts if not part.startswith('<a')]
+
+                        # Create a regex pattern to find the search terms in the non-link text
+                        non_link_text = ' '.join(non_link_text)
                         pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
-                        
-                        # Use HTML tags to highlight the terms in the text with a light yellow background
-                        highlighted_text = pattern.sub(lambda match: f'<span style="background-color: lightyellow;">{match.group(0)}</span>', text)
-                        
+                        matches = pattern.finditer(non_link_text)
+
+                        # Use HTML tags to highlight the terms in the non-link text with a light yellow background
+                        highlighted_text = text
+                        for match in matches:
+                            start, end = match.span()
+                            highlighted_text = highlighted_text[:start] + \
+                                            f'<span style="background-color: lightyellow;">{highlighted_text[start:end]}</span>' + \
+                                            highlighted_text[end:]
+
                         return highlighted_text
 
                     # Display the numbered list using Markdown syntax
