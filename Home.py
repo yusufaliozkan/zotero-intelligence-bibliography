@@ -258,21 +258,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             search_term = st.text_input('Search keywords in titles or author names')
 
             if search_term:
-                # Find quoted phrases and replace them temporarily with a placeholder
-                quoted_phrases = re.findall(r'"([^"]*)"', search_term)
-                for phrase in quoted_phrases:
-                    placeholder = f"__{len(quoted_phrases)}__"
-                    search_term = search_term.replace(f'"{phrase}"', placeholder)
-
-                search_terms = re.findall(r'\w+|__\d+__', search_term)  # Find individual words and placeholders
+                search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                 filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+
                 df_csv = pd.read_csv('all_items.csv')
-
-            # if search_term:
-            #     search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-            #     filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
-
-            #     df_csv = pd.read_csv('all_items.csv')
 
                 filtered_df = df_csv[
                     (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
