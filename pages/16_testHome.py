@@ -354,7 +354,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
             df_authors = df_authors.explode('Author_name')
             df_authors.reset_index(drop=True, inplace=True)
-            df_authors
             df_authors.dropna(subset=['Author_name'], inplace=True)
             unique_authors = [''] + list(df_authors['Author_name'].unique())
             select_options_author = [''] + sorted(list(unique_authors))
@@ -372,6 +371,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                 filtered_collection_df_authors
+
+                with st.expaner('Click to expand', expanded=False)
+                    st.markdown('### Author name:' + selected_author)
+                    
 
             # SEARCH IN COLLECTIONS
 
