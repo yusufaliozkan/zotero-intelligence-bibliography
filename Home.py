@@ -257,48 +257,59 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Search in database')
             search_term = st.text_input('Search keywords in titles or author names')
 
-            def boolean_search(search_term: str, csv_file: str) -> pd.DataFrame:
-                if search_term:
-                    search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                    filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
-
-                    df_csv = pd.read_csv(csv_file)
-
-                    filtered_df = df_csv[
-                        (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
-                        (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
-                    ]
-
-                    filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
-                    filtered_df['Date published'] = filtered_df['Date published'].fillna('')
-                    filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
-                    filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
-
-                    types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                    types2 = st.multiselect('Publication types', types, types, key='original2')
-
-                    if types2:
-                        filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
-
-                    # Rest of your code...
-
-                    return filtered_df
-
-                else:
-                    return pd.DataFrame()  # Return an empty DataFrame if search term is empty
-
-            # Usage example:
-            st.header('Search in database')
-            search_term = st.text_input('Search keywords in titles or author names')
-
             if search_term:
-                result_df = boolean_search(search_term, 'all_items.csv')
+                search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
+                filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
 
-                if not result_df.empty:
-                    # Process and display results
-                    # ...
+                df_csv = pd.read_csv('all_items.csv')
+
+                filtered_df = df_csv[
+                    (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
+                    (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
+                ]
+                
+                filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                filtered_df['Date published'] = filtered_df['Date published'].fillna('')
+                filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
+                filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
+
+                types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                types2 = st.multiselect('Publication types', types, types, key='original2')
+
+                if types2:
+                    filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+
+                if not filtered_df.empty:
+                    num_items = len(filtered_df)
+                    st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
+
+                    download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                    download_filtered = download_filtered.reset_index(drop=True)
+
+                    def convert_df(download_filtered):
+                        return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                    
+                    csv = convert_df(download_filtered)
+                    today = datetime.date.today().isoformat()
+                    a = 'search-result-' + today
+                    st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
+                    if num_items > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
+                        if show_first_50:
+                            filtered_df = filtered_df.head(50)
+
+                    articles_list = []  # Store articles in a list
+                    for index, row in filtered_df.iterrows():
+                        formatted_entry = format_entry(row)
+                        articles_list.append(formatted_entry)  # Append formatted entry to the list
+
+                    # Display the numbered list using Markdown syntax
+                    for i, article in enumerate(articles_list, start=1):
+                        st.markdown(f"{i}. {article}")
+
                 else:
                     st.write("No articles found with the given keyword/phrase.")
             else:
