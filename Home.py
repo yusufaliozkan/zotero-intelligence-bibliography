@@ -307,11 +307,27 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         articles_list.append(formatted_entry)  # Append formatted entry to the list
         
                     def highlight_terms(text, terms):
+                        # Regular expression pattern to identify URLs
+                        url_pattern = r'https?://\S+'
+
+                        # Find all URLs in the text
+                        urls = re.findall(url_pattern, text)
+                        
+                        # Replace URLs in the text with placeholders to avoid highlighting
+                        for url in urls:
+                            text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
+
                         # Create a regex pattern to find the search terms in the text
                         pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
-                        
-                        # Use HTML tags to highlight the terms in the text
-                        highlighted_text = pattern.sub(lambda match: f"<mark>{match.group(0)}</mark>", text)
+
+                        # Use HTML tags to highlight the terms in the text, excluding URLs
+                        highlighted_text = pattern.sub(lambda match: f"<mark>{match.group(0)}</mark>" if match.group(0) not in urls else match.group(0), text)
+
+                        # Restore the original URLs in the highlighted text
+                        for index, url in enumerate(urls):
+                            highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+
+                        return highlighted_text
                         
                         return highlighted_text
 
