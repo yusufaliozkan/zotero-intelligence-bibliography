@@ -258,7 +258,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             search_term = st.text_input('Search keywords in titles or author names')
 
             if search_term:
-                search_terms = re.findall(r'(?:"[^"]+"|\w+)', search_term)  # Updated regex pattern
+                search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                 filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
 
                 df_csv = pd.read_csv('all_items.csv')
