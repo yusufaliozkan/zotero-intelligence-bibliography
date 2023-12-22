@@ -257,16 +257,29 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Search in database')
             search_term = st.text_input('Search keywords in titles or author names')
 
-            if search_term:
-                search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+            def boolean_search(search_term: str, csv_file: str) -> pd.DataFrame:
+                if search_term:
+                    search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
+                    filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
 
-                df_csv = pd.read_csv('all_items.csv')
+                    df_csv = pd.read_csv(csv_file)
 
-                filtered_df = df_csv[
-                    (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
-                    (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
-                ]
+                    filtered_df = df_csv[
+                        (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
+                        (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
+                    ]
+                    return filtered_df
+
+            # if search_term:
+            #     search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
+            #     filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+
+            #     df_csv = pd.read_csv('all_items.csv')
+
+            #     filtered_df = df_csv[
+            #         (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
+            #         (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
+            #     ]
                 
                 filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
