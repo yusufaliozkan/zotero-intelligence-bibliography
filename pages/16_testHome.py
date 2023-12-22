@@ -348,6 +348,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write("Please enter a keyword or author name to search.")
 
             # SEARCH IN COLLECTIONS
+            df_authors = pd.read_csv('all_items.csv')
+            df_authors['FirstName2'] = df_authors['FirstName2'].apply(lambda x: '' if pd.isnull(x) or isinstance(x, float) else x)
+            df_authors
+
+
             st.header('Search collections')
 
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
