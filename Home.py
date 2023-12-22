@@ -270,6 +270,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                 filtered_df['Date published'] = filtered_df['Date published'].fillna('No date')
+                filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
 
                 filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, False])
 
