@@ -372,9 +372,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                 filtered_collection_df_authors
 
-                with st.expaner('Click to expand', expanded=False)
+                with st.expaner('Click to expand', expanded=False):
                     st.markdown('### Author name:' + selected_author)
-                    
+
 
             # SEARCH IN COLLECTIONS
 
