@@ -266,6 +266,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     (df_csv['Title'].str.contains(filters, case=False, na=False)) |
                     (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
                 ]
+                filtered_df = filtered_df.sort_values(by='Date published', ascending=False)
 
                 types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                 types2 = st.multiselect('Publication types', types, types, key='original2')
