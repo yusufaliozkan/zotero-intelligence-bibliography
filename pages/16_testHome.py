@@ -124,8 +124,33 @@ def zotero_collections(library_id, library_type):
     return df_collections.sort_values(by='Name')
 df_collections = zotero_collections(library_id, library_type)
 
-
-# END OF TEST
+#To be deleted
+if 0 in df:
+    merged_df = pd.merge(
+        left=df,
+        right=df_collections,
+        left_on=0,
+        right_on='Key',
+        how='left'
+    )
+    if 1 in merged_df:
+        merged_df = pd.merge(
+            left=merged_df,
+            right=df_collections,
+            left_on=1,
+            right_on='Key',
+            how='left'
+        )
+        if 2 in merged_df:
+            merged_df = pd.merge(
+                left=merged_df,
+                right=df_collections,
+                left_on=2,
+                right_on='Key',
+                how='left'
+            ) 
+df = merged_df.copy()
+#To be deleted
 
 df = df.fillna('')
 
@@ -230,45 +255,237 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
             st.header('Search in database')
-            search_term = st.text_input('Search keywords or author names')
+            search_term = st.text_input('Search keywords in titles or author names')
+
             if search_term:
-                search_terms = search_term.split()  # Split the search terms
+                search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                 filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+
                 df_csv = pd.read_csv('all_items.csv')
+
                 filtered_df = df_csv[
-                    (df_csv['Title'].str.contains(filters, case=False, na=False)) |
-                    (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
+                    (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
+                    (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
                 ]
+                
+                filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                filtered_df['Date published'] = filtered_df['Date published'].fillna('')
+                filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
+                filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
+
+                types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                types2 = st.multiselect('Publication types', types, types, key='original2')
+
+                if types2:
+                    filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
 
                 if not filtered_df.empty:
                     num_items = len(filtered_df)
                     st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
-                    
-                    # Your existing code for displaying articles
+
                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     download_filtered = download_filtered.reset_index(drop=True)
 
                     def convert_df(download_filtered):
-                        return download_filtered.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                        return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                    
                     csv = convert_df(download_filtered)
-                    # csv = df_download
-                    # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
                     a = 'search-result-' + today
                     st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
+                    if num_items > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
+                        if show_first_50:
+                            filtered_df = filtered_df.head(50)
 
                     articles_list = []  # Store articles in a list
                     for index, row in filtered_df.iterrows():
                         formatted_entry = format_entry(row)
                         articles_list.append(formatted_entry)  # Append formatted entry to the list
+        
+                    def highlight_terms(text, terms):
+                        # Regular expression pattern to identify URLs
+                        url_pattern = r'https?://\S+'
+
+                        # Find all URLs in the text
+                        urls = re.findall(url_pattern, text)
+                        
+                        # Replace URLs in the text with placeholders to avoid highlighting
+                        for url in urls:
+                            text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
+
+                        # Create a regex pattern to find the search terms in the text
+                        pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
+
+                        # Use HTML tags to highlight the terms in the text, excluding URLs
+                        highlighted_text = pattern.sub(
+                            lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
+                                        if match.group(0) not in urls else match.group(0),
+                            text
+                        )
+
+                        # Restore the original URLs in the highlighted text
+                        for index, url in enumerate(urls):
+                            highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+
+                        return highlighted_text
+                        
+                        return highlighted_text
 
                     # Display the numbered list using Markdown syntax
+
                     for i, article in enumerate(articles_list, start=1):
-                        st.markdown(f"{i}. {article}")
+                        # Highlight the search terms in the article entry before displaying it
+                        highlighted_article = highlight_terms(article, search_terms)
+                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+
                 else:
                     st.write("No articles found with the given keyword/phrase.")
             else:
                 st.write("Please enter a keyword or author name to search.")
+
+            # SEARCH IN COLLECTIONS
+            st.header('Search collections')
+
+            df_csv_collections = pd.read_csv('all_items_duplicated.csv')
+            numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
+            unique_collections = [''] + list(df_csv_collections['Collection_Name'].unique())  # Adding an empty string as the first option
+            select_options = [''] + sorted(list(numeric_start_collections))
+            selected_collection = st.selectbox('Select Collection(s)', select_options)
+
+            if not selected_collection or selected_collection == '':
+                st.write('Pick a collection to see items')
+            else:
+                filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
+                # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+
+                filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
+                filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
+                filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
+                filtered_collection_df = filtered_collection_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
+
+                collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
+                
+                with st.expander('Click to expand', expanded=False):
+                    st.markdown('#### Collection theme: ' + selected_collection)
+                    st.write(f"See the collection in [Zotero]({collection_link})")
+                    types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
+                    filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
+                    filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                    def convert_df(filtered_collection_df):
+                        return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
+
+                    csv = convert_df(filtered_collection_df)
+                    today = datetime.date.today().isoformat()
+                    num_items_collections = len(filtered_collection_df)
+                    st.write(f"{num_items_collections} sources found")
+                    a = f'{selected_collection}_{today}'
+                    st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                    
+                    for index, row in filtered_collection_df.iterrows():
+                        publication_type = row['Publication type']
+                        title = row['Title']
+                        authors = row['FirstName2']
+                        date_published = row['Date published']
+                        link_to_publication = row['Link to publication']
+                        zotero_link = row['Zotero link']
+
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        else:
+                            published_by_or_in = ''
+                            published_source = ''
+
+                        formatted_entry = (
+                            '**' + str(publication_type) + '**' + ': ' +
+                            str(title) + ' ' +
+                            '(by ' + '*' + str(authors) + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + str(link_to_publication) + ') ' +
+                            '[[Zotero link]](' + str(zotero_link) + ')'
+                        )
+                        st.write(f"{index + 1}) {formatted_entry}")
+
+            # RECENTLY ADDED ITEMS
+            st.header('Recently added or updated items')
+            df['Abstract'] = df['Abstract'].str.strip()
+            df['Abstract'] = df['Abstract'].fillna('No abstract')
+            
+            df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
+            df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
+
+            def convert_df(df):
+                return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+            csv = convert_df(df_download)
+            # csv = df_download
+            # # st.caption(collection_name)
+            today = datetime.date.today().isoformat()
+            a = 'recently-added-' + today
+            st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
+            
+            display = st.checkbox('Display theme and abstract')
+
+            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                        ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                        ' (Published on: ' + df['Date published']+', ' +
+                        'Added on: ' + df['Date added']+')'+
+                        '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                        )
+            
+            row_nu_1 = len(df_last.index)
+            for i in range(row_nu_1):
+                publication_type = df['Publication type'].iloc[i]
+                if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+') ' +
+                                " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
+                    st.write(f"{i+1}) " + df_last.iloc[i])
+                else:
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+', ' +
+                                'Added on: ' + df['Date added']+') '+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
+                    st.write(f"{i+1}) " + df_last.iloc[i])
+                
+                if display:
+                    a=''
+                    b=''
+                    c=''
+                    if 'Name_x' in df:
+                        a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
+                        if df['Name_x'].iloc[i]=='':
+                            a=''
+                    if 'Name_y' in df:
+                        b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
+                        if df['Name_y'].iloc[i]=='':
+                            b=''
+                    if 'Name' in df:
+                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
+                        if df['Name'].iloc[i]=='':
+                            c=''
+                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                    if not any([a, b, c]):
+                        st.caption('No theme to display!')
+                    
+                    st.caption('Abstract: '+ df['Abstract'].iloc[i])
 
             st.header('All items in database')
             with st.expander('Click to expand', expanded=False):
@@ -286,82 +503,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_all_items
 
-            st.header('Items in collections')
-            df_csv_collections = pd.read_csv('all_items_duplicated.csv')
-            unique_collections = df_csv_collections['Collection_Name'].unique()
-            selected_collections = st.multiselect('Select Collection(s)', unique_collections)
-            if not selected_collections:
-                st.write('Pick a collection to see items')
-            else:
-                filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'].isin(selected_collections)]
-                filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-                for index, row in filtered_collection_df.iterrows():
-                    display_text = (
-                        f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) "
-                        f"(Published on: {row['Date published']}) "
-                        f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
-                    )
-                    st.write(f"{index + 1}) {display_text}")
-                
-
-            st.header('Recently added or updated items: ')
-            # df['Abstract'] = df['Abstract'].str.strip()
-            # df['Abstract'] = df['Abstract'].fillna('No abstract')
-            
-            # df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
-            # df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
-
-            # def convert_df(df):
-            #     return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-            # csv = convert_df(df_download)
-            # # csv = df_download
-            # # # st.caption(collection_name)
-            # today = datetime.date.today().isoformat()
-            # a = 'recently-added-' + today
-            # st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
-
-            df_duplicated = pd.read_csv('all_items_duplicated.csv')
-
-            # Preprocess date columns
-            df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], errors='coerce')
-            df_duplicated['Date published'] = pd.to_datetime(df_duplicated['Date published'], utc=True).dt.tz_convert('Europe/London')
-            df_duplicated['Date published'] = df_duplicated['Date published'].dt.strftime('%d-%m-%Y')
-            df_duplicated['Date published'] = df_duplicated['Date published'].fillna('No date')
-
-            # Create a copy of the DataFrame
-            duplicated_data = df_duplicated.copy()
-
-            # Sorting the DataFrame by 'Date added' in descending order
-            df_sorted = df_duplicated.sort_values(by='Date added', ascending=False)
-
-            # Selecting the last 10 unique items based on specified columns
-            last_10_unique_items = df_sorted.drop_duplicates(subset=['Title', 'Publication type', 'FirstName2', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']).head(10)
-            last_10_unique_items = last_10_unique_items.reset_index(drop=True)
-
-            # Checkbox for displaying themes and abstracts
-            display = st.checkbox('Display theme and abstract')
-
-            # Displaying last 10 unique items
-            for index, row in last_10_unique_items.iterrows():
-                display_text = f"**{row['Publication type']}**: {row['Title']}, (by *{row['FirstName2']}*) " \
-                            f"(Published on: {row['Date published']}) " \
-                            f"[[Publication link]]({row['Link to publication']}) [[Zotero link]]({row['Zotero link']})"
-                
-                st.write(f"{index + 1}) {display_text}")
-                
-                if display:
-                    display_themes = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Name']
-                    display_theme_links = duplicated_data[duplicated_data['Title'] == row['Title']]['Collection_Link']
-                    
-                    themes_to_display = set(zip(display_themes, display_theme_links))
-                    
-                    if themes_to_display:
-                        themes = " | ".join([f"[{theme}]({link})" for theme, link in themes_to_display if theme and link])
-                        if themes.strip() != "":
-                            st.caption(f'Themes: {themes}')
-                            
-                        st.caption(f'Abstract: {row["Abstract"]}')
-
         with col2:
             with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
@@ -377,12 +518,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
                 st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
                 st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
-            with st.expander("Collections in Zotero library", expanded=False):
-                row_nu_collections = len(df_collections_2.index)        
-                for i in range(row_nu_collections):
-                    st.caption('[' + df_collections_2.sort_values(by='Name')['Name'].iloc[i]+ ']'+ '('+ df_collections_2.sort_values(by='Name')['Link'].iloc[i] + ')' + 
-                    ' [' + str(df_collections_2.sort_values(by='Name')['Number'].iloc[i]) + ' items]'
-                    )
 
             with st.expander('Events & conferences', expanded=True):
                 st.markdown('##### Next event')
