@@ -326,7 +326,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('Pick a collection to see items')
             else:
                 filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
-                filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+                # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
                 filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
