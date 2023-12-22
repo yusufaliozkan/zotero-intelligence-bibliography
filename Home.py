@@ -271,7 +271,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%d-%m-%Y')
                 filtered_df['Date published'] = filtered_df['Date published'].fillna('No date')
 
-                filtered_df = filtered_df.sort_values(by='Date published', ascending=True)
+                filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
 
                 types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                 types2 = st.multiselect('Publication types', types, types, key='original2')
