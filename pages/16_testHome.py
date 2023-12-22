@@ -355,6 +355,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_authors = df_authors.explode('Author_name')
             df_authors.reset_index(drop=True, inplace=True)
             df_authors
+            df_authors.dropna(subset=['Author_name'], inplace=True)
             unique_authors = [''] + list(df_authors['Author_name'].unique())
             select_options_author = [''] + sorted(list(unique_authors))
             selected_author = st.selectbox('Select author', select_options_author)
