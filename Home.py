@@ -347,6 +347,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 st.write("Please enter a keyword or author name to search.")
 
+            # SEARCH IN COLLECTIONS
             st.header('Search collections')
 
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
@@ -415,7 +416,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         )
                         st.write(f"{index + 1}) {formatted_entry}")
 
-
+            # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
