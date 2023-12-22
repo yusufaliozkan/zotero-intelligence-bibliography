@@ -266,6 +266,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     (df_csv['Title'].str.contains(filters, case=False, na=False)) |
                     (df_csv['FirstName2'].str.contains(filters, case=False, na=False))
                 ]
+                
+
+                filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%d-%m-%Y')
+                filtered_df['Date published'] = filtered_df['Date published'].fillna('No date')
+
                 filtered_df = filtered_df.sort_values(by='Date published', ascending=False)
 
                 types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
