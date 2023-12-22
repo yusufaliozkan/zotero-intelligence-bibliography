@@ -309,29 +309,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     def highlight_terms(text, terms):
                         # Create a regex pattern to find the search terms in the text
                         pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
-
+                        
                         # Find all occurrences of text outside HTML tags
-                        non_html_parts = re.split(r'<[^>]*>', text)
-                        html_parts = re.findall(r'<[^>]*>', text)
-
-                        # Highlight terms in non-HTML parts
+                        non_html_parts = re.split(r'(<[^>]*>)', text)
+                        
+                        # Highlight terms only outside HTML tags
                         highlighted_text = ''
                         for part in non_html_parts:
-                            matches = pattern.finditer(part)
-                            start_index = 0
-                            for match in matches:
-                                start, end = match.span()
-                                highlighted_text += part[start_index:start] + f'<span style="background-color: lightyellow;">{part[start:end]}</span>'
-                                start_index = end
-                            highlighted_text += part[start_index:]
-
-                        # Combine the non-HTML parts with HTML parts
-                        final_text = ''
-                        for i, part in enumerate(html_parts):
-                            final_text += highlighted_text.split(f'${i}', 1)[0] if i > 0 else highlighted_text
-                            final_text += part
-
-                        return final_text
+                            if not re.match(r'<[^>]*>', part):  # Check if the part is not an HTML tag
+                                highlighted_part = pattern.sub(lambda match: f'<span style="background-color: lightyellow;">{match.group(0)}</span>', part)
+                                highlighted_text += highlighted_part
+                            else:
+                                highlighted_text += part
+                        
+                        return highlighted_text
 
                     # Display the numbered list using Markdown syntax
 
