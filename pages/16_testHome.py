@@ -360,6 +360,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             select_options_author = [''] + sorted(list(unique_authors))
             selected_author = st.selectbox('Select author', select_options_author)
 
+            if not selected_author  or selected_author =="":
+                st.write('Select an author to see items')
+
             # SEARCH IN COLLECTIONS
 
             st.header('Search collections')
