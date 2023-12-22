@@ -322,7 +322,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         # Use HTML tags to highlight the terms in the text, excluding URLs
                         highlighted_text = pattern.sub(
-                            lambda match: f'<span style="background-color: #ABA4FF;">{match.group(0)}</span>' 
+                            lambda match: f'<span style="background-color: #e0f7fa;">{match.group(0)}</span>' 
                                         if match.group(0) not in urls else match.group(0),
                             text
                         )
