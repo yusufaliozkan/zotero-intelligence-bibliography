@@ -321,7 +321,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
 
                         # Use HTML tags to highlight the terms in the text, excluding URLs
-                        highlighted_text = pattern.sub(lambda match: f"<mark>{match.group(0)}</mark>" if match.group(0) not in urls else match.group(0), text)
+                        highlighted_text = pattern.sub(
+                            lambda match: f'<span style="background-color: #ffff99;">{match.group(0)}</span>' 
+                                        if match.group(0) not in urls else match.group(0),
+                            text
+                        )
 
                         # Restore the original URLs in the highlighted text
                         for index, url in enumerate(urls):
