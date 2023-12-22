@@ -349,7 +349,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH IN COLLECTIONS
             df_authors = pd.read_csv('all_items.csv')
-            df_authors['FirstName2'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if x else [])
+            df_authors['FirstName2'].fillna('', inplace=True)
+            df_authors['FirstName2'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+
             df_authors = df_authors.explode('FirstName2')
             df_authors
 
