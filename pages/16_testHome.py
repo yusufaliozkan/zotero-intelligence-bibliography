@@ -355,10 +355,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_authors = df_authors.explode('Author_name')
             df_authors.reset_index(drop=True, inplace=True)
             df_authors = df_authors.dropna(subset=['FirstName2'])
-            df_authors['Author_name'] = df_authors['Author_name'].replace('David Gioe', 'David V. Gioe')
-            df_authors['Author_name'] = df_authors['Author_name'].replace('David Vincent Gioe', 'David V. Gioe')
-            df_authors['Author_name'] = df_authors['Author_name'].replace('Michael Goodman', 'Michael S. Goodman')
-            df_authors['Author_name'] = df_authors['Author_name'].replace('Michael S Goodman', 'Michael S. Goodman')
+            name_replacements = {
+                'David Gioe': 'David V. Gioe',
+                'David Vincent Gioe': 'David V. Gioe',
+                'Michael Goodman': 'Michael S. Goodman',
+                'Michael S Goodman': 'Michael S. Goodman',
+                'Michael Simon Goodman': 'Michael S. Goodman'
+            }
+            df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
             unique_authors = [''] + list(df_authors['Author_name'].unique())
 
             author_publications = df_authors['Author_name'].value_counts().to_dict()
