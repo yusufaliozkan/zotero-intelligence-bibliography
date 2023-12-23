@@ -257,9 +257,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Search in database')
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections"))
 
-            st.subheader('Search keywords')
-            search_term = st.text_input('Search keywords in titles or author names')
             if search_option == "Search keywords":
+                st.subheader('Search keywords')
+                search_term = st.text_input('Search keywords in titles or author names')
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
                         search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
