@@ -377,6 +377,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
                     filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
                     filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                    download_filtered = filtered_collection_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+
                     def convert_df(filtered_collection_df):
                         return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
 
