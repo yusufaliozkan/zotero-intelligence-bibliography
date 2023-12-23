@@ -369,7 +369,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 'Philip Davies':'Philip H. J. Davies',
                 'Dan Lomas':'Daniel W. B. Lomas',
                 'Richard Aldrich':'Richard J. Aldrich',
-                'Richard J Aldrich':'Richard J. Aldrich'
+                'Richard J Aldrich':'Richard J. Aldrich',
+                'Steven Wagner':'Steven B. Wagner'
             }
             df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
             unique_authors = [''] + list(df_authors['Author_name'].unique())
