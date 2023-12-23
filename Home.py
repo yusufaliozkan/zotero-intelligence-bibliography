@@ -34,7 +34,7 @@ api_key = '' # api_key is only needed for private groups and libraries
 # Bringing recently changed items
 
 st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network',
+                    page_title='Intelligence studies bibliography',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 pd.set_option('display.max_colwidth', None)
@@ -156,12 +156,11 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence studies network")
-st.header('Intelligence bibliography')
+st.title("Intelligence studies bibliography")
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
-Wellcome to **Intelligence studies network**! 
+Wellcome to **Intelligence studies bibliography**! 
 This website lists different sources, events, conferences, and call for papers on intelligence history and intelligence studies. 
 The current page shows the recently added or updated items. 
 **If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: .
@@ -184,7 +183,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with st.sidebar:
         st.image(image, width=150)
-        st.sidebar.markdown("# Intelligence studies network")
+        st.sidebar.markdown("# Intelligence studies bibliography")
         with st.expander('About'):
             st.write('''This website lists secondary sources on intelligence studies and intelligence history.
             The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
