@@ -157,11 +157,11 @@ df = df.fillna('')
 # Streamlit app
 
 st.title("Intelligence studies network")
-st.header('Intelligence bibliography')
+st.header('Intelligence studies bibliography')
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
-Wellcome to **Intelligence studies network**! 
+Wellcome to **Intelligence studies bibliography**! 
 This website lists different sources, events, conferences, and call for papers on intelligence history and intelligence studies. 
 The current page shows the recently added or updated items. 
 **If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: .
