@@ -833,17 +833,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 title=f'Top {num_authors} Authors by Publication Count',
                 xaxis_title='Author',
                 yaxis_title='Number of Publications',
+                xaxis_tickangle=-45,  
             )
             col2.plotly_chart(fig)
-            # df_year['Sum'] = df_year['Count'].cumsum()
-            # fig2 = px.line(df_year, x='Publication year', y='Sum')
-            # fig2.update_layout(title={'text':'All items in the library by publication year (cumulative sum)', 'y':0.95, 'x':0.5, 'yanchor':'top'})
-            # fig2.update_layout(
-            #     autosize=False,
-            #     width=1200,
-            #     height=600,)
-            # fig2.update_xaxes(tickangle=-70)
-            # col2.plotly_chart(fig2, use_container_width = True)
 
         col1, col2 = st.columns(2)
         with col1:
