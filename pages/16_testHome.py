@@ -381,6 +381,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
                     download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                     csv = convert_df(download_filtered)
+                
+                    today = datetime.date.today().isoformat()
+                    num_items_collections = len(filtered_collection_df_authors)
+                    st.write(f"{num_items_collections} sources found")
+
+                    # Counting publications for each author
+                    author_counts = filtered_collection_df_authors['Author_name'].value_counts()
+                    authors_with_counts = [f"{author} ({count})" for author, count in author_counts.items()]
+                    selected_authors_with_counts = st.multiselect('Authors', authors_with_counts, key='authors_with_counts')
+
+                    # Filtering based on selected authors with counts
+                    filtered_authors = [author.split(' (')[0] for author in selected_authors_with_counts]
+                    filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Author_name'].isin(filtered_authors)]
+                    filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+
+                    def convert_df(filtered_collection_df_authors):
+                        return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
+                    download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                    csv = convert_df(download_filtered)
         
                     today = datetime.date.today().isoformat()
                     num_items_collections = len(filtered_collection_df_authors)
