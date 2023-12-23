@@ -347,7 +347,102 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 st.write("Please enter a keyword or author name to search.")
 
+            # SEARCH AUTHORS
+            st.header('Search author')
+            df_authors = pd.read_csv('all_items.csv')
+            # df_authors['FirstName2'].fillna('', inplace=True)
+            df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+            df_authors = df_authors.explode('Author_name')
+            df_authors.reset_index(drop=True, inplace=True)
+            df_authors = df_authors.dropna(subset=['FirstName2'])
+            name_replacements = {
+                'David Gioe': 'David V. Gioe',
+                'David Vincent Gioe': 'David V. Gioe',
+                'Michael Goodman': 'Michael S. Goodman',
+                'Michael S Goodman': 'Michael S. Goodman',
+                'Michael Simon Goodman': 'Michael S. Goodman',
+                'Thomas Maguire':'Thomas J. Maguire',
+                'Thomas Joseph Maguire':'Thomas J. Maguire',
+                'Huw John Davies':'Huw J. Davies',
+                'Huw Davies':'Huw J. Davies',
+                'Philip H.J. Davies':'Philip H. J. Davies',
+                'Philip Davies':'Philip H. J. Davies'
+            }
+            df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
+            unique_authors = [''] + list(df_authors['Author_name'].unique())
+
+            author_publications = df_authors['Author_name'].value_counts().to_dict()
+            sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
+            select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
+
+            selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
+            selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
+            # selected_author = st.selectbox('Select author', select_options_author)
+
+            if not selected_author  or selected_author =="":
+                st.write('Select an author to see items')
+            else:
+                filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
+
+                filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].dt.strftime('%Y-%m-%d')
+                filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].fillna('')
+                filtered_collection_df_authors['No date flag'] = filtered_collection_df_authors['Date published'].isnull().astype(np.uint8)
+                filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
+                filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
+
+                publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
+
+                with st.expander('Click to expand', expanded=True):
+                    st.markdown('#### Publications by ' + selected_author)
+                    num_items_collections = len(filtered_collection_df_authors)
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+                    types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
+                    filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
+                    filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+                    def convert_df(filtered_collection_df_authors):
+                        return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
+                    download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                    csv = convert_df(download_filtered)
+        
+                    today = datetime.date.today().isoformat()
+                    a = f'{selected_author}_{today}'
+                    st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
+
+                    for index, row in filtered_collection_df_authors.iterrows():
+                        publication_type = row['Publication type']
+                        title = row['Title']
+                        authors = row['FirstName2']
+                        date_published = row['Date published']
+                        link_to_publication = row['Link to publication']
+                        zotero_link = row['Zotero link']
+
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        else:
+                            published_by_or_in = ''
+                            published_source = ''
+
+                        formatted_entry = (
+                            '**' + str(publication_type) + '**' + ': ' +
+                            str(title) + ' ' +
+                            '(by ' + '*' + str(authors) + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + str(link_to_publication) + ') ' +
+                            '[[Zotero link]](' + str(zotero_link) + ')'
+                        )
+                        st.write(f"{index + 1}) {formatted_entry}")
+
+
             # SEARCH IN COLLECTIONS
+
             st.header('Search collections')
 
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
