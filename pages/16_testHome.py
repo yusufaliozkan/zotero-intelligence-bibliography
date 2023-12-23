@@ -762,23 +762,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
         min_y = int(df_year['Publication year'].min())
 
         with st.expander('Select parameters', expanded=False):
-            types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())        
-            years = st.slider('Publication years between:', min_y, max_y, (min_y, max_y), key='years')
+            types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
+            years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
             if st.button('Update dashboard'):
-                filtered_df_csv = df_csv[df_csv['Publication type'].isin(types)]
-                filtered_df_csv = filtered_df_csv[filtered_df_csv['Date year'] != 'No date']
-                filter = (filtered_df_csv['Date year'].astype(int) >= years[0]) & (filtered_df_csv['Date year'].astype(int) < years[1])
-                filtered_df_csv = filtered_df_csv.loc[filter]
+                df_csv_filtered = df_csv[df_csv['Publication type'].isin(types)]
+                df_csv_filtered = df_csv_filtered[df_csv_filtered['Date year'] != 'No date']
+                filter = (df_csv_filtered['Date year'].astype(int) >= years[0]) & (df_csv_filtered['Date year'].astype(int) < years[1])
+                df_csv_filtered = df_csv_filtered.loc[filter]
 
-                filtered_df_authors = df_authors[df_authors['Publication type'].isin(types)]
-
-                # Perform operations on filtered_df_authors for visualization
-                authors_publications = filtered_df_authors['Author_name'].value_counts().reset_index()
-                authors_publications.columns = ['Author_name', 'Publication_count']
-
-                # Visualize count of publications by authors
-                st.bar_chart(authors_publications.set_index('Author_name'))
-
+                # Applying the same filter to df_authors
+                df_authors_filtered = df_authors[df_authors['Publication type'].isin(types)]
 
         df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
         df_types = df_types.sort_values(['Publication type'], ascending=[False])
