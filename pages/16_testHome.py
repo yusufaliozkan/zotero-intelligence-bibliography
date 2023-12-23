@@ -394,7 +394,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
 
-                with st.expander('Click to expand', expanded=False):
+                with st.expander('Click to expand', expanded=True):
                     st.markdown('#### Publications by ' + selected_author)
                     num_items_collections = len(filtered_collection_df_authors)
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
