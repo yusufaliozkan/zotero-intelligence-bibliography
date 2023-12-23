@@ -258,6 +258,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections"))
 
             if search_option == "Search keywords":
+
                 st.subheader('Search keywords')
                 search_term = st.text_input('Search keywords in titles or author names')
                 if search_term:
@@ -829,7 +830,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 height=600,)
             fig.update_layout(title={'text':'All items in the library by publication year', 'y':0.95, 'x':0.5, 'yanchor':'top'})
             col1.plotly_chart(fig, use_container_width = True)
-            df_authors
 
         with col2:
             max_authors = len(df_authors['Author_name'].unique())
