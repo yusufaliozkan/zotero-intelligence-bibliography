@@ -351,12 +351,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Search author')
             df_authors = pd.read_csv('all_items.csv')
             # df_authors['FirstName2'].fillna('', inplace=True)
-            df_authors = df_authors.dropna(subset=['FirstName2'])
-            df_authors
             df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
             df_authors = df_authors.explode('Author_name')
             df_authors.reset_index(drop=True, inplace=True)
-            df_authors.dropna(subset=['Author_name'], inplace=True)
+            df_authors = df_authors.dropna(subset=['FirstName2'])
             unique_authors = [''] + list(df_authors['Author_name'].unique())
 
             author_publications = df_authors['Author_name'].value_counts().to_dict()
