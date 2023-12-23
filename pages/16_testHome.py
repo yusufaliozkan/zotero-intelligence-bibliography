@@ -257,8 +257,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Search in database')
             search_term = st.text_input('Search keywords in titles or author names')
 
-            with st.expander('Click to expand', expanded=True):
-                if search_term:
+            if search_term:
+                with st.expander('Click to expand', expanded=True):
                     search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                     filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
 
@@ -345,8 +345,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     else:
                         st.write("No articles found with the given keyword/phrase.")
-                else:
-                    st.write("Please enter a keyword or author name to search.")
+            else:
+                st.write("Please enter a keyword or author name to search.")
 
             # SEARCH AUTHORS
             st.header('Search author')
