@@ -490,6 +490,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write(f"{num_items_collections} sources found")
                     a = f'{selected_collection}_{today}'
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+
+                    if num_items_collections > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
+                        if show_first_50:
+                            filtered_collection_df = filtered_collection_df.head(50)
+
+                    articles_list = []  # Store articles in a list
+                    for index, row in filtered_collection_df.iterrows():
+                        formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                        articles_list.append(formatted_entry)                     
                     
                     for index, row in filtered_collection_df.iterrows():
                         publication_type = row['Publication type']
