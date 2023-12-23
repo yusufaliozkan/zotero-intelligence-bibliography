@@ -400,6 +400,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                 filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
 
+                filtered_collection_df_authors
                 publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
 
                 with st.expander('Click to expand', expanded=True):
