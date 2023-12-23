@@ -254,81 +254,98 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
 
             # Title input from the user
-            def format_entry(row):
-                # Define how each row should be formatted/displayed
-                pass
+            st.header('Search in database')
+            search_term = st.text_input('Search keywords in titles or author names')
 
-            # Define the Streamlit app
-            def main():
-                st.header('Search in database')
-                search_term = st.text_input('Search keywords in titles or author names')
+            if search_term:
+                search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
+                filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
 
-                if search_term:
-                    search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                    filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+                df_csv = pd.read_csv('all_items.csv')
 
-                    df_csv = pd.read_csv('all_items.csv')
-
-                    filtered_df = df_csv[
-                        (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
-                        (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
-                    ]
-                    
-                    filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
-                    filtered_df['Date published'] = filtered_df['Date published'].fillna('')
-                    filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
-                    filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
-
-                    types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                    types2 = st.multiselect('Publication types', types, types, key='original2')
-
-                    if types2:
-                        filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
-
-                    if not filtered_df.empty:
-                        num_items = len(filtered_df)
-                        expander = st.expander(f"Matching articles ({num_items} sources found):")  # Display number of items found within expander
-
-                        with expander:
-                            download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
-                            download_filtered = download_filtered.reset_index(drop=True)
-
-                            def convert_df(download_filtered):
-                                return download_filtered.to_csv(index=False).encode('utf-8-sig')
-                            
-                            csv = convert_df(download_filtered)
-                            today = datetime.date.today().isoformat()
-                            a = 'search-result-' + today
-                            st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
-
-                            if num_items > 50:
-                                show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
-                                if show_first_50:
-                                    filtered_df = filtered_df.head(50)
-
-                            articles_list = []  # Store articles in a list
-                            for index, row in filtered_df.iterrows():
-                                formatted_entry = format_entry(row)
-                                articles_list.append(formatted_entry)  # Append formatted entry to the list
+                filtered_df = df_csv[
+                    (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
+                    (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
+                ]
                 
-                            def highlight_terms(text, terms):
-                                # ... (rest of the code for highlighting)
+                filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                filtered_df['Date published'] = filtered_df['Date published'].fillna('')
+                filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
+                filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
 
-                            # Display the numbered list using Markdown syntax
-                            for i, article in enumerate(articles_list, start=1):
-                                # Highlight the search terms in the article entry before displaying it
-                                highlighted_article = highlight_terms(article, search_terms)
-                                st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                types2 = st.multiselect('Publication types', types, types, key='original2')
 
-                    else:
-                        st.write("No articles found with the given keyword/phrase.")
+                if types2:
+                    filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+
+                if not filtered_df.empty:
+                    num_items = len(filtered_df)
+                    st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
+
+                    download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                    download_filtered = download_filtered.reset_index(drop=True)
+
+                    def convert_df(download_filtered):
+                        return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                    
+                    csv = convert_df(download_filtered)
+                    today = datetime.date.today().isoformat()
+                    a = 'search-result-' + today
+                    st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
+                    if num_items > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
+                        if show_first_50:
+                            filtered_df = filtered_df.head(50)
+
+                    articles_list = []  # Store articles in a list
+                    for index, row in filtered_df.iterrows():
+                        formatted_entry = format_entry(row)
+                        articles_list.append(formatted_entry)  # Append formatted entry to the list
+        
+                    def highlight_terms(text, terms):
+                        # Regular expression pattern to identify URLs
+                        url_pattern = r'https?://\S+'
+
+                        # Find all URLs in the text
+                        urls = re.findall(url_pattern, text)
+                        
+                        # Replace URLs in the text with placeholders to avoid highlighting
+                        for url in urls:
+                            text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
+
+                        # Create a regex pattern to find the search terms in the text
+                        pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
+
+                        # Use HTML tags to highlight the terms in the text, excluding URLs
+                        highlighted_text = pattern.sub(
+                            lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
+                                        if match.group(0) not in urls else match.group(0),
+                            text
+                        )
+
+                        # Restore the original URLs in the highlighted text
+                        for index, url in enumerate(urls):
+                            highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+
+                        return highlighted_text
+                        
+                        return highlighted_text
+
+                    # Display the numbered list using Markdown syntax
+
+                    for i, article in enumerate(articles_list, start=1):
+                        # Highlight the search terms in the article entry before displaying it
+                        highlighted_article = highlight_terms(article, search_terms)
+                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+
                 else:
-                    st.write("Please enter a keyword or author name to search.")
-
-            if __name__ == "__main__":
-                main()
+                    st.write("No articles found with the given keyword/phrase.")
+            else:
+                st.write("Please enter a keyword or author name to search.")
 
             # SEARCH AUTHORS
             st.header('Search author')
