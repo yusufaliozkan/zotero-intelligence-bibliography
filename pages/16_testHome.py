@@ -839,6 +839,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             
             # Filtering data based on selected publication types
             filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
+            filtered_authors
             
             if len(selected_types) == 0:
                 st.write('No results to display')
