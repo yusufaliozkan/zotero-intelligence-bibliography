@@ -825,10 +825,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
-            publications_by_author = df_authors['Author_name'].value_counts().head(20)
+            max_authors = len(df_authors['Author_name'].unique())
+            num_authors = st.slider('Select number of authors to display:', 1, max_authors, 20)
+            publications_by_author = df_authors['Author_name'].value_counts().head(num_authors)
             fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
             fig.update_layout(
-                title=f'Top 20 Authors by Publication Count',
+                title=f'Top {num_authors} Authors by Publication Count',
                 xaxis_title='Author',
                 yaxis_title='Number of Publications',
             )
