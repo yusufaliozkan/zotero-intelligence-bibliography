@@ -750,6 +750,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         # Visauls for all items in the library
         df_csv = pd.read_csv('all_items_duplicated.csv')
+        df_csv = df_csv.drop_duplicates(subset='Zotero link')
         df_csv
         df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
         df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
