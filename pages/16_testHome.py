@@ -392,6 +392,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
                 # selected_author = st.selectbox('Select author', select_options_author)
+                search_term = None
 
                 if not selected_author  or selected_author =="":
                     st.write('Select an author to see items')
