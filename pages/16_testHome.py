@@ -830,7 +830,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
             
             # Adding a multiselect widget for publication types
-            selected_types = st.multiselect('Select publication types:', df_authors['Publication type'].unique())
+            selected_types = st.multiselect('Select publication types:', df_authors['Publication_type'].unique(), default=df_authors['Publication_type'].unique())
             
             # Filtering data based on selected publication types
             filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
