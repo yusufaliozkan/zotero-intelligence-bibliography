@@ -379,10 +379,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                     download_filtered = filtered_collection_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
 
-                    def convert_df(filtered_collection_df):
-                        return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
+                    def convert_df(download_filtered):
+                        return download_filtered.to_csv(index=False).encode('utf-8-sig')
 
-                    csv = convert_df(filtered_collection_df)
+                    csv = convert_df(download_filtered)
                     today = datetime.date.today().isoformat()
                     num_items_collections = len(filtered_collection_df)
                     st.write(f"{num_items_collections} sources found")
