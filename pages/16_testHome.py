@@ -380,7 +380,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
 
                 publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
-                publications_by_type
 
                 with st.expander('Click to expand', expanded=False):
                     st.markdown('#### Publications by ' + selected_author)
