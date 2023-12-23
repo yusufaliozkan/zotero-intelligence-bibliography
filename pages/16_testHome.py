@@ -355,7 +355,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_authors = df_authors.explode('Author_name')
             df_authors.reset_index(drop=True, inplace=True)
             df_authors = df_authors.dropna(subset=['FirstName2'])
-            df_authors
+            df_authors['Author_name'] = df_authors['Author_name'].replace('David Gioe', 'David V. Gioe')
             unique_authors = [''] + list(df_authors['Author_name'].unique())
 
             author_publications = df_authors['Author_name'].value_counts().to_dict()
