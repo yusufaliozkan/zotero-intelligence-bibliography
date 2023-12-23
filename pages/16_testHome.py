@@ -749,6 +749,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.plotly_chart(fig, use_container_width = True)
 
         # Visauls for all items in the library
+        df_authors
         df_csv = pd.read_csv('all_items_duplicated.csv')
         df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
         df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
@@ -827,14 +828,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
-            max_authors = len(df_csv['Author_name'].unique())
+            max_authors = len(df_authors['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
             
             # Adding a multiselect widget for publication types
-            selected_types = st.multiselect('Select publication types:', df_csv['Publication type'].unique(), default=df_csv['Publication type'].unique())
+            selected_types = st.multiselect('Select publication types:', df_authors['Publication type'].unique(), default=df_authors['Publication type'].unique())
             
             # Filtering data based on selected publication types
-            filtered_authors = df_csv[df_csv['Publication type'].isin(selected_types)]
+            filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
             
             if len(selected_types) == 0:
                 st.write('No results to display')
