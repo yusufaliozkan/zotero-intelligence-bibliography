@@ -839,13 +839,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             
             # Filtering data based on selected publication types
             filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
-            filtered_authors
             
             if len(selected_types) == 0:
                 st.write('No results to display')
             else:
                 publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
-                fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
+                fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values, color='Publication type')
                 fig.update_layout(
                     title=f'Top {num_authors} Authors by Publication Count',
                     xaxis_title='Author',
