@@ -850,7 +850,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     xaxis_title='Author',
                     yaxis_title='Number of Publications',
                     xaxis_tickangle=-45,
-                    hover_data=['Author_name', 'Publication type']
+                    legend_title='Publication Type',
+                    legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1),
                 )
                 col2.plotly_chart(fig)
 
