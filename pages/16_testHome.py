@@ -385,7 +385,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.markdown('#### Publications by ' + selected_author)
                     num_items_collections = len(filtered_collection_df_authors)
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.write(f"**{num_items_collections}** sources found (**{breakdown_string}**)")
+                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                     types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
                     filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
                     filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
