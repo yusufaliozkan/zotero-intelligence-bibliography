@@ -363,7 +363,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
 
             select_options_author = [''] + sorted(list(unique_authors))
-            selected_author = st.selectbox('Select author', select_options_author)
+            # selected_author = st.selectbox('Select author', select_options_author)
 
             if not selected_author  or selected_author =="":
                 st.write('Select an author to see items')
