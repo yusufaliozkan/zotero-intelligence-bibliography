@@ -255,6 +255,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
             st.header('Search in database')
+            st.subheader('Search keywords')
             search_term = st.text_input('Search keywords in titles or author names')
 
             if search_term:
