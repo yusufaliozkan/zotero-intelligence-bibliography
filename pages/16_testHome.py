@@ -825,10 +825,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
-            df_authors
             max_authors = len(df_authors['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
-            publications_by_author = df_authors['Author_name'].value_counts().head(num_authors)
+            
+            # Checkbox to include/exclude Journal articles
+            include_journal = st.checkbox('Include Journal Articles', value=True)
+            
+            if include_journal:
+                # Filter the dataframe based on the checkbox selection
+                filtered_df = df_authors.copy()  # Assuming df_authors is your DataFrame containing publication data
+            else:
+                filtered_df = df_authors[df_authors['Publication_type'] != 'Journal']  # Modify based on your column name
+                
+            publications_by_author = filtered_df['Author_name'].value_counts().head(num_authors)
             fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
             fig.update_layout(
                 title=f'Top {num_authors} Authors by Publication Count',
