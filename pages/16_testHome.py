@@ -384,7 +384,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     num_items_collections = len(filtered_collection_df_authors)
                     st.write(f"{num_items_collections} sources found")
                     a = f'{selected_author}_{today}'
-                    st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                    st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
                     for index, row in filtered_collection_df_authors.iterrows():
                         publication_type = row['Publication type']
