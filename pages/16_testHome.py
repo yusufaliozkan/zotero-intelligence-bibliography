@@ -828,22 +828,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
             max_authors = len(df_authors['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
             
-            # Checkbox to include/exclude Journal articles
-            include_journal = st.checkbox('Include Journal Articles', value=True)
+            # Adding a multiselect widget for publication types
+            selected_types = st.multiselect('Select publication types:', df_authors['Publication_type'].unique())
             
-            if include_journal:
-                # Filter the dataframe based on the checkbox selection
-                filtered_df = df_authors.copy()  # Assuming df_authors is your DataFrame containing publication data
-            else:
-                filtered_df = df_authors[df_authors['Publication_type'] != 'Journal']  # Modify based on your column name
-                
-            publications_by_author = filtered_df['Author_name'].value_counts().head(num_authors)
+            # Filtering data based on selected publication types
+            filtered_authors = df_authors[df_authors['Publication_type'].isin(selected_types)]
+            
+            publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
             fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
             fig.update_layout(
                 title=f'Top {num_authors} Authors by Publication Count',
                 xaxis_title='Author',
                 yaxis_title='Number of Publications',
-                xaxis_tickangle=-45,  
+                xaxis_tickangle=-45,
             )
             col2.plotly_chart(fig)
 
