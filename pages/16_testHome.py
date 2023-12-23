@@ -374,19 +374,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 with st.expander('Click to expand', expanded=False):
                     st.markdown('#### Publications by ' + selected_author)
-
-                    # Counting publications for each author
-                    author_counts = filtered_collection_df_authors['Author_name'].value_counts()
-                    authors_dict = {f"{author} ({count})": author for author, count in author_counts.items()}
-
-                    # Display authors with their publication counts in the multiselect dropdown
-                    selected_authors_with_counts = st.multiselect('Authors', list(authors_dict.keys()), key='authors_with_counts')
-
-                    # Filter based on selected authors with counts
-                    filtered_authors = [authors_dict[author_with_count] for author_with_count in selected_authors_with_counts]
-                    filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Author_name'].isin(filtered_authors)]
+                    types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
+                    filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
                     filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
-
                     def convert_df(filtered_collection_df_authors):
                         return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
                     download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
