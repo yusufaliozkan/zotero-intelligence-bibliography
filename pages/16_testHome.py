@@ -765,11 +765,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
             years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
             if st.button('Update dashboard'):
-                df_csv_filtered = df_csv[df_csv['Publication type'].isin(types)]
-                df_csv_filtered = df_csv_filtered[df_csv_filtered['Date year'] != 'No date']
-                filter = (df_csv_filtered['Date year'].astype(int) >= years[0]) & (df_csv_filtered['Date year'].astype(int) < years[1])
-                df_csv_filtered = df_csv_filtered.loc[filter]
-                df_authors_filtered = df_authors[df_authors['Publication type'].isin(types)]
                 df_csv = df_csv[df_csv['Publication type'].isin(types)]
                 df_csv = df_csv[df_csv['Date year'] !='No date']
                 filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
