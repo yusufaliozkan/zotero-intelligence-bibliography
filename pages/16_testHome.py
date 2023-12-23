@@ -844,6 +844,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('No results to display')
             else:
                 publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
+                publications_by_author
                 fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values, color='Publication type')
                 fig.update_layout(
                     title=f'Top {num_authors} Authors by Publication Count',
