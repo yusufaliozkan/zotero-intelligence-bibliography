@@ -370,7 +370,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df_authors['No date flag'] = filtered_collection_df_authors['Date published'].isnull().astype(np.uint8)
                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
-                filtered_collection_df_authors
+                filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
 
                 with st.expander('Click to expand', expanded=False):
                     st.markdown('#### Publications by ' + selected_author)
