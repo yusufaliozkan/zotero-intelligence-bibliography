@@ -371,6 +371,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                 filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
+                author_counts = df_authors['Author_name'].value_counts()
+                authors_with_counts = [f"{author} ({count})" for author, count in author_counts.items()]
+                select_options_author_with_counts = [''] + sorted(authors_with_counts)
+                selected_author = st.selectbox('Select author', select_options_author_with_counts)
+
+                if not selected_author or selected_author == "":
+                    st.write('Select an author to see items')
+                else:
+                    selected_author_name = selected_author.split(' (')[0]
+                    filtered_collection_df_authors = df_authors[df_authors['Author_name'] == selected_author_name]
 
                 with st.expander('Click to expand', expanded=False):
                     st.markdown('#### Publications by ' + selected_author)
