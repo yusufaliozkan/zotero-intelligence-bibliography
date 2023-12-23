@@ -356,9 +356,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_authors.reset_index(drop=True, inplace=True)
             df_authors.dropna(subset=['Author_name'], inplace=True)
             unique_authors = [''] + list(df_authors['Author_name'].unique())
-            author_publication_counts = df_authors['Author_name'].value_counts().reset_index()
-            author_publication_counts.columns = ['Author_name', 'Publication_count']
-            df_authors = df_authors.merge(author_publication_counts, on='Author_name', how='left')
+
+            author_publications = df_authors['Author_name'].value_counts().to_dict()
+            select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted(unique_authors)]
+            selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
+            selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
+
             select_options_author = [''] + sorted(list(unique_authors))
             selected_author = st.selectbox('Select author', select_options_author)
 
