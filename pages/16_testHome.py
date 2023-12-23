@@ -475,7 +475,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
                 
-                with st.expander('Click to expand', expanded=False):
+                with st.expander('Click to expand', expanded=True):
                     st.markdown('#### Collection theme: ' + selected_collection)
                     st.write(f"See the collection in [Zotero]({collection_link})")
                     types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
