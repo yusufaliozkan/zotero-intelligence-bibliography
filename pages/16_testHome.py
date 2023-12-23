@@ -749,7 +749,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.plotly_chart(fig, use_container_width = True)
 
         # Visauls for all items in the library
-        df_csv = pd.read_csv('all_items.csv')
+        df_csv = pd.read_csv('all_items_duplicated.csv')
         df_csv = df_csv.drop_duplicates(subset='Zotero link')
         df_csv = df_csv.reset_index(drop=True)
         df_csv
