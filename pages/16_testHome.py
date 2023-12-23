@@ -380,6 +380,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     def convert_df(filtered_collection_df_authors):
                         return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
                     csv = convert_df(filtered_collection_df_authors)
+                    csv
                     today = datetime.date.today().isoformat()
                     num_items_collections = len(filtered_collection_df_authors)
                     st.write(f"{num_items_collections} sources found")
