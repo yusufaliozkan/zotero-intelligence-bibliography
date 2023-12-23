@@ -394,7 +394,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
         
                     today = datetime.date.today().isoformat()
                     num_items_collections = len(filtered_collection_df_authors)
-                    st.write(f"{num_items_collections} sources found")
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                    st.write(f"{num_items_collections} sources found ({breakdown_string})")
                     a = f'{selected_author}_{today}'
                     st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
