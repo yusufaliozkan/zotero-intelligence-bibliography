@@ -350,7 +350,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write("Please enter a keyword or author name to search.")
 
             # SEARCH AUTHORS
-            st.header('Search author')
+            st.subheader('Search author')
             df_authors = pd.read_csv('all_items.csv')
             # df_authors['FirstName2'].fillna('', inplace=True)
             df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
@@ -455,7 +455,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH IN COLLECTIONS
 
-            st.header('Search collections')
+            st.subheader('Search collections')
 
             df_csv_collections = pd.read_csv('all_items_duplicated.csv')
             numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
