@@ -359,11 +359,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_authors = [''] + list(df_authors['Author_name'].unique())
 
             author_publications = df_authors['Author_name'].value_counts().to_dict()
-            select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted(unique_authors)]
+            sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
+            select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
+
             selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
             selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
-
-            select_options_author = [''] + sorted(list(unique_authors))
             # selected_author = st.selectbox('Select author', select_options_author)
 
             if not selected_author  or selected_author =="":
