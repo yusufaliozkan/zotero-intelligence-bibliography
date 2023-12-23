@@ -473,6 +473,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df = filtered_collection_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
 
+                publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
+
                 collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
                 
                 with st.expander('Click to expand', expanded=True):
@@ -487,7 +489,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     csv = convert_df(filtered_collection_df)
                     today = datetime.date.today().isoformat()
                     num_items_collections = len(filtered_collection_df)
-                    st.write(f"{num_items_collections} sources found")
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                     a = f'{selected_collection}_{today}'
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
