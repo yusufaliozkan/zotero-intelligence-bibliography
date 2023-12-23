@@ -472,9 +472,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
                 filtered_collection_df = filtered_collection_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
-                filtered_collection_df
 
-                publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
+                publications_by_type = filtered_collection_df['Publication type'].value_counts()
+                publications_by_type
 
                 collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
                 
