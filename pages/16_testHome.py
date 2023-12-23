@@ -539,6 +539,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 '[[Zotero link]](' + str(zotero_link) + ')'
                             )
                             st.write(f"{index + 1}) {formatted_entry}")
+            if search_term is None:
+                st.subheader('Search keywords')  # This subheader will disappear if Search author is selected
+                search_term = st.text_input('Search keywords in titles or author names')                    
 
             # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
