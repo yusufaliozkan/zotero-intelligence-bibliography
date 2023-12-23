@@ -826,7 +826,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         with col2:
             max_authors = len(df_authors['Author_name'].unique())
-            num_authors = st.slider('Select number of authors to display:', 1, max_authors, 20)
+            num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
             publications_by_author = df_authors['Author_name'].value_counts().head(num_authors)
             fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
             fig.update_layout(
