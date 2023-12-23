@@ -363,10 +363,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 f"{author} ({count})" for author, count in zip(author_publication_counts['Author_name'], author_publication_counts['Publication_count'])
             ])
             selected_author = st.selectbox('Select author', select_options_author)
+            selected_author_name = selected_author.split(' (')[0] if selected_author else None
 
             if not selected_author  or selected_author =="":
                 st.write('Select an author to see items')
             else:
+                filtered_collection_df_authors = df_authors[df_authors['Author_name'] == selected_author_name]
                 filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
 
                 filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
