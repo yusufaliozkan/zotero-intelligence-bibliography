@@ -255,7 +255,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
             st.header('Search in database')
-            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Search types"))
+            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types"))
 
             df_authors = pd.read_csv('all_items.csv')
             # df_authors['FirstName2'].fillna('', inplace=True)
@@ -541,16 +541,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.write(f"{index + 1}) {formatted_entry}")
 
-            elif search_option == "Search types":
-                st.subheader('Search types')
+            elif search_option == "Publication types":
+                st.subheader('Publication types')
 
                 df_csv_types = pd.read_csv('all_items.csv')
-                df_csv_types
                 unique_types = [''] + list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option
                 selected_collection = st.selectbox('Select Collection(s)', unique_types)
 
                 if not selected_collection or selected_collection == '':
-                    st.write('Pick a collection to see items')
+                    st.write('Pick a publication type to see items')
                 else:
                     filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
                     # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
