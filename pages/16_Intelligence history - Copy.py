@@ -98,7 +98,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     container = st.container()
 
-    tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', 'Source suggestion'])
+    tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
@@ -595,7 +595,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             plt.show()
             st.set_option('deprecation.showPyplotGlobalUse', False)
             st.pyplot() 
-            
+
     components.html(
     """
     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
