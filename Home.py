@@ -290,31 +290,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
                 search_term = st.text_input('Search keywords in titles or author names')
-                
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
                         search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                        phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
-                        keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
+                        filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
 
                         df_csv = pd.read_csv('all_items.csv')
 
-                        # Search for the entire phrase first
                         filtered_df = df_csv[
-                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                            (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                            (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
+                            (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
                         ]
-
-                        # Search for individual keywords separately and combine the results
-                        for keyword in keyword_filters:
-                            keyword_filter_df = df_csv[
-                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
-                            ]
-                            filtered_df = pd.concat([filtered_df, keyword_filter_df])
-
-                        # Remove duplicates, if any
-                        filtered_df = filtered_df.drop_duplicates()
                         
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
