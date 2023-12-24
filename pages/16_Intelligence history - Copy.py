@@ -201,6 +201,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 if sort_by_type:
                     df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                    df_collections = df_collections.reset_index(drop=True)
                     for index, row in df_collections.iterrows():
                         formatted_entry = format_entry(row)
                         st.write(f"{index + 1}) {formatted_entry}")
