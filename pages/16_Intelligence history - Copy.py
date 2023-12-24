@@ -125,6 +125,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
             df_collections = df_collections.reset_index(drop=True)
+            df_collections['Author_name'] = df_collections['Author_name'].map(name_replacements).fillna(df_collections['Author_name'])
             df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
             df_download = df_download.reset_index(drop=True)
             def convert_df(df_download):
@@ -172,7 +173,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                    articles_list.append(formatted_entry)                     
+                    articles_list.append(formatted_entry)        
                 
                 for index, row in df_collections.iterrows():
                     publication_type = row['Publication type']
