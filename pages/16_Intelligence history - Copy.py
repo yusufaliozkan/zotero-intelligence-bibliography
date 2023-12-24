@@ -310,7 +310,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         if df_collections['Title'].any() in ("", [], None, 0, False):
             all = st.checkbox('Show all types')
             if all:
-                df=df2.copy()
+                df=df_collections.copy()
         types = st.multiselect('Publication type', df['Publication type'].unique(),df['Publication type'].unique(), key='original2')
         df = df[df['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df = df.reset_index()
