@@ -125,6 +125,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     return df_collections.to_csv(index=False).encode('utf-8-sig')
 
                 csv = convert_df(df_collections)
+                csv
                 today = datetime.date.today().isoformat()
                 num_items_collections = len(df_collections)
                 breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
