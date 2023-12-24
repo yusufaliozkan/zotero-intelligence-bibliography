@@ -19,7 +19,7 @@ from wordcloud import WordCloud
 from gsheetsdb import connect
 import datetime as dt     
 import random
-from data_processing import df_authors, name_replacements
+from authors_dict import df_authors, name_replacements
 
 processed_data = df_authors.copy()
 
