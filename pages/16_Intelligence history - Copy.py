@@ -365,6 +365,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 height=500,)
             fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
             col1.plotly_chart(fig, use_container_width = True)
+            df_collections
 
         with col2:
             df_collections['Author_name'] = df_collections['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
@@ -392,6 +393,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     xaxis_tickangle=-45,
                 )
                 col2.plotly_chart(fig)
+                df_collections
 
 
         col1, col2 = st.columns(2)
