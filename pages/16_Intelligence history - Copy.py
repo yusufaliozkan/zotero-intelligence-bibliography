@@ -368,6 +368,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         with col2:
             df_collections['Author_name'] = df_collections['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+            df_collections = df_collections.explode('Author_name')
+            df_collections.reset_index(drop=True, inplace=True)
             df_collections
             df_authors = df_authors.loc[df_authors['Collection_Name']==collection_name]
             max_authors = len(df_authors['Author_name'].unique())
