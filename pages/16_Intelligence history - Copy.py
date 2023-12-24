@@ -102,11 +102,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
-
-            df_collections=df_collections['Collection_Name'].reset_index()
             pd.set_option('display.max_colwidth', None)
-            df_collections
-
 
             df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
