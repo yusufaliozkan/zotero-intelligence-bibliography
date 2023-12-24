@@ -394,7 +394,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
                 col2.plotly_chart(fig)
             df_collections = df_collections.drop_duplicates(subset='Zotero link')
-
+            df_collections = df_collections.reset_index(drop=True)
             df_collections
 
 
