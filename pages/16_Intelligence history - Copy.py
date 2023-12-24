@@ -110,7 +110,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
             df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
-            df_collections
+
+            publications_by_type = df_collections['Publication type'].value_counts()
+            collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
+
+            with st.expander('Click to expand', expanded=True):
+                st.markdown('#### Collection theme: ' + collection_name)
+                st.write(f"See the collection in [Zotero]({collection_link})")
+                types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
+                df_collections = df_collections[df_collections['Publication type'].isin(types)]
+                df_collections = df_collections.reset_index(drop=True)
+                def convert_df(df_collections):
+                    return df_collections.to_csv(index=False).encode('utf-8-sig')
 
         # Collection items
             count_collection = zot.num_collectionitems(collection_code)
