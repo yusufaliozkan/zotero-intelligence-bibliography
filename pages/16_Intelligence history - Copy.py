@@ -130,6 +130,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                 a = f'{collection_name}_{today}'
                 st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                df_collections
 
         # Collection items
             count_collection = zot.num_collectionitems(collection_code)
