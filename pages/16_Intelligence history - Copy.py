@@ -341,10 +341,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
             col2.plotly_chart(fig, use_container_width = True)
 
-        df['Date published'] = pd.to_datetime(df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-        df['Date year'] = df['Date published'].dt.strftime('%Y')
-        df['Date year'] = df['Date year'].fillna('No date')
-        df_year=df['Date year'].value_counts()
+        df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+        df_collections['Date year'] = df_collections['Date published'].dt.strftime('%Y')
+        df_collections['Date year'] = df_collections['Date year'].fillna('No date')
+        df_year=df_collections['Date year'].value_counts()
         df_year=df_year.reset_index()
 
         col1, col2 = st.columns(2)
