@@ -367,6 +367,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
+            df_collections
             df_authors
             df_authors = df_authors.loc[df_authors['Collection_Name']==collection_name]
             max_authors = len(df_authors['Author_name'].unique())
