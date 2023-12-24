@@ -373,7 +373,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections.reset_index(drop=True, inplace=True)
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             df_collections['Author_name'] = df_collections['Author_name'].map(name_replacements).fillna(df_collections['Author_name'])
-            df_collections
             max_authors = len(df_collections['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
             
@@ -387,7 +386,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('No results to display')
             else:
                 publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
-                publications_by_author
                 fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
                 fig.update_layout(
                     title=f'Top {num_authors} Authors by Publication Count',
