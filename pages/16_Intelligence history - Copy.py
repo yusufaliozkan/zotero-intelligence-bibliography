@@ -595,74 +595,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             plt.show()
             st.set_option('deprecation.showPyplotGlobalUse', False)
             st.pyplot() 
-
-    with tab3:
-        df = df_collections.copy()
-        row_nu_1 = len(df.index)
-        df = df.reset_index()
-        df = df.drop(['index'], axis=1)
-        
-        if row_nu_1 > 5:
-            df = df.sample(n=5)
-            row_nu_1 = len(df.index)
-        
-        st.info('It may take some time for the app to bring new results as it searches the entire database.')
-        
-        if st.button('🔀 Suggest new sources'):
-            df = df_collections.copy()
-            row_nu_1 = len(df.index)
-            df = df.reset_index()
-            df = df.drop(['index'], axis=1)
             
-            if row_nu_1 > 5:
-                df = df.sample(n=5)
-                row_nu_1 = len(df.index)
-
-        def format_entry(row):
-            publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-            title = str(row['Title']) if pd.notnull(row['Title']) else ''
-            authors = str(row['FirstName2'])
-            date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-            link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-            zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-            published_by_or_in = ''
-            published_source = ''
-
-            if publication_type == 'Journal article':
-                published_by_or_in = 'Published in'
-                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-            elif publication_type == 'Book':
-                published_by_or_in = 'Published by'
-                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-            else:
-                # For other types, leave the fields empty
-                published_by_or_in = ''
-                published_source = ''
-
-            return (
-                '**' + publication_type + '**' + ': ' +
-                title + ' ' +
-                '(by ' + '*' + authors + '*' + ') ' +
-                '(Publication date: ' + str(date_published) + ') ' +
-                ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                '[[Publication link]](' + link_to_publication + ') ' +
-                '[[Zotero link]](' + zotero_link + ')'
-            )
-
-        articles_list = []
-        for index, row in df.iterrows():
-            formatted_entry = format_entry(row)
-            articles_list.append(formatted_entry)
-
-        random_articles = random.sample(articles_list, 5)
-
-        count = 1
-        for article in random_articles:
-            st.write(f"{count}) {article}")
-            count += 1
-            if display2:
-                st.caption(row['Abstract'])
-
     components.html(
     """
     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
