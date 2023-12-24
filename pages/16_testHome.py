@@ -548,7 +548,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 unique_types = [''] + list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option
                 selected_type = st.selectbox('Select Collection(s)', unique_types)
 
-                if not selected_collection or selected_collection == '':
+                if not selected_type or selected_type == '':
                     st.write('Pick a publication type to see items')
                 else:
                     filtered_type_df = df_csv_types[df_csv_types['Collection_Name'] == selected_type]
