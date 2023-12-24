@@ -200,7 +200,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 display2 = st.checkbox('Display abstracts')
 
                 if sort_by_type:
-                    df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                    df_collections = df_collections.sort_values(by=['Publication type'], ascending=True).reset_index(drop=True)
                     current_type = None
                     for index, row in df_collections.iterrows():
                         if row['Publication type'] != current_type:
