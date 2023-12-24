@@ -546,27 +546,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_csv_types = pd.read_csv('all_items.csv')
                 unique_types = [''] + list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option
-                selected_collection = st.selectbox('Select Collection(s)', unique_types)
+                selected_type = st.selectbox('Select Collection(s)', unique_types)
 
                 if not selected_collection or selected_collection == '':
                     st.write('Pick a publication type to see items')
                 else:
-                    filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
+                    filtered_type_df = df_csv_types[df_csv_types['Collection_Name'] == selected_type]
                     # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
-                    filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
-                    filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
-                    filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
-                    filtered_collection_df = filtered_collection_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
+                    filtered_type_df['Date published'] = pd.to_datetime(filtered_type_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    filtered_type_df['Date published'] = filtered_type_df['Date published'].dt.strftime('%Y-%m-%d')
+                    filtered_type_df['Date published'] = filtered_type_df['Date published'].fillna('')
+                    filtered_type_df['No date flag'] = filtered_type_df['Date published'].isnull().astype(np.uint8)
+                    filtered_type_df = filtered_type_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                    filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
 
-                    publications_by_type = filtered_collection_df['Publication type'].value_counts()
-
-                    collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
+                    # publications_by_type = filtered_collection_df['Publication type'].value_counts()
                     
                     with st.expander('Click to expand', expanded=True):
-                        st.markdown('#### Collection theme: ' + selected_collection)
+                        st.markdown('#### Publication type: ' + selected_type)
                         st.write(f"See the collection in [Zotero]({collection_link})")
                         types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
                         filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
