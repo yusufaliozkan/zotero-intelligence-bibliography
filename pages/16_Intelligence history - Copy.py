@@ -543,6 +543,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             return text
         df['token_title']=df['clean_title'].apply(tokenization)
         df['token_abstract']=df['clean_abstract'].apply(tokenization)
+        df['token_title']
         stopword = nltk.corpus.stopwords.words('english')
 
         if collection_name=='01.6 WW2 (Second World War)':
