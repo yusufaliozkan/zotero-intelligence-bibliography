@@ -97,6 +97,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
+            unique_collections = list(df_collections['Collection_Name'].unique()) 
+            unique_collections
             radio = container.radio('Select a collection', df_collections['Collection_Name'])
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
