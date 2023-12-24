@@ -292,7 +292,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 search_term = st.text_input('Search keywords in titles or author names')
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
+                        search_terms = re.findall(r'"([^"]+)"|\w+', search_term)  # Separate phrases within double quotes
+                        search_terms = [term.strip('"') for term in search_terms]  # Remove double quotes from phrases
                         filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
 
                         df_csv = pd.read_csv('all_items.csv')
