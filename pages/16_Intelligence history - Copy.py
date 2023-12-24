@@ -382,41 +382,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Filtering data based on selected publication types
             filtered_authors = df_collections[df_collections['Publication type'].isin(selected_types)]
             
-            publications_by_author = df_collections['Author_name'].value_counts().head(10)
-            fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
-            fig.update_layout(
-                title='Top Authors by Publication Count',
-                xaxis_title='Author',
-                yaxis_title='Number of Publications',
-                xaxis_tickangle=-45,
-            )
+            if len(selected_types) == 0:
+                st.write('No results to display')
+            else:
+                publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
+                fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
+                fig.update_layout(
+                    title=f'Top {num_authors} Authors by Publication Count',
+                    xaxis_title='Author',
+                    yaxis_title='Number of Publications',
+                    xaxis_tickangle=-45,
+                )
+                col2.plotly_chart(fig)
+            selected_author = st.selectbox('Select an author to see publications:', filtered_authors['Author_name'].unique())
 
-            # Render the bar chart
-            st.plotly_chart(fig)
-
-            # JavaScript to capture the click event on the bar chart
-            js_code = '''
-            <script type="text/javascript">
-                const plot = document.getElementsByClassName('plotly-graph-div')[0];
-                plot.on('plotly_click', function(data){
-                    const author = data.points[0].x;
-                    const link = 'http://localhost:8501/?selected_author=' + author;
-                    window.open(link, '_self');
-                });
-            </script>
-            '''
-
-            # Write the JavaScript code to the Streamlit app
-            st.write(js_code, unsafe_allow_html=True)
-
-            # Check for the selected_author query parameter and display the corresponding table
-            selected_author = st.experimental_get_query_params().get('selected_author', None)
             if selected_author:
-                author_publications = df_collections[df_collections['Author_name'] == selected_author]
+                author_publications = filtered_authors[filtered_authors['Author_name'] == selected_author]
                 st.write(f'Publications by {selected_author}:')
                 st.write(author_publications[['Title', 'Publication type', 'Zotero link']])
             else:
-                st.write('Click on a bar to see publications for that author.')
+                st.write('Please select an author to see their publications.')
             df_collections = df_collections.drop_duplicates(subset='Zotero link')
             df_collections = df_collections.reset_index(drop=True)
 
