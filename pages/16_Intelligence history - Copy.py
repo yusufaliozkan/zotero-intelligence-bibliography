@@ -204,6 +204,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     current_type = None
                     for index, row in df_collections.iterrows():
                         if row['Publication type'] != current_type:
+                            df_collections = df_collections.reset_index(drop=True)
                             current_type = row['Publication type']
                             st.subheader(current_type)
                         formatted_entry = format_entry(row)
