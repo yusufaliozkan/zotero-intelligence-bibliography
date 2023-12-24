@@ -497,7 +497,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.caption(df_journal['Journal'].iloc[i]
                         )
         st.write('---')
-        df=df.copy()
+        df=df_collections.copy()
         def clean_text (text):
             text = text.lower() # lowercasing
             text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
