@@ -200,24 +200,27 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 display2 = st.checkbox('Display abstracts')
 
                 if sort_by_type:
-                    df_collections = df_collections.sort_values(by=['Publication type'], ascending=True).reset_index(drop=True)
+                    df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
                     current_type = None
+                    count_by_type = {}
                     for index, row in df_collections.iterrows():
                         if row['Publication type'] != current_type:
-                            df_collections = df_collections.reset_index(drop=True)
                             current_type = row['Publication type']
                             st.subheader(current_type)
+                            count_by_type[current_type] = 1
                         formatted_entry = format_entry(row)
-                        st.write(f"{index + 1}) {formatted_entry}")
+                        st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                        count_by_type[current_type] += 1
                         if display2:
                             st.caption(row['Abstract'])
                 else:
+                    count = 1
                     for index, row in df_collections.iterrows():
                         formatted_entry = format_entry(row)
-                        st.write(f"{index + 1}) {formatted_entry}")
+                        st.write(f"{count}) {formatted_entry}")
+                        count += 1
                         if display2:
                             st.caption(row['Abstract'])
-
 
 #UNTIL HERE
         # Collection items
