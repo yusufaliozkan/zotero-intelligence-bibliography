@@ -30,11 +30,10 @@ st.title("Intelligence history")
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
-    # Connecting Zotero with API
-    library_id = '2514686' # intel 2514686
-    library_type = 'group'
-    api_key = '' # api_key is only needed for private groups and libraries
-
+    # # Connecting Zotero with API
+    # library_id = '2514686' # intel 2514686
+    # library_type = 'group'
+    # api_key = '' # api_key is only needed for private groups and libraries
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
@@ -87,11 +86,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # df_collections = zotero_collections(library_id, library_type)
 
     df_collections = pd.read_csv('all_items_duplicated.csv')
+    # df_collections = df_collections[~df_collections['Collection_Name'].str.contains('01.98')]
     df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
 
     df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("98.")]
     df_collections = df_collections.iloc[1: , :]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
@@ -125,6 +125,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
             df_collections = df_collections.reset_index(drop=True)
+            df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])
             df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
             df_download = df_download.reset_index(drop=True)
             def convert_df(df_download):
@@ -172,7 +173,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                    articles_list.append(formatted_entry)                     
+                    articles_list.append(formatted_entry)        
                 
                 for index, row in df_collections.iterrows():
                     publication_type = row['Publication type']
@@ -367,17 +368,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
-            df_collections
-            df_authors
-            df_authors = df_authors.loc[df_authors['Collection_Name']==collection_name]
-            max_authors = len(df_authors['Author_name'].unique())
+            df_collections['Author_name'] = df_collections['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+            df_collections = df_collections.explode('Author_name')
+            df_collections.reset_index(drop=True, inplace=True)
+            df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            df_collections['Author_name'] = df_collections['Author_name'].map(name_replacements).fillna(df_collections['Author_name'])
+            max_authors = len(df_collections['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
             
             # Adding a multiselect widget for publication types
-            selected_types = st.multiselect('Select publication types:', df_authors['Publication type'].unique(), default=df_authors['Publication type'].unique())
+            selected_types = st.multiselect('Select publication types:', df_collections['Publication type'].unique(), default=df_collections['Publication type'].unique())
             
             # Filtering data based on selected publication types
-            filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
+            filtered_authors = df_collections[df_collections['Publication type'].isin(selected_types)]
             
             if len(selected_types) == 0:
                 st.write('No results to display')
@@ -391,7 +394,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     xaxis_tickangle=-45,
                 )
                 col2.plotly_chart(fig)
-
+            df_collections = df_collections.drop_duplicates(subset='Zotero link')
+            df_collections = df_collections.reset_index(drop=True)
 
         col1, col2 = st.columns(2)
         with col1:
@@ -541,6 +545,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             return text
         df['token_title']=df['clean_title'].apply(tokenization)
         df['token_abstract']=df['clean_abstract'].apply(tokenization)
+
         stopword = nltk.corpus.stopwords.words('english')
 
         if collection_name=='01.6 WW2 (Second World War)':
