@@ -21,7 +21,7 @@ import datetime as dt
 import random
 from data_processing import df_authors, name_replacements
 
-df_authors
+processed_data = df_authors.copy()
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
