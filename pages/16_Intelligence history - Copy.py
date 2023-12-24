@@ -124,6 +124,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 def convert_df(df_collections):
                     return df_collections.to_csv(index=False).encode('utf-8-sig')
 
+                csv = convert_df(df_collections)
+                today = datetime.date.today().isoformat()
+                num_items_collections = len(df_collections)
+                breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+                a = f'{selected_collection}_{today}'
+                st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+
         # Collection items
             count_collection = zot.num_collectionitems(collection_code)
             @st.cache_data(ttl=300)
