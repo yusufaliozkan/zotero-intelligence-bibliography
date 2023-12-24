@@ -560,6 +560,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_type_df['No date flag'] = filtered_type_df['Date published'].isnull().astype(np.uint8)
                     filtered_type_df = filtered_type_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                     filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
+                    filtered_type_df = filtered_type_df.reset_index(drop=True)
 
                     # publications_by_type = filtered_collection_df['Publication type'].value_counts()
                     
