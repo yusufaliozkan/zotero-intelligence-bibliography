@@ -292,8 +292,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 search_term = st.text_input('Search keywords in titles or author names')
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'"([^"]+)"|\w+', search_term)  # Separate phrases within double quotes
-                        search_terms = [term.strip('"') for term in search_terms]  # Remove double quotes from phrases
+                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                         filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
 
                         df_csv = pd.read_csv('all_items.csv')
@@ -301,7 +300,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df = df_csv[
                             (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
                             (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
-                        ]                        
+                        ]
+                        
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                         filtered_df['Date published'] = filtered_df['Date published'].fillna('')
