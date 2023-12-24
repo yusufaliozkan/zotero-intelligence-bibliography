@@ -122,6 +122,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_collections = df_collections[df_collections['Publication type'].isin(types)]
                 df_collections = df_collections.reset_index(drop=True)
                 df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
+                df_download = df_download.reset_index(drop=True)
                 def convert_df(df_download):
                     return df_download.to_csv(index=False).encode('utf-8-sig')
                 csv = convert_df(df_download)
