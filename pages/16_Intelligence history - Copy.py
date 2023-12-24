@@ -110,6 +110,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
             df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
+            df_collections = df_collections.reset_index(drop=True)
 
             publications_by_type = df_collections['Publication type'].value_counts()
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
