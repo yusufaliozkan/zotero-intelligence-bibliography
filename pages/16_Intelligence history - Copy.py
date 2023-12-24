@@ -338,19 +338,28 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
-            fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
-            fig.update_layout(
-                autosize=False,
-                width=400,
-                height=400,)
-            fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
-            col2.plotly_chart(fig, use_container_width = True)
+            max_authors = len(df_authors['Author_name'].unique())
+            num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
+            
+            # Adding a multiselect widget for publication types
+            selected_types = st.multiselect('Select publication types:', df_authors['Publication type'].unique(), default=df_authors['Publication type'].unique())
+            
+            # Filtering data based on selected publication types
+            filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
+            
+            if len(selected_types) == 0:
+                st.write('No results to display')
+            else:
+                publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
+                fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
+                fig.update_layout(
+                    title=f'Top {num_authors} Authors by Publication Count',
+                    xaxis_title='Author',
+                    yaxis_title='Number of Publications',
+                    xaxis_tickangle=-45,
+                )
+                col2.plotly_chart(fig)
 
-        df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-        df_collections['Date year'] = df_collections['Date published'].dt.strftime('%Y')
-        df_collections['Date year'] = df_collections['Date year'].fillna('No date')
-        df_year=df_collections['Date year'].value_counts()
-        df_year=df_year.reset_index()
 
         col1, col2 = st.columns(2)
         with col1:
