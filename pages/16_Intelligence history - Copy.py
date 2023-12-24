@@ -84,7 +84,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         return df_collections
     df_collections = zotero_collections(library_id, library_type)
     df_collections = pd.read_csv('all_items_duplicated.csv')
-    df_collections
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
@@ -123,18 +122,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_collections = df_collections[df_collections['Publication type'].isin(types)]
                 df_collections = df_collections.reset_index(drop=True)
                 df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Link to publication','Zotero link']]
+                df_download
                 def convert_df(df_collections):
                     return df_collections.to_csv(index=False).encode('utf-8-sig')
 
                 csv = convert_df(df_collections)
-                csv
                 today = datetime.date.today().isoformat()
                 num_items_collections = len(df_collections)
                 breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                 st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                 a = f'{collection_name}_{today}'
                 st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
-                df_collections
 
         # Collection items
             count_collection = zot.num_collectionitems(collection_code)
