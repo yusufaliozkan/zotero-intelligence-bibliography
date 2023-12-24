@@ -394,6 +394,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     xaxis_tickangle=-45,
                 )
                 col2.plotly_chart(fig)
+            selected_author = st.selectbox('Select an author to see publications:', filtered_authors['Author_name'].unique())
+
+            if selected_author:
+                author_publications = filtered_authors[filtered_authors['Author_name'] == selected_author]
+                st.write(f'Publications by {selected_author}:')
+                st.write(author_publications[['Title', 'Publication type', 'Zotero link']])
+            else:
+                st.write('Please select an author to see their publications.')
             df_collections = df_collections.drop_duplicates(subset='Zotero link')
             df_collections = df_collections.reset_index(drop=True)
 
