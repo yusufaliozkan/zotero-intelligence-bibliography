@@ -544,8 +544,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             elif search_option == "Search types":
                 st.subheader('Search types')
 
-                df_csv_collections = pd.read_csv('all_items_duplicated.csv')
-                numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
+                df_csv_types = pd.read_csv('all_items.csv')
+                numeric_start_types = df_csv_types[df_csv_types['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
+                numeric_start_types
                 unique_collections = [''] + list(df_csv_collections['Collection_Name'].unique())  # Adding an empty string as the first option
                 select_options = [''] + sorted(list(numeric_start_collections))
                 selected_collection = st.selectbox('Select Collection(s)', select_options)
