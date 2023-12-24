@@ -545,7 +545,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.subheader('Search types')
 
                 df_csv_types = pd.read_csv('all_items.csv')
-                numeric_start_types = df_csv_types[df_csv_types['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
+                df_csv_types
+                numeric_start_types = df_csv_types[df_csv_types['Publication type'].str[0].str.isdigit()]['Collection_Name'].unique()
                 numeric_start_types
                 unique_collections = [''] + list(df_csv_collections['Collection_Name'].unique())  # Adding an empty string as the first option
                 select_options = [''] + sorted(list(numeric_start_collections))
