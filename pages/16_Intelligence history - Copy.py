@@ -121,7 +121,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
                 df_collections = df_collections[df_collections['Publication type'].isin(types)]
                 df_collections = df_collections.reset_index(drop=True)
-                df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Link to publication','Zotero link']]
+                df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
                 df_download
                 def convert_df(df_collections):
                     return df_collections.to_csv(index=False).encode('utf-8-sig')
