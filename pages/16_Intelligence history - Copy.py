@@ -84,6 +84,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         return df_collections
     df_collections = zotero_collections(library_id, library_type)
     df_collections = pd.read_csv('all_items_duplicated.csv')
+    df_collections
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
@@ -121,6 +122,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
                 df_collections = df_collections[df_collections['Publication type'].isin(types)]
                 df_collections = df_collections.reset_index(drop=True)
+                df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Link to publication','Zotero link']]
                 def convert_df(df_collections):
                     return df_collections.to_csv(index=False).encode('utf-8-sig')
 
