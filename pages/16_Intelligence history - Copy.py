@@ -371,7 +371,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2 = st.columns(2)
         with col1:
             number = st.select_slider('Select a number of publishers', options=[5,10,15,20,25,30], value=10)
-            df_publisher = pd.DataFrame(df['Publisher'].value_counts())
+            df_publisher = pd.DataFrame(df_collections['Publisher'].value_counts())
             df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
             df_publisher = df_publisher.reset_index()
             df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
