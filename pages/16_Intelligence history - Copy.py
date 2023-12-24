@@ -91,7 +91,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
 
     df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("98.")]
     df_collections = df_collections.iloc[1: , :]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
