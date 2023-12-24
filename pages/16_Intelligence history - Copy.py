@@ -595,53 +595,44 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.pyplot() 
 
     with tab3:
-        df=df_collections.copy()
-        df
+        df = df_collections.copy()
         row_nu_1 = len(df.index)
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
-        if row_nu_1 >5:
-            df=df.sample(n=5)
-            row_nu_1= len(df.index)
-        df = df.reset_index()
+        
+        if row_nu_1 > 5:
+            df = df.sample(n=5)
+            row_nu_1 = len(df.index)
+        
         st.info('It may take some time for the app to bring new results as it searches the entire database.')
+        
         if st.button('🔀 Suggest new sources'):
-            df=df2.copy()
+            df = df_collections.copy()
             row_nu_1 = len(df.index)
             df = df.reset_index()
             df = df.drop(['index'], axis=1)
-            if row_nu_1 >5:
-                df=df.sample(n=5)
-                row_nu_1= len(df.index)
-            df = df.reset_index()
-        if df['FirstName2'].any() in ("", [], None, 0, False):
-            # st.write('no author')
-            df['firstName'] = 'null'
-            df['lastName'] = 'null'
+            
+            if row_nu_1 > 5:
+                df = df.sample(n=5)
+                row_nu_1 = len(df.index)
 
-            df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                df['Title'] + ' '+ 
-                ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + 
-                "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-                ' (Published on: ' +df['Date published'] + ')'
-                )
-        else:
-                # st.write('author entered')
-                ## This section is for displaying the first author details but it doesn't work for now because of json normalization error.
-                df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
-                            df['Title'] + ' '+ 
-                            ' (by ' + '*' + df['FirstName2'] + ') ' + # IT CANNOT READ THE NAN VALUES
-                            "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
-                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
-                            ' (Published on: ' +df['Date published'] + ')'
-                            )
-        for i in range(row_nu_1):
-            st.write(''+str(i+1)+') ' +df_items.iloc[i])
-            df_items.fillna("nan") 
+        def format_entry(row):
+            # ... (existing format_entry function)
+
+        articles_list = []
+        for index, row in df.iterrows():
+            formatted_entry = format_entry(row)
+            articles_list.append(formatted_entry)
+
+        random_articles = random.sample(articles_list, 5)
+
+        count = 1
+        for article in random_articles:
+            st.write(f"{count}) {article}")
+            count += 1
             if display2:
-                st.caption(df['Abstract'].iloc[i])
-                    
+                st.caption(row['Abstract'])
+
     components.html(
     """
     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
