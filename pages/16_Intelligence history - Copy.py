@@ -30,11 +30,10 @@ st.title("Intelligence history")
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
-    # Connecting Zotero with API
-    library_id = '2514686' # intel 2514686
-    library_type = 'group'
-    api_key = '' # api_key is only needed for private groups and libraries
-
+    # # Connecting Zotero with API
+    # library_id = '2514686' # intel 2514686
+    # library_type = 'group'
+    # api_key = '' # api_key is only needed for private groups and libraries
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
