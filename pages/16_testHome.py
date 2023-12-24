@@ -255,7 +255,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
             st.header('Search in database')
-            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Search types"))
+            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Search types5"))
 
             df_authors = pd.read_csv('all_items.csv')
             # df_authors['FirstName2'].fillna('', inplace=True)
