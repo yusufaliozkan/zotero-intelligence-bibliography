@@ -112,7 +112,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
 
             publications_by_type = df_collections['Publication type'].value_counts()
-            df_collections
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
             with st.expander('Click to expand', expanded=True):
