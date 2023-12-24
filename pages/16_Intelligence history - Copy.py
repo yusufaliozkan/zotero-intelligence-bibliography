@@ -372,6 +372,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections = df_collections.explode('Author_name')
             df_collections.reset_index(drop=True, inplace=True)
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            df_collections
             max_authors = len(df_collections['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
             
