@@ -84,28 +84,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
         return df_collections
     df_collections = zotero_collections(library_id, library_type)
     df_collections = pd.read_csv('all_items_duplicated.csv')
-    df_collections
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
     df_collections = df_collections.iloc[1: , :]
-    df_collections
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
     container = st.container()
 
-    # clist = df_collections['Name'].unique()
     tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', 'Source suggestion'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            radio = container.radio('Select a collection', df_collections['Name'])
+            radio = container.radio('Select a collection', df_collections['Collection_Name'])
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
-            collection_code = df_collections.loc[df_collections['Name']==collection_name, 'Key'].values[0]
+            collection_code = df_collections.loc[df_collections['Collection_Name']==collection_name, 'Key'].values[0]
 
-            df_collections=df_collections['Name'].reset_index()
+            df_collections=df_collections['Collection_Name'].reset_index()
             pd.set_option('display.max_colwidth', None)
 
         # Collection items
