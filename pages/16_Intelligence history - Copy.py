@@ -86,8 +86,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections = pd.read_csv('all_items_duplicated.csv')
     df_collections
 
-    df_collections = df_collections.sort_values(by='Name')
-    df_collections=df_collections[df_collections['Name'].str.contains("01.")]
+    df_collections = df_collections.sort_values(by='Collection_Name')
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
     df_collections = df_collections.iloc[1: , :]
     df_collections
 
