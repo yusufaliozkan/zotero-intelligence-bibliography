@@ -128,7 +128,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 num_items_collections = len(df_collections)
                 breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                 st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-                a = f'{selected_collection}_{today}'
+                a = f'{collection_name}_{today}'
                 st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
         # Collection items
