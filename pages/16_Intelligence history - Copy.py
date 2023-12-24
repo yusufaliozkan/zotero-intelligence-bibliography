@@ -197,7 +197,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
                     st.write(f"{index + 1}) {formatted_entry}")
+                sort_by_type = st.checkbox('Sort by publication type', key='type')
+                display2 = st.checkbox('Display abstracts')
 
+                if sort_by_type:
+                    df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                    for index, row in df_collections.iterrows():
+                        formatted_entry = format_entry(row)
+                        st.write(f"{index + 1}) {formatted_entry}")
+                        if display2:
+                            st.caption(row['Abstract'])
+                else:
+                    for index, row in df_collections.iterrows():
+                        formatted_entry = format_entry(row)
+                        st.write(f"{index + 1}) {formatted_entry}")
+                        if display2:
+                            st.caption(row['Abstract'])
+
+
+#UNTIL HERE
         # Collection items
             count_collection = zot.num_collectionitems(collection_code)
             @st.cache_data(ttl=300)
