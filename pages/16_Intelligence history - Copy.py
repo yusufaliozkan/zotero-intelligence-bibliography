@@ -371,15 +371,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections = df_collections.explode('Author_name')
             df_collections.reset_index(drop=True, inplace=True)
             df_collections
-            df_authors = df_authors.loc[df_authors['Collection_Name']==collection_name]
-            max_authors = len(df_authors['Author_name'].unique())
+            df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            max_authors = len(df_collections['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
             
             # Adding a multiselect widget for publication types
-            selected_types = st.multiselect('Select publication types:', df_authors['Publication type'].unique(), default=df_authors['Publication type'].unique())
+            selected_types = st.multiselect('Select publication types:', df_collections['Publication type'].unique(), default=df_collections['Publication type'].unique())
             
             # Filtering data based on selected publication types
-            filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
+            filtered_authors = df_collections[df_collections['Publication type'].isin(selected_types)]
             
             if len(selected_types) == 0:
                 st.write('No results to display')
