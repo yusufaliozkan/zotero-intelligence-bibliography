@@ -105,6 +105,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_collections=df_collections['Collection_Name'].reset_index()
             pd.set_option('display.max_colwidth', None)
+            df_collections
 
 
             df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
