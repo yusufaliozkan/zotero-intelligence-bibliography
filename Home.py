@@ -292,11 +292,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 search_term = st.text_input('Search keywords in titles or author names')
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'"([^"]+)"|\S+', search_term)  # Separates phrases within double quotes
+                        # Split search terms by spaces and retain phrases within double quotes
+                        search_terms = re.findall(r'"([^"]+)"|\S+', search_term)
                         search_terms = [term.strip('"') for term in search_terms]  # Remove double quotes from phrases
-                        # Escape special characters in individual words to match them separately
-                        search_terms = [re.escape(term) if not term.startswith('"') else term for term in search_terms]
-                        filters = '|'.join(search_terms)  # Create a filter with logical OR between search terms
+                        # Construct regex pattern to match individual words or phrases with word boundaries
+                        filters = '|'.join(r'\b{}\b'.format(re.escape(term)) for term in search_terms)
 
                         df_csv = pd.read_csv('all_items.csv')
 
@@ -304,7 +304,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             (df_csv['Title'].str.contains(filters, case=False, na=False, regex=True)) |
                             (df_csv['FirstName2'].str.contains(filters, case=False, na=False, regex=True))
                         ]
-                        
+                                    
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                         filtered_df['Date published'] = filtered_df['Date published'].fillna('')
