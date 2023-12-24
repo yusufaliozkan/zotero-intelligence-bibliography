@@ -565,25 +565,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Publication type: ' + selected_type)
-                        st.write(f"See the collection in [Zotero]({collection_link})")
-                        types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
-                        filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
-                        filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-                        def convert_df(filtered_collection_df):
-                            return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
+                        def convert_df(filtered_type_df):
+                            return filtered_type_df.to_csv(index=False).encode('utf-8-sig')
 
-                        csv = convert_df(filtered_collection_df)
+                        csv = convert_df(filtered_type_df)
                         today = datetime.date.today().isoformat()
-                        num_items_collections = len(filtered_collection_df)
-                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                        st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-                        a = f'{selected_collection}_{today}'
-                        st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                        num_items_collections = len(filtered_type_df)
+                        st.write(f"**{num_items_collections}** sources found")
+                        a = f'{selected_type}_{today}'
+                        st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
                         if num_items_collections > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
                             if show_first_25:
-                                filtered_collection_df = filtered_collection_df.head(25)
+                                filtered_type_df = filtered_type_df.head(25)
 
                         articles_list = []  # Store articles in a list
                         for index, row in filtered_collection_df.iterrows():
