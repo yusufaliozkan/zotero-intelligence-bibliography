@@ -315,13 +315,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
         df_collections = df_collections[df_collections['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df_collections = df_collections.reset_index()
         
-        if df['Title'].any() in ("", [], None, 0, False):
+        if df_collections['Title'].any() in ("", [], None, 0, False):
             st.write('No data to visualise')
             st.stop()
 
         col1, col2 = st.columns(2)
         with col1:
-            df_plot= df['Publication type'].value_counts()
+            df_plot= df_collections['Publication type'].value_counts()
             df_plot=df_plot.reset_index()
             df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
 
