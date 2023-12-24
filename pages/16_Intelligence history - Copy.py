@@ -101,10 +101,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
             radio = container.radio('Select a collection', unique_collections)
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
-            collection_code = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
 
             df_collections=df_collections['Collection_Name'].reset_index()
             pd.set_option('display.max_colwidth', None)
+
+
+            df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
+            df_collections['Date published'] = df_collections['Date published'].fillna('')
+            df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
+            df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+            df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
+            df_collections
 
         # Collection items
             count_collection = zot.num_collectionitems(collection_code)
