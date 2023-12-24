@@ -70,20 +70,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
 
-    zot = zotero.Zotero(library_id, library_type)
+    # zot = zotero.Zotero(library_id, library_type)
 
-    @st.cache_data(ttl=300)
-    def zotero_collections(library_id, library_type):
-        collections = zot.collections()
-        data2=[]
-        columns2 = ['Key','Name', 'Link']
-        for item in collections:
-            data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
-        pd.set_option('display.max_colwidth', None)
-        df_collections = pd.DataFrame(data2, columns=columns2)
-        return df_collections
-    df_collections = zotero_collections(library_id, library_type)
+    # @st.cache_data(ttl=300)
+    # def zotero_collections(library_id, library_type):
+    #     collections = zot.collections()
+    #     data2=[]
+    #     columns2 = ['Key','Name', 'Link']
+    #     for item in collections:
+    #         data2.append((item['data']['key'], item['data']['name'], item['links']['alternate']['href']))
+    #     pd.set_option('display.max_colwidth', None)
+    #     df_collections = pd.DataFrame(data2, columns=columns2)
+    #     return df_collections
+    # df_collections = zotero_collections(library_id, library_type)
+
     df_collections = pd.read_csv('all_items_duplicated.csv')
+    df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
+
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
