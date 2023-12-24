@@ -547,8 +547,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_csv_types = pd.read_csv('all_items.csv')
                 df_csv_types
                 unique_types = [''] + list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option
-                select_options = [''] + sorted(list(numeric_start_collections))
-                selected_collection = st.selectbox('Select Collection(s)', select_options)
+                selected_collection = st.selectbox('Select Collection(s)', unique_types)
 
                 if not selected_collection or selected_collection == '':
                     st.write('Pick a collection to see items')
