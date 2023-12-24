@@ -113,7 +113,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             publications_by_type = df_collections['Publication type'].value_counts()
             df_collections
-            collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Zotero link'].iloc[0]
+            collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
             with st.expander('Click to expand', expanded=True):
                 st.markdown('#### Collection theme: ' + collection_name)
