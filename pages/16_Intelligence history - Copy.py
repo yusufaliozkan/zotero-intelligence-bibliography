@@ -133,6 +133,37 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 a = f'{collection_name}_{today}'
                 st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
+                def format_entry(row):
+                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                    authors = str(row['FirstName2'])
+                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                    published_by_or_in = ''
+                    published_source = ''
+
+                    if publication_type == 'Journal article':
+                        published_by_or_in = 'Published in'
+                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                    elif publication_type == 'Book':
+                        published_by_or_in = 'Published by'
+                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                    else:
+                        # For other types, leave the fields empty
+                        published_by_or_in = ''
+                        published_source = ''
+
+                    return (
+                        '**' + publication_type + '**' + ': ' +
+                        title + ' ' +
+                        '(by ' + '*' + authors + '*' + ') ' +
+                        '(Publication date: ' + str(date_published) + ') ' +
+                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                        '[[Publication link]](' + link_to_publication + ') ' +
+                        '[[Zotero link]](' + zotero_link + ')'
+                    )
+
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
