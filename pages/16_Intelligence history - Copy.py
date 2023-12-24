@@ -367,8 +367,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
+            df_collections['Author_name'] = df_collections['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
             df_collections
-            df_authors
             df_authors = df_authors.loc[df_authors['Collection_Name']==collection_name]
             max_authors = len(df_authors['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
