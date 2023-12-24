@@ -115,9 +115,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             publications_by_type = df_collections['Publication type'].value_counts()
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
+            st.markdown('#### Collection theme: ' + collection_name)
+            st.write(f"See the collection in [Zotero]({collection_link})")
+
             with st.expander('Click to expand', expanded=True):
-                st.markdown('#### Collection theme: ' + collection_name)
-                st.write(f"See the collection in [Zotero]({collection_link})")
                 types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
                 df_collections = df_collections[df_collections['Publication type'].isin(types)]
                 df_collections = df_collections.reset_index(drop=True)
