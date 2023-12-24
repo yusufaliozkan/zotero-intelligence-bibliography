@@ -433,7 +433,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         with col2:
             number2 = st.select_slider('Select a number of journals', options=[5,10,15,20,25,30], value=10)
-            df_journal = df.loc[df['Publication type']=='Journal article']
+            df_journal = df_collections.loc[df_collections['Publication type']=='Journal article']
             df_journal = pd.DataFrame(df_journal['Journal'].value_counts())
             df_journal = df_journal.sort_values(['Journal'], ascending=[False])
             df_journal = df_journal.reset_index()
