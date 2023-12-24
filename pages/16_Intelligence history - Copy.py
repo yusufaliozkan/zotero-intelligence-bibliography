@@ -498,12 +498,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         )
         st.write('---')
         df=df_collections.copy()
-        def clean_text (text):
-            text = text.lower() # lowercasing
-            text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-            text = re.sub('[0-9_]', ' ', text) # this removes numbers
-            text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+
+        def clean_text(text):
+            if pd.isnull(text):  # Check if the value is NaN
+                return ''  # Return an empty string or handle it based on your requirement
+            text = str(text)  # Convert to string to ensure string methods can be applied
+            text = text.lower()  # Lowercasing
+            text = re.sub(r'[^\w\s]', ' ', text)  # Removes punctuation
+            text = re.sub('[0-9_]', ' ', text)  # Removes numbers
+            text = re.sub('[^a-z_]', ' ', text)  # Removes all characters except lowercase letters
             return text
+
         df['clean_title'] = df['Title'].apply(clean_text)
         df['clean_abstract'] = df['Abstract'].apply(clean_text)
         df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
