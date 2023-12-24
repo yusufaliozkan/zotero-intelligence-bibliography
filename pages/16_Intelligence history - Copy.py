@@ -591,9 +591,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
         wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
         if wordcloud_opt=='Titles':
             df_list = [item for sublist in listdf for item in sublist]
-            df_list
             string = pd.Series(df_list).str.cat(sep=' ')
             wordcloud_texts = string
+            wordcloud_texts
             wordcloud_texts_str = str(wordcloud_texts)
             wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
             plt.figure(figsize=(20,8))
