@@ -18,6 +18,8 @@ nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
 import datetime as dt     
+import random
+
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
