@@ -586,12 +586,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         listdf = df['lemma_title']
         listdf_abstract = df['lemma_abstract']
-        listdf
 
         st.markdown('## Wordcloud')
         wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
         if wordcloud_opt=='Titles':
             df_list = [item for sublist in listdf for item in sublist]
+            df_list
             string = pd.Series(df_list).str.cat(sep=' ')
             wordcloud_texts = string
             wordcloud_texts_str = str(wordcloud_texts)
