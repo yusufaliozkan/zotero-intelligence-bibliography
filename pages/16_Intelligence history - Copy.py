@@ -635,11 +635,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_fa = df_fa.apply(lambda x: {} if pd.isna(x) else x) # https://stackoverflow.com/questions/44050853/pandas-json-normalize-and-null-values-in-json
                 df_new = pd.json_normalize(df_fa, errors='ignore') 
                 df = pd.concat([df, df_new], axis=1)
-                df['firstName'] = df['firstName'].fillna('null')
-                df['lastName'] = df['lastName'].fillna('null')    
                 df_items = ('**'+ df['Publication type']+ '**'+ ': ' +
                             df['Title'] + ' '+ 
-                            ' (by ' + '*' + df['firstName'] + '*'+ ' ' + '*' + df['lastName'] + '*' + ') ' + # IT CANNOT READ THE NAN VALUES
+                            ' (by ' + '*' + df['FirstName2'] + ') ' + # IT CANNOT READ THE NAN VALUES
                             "[[Publication link]]" +'('+ df['Link to publication'] + ')' +'  '+
                             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' +
                             ' (Published on: ' +df['Date published'] + ')'
