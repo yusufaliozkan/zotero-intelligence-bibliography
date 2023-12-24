@@ -21,8 +21,6 @@ import datetime as dt
 import random
 from authors_dict import df_authors, name_replacements
 
-df_authors
-
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
@@ -87,6 +85,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     #     df_collections = pd.DataFrame(data2, columns=columns2)
     #     return df_collections
     # df_collections = zotero_collections(library_id, library_type)
+    df_authors
 
     df_collections = pd.read_csv('all_items_duplicated.csv')
     df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
