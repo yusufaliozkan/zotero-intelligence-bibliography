@@ -196,7 +196,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + str(link_to_publication) + ') ' +
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
-                    st.write(f"{index + 1}) {formatted_entry}")
                 sort_by_type = st.checkbox('Sort by publication type', key='type')
                 display2 = st.checkbox('Display abstracts')
 
