@@ -223,10 +223,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.caption(row['Abstract'])
 
 #UNTIL HERE
-
-
         with col2:
-            with st.expander('Collections in this site', expanded=False):
+            with st.expander('Collections in this site', expanded=True):
                 st.caption('[Intelligence history](/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
                 st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
