@@ -595,7 +595,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.pyplot() 
 
     with tab3:
-        df=df2.copy()
+        df=df_collections.copy()
         row_nu_1 = len(df.index)
         df = df.reset_index()
         df = df.drop(['index'], axis=1)
