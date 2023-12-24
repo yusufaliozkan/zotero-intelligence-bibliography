@@ -224,16 +224,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
 #UNTIL HERE
         with col2:
-            with st.expander('Collections in this site', expanded=True):
-                st.caption('[Intelligence history](/Intelligence_history)')
+            with st.expander('Collections', expanded=True):
+                st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
                 st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
                 st.caption('[Intelligence organisations](https://intelligence.streamlit.app/Intelligence_organisations)')
+                st.caption('[Intelligence failures](https://intelligence.streamlit.app/Intelligence_failures)')
                 st.caption('[Intelligence oversight and ethics](https://intelligence.streamlit.app/Intelligence_oversight_and_ethics)')
                 st.caption('[Intelligence collection](https://intelligence.streamlit.app/Intelligence_collection)')
                 st.caption('[Counterintelligence](https://intelligence.streamlit.app/Counterintelligence)')
                 st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
                 st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
+                st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
+                st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
                 st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
             with st.expander('Events', expanded=True):
