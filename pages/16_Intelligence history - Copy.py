@@ -88,13 +88,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections = pd.read_csv('all_items_duplicated.csv')
     # df_collections = df_collections[~df_collections['Collection_Name'].str.contains('01.98')]
     # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
-    df_collections
-
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("02.")]
-    # df_collections = df_collections.iloc[1: , :]
-    df_collections
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
