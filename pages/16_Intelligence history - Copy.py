@@ -201,8 +201,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 if sort_by_type:
                     df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
-                    df_collections = df_collections.reset_index(drop=True)
+                    current_type = None
                     for index, row in df_collections.iterrows():
+                        if row['Publication type'] != current_type:
+                            current_type = row['Publication type']
+                            st.subheader(current_type)
                         formatted_entry = format_entry(row)
                         st.write(f"{index + 1}) {formatted_entry}")
                         if display2:
