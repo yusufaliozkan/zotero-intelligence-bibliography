@@ -85,15 +85,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
     #     return df_collections
     # df_collections = zotero_collections(library_id, library_type)
 
-    df_collections = pd.read_csv('all_items_duplicated.csv')
-    # df_collections = df_collections[~df_collections['Collection_Name'].str.contains('01.98')]
-    # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
+    @st.cache_data(ttl=100)
+    def load_data():
+        df_collections = pd.read_csv('all_items_duplicated.csv')
+        df_collections = df_collections.sort_values(by='Collection_Name')
+        return df_collections
 
-    df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("14.")]
+    df_collections = load_data()
+    df_collections = df_collections[df_collections['Collection_Name'].str.contains("14.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-
     container = st.container()
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
