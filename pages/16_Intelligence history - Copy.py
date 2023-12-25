@@ -40,7 +40,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with st.sidebar:
 
         st.image(image, width=150)
-        st.sidebar.markdown("# Intelligence studies network")
+        st.sidebar.markdown("# Intelligence collection")
         with st.expander('About'):
             st.write('''This website lists secondary sources on intelligence studies and intelligence history.
             The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
@@ -90,7 +90,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
     df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("06.")]
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("07.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
