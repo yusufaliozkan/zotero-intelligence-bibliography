@@ -103,7 +103,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # unique_collections = list(df_collections['Collection_Name'].unique()) 
             # radio = container.radio('Select a collection', unique_collections)
             # # collection_name = st.selectbox('Select a collection:', clist)
-            df_collections
+            df_collections=df_collections.reset_index(drop=True)
             collection_name = df_collections.loc[0]['Collection_Name']
             # collection_name = radio
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
