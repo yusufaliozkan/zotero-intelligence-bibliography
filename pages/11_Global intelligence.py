@@ -206,30 +206,40 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
                 sort_by_type = st.checkbox('Sort by publication type', key='type')
+                sort_by_country = st.checkbox('Sort by country theme', key='country')
                 display2 = st.checkbox('Display abstracts')
 
                 if sort_by_type:
                     df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
-                    current_type = None
-                    count_by_type = {}
-                    for index, row in df_collections.iterrows():
-                        if row['Publication type'] != current_type:
-                            current_type = row['Publication type']
-                            st.subheader(current_type)
-                            count_by_type[current_type] = 1
+                elif sort_by_country:
+                    df_collections = df_collections.sort_values(by=['Country'], ascending=True)
+
+                current_type = None
+                current_country = None
+                count_by_type = {}
+                count_by_country = {}
+
+                for index, row in df_collections.iterrows():
+                    if sort_by_type and row['Publication type'] != current_type:
+                        current_type = row['Publication type']
+                        st.subheader(current_type)
+                        count_by_type[current_type] = 1
+                    elif sort_by_country and row['Country'] != current_country:
+                        current_country = row['Country']
+                        st.subheader(f"Publications related to {current_country}")
+                        count_by_country[current_country] = 1
+
+                    if sort_by_type:
                         formatted_entry = format_entry(row)
                         st.write(f"{count_by_type[current_type]}) {formatted_entry}")
                         count_by_type[current_type] += 1
-                        if display2:
-                            st.caption(row['Abstract'])
-                else:
-                    count = 1
-                    for index, row in df_collections.iterrows():
+                    elif sort_by_country:
                         formatted_entry = format_entry(row)
-                        st.write(f"{count}) {formatted_entry}")
-                        count += 1
-                        if display2:
-                            st.caption(row['Abstract'])
+                        st.write(f"{count_by_country[current_country]}) {formatted_entry}")
+                        count_by_country[current_country] += 1
+
+                    if display2:
+                        st.caption(row['Abstract'])
 
 #UNTIL HERE
         with col2:
