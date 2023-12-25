@@ -110,7 +110,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Update Country column by concatenating with '|' if multiple countries are found
                 df_collections.loc[mask, 'Country'] += country + '|' if not df_collections.loc[mask, 'Country'].empty else ''
             df_collections['Country'] = df_collections['Country'].str.rstrip('|').replace(replacements, regex=True)
-            df_collections = df_collections.assign(Country=df_countries['Country'].str.split('|')).explode('Country')
+            df_collections = df_collections.assign(Country=df_collections['Country'].str.split('|')).explode('Country')
             df_collections = df_collections.drop_duplicates(subset=['Country', 'Zotero link'])
             df_collections['Country'].replace('', 'Country not known', inplace=True)
             
