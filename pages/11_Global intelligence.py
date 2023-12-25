@@ -316,7 +316,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with tab2:
         st.header('Dashboard')
-        st.markdown('#### Collection theme: ' + collection_name)
+        st.markdown('#### Collection theme: ' )
 
         if df_collections['Title'].any() in ("", [], None, 0, False):
             all = st.checkbox('Show all types')
