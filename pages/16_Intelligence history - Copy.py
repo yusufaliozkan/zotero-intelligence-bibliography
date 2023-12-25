@@ -26,7 +26,7 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Covert action")
+st.title("Intelligence and cybersphere")
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
@@ -90,7 +90,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
     df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("09.")]
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("10.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
