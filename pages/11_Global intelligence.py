@@ -28,7 +28,6 @@ st.set_page_config(layout = "wide",
 
 st.title("Global intelligence")
 
-@st.cache_data(ttl=10)
 with st.spinner('Retrieving data & updating dashboard...'):
 
     # # Connecting Zotero with API
@@ -231,7 +230,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if display2:
                             st.caption(row['Abstract'])
 
-
+#UNTIL HERE
         with col2:
             with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
