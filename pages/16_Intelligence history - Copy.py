@@ -26,7 +26,7 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("AI and intelligence studies")
+st.title("Special collections")
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
@@ -90,7 +90,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
     df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("15.")]
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("98.")]
+    df_collections = df_collections[df_collections['Collection_Name'] != '01.98 Miscellaneous']
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -100,12 +101,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            # unique_collections = list(df_collections['Collection_Name'].unique()) 
-            # radio = container.radio('Select a collection', unique_collections)
-            # # collection_name = st.selectbox('Select a collection:', clist)
-            df_collections=df_collections.reset_index(drop=True)
-            collection_name = df_collections.loc[0]['Collection_Name']
-            # collection_name = radio
+            unique_collections = list(df_collections['Collection_Name'].unique()) 
+            radio = container.radio('Select a collection', unique_collections)
+            # collection_name = st.selectbox('Select a collection:', clist)
+            # df_collections=df_collections.reset_index(drop=True)
+            # collection_name = df_collections.loc[0]['Collection_Name']
+            collection_name = radio
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
 
@@ -547,8 +548,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
         df['token_abstract']=df['clean_abstract'].apply(tokenization)
 
         stopword = nltk.corpus.stopwords.words('english')
-
-        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'part',
+        
+        if collection_name=='98.1 War in Ukraine':
+            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'invasion',
+                'ukraine', 'russian', 'ukrainian', 'russia', 'could', 'vladimir',
+                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                'examines', 'become', 'used', 'journal', 'london', 'review']
+        else:
+            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
             'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
             'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
             'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
