@@ -102,17 +102,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            df_collections['Country'] = ''
-            for country in country_names:
-                # Find rows where the Title column contains the country name
-                mask = df_collections['Title'].str.contains(country, regex=False)
-                
-                # Update Country column by concatenating with '|' if multiple countries are found
-                df_collections.loc[mask, 'Country'] += country + '|' if not df_collections.loc[mask, 'Country'].empty else ''
-            df_collections['Country'] = df_collections['Country'].str.rstrip('|').replace(replacements, regex=True)
-            df_collections = df_collections.assign(Country=df_collections['Country'].str.split('|')).explode('Country')
-            df_collections = df_collections.drop_duplicates(subset=['Country', 'Zotero link'])
-            df_collections['Country'].replace('', 'Country not known', inplace=True)
             
             # unique_collections = list(df_collections['Collection_Name'].unique()) 
             # radio = container.radio('Select a collection', unique_collections)
