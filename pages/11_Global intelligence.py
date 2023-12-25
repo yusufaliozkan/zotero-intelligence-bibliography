@@ -122,7 +122,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             st.markdown('#### Collection theme: ' + collection_name)
             st.write(f"See the collection in [Zotero]({collection_link})")
-            st.write('This collection lists academic sources that are non-UK/US on intelligence.')
+            st.write('This collection lists academic sources that are **non-UK/US** on intelligence.')
 
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
