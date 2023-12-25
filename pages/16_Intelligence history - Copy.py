@@ -546,7 +546,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         stopword = nltk.corpus.stopwords.words('english')
 
-        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'failure',
+        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
             'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
             'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
             'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
