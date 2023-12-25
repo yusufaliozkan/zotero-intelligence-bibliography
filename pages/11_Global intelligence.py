@@ -20,7 +20,7 @@ from gsheetsdb import connect
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
-from countries_dict import country_names, replacements
+from countries_dict import country_names, replacements, df_countries
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
@@ -102,6 +102,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
+            df_countries
             unique_collections = list(df_collections['Collection_Name'].unique()) 
             radio = container.radio('Select a collection', unique_collections)
             # collection_name = st.selectbox('Select a collection:', clist)
