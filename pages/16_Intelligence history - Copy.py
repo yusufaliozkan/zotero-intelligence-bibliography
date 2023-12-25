@@ -26,7 +26,7 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence failures")
+st.title("Intelligence oversight and ethics")
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
