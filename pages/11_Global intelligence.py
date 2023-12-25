@@ -85,7 +85,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     #     return df_collections
     # df_collections = zotero_collections(library_id, library_type)
 
-    @st.cache_data(ttl=10)
+    @st.cache_data(ttl=100)
     def load_data():
         df_collections = pd.read_csv('all_items_duplicated.csv')
         df_collections = df_collections.sort_values(by='Collection_Name')
