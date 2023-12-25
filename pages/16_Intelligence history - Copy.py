@@ -100,11 +100,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            unique_collections = list(df_collections['Collection_Name'].unique()) 
-            unique_collections
-            radio = container.radio('Select a collection', unique_collections)
-            # collection_name = st.selectbox('Select a collection:', clist)
-            collection_name = radio
+            # unique_collections = list(df_collections['Collection_Name'].unique()) 
+            # radio = container.radio('Select a collection', unique_collections)
+            # # collection_name = st.selectbox('Select a collection:', clist)
+            collection_name = df_collections.loc[0]['Collection_Name']
+            # collection_name = radio
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
 
