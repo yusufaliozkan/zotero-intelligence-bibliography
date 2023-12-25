@@ -546,27 +546,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         stopword = nltk.corpus.stopwords.words('english')
 
-        if collection_name=='01.6 WW2 (Second World War)':
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter', 'second',
-                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']
-        if collection_name=='01.4 WW1 (First Wold War)':
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
-                'new', 'first', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']        
-        else:
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
-                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']
+        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
+            'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+            'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+            'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+            'examines', 'become', 'used', 'journal', 'london', 'review']
         stopword.extend(SW)
 
         def remove_stopwords(text):
