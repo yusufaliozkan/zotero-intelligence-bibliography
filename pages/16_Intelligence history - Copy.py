@@ -26,7 +26,7 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence history")
+st.title("AI and intelligence studies")
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
@@ -87,12 +87,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections = pd.read_csv('all_items_duplicated.csv')
     # df_collections = df_collections[~df_collections['Collection_Name'].str.contains('01.98')]
-    df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
-
+    # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
     df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("98.")]
-    df_collections = df_collections.iloc[1: , :]
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("15.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -102,10 +100,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            unique_collections = list(df_collections['Collection_Name'].unique()) 
-            radio = container.radio('Select a collection', unique_collections)
-            # collection_name = st.selectbox('Select a collection:', clist)
-            collection_name = radio
+            # unique_collections = list(df_collections['Collection_Name'].unique()) 
+            # radio = container.radio('Select a collection', unique_collections)
+            # # collection_name = st.selectbox('Select a collection:', clist)
+            df_collections=df_collections.reset_index(drop=True)
+            collection_name = df_collections.loc[0]['Collection_Name']
+            # collection_name = radio
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
 
@@ -548,27 +548,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         stopword = nltk.corpus.stopwords.words('english')
 
-        if collection_name=='01.6 WW2 (Second World War)':
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter', 'second',
-                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']
-        if collection_name=='01.4 WW1 (First Wold War)':
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
-                'new', 'first', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']        
-        else:
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'thesis', 'chapter',
-                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies', 'effective', 'important', 'good', 'put',
-                'argued', 'mean', 'one', 'allow', 'contrary', 'investigates', 'could', 'history',
-                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                'examines', 'become', 'used', 'journal', 'london', 'review']
+        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'part',
+            'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+            'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+            'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+            'examines', 'become', 'used', 'journal', 'london', 'review']
         stopword.extend(SW)
 
         def remove_stopwords(text):
