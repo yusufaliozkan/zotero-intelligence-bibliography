@@ -373,7 +373,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections['Author_name'] = df_collections['Author_name'].map(name_replacements).fillna(df_collections['Author_name'])
             max_authors = len(df_collections['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
-        
+            
+            # Filtering data based on selected publication types
+            filtered_authors = df_collections[df_collections['Publication type'].isin(selected_types)]
             
             if len(selected_types) == 0:
                 st.write('No results to display')
