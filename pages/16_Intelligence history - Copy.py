@@ -26,7 +26,7 @@ st.set_page_config(layout = "wide",
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence and cybersphere")
+st.title("Global intelligence")
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
@@ -90,7 +90,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
     df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("10.")]
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("14.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -548,7 +548,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         stopword = nltk.corpus.stopwords.words('english')
 
-        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
+        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'part',
             'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
             'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
             'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
