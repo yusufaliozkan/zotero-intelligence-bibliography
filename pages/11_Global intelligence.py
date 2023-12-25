@@ -89,10 +89,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
     def load_data():
         df_collections = pd.read_csv('all_items_duplicated.csv')
         df_collections = df_collections.sort_values(by='Collection_Name')
-        df_collections = df_collections[df_collections['Collection_Name'].str.contains("14.")]
         return df_collections
 
     df_collections = load_data()
+    df_collections = df_collections[df_collections['Collection_Name'].str.contains("14.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
     container = st.container()
