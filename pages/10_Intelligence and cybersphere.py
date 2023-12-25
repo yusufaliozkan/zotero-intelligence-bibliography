@@ -100,15 +100,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            # unique_collections = list(df_collections['Collection_Name'].unique()) 
-            # radio = container.radio('Select a collection', unique_collections)
-            # # collection_name = st.selectbox('Select a collection:', clist)
+            unique_collections = list(df_collections['Collection_Name'].unique()) 
+            radio = container.radio('Select a collection', unique_collections)
+            # collection_name = st.selectbox('Select a collection:', clist)
             df_collections=df_collections.reset_index(drop=True)
-            collection_name = df_collections.loc[0]['Collection_Name']
-            # collection_name = radio
+            collection_name = radio
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
-
+            
             df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
             df_collections['Date published'] = df_collections['Date published'].fillna('')
