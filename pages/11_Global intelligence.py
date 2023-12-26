@@ -615,4 +615,3 @@ with st.spinner('Retrieving data & updating dashboard...'):
     © 2022 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
     """
     )
-    df_countries
