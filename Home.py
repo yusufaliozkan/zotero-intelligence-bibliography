@@ -935,14 +935,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('No results to display')
             else:
                 publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
-                fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
-                fig.update_layout(
-                    title=f'Top {num_authors} Authors by Publication Count',
-                    xaxis_title='Author',
-                    yaxis_title='Number of Publications',
-                    xaxis_tickangle=-45,
-                )
-                col2.plotly_chart(fig)
+                # Sort the values in descending order
+                publications_by_author = publications_by_author.sort_values(ascending=False)
+                
+                # Convert the sorted data to a DataFrame for the bar chart
+                data_for_chart = publications_by_author.reset_index().rename(columns={'index': 'Author_name', 'Author_name': 'Publications'})
+                
+                st.bar_chart(data_for_chart.set_index('Author_name'))
+                st.pyplot()
 
         col1, col2 = st.columns(2)
         with col1:
