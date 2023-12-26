@@ -13,4 +13,4 @@ gsheetsdb==0.1.13.1
 fpdf2==2.6.1
 gspread==5.7.2
 Pillow==9.5.0
-pycountry==23.12.11
+pycountry
