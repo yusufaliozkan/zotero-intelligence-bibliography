@@ -19,7 +19,7 @@ from wordcloud import WordCloud
 from gsheetsdb import connect
 import datetime as dt
 from urllib.parse import urlparse
-from pycountry import pycountry
+import pycountry
 from test import df
 
 st.set_page_config(layout = "centered", 
