@@ -935,8 +935,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('No results to display')
             else:
                 publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
+                # Sort the values in descending order
+                publications_by_author = publications_by_author.sort_values(ascending=False)
+                
                 st.bar_chart(publications_by_author)
-                st.pyplot()
+                st.pyplot() 
 
         col1, col2 = st.columns(2)
         with col1:
