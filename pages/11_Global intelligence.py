@@ -233,53 +233,54 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if display2:
                                 st.caption(row['Abstract'])
                 with tab2:
-                    df_countries
-                    def format_entry(row):
-                        publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                        title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                        authors = str(row['FirstName2'])
-                        date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                        link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                        zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-                        published_by_or_in = ''
-                        published_source = ''
+                    st.info('Coming soon!')
+                    # df_countries
+                    # def format_entry(row):
+                    #     publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                    #     title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                    #     authors = str(row['FirstName2'])
+                    #     date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                    #     link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                    #     zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                    #     published_by_or_in = ''
+                    #     published_source = ''
 
-                        if publication_type == 'Journal article':
-                            published_by_or_in = 'Published in'
-                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                        elif publication_type == 'Book':
-                            published_by_or_in = 'Published by'
-                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                        else:
-                            # For other types, leave the fields empty
-                            published_by_or_in = ''
-                            published_source = ''
+                    #     if publication_type == 'Journal article':
+                    #         published_by_or_in = 'Published in'
+                    #         published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                    #     elif publication_type == 'Book':
+                    #         published_by_or_in = 'Published by'
+                    #         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                    #     else:
+                    #         # For other types, leave the fields empty
+                    #         published_by_or_in = ''
+                    #         published_source = ''
 
-                        return (
-                            '**' + publication_type + '**' + ': ' +
-                            title + ' ' +
-                            '(by ' + '*' + authors + '*' + ') ' +
-                            '(Publication date: ' + str(date_published) + ') ' +
-                            ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                            '[[Publication link]](' + link_to_publication + ') ' +
-                            '[[Zotero link]](' + zotero_link + ')'
-                        )
-                    def filter_by_country(df, country):
-                        return df_countries[df_countries['Country'] == country]
-                    selected_country = st.selectbox('Select a country', df_collections['Country'].unique())
+                    #     return (
+                    #         '**' + publication_type + '**' + ': ' +
+                    #         title + ' ' +
+                    #         '(by ' + '*' + authors + '*' + ') ' +
+                    #         '(Publication date: ' + str(date_published) + ') ' +
+                    #         ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                    #         '[[Publication link]](' + link_to_publication + ') ' +
+                    #         '[[Zotero link]](' + zotero_link + ')'
+                    #     )
+                    # def filter_by_country(df, country):
+                    #     return df_countries[df_countries['Country'] == country]
+                    # selected_country = st.selectbox('Select a country', df_collections['Country'].unique())
 
-                    # Filter publications by the selected country
-                    publications_by_country = filter_by_country(df_collections, selected_country)
+                    # # Filter publications by the selected country
+                    # publications_by_country = filter_by_country(df_collections, selected_country)
 
-                    # Iterate through the filtered publications and format entries
-                    articles_list = []
-                    for index, row in publications_by_country.iterrows():
-                        formatted_entry = format_entry(row)
-                        articles_list.append(formatted_entry)
+                    # # Iterate through the filtered publications and format entries
+                    # articles_list = []
+                    # for index, row in publications_by_country.iterrows():
+                    #     formatted_entry = format_entry(row)
+                    #     articles_list.append(formatted_entry)
 
-                    # Display the formatted entries
-                    for article in articles_list:
-                        st.markdown(article)
+                    # # Display the formatted entries
+                    # for article in articles_list:
+                    #     st.markdown(article)
                     
 
 #UNTIL HERE
