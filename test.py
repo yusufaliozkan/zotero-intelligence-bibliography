@@ -6,7 +6,7 @@ import json, sys
 from datetime import date, timedelta  
 import datetime
 import plotly.express as px
-from pycountry import pycountry
+import pycountry
 import re
 import pandas as pd
 
