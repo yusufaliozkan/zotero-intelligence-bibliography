@@ -51,6 +51,7 @@ replacements = {
     'Ottoman Special Organization':'Turkey',
     'Ottoman':'Turkey',
     'Italian':'Italy',
+    'KGB':'Russia',
     'Teşkilat-ı Mahsusa':'Turkey'
 }
 
