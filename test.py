@@ -1,6 +1,5 @@
 from pyzotero import zotero
 import os
-import tweepy as tw
 import pandas as pd
 import datetime
 import json, sys
