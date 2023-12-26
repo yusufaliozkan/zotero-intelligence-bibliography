@@ -19,6 +19,7 @@ from wordcloud import WordCloud
 from gsheetsdb import connect
 import datetime as dt
 from urllib.parse import urlparse
+from test import df
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence studies network',
@@ -379,6 +380,7 @@ with tab3:
     st.subheader('Call for papers')
     sheet_url3 = st.secrets["public_gsheets_url3"]
     rows = run_query(f'SELECT * FROM "{sheet_url3}"')
+    df
 
     data = []
     columns = ['name', 'organiser', 'link', 'date', 'details']
