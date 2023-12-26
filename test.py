@@ -6,7 +6,7 @@ import json, sys
 from datetime import date, timedelta  
 import datetime
 import plotly.express as px
-import pycountry
+# import pycountry
 import re
 import pandas as pd
 
@@ -108,4 +108,12 @@ df['Journal'] = df['Journal'].replace(mapping_journal)
 # df['Journal'] = df['Journal'].replace(['International Journal of Intelligence and Counterintelligence', 'International Journal of Intelligence and CounterIntelligence'], 'Intl Journal of Intelligence and Counterintelligence')
 # df['Journal'] = df['Journal'].replace(['Intelligence and national security', 'Intelligence and National Security', 'Intelligence & National Security'], 'Intelligence and National Security')
 
-df
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 27],
+    'City': ['New York', 'San Francisco', 'Los Angeles']
+}
+
+# Creating the DataFrame
+df_test = pd.DataFrame(data)
+df_test.to_csv('test222.csv')
