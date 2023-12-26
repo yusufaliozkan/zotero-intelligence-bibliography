@@ -380,7 +380,6 @@ with tab3:
     st.subheader('Call for papers')
     sheet_url3 = st.secrets["public_gsheets_url3"]
     rows = run_query(f'SELECT * FROM "{sheet_url3}"')
-    df
 
     data = []
     columns = ['name', 'organiser', 'link', 'date', 'details']
