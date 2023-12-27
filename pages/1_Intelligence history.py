@@ -493,7 +493,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=True)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)'})
                         col2.plotly_chart(fig, use_container_width = True)
                 else:
                     if leg2:
@@ -504,7 +504,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=False)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles'})
                         col2.plotly_chart(fig, use_container_width = True)
                     else:
                         fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
@@ -514,7 +514,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=True)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles)'})
                         col2.plotly_chart(fig, use_container_width = True)
                 with st.expander('See journals'):
                     row_nu_collections = len(df_journal.index)        
