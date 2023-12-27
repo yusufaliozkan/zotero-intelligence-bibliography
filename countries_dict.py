@@ -153,6 +153,7 @@ for continent in continent_country_names:
 
 df_continent['Country2'] = df_continent['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
 df_continent = df_continent.assign(Country2=df_continent['Country2'].str.split('|')).explode('Country2')
+df_continent
 df_continent = df_continent.drop_duplicates(subset=['Country2', 'Zotero link'])
 df_continent['Country2'].replace('', 'Country2 not known', inplace=True)
 
