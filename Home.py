@@ -651,7 +651,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                         ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                        ' (Published on: ' + df['Date published']+', ' +
+                        ' (Published on: ' + df['Date published']+') ' +
                         '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
                         "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
                         )
