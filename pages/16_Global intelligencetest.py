@@ -459,6 +459,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
             fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
             st.plotly_chart(fig)
+            df_countries
 
 #UNTIL HERE
         with col2:
