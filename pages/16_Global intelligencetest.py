@@ -231,7 +231,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if display2:
                             st.caption(row['Abstract'])
             with st.expander('Items by country (click to expand)', expanded=False):
-                df_countries_chart = df_countries.copy()
+                # df_countries_chart = df_countries.copy()
                 country_counts = df_countries['Country'].value_counts().to_dict()
                 unique_countries = sorted(df_countries['Country'].unique())
                 unique_countries = [''] + unique_countries
