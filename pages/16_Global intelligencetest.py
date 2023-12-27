@@ -233,7 +233,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('Items by country (click to expand)', expanded=False):
                 df_countries_chart = df_countries.copy()
                 unique_countries = sorted(df_countries['Country'].unique())
-                unique_countries = [''] + list(unique_countries)
+                unique_countries = ['All Countries'] + [''] + list(unique_countries)  # Added 'All Countries' option
                 selected_country = st.selectbox('Select a Country', unique_countries)
 
                 number_of_pub = df_countries[df_countries['Country'] == selected_country]
@@ -273,7 +273,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + link_to_publication + ') ' +
                         '[[Zotero link]](' + zotero_link + ')'
                     )
-                if selected_country:
+                
+                if selected_country == 'All Countries':
+                    st.subheader(f"All Countries ({len(df_countries)} sources)")
+                    # Display all items in df_countries
+                    count = 1
+                    for index, row in df_countries.iterrows():
+                        formatted_entry = format_entry(row)
+                        st.write(f"{count}) {formatted_entry}")
+                        count += 1
+                        if display2:
+                            st.caption(row['Abstract'])
+                
+                elif selected_country:
                     st.subheader(f"{selected_country} ({publications_count} sources)")
                     articles_list = []  # Store articles in a list
                     for index, row in df_countries.iterrows():
