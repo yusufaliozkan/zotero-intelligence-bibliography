@@ -462,7 +462,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_continent.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             df_continent = df_continent.sort_values(by=['Date published'], ascending=False)
             df_continent
-            df_continent = df_continent.drop_duplicates(subset=['Country2', 'Zotero link'])
+            df_continent = df_continent.drop_duplicates(subset=['Continent', 'Zotero link'])
             df_continent
             df_continent = df_continent.reset_index(drop=True)
             unique_continents = sorted(df_continent['Continent'].unique())
