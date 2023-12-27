@@ -232,13 +232,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.caption(row['Abstract'])
             with st.expander('Items by country (click to expand)', expanded=False):
                 df_countries_chart = df_countries.copy()
-                country_counts = df_countries['Country'].value_counts().to_dict()
-                country_counts
                 unique_countries = sorted(df_countries['Country'].unique())
                 unique_countries = [''] + list(unique_countries)
                 selected_country = st.selectbox('Select a Country', unique_countries)
 
-                st.subheader(selected_country)
+                number_of_pub = df_countries[df_countries['Country'] == selected_country]
+                publications_count = len(filtered_df)
+
+                st.subheader({selected_country}: {publications_count})
 
                 # Filter the DataFrame based on the selected country
                 df_countries = df_countries[df_countries['Country'] == selected_country]
