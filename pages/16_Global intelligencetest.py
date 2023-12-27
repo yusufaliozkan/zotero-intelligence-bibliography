@@ -215,6 +215,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #             if display2:
             #                 st.caption(row['Abstract'])
             df_countries_chart = df_countries.copy()
+            df_continent = df_countries.copy()
             df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
             df_countries['Date published'] = df_countries['Date published'].fillna('')
@@ -459,7 +460,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
             fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
             st.plotly_chart(fig)
-            df_countries
+            df_continent
 
 #UNTIL HERE
         with col2:
