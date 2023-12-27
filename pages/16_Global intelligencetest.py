@@ -237,7 +237,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_country = st.selectbox('Select a Country', unique_countries)
 
                 number_of_pub = df_countries[df_countries['Country'] == selected_country]
-                publications_count = len(filtered_df)
+                publications_count = len(number_of_pub)
 
                 st.subheader(f"{selected_country}: {publications_count}")
 
