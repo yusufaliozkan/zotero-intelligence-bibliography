@@ -342,7 +342,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 autosize=False,
                 width=400,
                 height=400,)
-            fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+            fig.update_layout(title={'text':'Publications: '+collection_name})
             col2.plotly_chart(fig, use_container_width = True)
 
         df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
