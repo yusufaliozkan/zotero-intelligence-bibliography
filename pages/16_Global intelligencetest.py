@@ -381,6 +381,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     a = f'{selected_country}_{today}'
                     st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5')
 
+                    publications_by_type_country = df_countries['Publication type'].value_counts()
                     num_items_collections = len(df_countries)
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])                    
 
