@@ -420,7 +420,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=False)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)'})
                         col1.plotly_chart(fig, use_container_width = True)
                     else:
                         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
@@ -430,7 +430,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=True)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)'})
                         col1.plotly_chart(fig, use_container_width = True)
                 else:
                     if leg1:
