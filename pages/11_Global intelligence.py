@@ -214,6 +214,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #             count += 1
             #             if display2:
             #                 st.caption(row['Abstract'])
+            df_continent
             df_countries_chart = df_countries.copy()
             df_continent = df_countries.copy()
             df_continent_chart = df_continent.copy()
