@@ -333,10 +333,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     st.write('Please select a country')
                 country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=True)
-                top_10_countries = country_pub_counts.head(10)
-                top_10_df = pd.DataFrame({'Country': top_10_countries.index, 'Publications': top_10_countries.values})
-                fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
-                fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
+                fig = px.bar(x=country_pub_counts.values, y=country_pub_counts.index, orientation='h')
+                fig.update_layout(title='Number of Publications by Country', xaxis_title='Number of Publications', yaxis_title='Country')
                 st.plotly_chart(fig)
 
 #UNTIL HERE
