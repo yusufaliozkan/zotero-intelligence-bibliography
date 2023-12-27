@@ -218,343 +218,338 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_countries.copy()
             df_continent_chart = df_continent.copy()
 
-            search_option = st.radio("Search by", ("Country", "Continent"))
-            if search_option == "Country":
+            df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
+            df_countries['Date published'] = df_countries['Date published'].fillna('')
+            df_countries['No date flag'] = df_countries['Date published'].isnull().astype(np.uint8)
+            df_countries = df_countries.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+            df_countries = df_countries.sort_values(by=['Date published'], ascending=False)
+            df_countries = df_countries.reset_index(drop=True)
+            unique_countries = sorted(df_countries['Country'].unique())
+            unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
+            selected_country = st.selectbox('Select a Country', unique_countries)
+            number_of_pub = df_countries[df_countries['Country'] == selected_country]
+            publications_count = len(number_of_pub)
 
-                df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
-                df_countries['Date published'] = df_countries['Date published'].fillna('')
-                df_countries['No date flag'] = df_countries['Date published'].isnull().astype(np.uint8)
-                df_countries = df_countries.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                df_countries = df_countries.sort_values(by=['Date published'], ascending=False)
-                df_countries = df_countries.reset_index(drop=True)
-                unique_countries = sorted(df_countries['Country'].unique())
-                unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
-                selected_country = st.selectbox('Select a Country', unique_countries)
-                number_of_pub = df_countries[df_countries['Country'] == selected_country]
-                publications_count = len(number_of_pub)
+            # Filter the DataFrame based on the selected country
+            df_countries = df_countries[df_countries['Country'] == selected_country]          
 
-                # Filter the DataFrame based on the selected country
-                df_countries = df_countries[df_countries['Country'] == selected_country]          
+            # Display the filtered DataFrame
+            def format_entry(row):
+                publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                authors = str(row['FirstName2'])
+                date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                published_by_or_in = ''
+                published_source = ''
 
-                # Display the filtered DataFrame
-                def format_entry(row):
-                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                    authors = str(row['FirstName2'])
-                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                if publication_type == 'Journal article':
+                    published_by_or_in = 'Published in'
+                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                elif publication_type == 'Book':
+                    published_by_or_in = 'Published by'
+                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                else:
+                    # For other types, leave the fields empty
                     published_by_or_in = ''
                     published_source = ''
 
-                    if publication_type == 'Journal article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
-                        published_by_or_in = 'Published by'
-                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                    else:
-                        # For other types, leave the fields empty
+                return (
+                    '**' + publication_type + '**' + ': ' +
+                    title + ' ' +
+                    '(by ' + '*' + authors + '*' + ') ' +
+                    '(Publication date: ' + str(date_published) + ') ' +
+                    ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                    '[[Publication link]](' + link_to_publication + ') ' +
+                    '[[Zotero link]](' + zotero_link + ')'
+                )
+
+            if not selected_country or selected_country=="":
+                st.write('Please select a country')
+            
+            elif selected_country == 'All Countries':
+                with st.expander('Click to expand', expanded=True):
+                    types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
+                    df_collections = df_collections[df_collections['Publication type'].isin(types)]
+                    df_collections = df_collections.reset_index(drop=True)
+                    df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])
+                    df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
+                    df_download = df_download.reset_index(drop=True)
+                    def convert_df(df_download):
+                        return df_download.to_csv(index=False).encode('utf-8-sig')
+                    csv = convert_df(df_download)
+                    today = datetime.date.today().isoformat()
+                    num_items_collections = len(df_collections)
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                    a = f'{collection_name}_{today}'
+                    st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+                    def format_entry(row):
+                        publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                        title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                        authors = str(row['FirstName2'])
+                        date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                        link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                        zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
                         published_by_or_in = ''
                         published_source = ''
 
-                    return (
-                        '**' + publication_type + '**' + ': ' +
-                        title + ' ' +
-                        '(by ' + '*' + authors + '*' + ') ' +
-                        '(Publication date: ' + str(date_published) + ') ' +
-                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                        '[[Publication link]](' + link_to_publication + ') ' +
-                        '[[Zotero link]](' + zotero_link + ')'
-                    )
-
-
-                if not selected_country or selected_country=="":
-                    st.write('Please select a country')
-                
-                elif selected_country == 'All Countries':
-                    with st.expander('Click to expand', expanded=True):
-                        types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
-                        df_collections = df_collections[df_collections['Publication type'].isin(types)]
-                        df_collections = df_collections.reset_index(drop=True)
-                        df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])
-                        df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
-                        df_download = df_download.reset_index(drop=True)
-                        def convert_df(df_download):
-                            return df_download.to_csv(index=False).encode('utf-8-sig')
-                        csv = convert_df(df_download)
-                        today = datetime.date.today().isoformat()
-                        num_items_collections = len(df_collections)
-                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                        a = f'{collection_name}_{today}'
-                        st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
-                        st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-                        def format_entry(row):
-                            publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                            title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                            authors = str(row['FirstName2'])
-                            date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                            link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                            zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        else:
+                            # For other types, leave the fields empty
                             published_by_or_in = ''
                             published_source = ''
 
-                            if publication_type == 'Journal article':
-                                published_by_or_in = 'Published in'
-                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                            elif publication_type == 'Book':
-                                published_by_or_in = 'Published by'
-                                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                            else:
-                                # For other types, leave the fields empty
-                                published_by_or_in = ''
-                                published_source = ''
+                        return (
+                            '**' + publication_type + '**' + ': ' +
+                            title + ' ' +
+                            '(by ' + '*' + authors + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + link_to_publication + ') ' +
+                            '[[Zotero link]](' + zotero_link + ')'
+                        )
 
-                            return (
-                                '**' + publication_type + '**' + ': ' +
-                                title + ' ' +
-                                '(by ' + '*' + authors + '*' + ') ' +
-                                '(Publication date: ' + str(date_published) + ') ' +
-                                ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                                '[[Publication link]](' + link_to_publication + ') ' +
-                                '[[Zotero link]](' + zotero_link + ')'
-                            )
-
-                        articles_list = []  # Store articles in a list
-                        for index, row in df_collections.iterrows():
-                            formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                            articles_list.append(formatted_entry)        
-                        
-                        for index, row in df_collections.iterrows():
-                            publication_type = row['Publication type']
-                            title = row['Title']
-                            authors = row['FirstName2']
-                            date_published = row['Date published']
-                            link_to_publication = row['Link to publication']
-                            zotero_link = row['Zotero link']
-
-                            if publication_type == 'Journal article':
-                                published_by_or_in = 'Published in'
-                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                            elif publication_type == 'Book':
-                                published_by_or_in = 'Published by'
-                                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                            else:
-                                published_by_or_in = ''
-                                published_source = ''
-
-                            formatted_entry = (
-                                '**' + str(publication_type) + '**' + ': ' +
-                                str(title) + ' ' +
-                                '(by ' + '*' + str(authors) + '*' + ') ' +
-                                '(Publication date: ' + str(date_published) + ') ' +
-                                ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                '[[Zotero link]](' + str(zotero_link) + ')'
-                            )
-                        sort_by_type = st.checkbox('Sort by publication type', key='type_count')
-                        display2 = st.checkbox('Display abstracts', key='type_count2')
-
-                        if sort_by_type:
-                            df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
-                            current_type = None
-                            count_by_type = {}
-                            for index, row in df_collections.iterrows():
-                                if row['Publication type'] != current_type:
-                                    current_type = row['Publication type']
-                                    st.subheader(current_type)
-                                    count_by_type[current_type] = 1
-                                formatted_entry = format_entry(row)
-                                st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                                count_by_type[current_type] += 1
-                                if display2:
-                                    st.caption(row['Abstract'])
-                        else:
-                            count = 1
-                            for index, row in df_collections.iterrows():
-                                formatted_entry = format_entry(row)
-                                st.write(f"{count}) {formatted_entry}")
-                                count += 1
-                                if display2:
-                                    st.caption(row['Abstract'])
-                
-                else:
-                    with st.expander('Click to expand', expanded=True):
-                        st.subheader(f"{selected_country} ({publications_count} sources)")
-                        types = st.multiselect('Publication type', df_countries['Publication type'].unique(),df_countries['Publication type'].unique(), key='original_4')
-                        df_countries = df_countries[df_countries['Publication type'].isin(types)]
-                        df_countries = df_countries.reset_index(drop=True)
-                        df_download = df_countries[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
-                        df_download = df_download.reset_index(drop=True)
-                        def convert_df(df_download):
-                            return df_download.to_csv(index=False).encode('utf-8-sig')
-                        csv = convert_df(df_download)
-                        today = datetime.date.today().isoformat()
-                        a = f'{selected_country}_{today}'
-                        st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5')
-
-                        publications_by_type_country = df_countries['Publication type'].value_counts()
-                        num_items_collections = len(df_countries)
-                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type_country.items()])                    
-
-                        articles_list = []  # Store articles in a list
-                        st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+                    articles_list = []  # Store articles in a list
+                    for index, row in df_collections.iterrows():
+                        formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                        articles_list.append(formatted_entry)        
                     
-                        for index, row in df_countries.iterrows():
-                            formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                            articles_list.append(formatted_entry)        
-                        
-                        for index, row in df_countries.iterrows():
-                            publication_type = row['Publication type']
-                            title = row['Title']
-                            authors = row['FirstName2']
-                            date_published = row['Date published']
-                            link_to_publication = row['Link to publication']
-                            zotero_link = row['Zotero link']
+                    for index, row in df_collections.iterrows():
+                        publication_type = row['Publication type']
+                        title = row['Title']
+                        authors = row['FirstName2']
+                        date_published = row['Date published']
+                        link_to_publication = row['Link to publication']
+                        zotero_link = row['Zotero link']
 
-                            if publication_type == 'Journal article':
-                                published_by_or_in = 'Published in'
-                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                            elif publication_type == 'Book':
-                                published_by_or_in = 'Published by'
-                                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                            else:
-                                published_by_or_in = ''
-                                published_source = ''
-
-                            formatted_entry = (
-                                '**' + str(publication_type) + '**' + ': ' +
-                                str(title) + ' ' +
-                                '(by ' + '*' + str(authors) + '*' + ') ' +
-                                '(Publication date: ' + str(date_published) + ') ' +
-                                ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                '[[Zotero link]](' + str(zotero_link) + ')'
-                            )
-                        sort_by_type = st.checkbox('Sort by publication type', key='type_country')
-                        display2 = st.checkbox('Display abstracts', key='type_country_2')
-
-                        if sort_by_type:
-                            df_countries = df_countries.sort_values(by=['Publication type'], ascending=True)
-                            current_type = None
-                            count_by_type = {}
-                            for index, row in df_countries.iterrows():
-                                if row['Publication type'] != current_type:
-                                    current_type = row['Publication type']
-                                    st.subheader(current_type)
-                                    count_by_type[current_type] = 1
-                                formatted_entry = format_entry(row)
-                                st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                                count_by_type[current_type] += 1
-                                if display2:
-                                    st.caption(row['Abstract'])
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
                         else:
-                            count = 1
-                            for index, row in df_countries.iterrows():
-                                formatted_entry = format_entry(row)
-                                st.write(f"{count}) {formatted_entry}")
-                                count += 1
-                                if display2:
-                                    st.caption(row['Abstract'])
+                            published_by_or_in = ''
+                            published_source = ''
 
-            if search_option == "Continent":
-                df_continent['Date published'] = pd.to_datetime(df_continent['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                df_continent['Date published'] = df_continent['Date published'].dt.strftime('%Y-%m-%d')
-                df_continent['Date published'] = df_continent['Date published'].fillna('')
-                df_continent['No date flag'] = df_continent['Date published'].isnull().astype(np.uint8)
-                df_continent = df_continent.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                df_continent = df_continent.sort_values(by=['Date published'], ascending=False)
-                df_continent = df_continent.reset_index(drop=True)
-                unique_continents = sorted(df_continent['Continent'].unique())
-                unique_continents =  [''] + list(unique_continents)  # Added 'All Countries' option
-                selected_continent = st.selectbox('Select a Continent', unique_continents)
-                number_of_pub_con = df_continent[df_continent['Continent'] == selected_continent]
-                publications_count_con = len(number_of_pub_con)
+                        formatted_entry = (
+                            '**' + str(publication_type) + '**' + ': ' +
+                            str(title) + ' ' +
+                            '(by ' + '*' + str(authors) + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + str(link_to_publication) + ') ' +
+                            '[[Zotero link]](' + str(zotero_link) + ')'
+                        )
+                    sort_by_type = st.checkbox('Sort by publication type', key='type_count')
+                    display2 = st.checkbox('Display abstracts', key='type_count2')
 
-                df_continent = df_continent[df_continent['Continent'] == selected_continent]  
+                    if sort_by_type:
+                        df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                        current_type = None
+                        count_by_type = {}
+                        for index, row in df_collections.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
+                            if display2:
+                                st.caption(row['Abstract'])
+                    else:
+                        count = 1
+                        for index, row in df_collections.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract'])
+            
+            else:
+                with st.expander('Click to expand', expanded=True):
+                    st.subheader(f"{selected_country} ({publications_count} sources)")
+                    types = st.multiselect('Publication type', df_countries['Publication type'].unique(),df_countries['Publication type'].unique(), key='original_4')
+                    df_countries = df_countries[df_countries['Publication type'].isin(types)]
+                    df_countries = df_countries.reset_index(drop=True)
+                    df_download = df_countries[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
+                    df_download = df_download.reset_index(drop=True)
+                    def convert_df(df_download):
+                        return df_download.to_csv(index=False).encode('utf-8-sig')
+                    csv = convert_df(df_download)
+                    today = datetime.date.today().isoformat()
+                    a = f'{selected_country}_{today}'
+                    st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5')
 
-                if not selected_continent or selected_continent=="":
-                    st.write('Please select a continent')
+                    publications_by_type_country = df_countries['Publication type'].value_counts()
+                    num_items_collections = len(df_countries)
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type_country.items()])                    
+
+                    articles_list = []  # Store articles in a list
+                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                 
-                else:
-                    with st.expander('Click to expand', expanded=True):
-                        st.subheader(f"{selected_continent} ({publications_count_con} sources)")
-                        types = st.multiselect('Publication type', df_continent['Publication type'].unique(),df_continent['Publication type'].unique(), key='original_5')
-                        df_continent = df_continent[df_continent['Publication type'].isin(types)]
-                        df_continent = df_continent.reset_index(drop=True)
-                        df_download_continent = df_continent[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
-                        df_download_continent = df_download_continent.reset_index(drop=True)
-                        def convert_df(df_download_continent):
-                            return df_download_continent.to_csv(index=False).encode('utf-8-sig')
-                        csv = convert_df(df_download_continent)
-                        today = datetime.date.today().isoformat()
-                        a = f'{selected_continent}_{today}'
-                        st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-6')
-
-                        publications_by_type_continent = df_continent['Publication type'].value_counts()
-                        num_items_collections_continent = len(df_continent)
-                        breakdown_string_continent = ', '.join([f"{key}: {value}" for key, value in publications_by_type_continent.items()])                    
-
-                        articles_list = []  # Store articles in a list
-                        st.write(f"**{num_items_collections_continent}** sources found ({breakdown_string_continent})")
+                    for index, row in df_countries.iterrows():
+                        formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                        articles_list.append(formatted_entry)        
                     
-                        for index, row in df_continent.iterrows():
-                            formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                            articles_list.append(formatted_entry)        
-                        
-                        for index, row in df_continent.iterrows():
-                            publication_type = row['Publication type']
-                            title = row['Title']
-                            authors = row['FirstName2']
-                            date_published = row['Date published']
-                            link_to_publication = row['Link to publication']
-                            zotero_link = row['Zotero link']
+                    for index, row in df_countries.iterrows():
+                        publication_type = row['Publication type']
+                        title = row['Title']
+                        authors = row['FirstName2']
+                        date_published = row['Date published']
+                        link_to_publication = row['Link to publication']
+                        zotero_link = row['Zotero link']
 
-                            if publication_type == 'Journal article':
-                                published_by_or_in = 'Published in'
-                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                            elif publication_type == 'Book':
-                                published_by_or_in = 'Published by'
-                                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                            else:
-                                published_by_or_in = ''
-                                published_source = ''
-
-                            formatted_entry = (
-                                '**' + str(publication_type) + '**' + ': ' +
-                                str(title) + ' ' +
-                                '(by ' + '*' + str(authors) + '*' + ') ' +
-                                '(Publication date: ' + str(date_published) + ') ' +
-                                ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                '[[Zotero link]](' + str(zotero_link) + ')'
-                            )
-                        sort_by_type = st.checkbox('Sort by publication type', key='type_country_3')
-                        display2 = st.checkbox('Display abstracts', key='type_country_999')
-
-                        if sort_by_type:
-                            df_continent = df_continent.sort_values(by=['Publication type'], ascending=True)
-                            current_type = None
-                            count_by_type = {}
-                            for index, row in df_continent.iterrows():
-                                if row['Publication type'] != current_type:
-                                    current_type = row['Publication type']
-                                    st.subheader(current_type)
-                                    count_by_type[current_type] = 1
-                                formatted_entry = format_entry(row)
-                                st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                                count_by_type[current_type] += 1
-                                if display2:
-                                    st.caption(row['Abstract'])
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
                         else:
-                            count = 1
-                            for index, row in df_continent.iterrows():
-                                formatted_entry = format_entry(row)
-                                st.write(f"{count}) {formatted_entry}")
-                                count += 1
-                                if display2:
-                                    st.caption(row['Abstract'])
+                            published_by_or_in = ''
+                            published_source = ''
+
+                        formatted_entry = (
+                            '**' + str(publication_type) + '**' + ': ' +
+                            str(title) + ' ' +
+                            '(by ' + '*' + str(authors) + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + str(link_to_publication) + ') ' +
+                            '[[Zotero link]](' + str(zotero_link) + ')'
+                        )
+                    sort_by_type = st.checkbox('Sort by publication type', key='type_country')
+                    display2 = st.checkbox('Display abstracts', key='type_country_2')
+
+                    if sort_by_type:
+                        df_countries = df_countries.sort_values(by=['Publication type'], ascending=True)
+                        current_type = None
+                        count_by_type = {}
+                        for index, row in df_countries.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
+                            if display2:
+                                st.caption(row['Abstract'])
+                    else:
+                        count = 1
+                        for index, row in df_countries.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract'])
+
+            df_continent['Date published'] = pd.to_datetime(df_continent['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_continent['Date published'] = df_continent['Date published'].dt.strftime('%Y-%m-%d')
+            df_continent['Date published'] = df_continent['Date published'].fillna('')
+            df_continent['No date flag'] = df_continent['Date published'].isnull().astype(np.uint8)
+            df_continent = df_continent.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+            df_continent = df_continent.sort_values(by=['Date published'], ascending=False)
+            df_continent = df_continent.reset_index(drop=True)
+            unique_continents = sorted(df_continent['Continent'].unique())
+            unique_continents =  [''] + list(unique_continents)  # Added 'All Countries' option
+            selected_continent = st.selectbox('Select a Continent', unique_continents)
+            number_of_pub_con = df_continent[df_continent['Continent'] == selected_continent]
+            publications_count_con = len(number_of_pub_con)
+
+            df_continent = df_continent[df_continent['Continent'] == selected_continent]  
+
+            if not selected_continent or selected_continent=="":
+                st.write('Please select a continent')
+            
+            else:
+                with st.expander('Click to expand', expanded=True):
+                    st.subheader(f"{selected_continent} ({publications_count_con} sources)")
+                    types = st.multiselect('Publication type', df_continent['Publication type'].unique(),df_continent['Publication type'].unique(), key='original_5')
+                    df_continent = df_continent[df_continent['Publication type'].isin(types)]
+                    df_continent = df_continent.reset_index(drop=True)
+                    df_download_continent = df_continent[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
+                    df_download_continent = df_download_continent.reset_index(drop=True)
+                    def convert_df(df_download_continent):
+                        return df_download_continent.to_csv(index=False).encode('utf-8-sig')
+                    csv = convert_df(df_download_continent)
+                    today = datetime.date.today().isoformat()
+                    a = f'{selected_continent}_{today}'
+                    st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-6')
+
+                    publications_by_type_continent = df_continent['Publication type'].value_counts()
+                    num_items_collections_continent = len(df_continent)
+                    breakdown_string_continent = ', '.join([f"{key}: {value}" for key, value in publications_by_type_continent.items()])                    
+
+                    articles_list = []  # Store articles in a list
+                    st.write(f"**{num_items_collections_continent}** sources found ({breakdown_string_continent})")
+                
+                    for index, row in df_continent.iterrows():
+                        formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                        articles_list.append(formatted_entry)        
+                    
+                    for index, row in df_continent.iterrows():
+                        publication_type = row['Publication type']
+                        title = row['Title']
+                        authors = row['FirstName2']
+                        date_published = row['Date published']
+                        link_to_publication = row['Link to publication']
+                        zotero_link = row['Zotero link']
+
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        else:
+                            published_by_or_in = ''
+                            published_source = ''
+
+                        formatted_entry = (
+                            '**' + str(publication_type) + '**' + ': ' +
+                            str(title) + ' ' +
+                            '(by ' + '*' + str(authors) + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + str(link_to_publication) + ') ' +
+                            '[[Zotero link]](' + str(zotero_link) + ')'
+                        )
+                    sort_by_type = st.checkbox('Sort by publication type', key='type_country_3')
+                    display2 = st.checkbox('Display abstracts', key='type_country_999')
+
+                    if sort_by_type:
+                        df_continent = df_continent.sort_values(by=['Publication type'], ascending=True)
+                        current_type = None
+                        count_by_type = {}
+                        for index, row in df_continent.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
+                            if display2:
+                                st.caption(row['Abstract'])
+                    else:
+                        count = 1
+                        for index, row in df_continent.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract'])
 
             df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
             country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
