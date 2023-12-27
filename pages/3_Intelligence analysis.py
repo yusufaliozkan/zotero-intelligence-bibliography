@@ -373,6 +373,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections['Author_name'] = df_collections['Author_name'].map(name_replacements).fillna(df_collections['Author_name'])
             max_authors = len(df_collections['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
+            df_collections
             
             # Adding a multiselect widget for publication types
             selected_types = st.multiselect('Select publication types:', df_collections['Publication type'].unique(), default=df_collections['Publication type'].unique())
