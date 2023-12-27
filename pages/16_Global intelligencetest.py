@@ -233,7 +233,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('Items by country (click to expand)', expanded=False):
                 df_countries_chart = df_countries.copy()
                 unique_countries = sorted(df_countries['Country'].unique())
-                unique_countries = ['All Countries'] + [''] + list(unique_countries)  # Added 'All Countries' option
+                unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
                 selected_country = st.selectbox('Select a Country', unique_countries)
 
                 number_of_pub = df_countries[df_countries['Country'] == selected_country]
