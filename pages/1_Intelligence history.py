@@ -363,7 +363,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 autosize=False,
                 width=400,
                 height=500,)
-            fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5})
+            fig.update_layout(title={'text':'Publications by year: '+collection_name})
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
