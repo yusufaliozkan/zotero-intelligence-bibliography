@@ -368,10 +368,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             
             else:
                 with st.expander('Click to expand', expanded=True):
+                    st.subheader(f"{selected_country} ({publications_count} sources)")
                     types = st.multiselect('Publication type', df_countries['Publication type'].unique(),df_countries['Publication type'].unique(), key='original_4')
                     df_countries = df_countries[df_countries['Publication type'].isin(types)]
                     df_countries = df_countries.reset_index(drop=True)
-                    st.subheader(f"{selected_country} ({publications_count} sources)")
                     articles_list = []  # Store articles in a list
                     for index, row in df_countries.iterrows():
                         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
