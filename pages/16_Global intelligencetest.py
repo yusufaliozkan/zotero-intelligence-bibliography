@@ -239,8 +239,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 number_of_pub = df_countries[df_countries['Country'] == selected_country]
                 publications_count = len(number_of_pub)
 
-                st.subheader(f"{selected_country} ({publications_count} sources)")
-
                 # Filter the DataFrame based on the selected country
                 df_countries = df_countries[df_countries['Country'] == selected_country]
 
@@ -276,6 +274,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + zotero_link + ')'
                     )
                 if selected_country:
+                    st.subheader(f"{selected_country} ({publications_count} sources)")
                     articles_list = []  # Store articles in a list
                     for index, row in df_countries.iterrows():
                         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
