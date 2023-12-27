@@ -1,11 +1,11 @@
 ,ORG,count
-0,CIA,199
+0,CIA,200
 1,KGB,45
 2,FBI,32
 3,SIS,31
 4,Allied,28
-5,Joint Intelligence Committee,25
-6,Foreign Office,21
+5,Joint Intelligence Committee,26
+6,Foreign Office,22
 7,British Intelligence,21
 8,Hamas,20
 9,NSA,20
@@ -13,4 +13,4 @@
 11,NATO,18
 12,Schar School of Policy and Government,16
 13,Congress,15
-14,Army,14
+14,the Intelligence Community,14
