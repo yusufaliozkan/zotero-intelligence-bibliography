@@ -216,6 +216,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #                 st.caption(row['Abstract'])
             df_countries_chart = df_countries.copy()
             df_continent = df_countries.copy()
+            df_continent_chart = df_continent.copy()
             df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
             df_countries['Date published'] = df_countries['Date published'].fillna('')
@@ -455,6 +456,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
             country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
+            top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
+            top_10_df = pd.DataFrame({'Country': top_10_countries.index, 'Publications': top_10_countries.values})
+            fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
+            fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
+            st.plotly_chart(fig)
+
+            df_continent_chart = df_continent_chart[df_continent_chart['Country'] != 'Country not known']
+            country_pub_counts = df_continent_chart['Country'].value_counts().sort_values(ascending=False)
             top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
             top_10_df = pd.DataFrame({'Country': top_10_countries.index, 'Publications': top_10_countries.values})
             fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
