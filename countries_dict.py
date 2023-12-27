@@ -77,6 +77,8 @@ df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|'
 df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
 df_countries['Country'].replace('', 'Country not known', inplace=True)
 
+df_countries_0 = df_countries.copy()
+
 continent_country_names = [
     "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia",
     "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
