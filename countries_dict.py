@@ -77,8 +77,6 @@ df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|'
 df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
 df_countries['Country'].replace('', 'Country not known', inplace=True)
 
-df_countries_0 = df_countries.copy()
-
 continent_country_names = [
     "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia",
     "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
@@ -146,16 +144,17 @@ continent_replacements = {
     'Venice':'Italy'
     }
 
-df_countries['Country2'] = ''
+df_continent = df_countries.copy()
+df_continent['Country2'] = ''
 
 for continent in continent_country_names:
-    mask = df_countries['Title'].str.contains(continent, regex=False)
-    df_countries.loc[mask, 'Country2'] += continent + '|' if not df_countries.loc[mask, 'Country2'].empty else ''
+    mask = df_continent['Title'].str.contains(continent, regex=False)
+    df_continent.loc[mask, 'Country2'] += continent + '|' if not df_continent.loc[mask, 'Country2'].empty else ''
 
-df_countries['Country2'] = df_countries['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
-df_countries = df_countries.assign(Country2=df_countries['Country2'].str.split('|')).explode('Country2')
-df_countries = df_countries.drop_duplicates(subset=['Country2', 'Zotero link'])
-df_countries['Country2'].replace('', 'Country2 not known', inplace=True)
+df_continent['Country2'] = df_continent['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
+df_continent = df_continent.assign(Country2=df_continent['Country2'].str.split('|')).explode('Country2')
+df_continent = df_continent.drop_duplicates(subset=['Country2', 'Zotero link'])
+df_continent['Country2'].replace('', 'Country2 not known', inplace=True)
 
 continent_dict = {
     "Africa":"Africa",
@@ -368,4 +367,4 @@ def get_continent(country):
     return continent_dict.get(country, 'Unknown')
 
 # Create 'Continent' column using the function
-df_countries['Continent'] = df_countries['Country2'].apply(get_continent)
+df_continent['Continent'] = df_continent['Country2'].apply(get_continent)
