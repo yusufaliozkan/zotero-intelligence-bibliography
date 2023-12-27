@@ -231,8 +231,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if display2:
                             st.caption(row['Abstract'])
             with st.expander('Items by country (click to expand)', expanded=False):
+                country_counts = df_countries['Country'].value_counts().to_dict()
                 unique_countries = sorted(df_countries['Country'].unique())
-                unique_countries = [''] + list(unique_countries)
+                unique_countries = [''] + unique_countries
+                # unique_countries = [''] + list(unique_countries)
                 selected_country = st.selectbox('Select a Country', unique_countries)
 
                 # Filter the DataFrame based on the selected country
