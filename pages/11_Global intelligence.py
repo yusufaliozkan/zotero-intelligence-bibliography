@@ -383,7 +383,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_countries = df_countries.reset_index(drop=True)
                     df_download = df_countries[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
                     df_download = df_download.reset_index(drop=True)
-                    df_countries
                     def convert_df(df_download):
                         return df_download.to_csv(index=False).encode('utf-8-sig')
                     csv = convert_df(df_download)
@@ -462,6 +461,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_continent.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             df_continent = df_continent.sort_values(by=['Date published'], ascending=False)
             df_continent = df_continent.reset_index(drop=True)
+            df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
             unique_continents = sorted(df_continent['Continent'].unique())
             unique_continents =  [''] + list(unique_continents)  # Added 'All Countries' option
             selected_continent = st.selectbox('Select a Continent', unique_continents)
