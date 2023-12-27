@@ -339,7 +339,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             '[[Zotero link]](' + str(zotero_link) + ')'
                         )
                     sort_by_type = st.checkbox('Sort by publication type', key='type_count')
-                    display2 = st.checkbox('Display abstracts')
+                    display2 = st.checkbox('Display abstracts', key='type_count2')
 
                     if sort_by_type:
                         df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
