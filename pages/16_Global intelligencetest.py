@@ -141,7 +141,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             a = f'{collection_name}_{today}'
             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
-            with st.expander('Click to expand', expanded=True):
+            with st.expander('All items (click to expand)', expanded=False):
                 def format_entry(row):
                     publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                     title = str(row['Title']) if pd.notnull(row['Title']) else ''
@@ -230,6 +230,118 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         count += 1
                         if display2:
                             st.caption(row['Abstract'])
+            with st.expander('Items by country (click to expand)', expanded=False):
+                df_countries_chart = df_countries.copy()
+                unique_countries = sorted(df_countries['Country'].unique())
+                unique_countries = [''] + list(unique_countries)
+                selected_country = st.selectbox('Select a Country', unique_countries)
+
+                number_of_pub = df_countries[df_countries['Country'] == selected_country]
+                publications_count = len(number_of_pub)
+
+                # Filter the DataFrame based on the selected country
+                df_countries = df_countries[df_countries['Country'] == selected_country]
+
+                # Display the filtered DataFrame
+                def format_entry(row):
+                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                    authors = str(row['FirstName2'])
+                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                    published_by_or_in = ''
+                    published_source = ''
+
+                    if publication_type == 'Journal article':
+                        published_by_or_in = 'Published in'
+                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                    elif publication_type == 'Book':
+                        published_by_or_in = 'Published by'
+                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                    else:
+                        # For other types, leave the fields empty
+                        published_by_or_in = ''
+                        published_source = ''
+
+                    return (
+                        '**' + publication_type + '**' + ': ' +
+                        title + ' ' +
+                        '(by ' + '*' + authors + '*' + ') ' +
+                        '(Publication date: ' + str(date_published) + ') ' +
+                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                        '[[Publication link]](' + link_to_publication + ') ' +
+                        '[[Zotero link]](' + zotero_link + ')'
+                    )
+                if selected_country:
+                    st.subheader(f"{selected_country} ({publications_count} sources)")
+                    articles_list = []  # Store articles in a list
+                    for index, row in df_countries.iterrows():
+                        formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                        articles_list.append(formatted_entry)        
+                    
+                    for index, row in df_countries.iterrows():
+                        publication_type = row['Publication type']
+                        title = row['Title']
+                        authors = row['FirstName2']
+                        date_published = row['Date published']
+                        link_to_publication = row['Link to publication']
+                        zotero_link = row['Zotero link']
+
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        else:
+                            published_by_or_in = ''
+                            published_source = ''
+
+                        formatted_entry = (
+                            '**' + str(publication_type) + '**' + ': ' +
+                            str(title) + ' ' +
+                            '(by ' + '*' + str(authors) + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + str(link_to_publication) + ') ' +
+                            '[[Zotero link]](' + str(zotero_link) + ')'
+                        )
+                    sort_by_type = st.checkbox('Sort by publication type', key='type_country')
+                    display2 = st.checkbox('Display abstracts', key='type_country_2')
+
+                    if sort_by_type:
+                        df_countries = df_countries.sort_values(by=['Publication type'], ascending=True)
+                        current_type = None
+                        count_by_type = {}
+                        for index, row in df_countries.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
+                            if display2:
+                                st.caption(row['Abstract'])
+                    else:
+                        count = 1
+                        for index, row in df_countries.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract'])
+                else:
+                    st.write('Please select a country')
+
+            df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
+            country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
+            top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
+            top_10_df = pd.DataFrame({'Country': top_10_countries.index, 'Publications': top_10_countries.values})
+            fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
+            fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
+            st.plotly_chart(fig)
 
 #UNTIL HERE
         with col2:
