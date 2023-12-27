@@ -332,7 +332,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     st.write('Please select a country')
                 plt.figure(figsize=(10, 6))
-                sns.countplot(y='Country', data=df, order=df['Country'].value_counts().index)
+                sns.countplot(y='Country', data=df_countries, order=df_countries['Country'].value_counts().index)
                 plt.title('Number of Publications by Country')
                 plt.xlabel('Number of Publications')
                 plt.ylabel('Country')
