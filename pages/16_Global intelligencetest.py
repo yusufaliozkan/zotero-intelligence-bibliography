@@ -277,7 +277,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('Please select a country')
             
             elif selected_country == 'All Countries':
-                with st.expander('Click to expand', expanded=False):
+                with st.expander('Click to expand', expanded=True):
                     def format_entry(row):
                         publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                         title = str(row['Title']) if pd.notnull(row['Title']) else ''
@@ -368,7 +368,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.caption(row['Abstract'])
             
             else:
-                with st.expander('Click to expand', expanded=False):
+                with st.expander('Click to expand', expanded=True):
                     st.subheader(f"{selected_country} ({publications_count} sources)")
                     articles_list = []  # Store articles in a list
                     for index, row in df_countries.iterrows():
@@ -427,9 +427,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count += 1
                             if display2:
                                 st.caption(row['Abstract'])
-            
-            # else:
-            #     st.write('Please select a country')
 
             df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
             country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
