@@ -239,7 +239,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 number_of_pub = df_countries[df_countries['Country'] == selected_country]
                 publications_count = len(filtered_df)
 
-                st.subheader({selected_country}: {publications_count})
+                st.subheader(f"{selected_country}: {publications_count}")
 
                 # Filter the DataFrame based on the selected country
                 df_countries = df_countries[df_countries['Country'] == selected_country]
