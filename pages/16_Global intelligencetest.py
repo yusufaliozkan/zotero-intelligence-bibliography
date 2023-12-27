@@ -368,7 +368,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if display2:
                                 st.caption(row['Abstract'])
                 
-                else selected_country:
+                else:
                     st.subheader(f"{selected_country} ({publications_count} sources)")
                     articles_list = []  # Store articles in a list
                     for index, row in df_countries.iterrows():
