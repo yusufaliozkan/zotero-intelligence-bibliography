@@ -64,7 +64,6 @@ replacements = {
     'Nasser':'Egypt',
     'Jewish':'Israel',
     'Finnish':'Finland',
-    'Canadian':'Canada'
     }
 
 df_countries['Country'] = ''
