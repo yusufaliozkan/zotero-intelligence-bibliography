@@ -159,7 +159,7 @@ df_countries['Country2'].replace('', 'Country2 not known', inplace=True)
 
 continent_dict = {
     "Africa":"Africa",
-    'Eastern Europe':'Europe'
+    'Eastern Europe':'Europe',
     "Asia":"Asia",
     'Arab':'Asia',
     'South America':'South America',
