@@ -237,6 +237,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 unique_countries = [''] + list(unique_countries)
                 selected_country = st.selectbox('Select a Country', unique_countries)
 
+                st.subheader(selected_country)
+
                 # Filter the DataFrame based on the selected country
                 df_countries = df_countries[df_countries['Country'] == selected_country]
 
