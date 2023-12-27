@@ -143,6 +143,7 @@ continent_replacements = {
     'Nasser':'Egypt',
     'Jewish':'Israel',
     'Finnish':'Finland',
+    'Medina':'Saudi Arabia'
     }
 
 df_countries['Country2'] = ''
@@ -151,6 +152,7 @@ for continent in continent_country_names:
     mask = df_countries['Title'].str.contains(continent, regex=False)
     df_countries.loc[mask, 'Country2'] += continent + '|' if not df_countries.loc[mask, 'Country2'].empty else ''
 
+df_countries['Country2'] = df_countries['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
 df_countries = df_countries.assign(Country2=df_countries['Country2'].str.split('|')).explode('Country2')
 df_countries = df_countries.drop_duplicates(subset=['Country2', 'Zotero link'])
 df_countries['Country2'].replace('', 'Country2 not known', inplace=True)
