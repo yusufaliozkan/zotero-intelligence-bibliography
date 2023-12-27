@@ -526,7 +526,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             '[[Zotero link]](' + str(zotero_link) + ')'
                         )
                     sort_by_type = st.checkbox('Sort by publication type', key='type_country_3')
-                    display2 = st.checkbox('Display abstracts', key='type_country_3')
+                    display2 = st.checkbox('Display abstracts', key='type_country_999')
 
                     if sort_by_type:
                         df_continent = df_continent.sort_values(by=['Publication type'], ascending=True)
