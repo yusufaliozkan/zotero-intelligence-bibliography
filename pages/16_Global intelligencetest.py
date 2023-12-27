@@ -381,7 +381,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     a = f'{selected_country}_{today}'
                     st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5')
 
+                    num_items_collections = len(df_countries)
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])                    
+
                     articles_list = []  # Store articles in a list
+                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                 
                     for index, row in df_countries.iterrows():
                         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
