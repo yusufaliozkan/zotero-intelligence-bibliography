@@ -287,4 +287,3 @@ def get_continent(country):
 
 # Create 'Continent' column using the function
 df_countries['Continent'] = df_countries['Country'].apply(get_continent)
-df_countries['Continent'].replace('', 'Continent not known', inplace=True)
