@@ -331,6 +331,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.caption(row['Abstract'])
                 else:
                     st.write('Please select a country')
+                plt.figure(figsize=(10, 6))
+                sns.countplot(y='Country', data=df, order=df['Country'].value_counts().index)
+                plt.title('Number of Publications by Country')
+                plt.xlabel('Number of Publications')
+                plt.ylabel('Country')
+                st.pyplot(plt)
 
 #UNTIL HERE
         with col2:
