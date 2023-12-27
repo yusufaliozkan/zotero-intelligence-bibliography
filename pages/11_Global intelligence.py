@@ -216,7 +216,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #                 st.caption(row['Abstract'])
             df_countries
             df_countries_chart = df_countries.copy()
-            df_continent = df_countries.copy()
+            df_continent = df_continent.copy()
             df_continent_chart = df_continent.copy()
 
             df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
