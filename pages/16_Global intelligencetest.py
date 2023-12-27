@@ -231,7 +231,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if display2:
                             st.caption(row['Abstract'])
             with st.expander('Items by country (click to expand)', expanded=False):
-                # df_countries_chart = df_countries.copy()
+                df_countries_chart = df_countries.copy()
                 country_counts = df_countries['Country'].value_counts().to_dict()
                 unique_countries = sorted(df_countries['Country'].unique())
                 unique_countries = [''] + unique_countries
@@ -332,13 +332,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.caption(row['Abstract'])
                 else:
                     st.write('Please select a country')
-                # df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
-                # country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
-                # top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
-                # top_10_df = pd.DataFrame({'Country': top_10_countries.index, 'Publications': top_10_countries.values})
-                # fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
-                # fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
-                # st.plotly_chart(fig)
+                country_pub_counts = df_countries['Country'].value_counts()
+                fig = px.bar(pub_counts_df, x='Count', y='Country', orientation='h')
+                fig.update_layout(title='Number of Publications by Country', xaxis_title='Number of Publications', yaxis_title='Country')
+                st.plotly_chart(fig)    
 
 #UNTIL HERE
         with col2:
