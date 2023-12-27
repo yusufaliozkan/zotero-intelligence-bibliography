@@ -230,17 +230,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #             count += 1
             #             if display2:
             #                 st.caption(row['Abstract'])
+            df_countries_chart = df_countries.copy()
+            unique_countries = sorted(df_countries['Country'].unique())
+            unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
+            selected_country = st.selectbox('Select a Country', unique_countries)
+
+            number_of_pub = df_countries[df_countries['Country'] == selected_country]
+            publications_count = len(number_of_pub)
+
+            # Filter the DataFrame based on the selected country
+            df_countries = df_countries[df_countries['Country'] == selected_country]          
+            
             with st.expander('Items by country (click to expand)', expanded=False):
-                df_countries_chart = df_countries.copy()
-                unique_countries = sorted(df_countries['Country'].unique())
-                unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
-                selected_country = st.selectbox('Select a Country', unique_countries)
-
-                number_of_pub = df_countries[df_countries['Country'] == selected_country]
-                publications_count = len(number_of_pub)
-
-                # Filter the DataFrame based on the selected country
-                df_countries = df_countries[df_countries['Country'] == selected_country]
 
                 # Display the filtered DataFrame
                 def format_entry(row):
