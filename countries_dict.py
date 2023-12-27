@@ -106,7 +106,7 @@ continent_country_names = [
     "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", 'Belgium', 'Kosovo', 'Yugoslavia','Mi̇lli̇ İsti̇hbarat Teşki̇latı', 
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'British', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
-    'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America'
+    'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina'
 ]
 continent_replacements = {
     'Belgian': 'Belgium',
@@ -151,7 +151,6 @@ for continent in continent_country_names:
     mask = df_countries['Title'].str.contains(continent, regex=False)
     df_countries.loc[mask, 'Country2'] += continent + '|' if not df_countries.loc[mask, 'Country2'].empty else ''
 
-df_countries['Country2'] = df_countries['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
 df_countries = df_countries.assign(Country2=df_countries['Country2'].str.split('|')).explode('Country2')
 df_countries = df_countries.drop_duplicates(subset=['Country2', 'Zotero link'])
 df_countries['Country2'].replace('', 'Country2 not known', inplace=True)
