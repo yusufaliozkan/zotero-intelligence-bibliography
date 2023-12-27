@@ -231,7 +231,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if display2:
                             st.caption(row['Abstract'])
             with st.expander('Items by country (click to expand)', expanded=False):
-                df_countries
                 selected_country = st.selectbox('Select a Country', df_countries['Country'].unique())
 
                 # Filter the DataFrame based on the selected country
