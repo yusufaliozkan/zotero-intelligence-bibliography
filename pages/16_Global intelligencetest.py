@@ -462,20 +462,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
             st.plotly_chart(fig)
 
-            df_continent_chart = df_continent_chart[df_continent_chart['Continent'] != 'Unknown']
+            fig_pie = px.pie(top_10_df, values='Publications', names='Country', title='Top 10 Countries by Number of Publications')
 
-            # Count the number of publications per continent
-            country_pub_counts = df_continent_chart['Continent'].value_counts().sort_values(ascending=False)
+            # Customize the layout of the pie chart
+            fig_pie.update_traces(textposition='inside', textinfo='percent+label')
 
-            # Create a pie chart for the top 10 continents
-            top_10_countries = country_pub_counts.head(10)
-            fig = go.Figure(data=[go.Pie(labels=top_10_countries.index, values=top_10_countries.values)])
-
-            # Update pie chart layout
-            fig.update_layout(title='Number of Publications by Continent')
-
-            # Display the pie chart using Streamlit
-            st.plotly_chart(fig)
+            # Display the pie chart using Streamlit's plotly_chart
+            st.plotly_chart(fig_pie)
 
 #UNTIL HERE
         with col2:
