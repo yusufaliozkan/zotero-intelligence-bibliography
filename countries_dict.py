@@ -361,4 +361,4 @@ def get_continent(country):
     return continent_dict.get(country, 'Unknown')
 
 # Create 'Continent' column using the function
-df_countries['Continent'] = df_countries['Continent'].apply(get_continent)
+df_countries['Continent'] = df_countries['Country'].apply(get_continent)
