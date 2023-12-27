@@ -387,7 +387,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
                 fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
                 fig.update_layout(
-                    title=f'Top {num_authors} Authors by Publication Count',
+                    title=f'Top {num_authors} Authors by Publication Count ({collection_name})',
                     xaxis_title='Author',
                     yaxis_title='Number of Publications',
                     xaxis_tickangle=-45,
