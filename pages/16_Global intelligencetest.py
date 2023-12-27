@@ -372,7 +372,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     types = st.multiselect('Publication type', df_countries['Publication type'].unique(),df_countries['Publication type'].unique(), key='original_4')
                     df_countries = df_countries[df_countries['Publication type'].isin(types)]
                     df_countries = df_countries.reset_index(drop=True)
+                    df_download = df_countries[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
+                    df_download = df_download.reset_index(drop=True)
+                    def convert_df(df_download):
+                        return df_download.to_csv(index=False).encode('utf-8-sig')
+                    csv = convert_df(df_download)
+                    a = f'{selected_country}_{today}'
+                    st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5')
+
                     articles_list = []  # Store articles in a list
+                
                     for index, row in df_countries.iterrows():
                         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
                         articles_list.append(formatted_entry)        
