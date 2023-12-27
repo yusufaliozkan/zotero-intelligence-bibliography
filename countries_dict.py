@@ -63,19 +63,15 @@ replacements = {
     'Swedish':'Sweden',
     'Nasser':'Egypt',
     'Jewish':'Israel',
-    'Finnish':'Finland'
+    'Finnish':'Finland',
     }
 
 df_countries['Country'] = ''
 
-for country in country_names:
-    # Find rows where the Title column contains the country name
-    mask = df_countries['Title'].str.contains(country, regex=False)
-    
-    # Update Country column by concatenating with '|' if multiple countries are found
-    df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
+for continent in country_names:
+    mask = df_countries['Title'].str.contains(continent, regex=False)
+    df_countries.loc[mask, 'Country'] += continent + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
-# Replace aliases with their respective country names
 df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
 df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|')).explode('Country')
 df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
@@ -148,16 +144,17 @@ continent_replacements = {
     'Venice':'Italy'
     }
 
-df_countries['Country2'] = ''
+df_continent = df_countries.copy()
+df_continent['Country2'] = ''
 
 for continent in continent_country_names:
-    mask = df_countries['Title'].str.contains(continent, regex=False)
-    df_countries.loc[mask, 'Country2'] += continent + '|' if not df_countries.loc[mask, 'Country2'].empty else ''
+    mask = df_continent['Title'].str.contains(continent, regex=False)
+    df_continent.loc[mask, 'Country2'] += continent + '|' if not df_continent.loc[mask, 'Country2'].empty else ''
 
-df_countries['Country2'] = df_countries['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
-df_countries = df_countries.assign(Country2=df_countries['Country2'].str.split('|')).explode('Country2')
-df_countries = df_countries.drop_duplicates(subset=['Country2', 'Zotero link'])
-df_countries['Country2'].replace('', 'Country2 not known', inplace=True)
+df_continent['Country2'] = df_continent['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
+df_continent = df_continent.assign(Country2=df_continent['Country2'].str.split('|')).explode('Country2')
+df_continent = df_continent.drop_duplicates(subset=['Country2', 'Zotero link'])
+df_continent['Country2'].replace('', 'Country2 not known', inplace=True)
 
 continent_dict = {
     "Africa":"Africa",
@@ -370,4 +367,4 @@ def get_continent(country):
     return continent_dict.get(country, 'Unknown')
 
 # Create 'Continent' column using the function
-df_countries['Continent'] = df_countries['Country2'].apply(get_continent)
+df_continent['Continent'] = df_continent['Country2'].apply(get_continent)

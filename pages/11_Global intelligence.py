@@ -20,7 +20,7 @@ from gsheetsdb import connect
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
-from countries_dict import country_names, replacements, df_countries
+from countries_dict import country_names, replacements, df_countries, df_continent
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
@@ -215,7 +215,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #             if display2:
             #                 st.caption(row['Abstract'])
             df_countries_chart = df_countries.copy()
-            df_continent = df_countries.copy()
+            df_continent = df_continent.copy()
             df_continent_chart = df_continent.copy()
 
             df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
@@ -224,6 +224,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_countries['No date flag'] = df_countries['Date published'].isnull().astype(np.uint8)
             df_countries = df_countries.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             df_countries = df_countries.sort_values(by=['Date published'], ascending=False)
+            df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
             df_countries = df_countries.reset_index(drop=True)
             unique_countries = sorted(df_countries['Country'].unique())
             unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
