@@ -231,7 +231,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if display2:
                             st.caption(row['Abstract'])
             with st.expander('Items by country (click to expand)', expanded=False):
-                unique_countries = sorted(df['Country'].unique())
+                unique_countries = sorted(df_countriesdf['Country'].unique())
                 unique_countries = [''] + list(unique_countries)
                 selected_country = st.selectbox('Select a Country', unique_countries)
 
