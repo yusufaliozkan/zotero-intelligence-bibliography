@@ -240,45 +240,44 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Filter the DataFrame based on the selected country
             df_countries = df_countries[df_countries['Country'] == selected_country]          
-            
-            with st.expander('Items by country (click to expand)', expanded=False):
 
-                # Display the filtered DataFrame
-                def format_entry(row):
-                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                    authors = str(row['FirstName2'])
-                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+            # Display the filtered DataFrame
+            def format_entry(row):
+                publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                authors = str(row['FirstName2'])
+                date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                published_by_or_in = ''
+                published_source = ''
+
+                if publication_type == 'Journal article':
+                    published_by_or_in = 'Published in'
+                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                elif publication_type == 'Book':
+                    published_by_or_in = 'Published by'
+                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                else:
+                    # For other types, leave the fields empty
                     published_by_or_in = ''
                     published_source = ''
 
-                    if publication_type == 'Journal article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
-                        published_by_or_in = 'Published by'
-                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                    else:
-                        # For other types, leave the fields empty
-                        published_by_or_in = ''
-                        published_source = ''
-
-                    return (
-                        '**' + publication_type + '**' + ': ' +
-                        title + ' ' +
-                        '(by ' + '*' + authors + '*' + ') ' +
-                        '(Publication date: ' + str(date_published) + ') ' +
-                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                        '[[Publication link]](' + link_to_publication + ') ' +
-                        '[[Zotero link]](' + zotero_link + ')'
-                    )
-                
-                if not selected_country or selected_country=="":
-                    st.write('Please select a country')
-                
-                elif selected_country == 'All Countries':
+                return (
+                    '**' + publication_type + '**' + ': ' +
+                    title + ' ' +
+                    '(by ' + '*' + authors + '*' + ') ' +
+                    '(Publication date: ' + str(date_published) + ') ' +
+                    ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                    '[[Publication link]](' + link_to_publication + ') ' +
+                    '[[Zotero link]](' + zotero_link + ')'
+                )
+            
+            if not selected_country or selected_country=="":
+                st.write('Please select a country')
+            
+            elif selected_country == 'All Countries':
+                with st.expander('Click to expand', expanded=False):
                     def format_entry(row):
                         publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                         title = str(row['Title']) if pd.notnull(row['Title']) else ''
@@ -367,8 +366,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count += 1
                             if display2:
                                 st.caption(row['Abstract'])
-                
-                else:
+            
+            else:
+                with st.expander('Click to expand', expanded=False):
                     st.subheader(f"{selected_country} ({publications_count} sources)")
                     articles_list = []  # Store articles in a list
                     for index, row in df_countries.iterrows():
@@ -427,9 +427,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count += 1
                             if display2:
                                 st.caption(row['Abstract'])
-                
-                # else:
-                #     st.write('Please select a country')
+            
+            # else:
+            #     st.write('Please select a country')
 
             df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
             country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
