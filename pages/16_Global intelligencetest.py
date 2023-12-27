@@ -233,7 +233,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('Items by country (click to expand)', expanded=False):
                 df_countries_chart = df_countries.copy()
                 country_counts = df_countries['Country'].value_counts().to_dict()
-                country_counts
                 unique_countries = sorted(df_countries['Country'].unique())
                 unique_countries = [''] + list(unique_countries)
                 selected_country = st.selectbox('Select a Country', unique_countries)
