@@ -383,7 +383,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     publications_by_type_country = df_countries['Publication type'].value_counts()
                     num_items_collections = len(df_countries)
-                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])                    
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type_country.items()])                    
 
                     articles_list = []  # Store articles in a list
                     st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
