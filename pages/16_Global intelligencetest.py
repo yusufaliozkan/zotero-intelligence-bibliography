@@ -231,7 +231,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if display2:
                             st.caption(row['Abstract'])
             with st.expander('Items by country (click to expand)', expanded=False):
-                selected_country = st.selectbox('Select a Country', df_countries['Country'].unique())
+                unique_countries = df_countries['Country'].unique()
+                unique_countries = [''] + list(unique_countries)
+                selected_country = st.selectbox('Select a Country', unique_countries)
 
                 # Filter the DataFrame based on the selected country
                 df_countries = df_countries[df_countries['Country'] == selected_country]
@@ -267,64 +269,66 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + link_to_publication + ') ' +
                         '[[Zotero link]](' + zotero_link + ')'
                     )
+                if selected_country:
+                    articles_list = []  # Store articles in a list
+                    for index, row in df_countries.iterrows():
+                        formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                        articles_list.append(formatted_entry)        
+                    
+                    for index, row in df_countries.iterrows():
+                        publication_type = row['Publication type']
+                        title = row['Title']
+                        authors = row['FirstName2']
+                        date_published = row['Date published']
+                        link_to_publication = row['Link to publication']
+                        zotero_link = row['Zotero link']
 
-                articles_list = []  # Store articles in a list
-                for index, row in df_countries.iterrows():
-                    formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                    articles_list.append(formatted_entry)        
-                
-                for index, row in df_countries.iterrows():
-                    publication_type = row['Publication type']
-                    title = row['Title']
-                    authors = row['FirstName2']
-                    date_published = row['Date published']
-                    link_to_publication = row['Link to publication']
-                    zotero_link = row['Zotero link']
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        else:
+                            published_by_or_in = ''
+                            published_source = ''
 
-                    if publication_type == 'Journal article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
-                        published_by_or_in = 'Published by'
-                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        formatted_entry = (
+                            '**' + str(publication_type) + '**' + ': ' +
+                            str(title) + ' ' +
+                            '(by ' + '*' + str(authors) + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + str(link_to_publication) + ') ' +
+                            '[[Zotero link]](' + str(zotero_link) + ')'
+                        )
+                    sort_by_type = st.checkbox('Sort by publication type', key='type_country')
+                    display2 = st.checkbox('Display abstracts', key='type_country_2')
+
+                    if sort_by_type:
+                        df_countries = df_countries.sort_values(by=['Publication type'], ascending=True)
+                        current_type = None
+                        count_by_type = {}
+                        for index, row in df_countries.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
+                            if display2:
+                                st.caption(row['Abstract'])
                     else:
-                        published_by_or_in = ''
-                        published_source = ''
-
-                    formatted_entry = (
-                        '**' + str(publication_type) + '**' + ': ' +
-                        str(title) + ' ' +
-                        '(by ' + '*' + str(authors) + '*' + ') ' +
-                        '(Publication date: ' + str(date_published) + ') ' +
-                        ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                        '[[Publication link]](' + str(link_to_publication) + ') ' +
-                        '[[Zotero link]](' + str(zotero_link) + ')'
-                    )
-                sort_by_type = st.checkbox('Sort by publication type', key='type_country')
-                display2 = st.checkbox('Display abstracts', key='type_country_2')
-
-                if sort_by_type:
-                    df_countries = df_countries.sort_values(by=['Publication type'], ascending=True)
-                    current_type = None
-                    count_by_type = {}
-                    for index, row in df_countries.iterrows():
-                        if row['Publication type'] != current_type:
-                            current_type = row['Publication type']
-                            st.subheader(current_type)
-                            count_by_type[current_type] = 1
-                        formatted_entry = format_entry(row)
-                        st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                        count_by_type[current_type] += 1
-                        if display2:
-                            st.caption(row['Abstract'])
+                        count = 1
+                        for index, row in df_countries.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract'])
                 else:
-                    count = 1
-                    for index, row in df_countries.iterrows():
-                        formatted_entry = format_entry(row)
-                        st.write(f"{count}) {formatted_entry}")
-                        count += 1
-                        if display2:
-                            st.caption(row['Abstract'])
+                    st.write('Please select a country')
 
 #UNTIL HERE
         with col2:
