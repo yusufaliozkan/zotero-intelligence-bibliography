@@ -234,7 +234,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 country_counts = df_countries['Country'].value_counts().to_dict()
                 unique_countries = sorted(df_countries['Country'].unique())
                 unique_countries = [''] + unique_countries
-                options_with_counts = [f"{country} ({country_counts.get(country, 0)})" if country != '' and country_counts.get(country, 0) > 0 else country for country in unique_countries]
+                options_with_counts = [f"{country} ({country_counts.get(country, 0)})" for country in unique_countries]
                 selected_country = st.selectbox('Select a Country', options_with_counts)
 
                 # Filter the DataFrame based on the selected country
