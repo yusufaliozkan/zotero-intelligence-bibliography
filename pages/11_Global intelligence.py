@@ -224,6 +224,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_countries['No date flag'] = df_countries['Date published'].isnull().astype(np.uint8)
             df_countries = df_countries.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             df_countries = df_countries.sort_values(by=['Date published'], ascending=False)
+            df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
             df_countries = df_countries.reset_index(drop=True)
             unique_countries = sorted(df_countries['Country'].unique())
             unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
@@ -461,7 +462,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_continent.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             df_continent = df_continent.sort_values(by=['Date published'], ascending=False)
             df_continent = df_continent.reset_index(drop=True)
-            df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
             unique_continents = sorted(df_continent['Continent'].unique())
             unique_continents =  [''] + list(unique_continents)  # Added 'All Countries' option
             selected_continent = st.selectbox('Select a Continent', unique_continents)
