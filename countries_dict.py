@@ -63,7 +63,7 @@ replacements = {
     'Swedish':'Sweden',
     'Nasser':'Egypt',
     'Jewish':'Israel',
-    'Finnish':"Finland"
+    'Finnish':'Finland'
     }
 
 df_countries['Country'] = ''
