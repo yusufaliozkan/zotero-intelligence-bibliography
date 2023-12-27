@@ -218,7 +218,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_countries.copy()
             df_continent_chart = df_continent.copy()
 
-            search_option = st.radio("Search by", ("Country", "Country"))
+            search_option = st.radio("Search by", ("Country", "Continent"))
             if search_option == "Country":
 
                 df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
