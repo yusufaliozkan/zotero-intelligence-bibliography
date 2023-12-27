@@ -377,6 +377,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     def convert_df(df_download):
                         return df_download.to_csv(index=False).encode('utf-8-sig')
                     csv = convert_df(df_download)
+                    today = datetime.date.today().isoformat()
                     a = f'{selected_country}_{today}'
                     st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5')
 
