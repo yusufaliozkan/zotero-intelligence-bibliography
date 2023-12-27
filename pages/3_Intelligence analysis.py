@@ -373,7 +373,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections['Author_name'] = df_collections['Author_name'].map(name_replacements).fillna(df_collections['Author_name'])
             max_authors = len(df_collections['Author_name'].unique())
             num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
-            df_collections
             
             # Adding a multiselect widget for publication types
             selected_types = st.multiselect('Select publication types:', df_collections['Publication type'].unique(), default=df_collections['Publication type'].unique())
@@ -384,20 +383,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             if len(selected_types) == 0:
                 st.write('No results to display')
             else:
-                # Grouping by Author to count publications for each author
-                grouped_data = filtered_authors.groupby(['Author_name'])['Publication type'].agg(publication_types='unique', count='size').reset_index()
-
-                # Creating the bar chart with hover data for publication types
-                fig = px.bar(grouped_data, x='Author_name', y='count', text='count', hover_data={'count': True, 'publication_types': '|'})
-
-                fig.update_traces(texttemplate='%{text}', textposition='outside')  # Show count on top of the bars
+                publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
+                fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
                 fig.update_layout(
                     title=f'Top {num_authors} Authors by Publication Count ({collection_name})',
                     xaxis_title='Author',
                     yaxis_title='Number of Publications',
                     xaxis_tickangle=-45,
-                    hoverlabel=dict(bgcolor="white", font_size=12, font_family="Arial"),
-                    hovermode="x unified",  # Display hover information for all bars at the same x-coordinate
                 )
                 col2.plotly_chart(fig)
             df_collections = df_collections.drop_duplicates(subset='Zotero link')
