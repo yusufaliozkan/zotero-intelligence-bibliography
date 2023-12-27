@@ -333,9 +333,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     st.write('Please select a country')
                 country_pub_counts = df_countries['Country'].value_counts()
-                fig = px.bar(pub_counts_df, x='Count', y='Country', orientation='h')
+                fig = px.bar(x=country_pub_counts.values, y=country_pub_counts.index, orientation='h')
                 fig.update_layout(title='Number of Publications by Country', xaxis_title='Number of Publications', yaxis_title='Country')
-                st.plotly_chart(fig)    
+                st.plotly_chart(fig)
 
 #UNTIL HERE
         with col2:
