@@ -485,7 +485,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     csv = convert_df(df_download_continent)
                     today = datetime.date.today().isoformat()
                     a = f'{selected_continent}_{today}'
-                    st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5')
+                    st.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-6')
 
                     publications_by_type_continent = df_continent['Publication type'].value_counts()
                     num_items_collections_continent = len(df_continent)
