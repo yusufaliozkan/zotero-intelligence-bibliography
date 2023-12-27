@@ -464,7 +464,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_continents = sorted(df_continent['Continent'].unique())
             unique_continents =  [''] + list(unique_continents)  # Added 'All Countries' option
             selected_continent = st.selectbox('Select a Continent', unique_continents)
-            number_of_pub_con = df_countries[df_countries['Continent'] == selected_continent]
+            number_of_pub_con = df_continent[df_continent['Continent'] == selected_continent]
             publications_count_con = len(number_of_pub_con)
 
             if not selected_continent or selected_continent=="":
