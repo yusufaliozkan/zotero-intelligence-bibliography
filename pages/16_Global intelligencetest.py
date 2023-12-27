@@ -218,24 +218,27 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_countries.copy()
             df_continent_chart = df_continent.copy()
 
-            df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-            df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
-            df_countries['Date published'] = df_countries['Date published'].fillna('')
-            df_countries['No date flag'] = df_countries['Date published'].isnull().astype(np.uint8)
-            df_countries = df_countries.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-            df_countries = df_countries.sort_values(by=['Date published'], ascending=False)
-            df_countries = df_countries.reset_index(drop=True)
-            unique_countries = sorted(df_countries['Country'].unique())
-            unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
-            selected_country = st.selectbox('Select a Country', unique_countries)
-            number_of_pub = df_countries[df_countries['Country'] == selected_country]
-            publications_count = len(number_of_pub)
+            search_option = st.radio("Search by", ("Country", "Country"))
+            if search_option == "Country":
 
-            # Filter the DataFrame based on the selected country
-            df_countries = df_countries[df_countries['Country'] == selected_country]          
+                df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
+                df_countries['Date published'] = df_countries['Date published'].fillna('')
+                df_countries['No date flag'] = df_countries['Date published'].isnull().astype(np.uint8)
+                df_countries = df_countries.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                df_countries = df_countries.sort_values(by=['Date published'], ascending=False)
+                df_countries = df_countries.reset_index(drop=True)
+                unique_countries = sorted(df_countries['Country'].unique())
+                unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
+                selected_country = st.selectbox('Select a Country', unique_countries)
+                number_of_pub = df_countries[df_countries['Country'] == selected_country]
+                publications_count = len(number_of_pub)
 
-            # Display the filtered DataFrame
-            def format_entry(row):
+                # Filter the DataFrame based on the selected country
+                df_countries = df_countries[df_countries['Country'] == selected_country]          
+
+                # Display the filtered DataFrame
+                def format_entry(row):
                 publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                 title = str(row['Title']) if pd.notnull(row['Title']) else ''
                 authors = str(row['FirstName2'])
@@ -266,8 +269,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     '[[Zotero link]](' + zotero_link + ')'
                 )
 
-            search_option = st.radio("Search by", ("Country", "Country"))
-            if search_option == "Country":
+
                 if not selected_country or selected_country=="":
                     st.write('Please select a country')
                 
