@@ -368,6 +368,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             
             else:
                 with st.expander('Click to expand', expanded=True):
+                    types = st.multiselect('Publication type', df_countries['Publication type'].unique(),df_countries['Publication type'].unique(), key='original_4')
                     st.subheader(f"{selected_country} ({publications_count} sources)")
                     articles_list = []  # Store articles in a list
                     for index, row in df_countries.iterrows():
