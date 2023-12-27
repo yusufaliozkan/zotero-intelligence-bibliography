@@ -16,7 +16,7 @@ country_names = [
     "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
     "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
     "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (formerly Burma)", "Namibia",
-    "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia",
+    "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Republic of the Niger", "Nigeria", "North Korea", "North Macedonia",
     "Norway", "Oman", "Pakistan", "Palau", "Palestine State", "Panama", "Papua New Guinea", "Paraguay", "Peru",
     "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
     "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal",
@@ -68,9 +68,9 @@ replacements = {
 
 df_countries['Country'] = ''
 
-for continent in country_names:
-    mask = df_countries['Title'].str.contains(continent, regex=False)
-    df_countries.loc[mask, 'Country'] += continent + '|' if not df_countries.loc[mask, 'Country'].empty else ''
+for country in country_names:
+    mask = df_countries['Title'].str.contains(country, regex=False)
+    df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
 df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
 df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|')).explode('Country')
@@ -91,7 +91,7 @@ continent_country_names = [
     "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
     "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
     "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (formerly Burma)", "Namibia",
-    "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia",
+    "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Republic of the Niger", "Nigeria", "North Korea", "North Macedonia",
     "Norway", "Oman", "Pakistan", "Palau", "Palestine State", "Panama", "Papua New Guinea", "Paraguay", "Peru",
     "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
     "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal",
