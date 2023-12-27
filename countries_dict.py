@@ -371,4 +371,3 @@ def get_continent(country):
 
 # Create 'Continent' column using the function
 df_countries['Continent'] = df_countries['Country2'].apply(get_continent)
-df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
