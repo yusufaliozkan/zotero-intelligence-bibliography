@@ -68,17 +68,13 @@ replacements = {
 
 df_countries['Country'] = ''
 
-for country in country_names:
-    # Find rows where the Title column contains the country name
-    mask = df_countries['Title'].str.contains(country, regex=False)
-    
-    # Update Country column by concatenating with '|' if multiple countries are found
-    df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
+for continent in continent_country_names:
+    mask = df_countries['Title'].str.contains(continent, regex=False)
+    df_countries.loc[mask, 'Country'] += continent + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
-# Replace aliases with their respective country names
-df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
+df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(continent_replacements, regex=True)
 df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|')).explode('Country')
-# df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
+df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
 df_countries['Country'].replace('', 'Country not known', inplace=True)
 
 continent_country_names = [
