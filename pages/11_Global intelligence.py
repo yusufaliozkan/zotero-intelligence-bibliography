@@ -20,7 +20,7 @@ from gsheetsdb import connect
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
-from countries_dict import country_names, replacements, df_countries, df_countries_0
+from countries_dict import country_names, replacements, df_countries
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
@@ -214,7 +214,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #             count += 1
             #             if display2:
             #                 st.caption(row['Abstract'])
-            df_countries = df_countries_0.copy()
+            df_countries
             df_countries_chart = df_countries.copy()
             df_continent = df_countries.copy()
             df_continent_chart = df_continent.copy()
