@@ -441,7 +441,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=False)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers'})
                         col1.plotly_chart(fig, use_container_width = True)
                     else:
                         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
@@ -451,7 +451,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=True)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers'})
                         col1.plotly_chart(fig, use_container_width = True)
                 with st.expander('See publishers'):
                     row_nu_collections = len(df_publisher.index)        
