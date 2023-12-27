@@ -241,7 +241,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Filter the DataFrame based on the selected country
             df_countries = df_countries[df_countries['Country'] == selected_country]          
             
-            with st.expander('Items by country (click to expand)', expanded=True):
+            with st.expander('Items by country (click to expand)', expanded=False):
 
                 # Display the filtered DataFrame
                 def format_entry(row):
