@@ -384,13 +384,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
             if len(selected_types) == 0:
                 st.write('No results to display')
             else:
-                publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
-                fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
+                # Grouping by both Author and Publication type to count publications for each combination
+                grouped_data = filtered_authors.groupby(['Author_name', 'Publication type']).size().reset_index(name='Count')
+
+                # Creating the bar chart with Publication type as color
+                fig = px.bar(grouped_data, x='Author_name', y='Count', color='Publication type')
+
                 fig.update_layout(
                     title=f'Top {num_authors} Authors by Publication Count ({collection_name})',
                     xaxis_title='Author',
                     yaxis_title='Number of Publications',
                     xaxis_tickangle=-45,
+                    legend_title='Publication Type',  # Adding a legend title
+                    barmode='group',  # Display bars grouped by publication type
                 )
                 col2.plotly_chart(fig)
             df_collections = df_collections.drop_duplicates(subset='Zotero link')
