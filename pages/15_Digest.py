@@ -456,7 +456,7 @@ with st.spinner('Preparing digest...'):
             st.write(''+str(i+1)+') '+ df_con1.iloc[i])
             if display:
                 st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
-                st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
+                st.caption('Details:'+'\n '+ df_con['details'].iloc[i]) 
 
         st.caption('[Go to top](#intelligence-studies-network-digest)')
 
