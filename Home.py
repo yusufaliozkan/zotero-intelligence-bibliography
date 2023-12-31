@@ -27,7 +27,7 @@ from PIL import Image, ImageDraw, ImageFilter
 import json
 from authors_dict import df_authors, name_replacements
 
-# Connecting Zotero with API
+# Connecting Zotero with API 
 library_id = '2514686'
 library_type = 'group'
 api_key = '' # api_key is only needed for private groups and libraries
