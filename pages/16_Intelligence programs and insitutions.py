@@ -102,10 +102,19 @@ with st.spinner('Preparing...'):
         def display_numbered_list(programs, append_country=False):
             counter = 1
             for index, row in programs.iterrows():
-                institution_info = f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})"
+                programme_level = row['Programme_level']
+                programme_name = row['Programme_name']
+                
+                programme_info = ""
+                if programme_level and programme_name:
+                    programme_info = f"{row['Institution']} - {programme_level} - [{programme_name}]({row['Link']})"
+                else:
+                    programme_info = f"[{row['Institution']}]({row['Link']})"
+                
                 if append_country:
-                    institution_info += f" - {row['Country']}"
-                st.write(f"{counter}. {institution_info}")
+                    programme_info += f" - {row['Country']}"
+                
+                st.write(f"{counter}. {programme_info}")
                 counter += 1
             
         with st.expander(f"United Kingdom ({len(uk_programs)})"):
