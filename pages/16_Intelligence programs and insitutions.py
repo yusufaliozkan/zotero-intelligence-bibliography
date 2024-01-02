@@ -107,7 +107,7 @@ with st.spinner('Preparing...'):
                 
                 programme_info = ""
                 if programme_level and programme_name:
-                    programme_info = f"{Type} [{programme_name}]({row['Link']}) ({programme_level}), *{row['Institution']}*"
+                    programme_info = f"{row.Type} [{programme_name}]({row['Link']}) ({programme_level}), *{row['Institution']}*"
                 else:
                     programme_info = f"[{row['Institution']}]({row['Link']})"
                 
