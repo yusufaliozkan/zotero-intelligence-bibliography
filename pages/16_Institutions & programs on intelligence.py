@@ -69,6 +69,19 @@ with st.spinner('Connecting...'):
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
     # st.write('Coming soon!')
     # st.stop()
+        
+    conn = connect()
+
+    @st.cache_resource(ttl=10)
+    def run_query(query):
+        rows = conn.execute(query, headers=1)
+        rows = rows.fetchall()
+        return rows
+
+    sheet_url = st.secrets["public_gsheets_url_orgs"]
+    rows = run_query(f'SELECT * FROM "{sheet_url}"')
+    rows
+
     with st.expander('Events:', expanded=True):
         st.header('Events')
         # Create a connection object.
