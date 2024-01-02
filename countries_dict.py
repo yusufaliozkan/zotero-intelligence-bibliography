@@ -153,7 +153,7 @@ df_continent['Country2'] = ''
 
 for continent in continent_country_names:
     # mask = df_continent['Title'].str.contains(continent, regex=False)
-    mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
+    mask = df_continent['Title'].str.lower().str.contains(country.lower(), regex=False)
     df_continent.loc[mask, 'Country2'] += continent + '|' if not df_continent.loc[mask, 'Country2'].empty else ''
 
 df_continent['Country2'] = df_continent['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
