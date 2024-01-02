@@ -86,11 +86,6 @@ with st.spinner('Preparing digest...'):
     st.caption('[Conferences](#conferences)')
     st.caption('[Call for papers](#call-for-papers)')
 
-    ex=False
-    expand = st.checkbox('Expand all', key='expand')
-    if expand:
-        ex = True
-
     conn = connect()
 
     # Perform SQL query on the Google Sheet.
