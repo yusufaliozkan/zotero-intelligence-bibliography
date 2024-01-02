@@ -231,6 +231,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             selected_country = st.selectbox('Select a Country', unique_countries)
             number_of_pub = df_countries[df_countries['Country'] == selected_country]
             publications_count = len(number_of_pub)
+            df_countries
 
             # Filter the DataFrame based on the selected country
             df_countries = df_countries[df_countries['Country'] == selected_country]          
@@ -266,7 +267,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     '[[Publication link]](' + link_to_publication + ') ' +
                     '[[Zotero link]](' + zotero_link + ')'
                 )
-            df_countries
             if not selected_country or selected_country=="":
                 st.write('Please select a country')
             
