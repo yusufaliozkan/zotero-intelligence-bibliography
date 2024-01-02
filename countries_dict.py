@@ -65,7 +65,7 @@ replacements = {
     'Jewish':'Israel',
     'Finnish':'Finland',
     'Christofascism':'Romania',
-    'Venice'
+    'Venice':'Italy'
     }
 
 df_countries['Country'] = ''
