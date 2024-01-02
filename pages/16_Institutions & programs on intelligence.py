@@ -337,6 +337,7 @@ with st.spinner('Preparing digest...'):
 
         data = []
         columns = ['Type', 'Institution', 'Programme-level', 'Programme-name', 'Link', 'Country', 'Status']
+        data
 
         # Print results.
         for row in rows:
