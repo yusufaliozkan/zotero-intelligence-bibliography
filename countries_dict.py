@@ -105,7 +105,7 @@ continent_country_names = [
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'British', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
-    'Latin America','Venice'
+    'Latin America','Venice', 'Christofascism'
 ]
 continent_replacements = {
     'Belgian': 'Belgium',
@@ -143,7 +143,8 @@ continent_replacements = {
     'Jewish':'Israel',
     'Finnish':'Finland',
     'Medina':'Saudi Arabia',
-    'Venice':'Italy'
+    'Venice':'Italy',
+    'Christofascism':'Romania'
     }
 
 df_continent = df_countries.copy()
