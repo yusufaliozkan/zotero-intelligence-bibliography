@@ -71,7 +71,8 @@ replacements = {
 df_countries['Country'] = ''
 
 for country in country_names:
-    mask = df_countries['Title'].str.contains(country, regex=False)
+    # mask = df_countries['Title'].str.contains(country, regex=False)
+    mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
     df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
 df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
