@@ -29,6 +29,7 @@ st.set_page_config(layout = "wide",
 
 st.title("Intelligence studies network")
 st.header('Institutions & programs on intelligence studies')
+st.info('This page lists institutions and academic programs on intelligence studies.')
 
 with st.spinner('Preparing...'):
 
