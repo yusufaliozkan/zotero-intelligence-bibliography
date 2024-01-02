@@ -333,11 +333,9 @@ with st.spinner('Preparing digest...'):
 
         sheet_url = st.secrets["public_gsheets_url_orgs"]
         rows = run_query(f'SELECT * FROM "{sheet_url}"')
-        rows
 
         data = []
         columns = ['Type', 'Institution', 'Programme_level', 'Programme_name', 'Link', 'Country', 'Status']
-        data
 
         # Print results.
         for row in rows:
