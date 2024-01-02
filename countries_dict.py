@@ -27,7 +27,7 @@ country_names = [
     "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", 'Belgium', 'Kosovo', 'Yugoslavia','Mi̇lli̇ İsti̇hbarat Teşki̇latı', 
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'British', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
-    'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish'
+    'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism'
 ]
 replacements = {
     'Belgian': 'Belgium',
@@ -64,6 +64,7 @@ replacements = {
     'Nasser':'Egypt',
     'Jewish':'Israel',
     'Finnish':'Finland',
+    'Christofascism':'Romania'
     }
 
 df_countries['Country'] = ''
