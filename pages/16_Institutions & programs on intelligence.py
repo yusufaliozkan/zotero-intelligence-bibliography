@@ -72,8 +72,7 @@ with st.spinner('Connecting...'):
     with st.expander('Events:', expanded=True):
         st.header('Events')
         # Create a connection object.
-        st.write('Coming soon!')
-        st.stop()
+
         conn = connect()
 
         @st.cache_resource(ttl=10)
