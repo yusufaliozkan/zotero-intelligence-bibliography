@@ -22,7 +22,7 @@ from fpdf import FPDF
 import base64
 
 
-st.set_page_config(layout = "centered", 
+st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
@@ -97,26 +97,23 @@ with st.spinner('Preparing...'):
         usa_programs = df[df['Country'] == 'USA']
         other_programs = df[(df['Country'] != 'UK') & (df['Country'] != 'USA')]
 
-        with st.expander("Programs in UK"):
-            for index, row in uk_programs.iterrows():
+        def display_numbered_list(programs):
+            counter = 1
+            for index, row in programs.iterrows():
                 if row['Programme_level'] is not None and row['Programme_name'] is not None:
-                    st.write(f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
+                    st.write(f"{counter}. {row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
                 else:
-                    st.write(f"[{row['Institution']}]({row['Link']})")
+                    st.write(f"{counter}. [{row['Institution']}]({row['Link']})")
+                counter += 1
+
+        with st.expander("Programs in UK"):
+            display_numbered_list(uk_programs)
 
         with st.expander("Programs in USA"):
-            for index, row in usa_programs.iterrows():
-                if row['Programme_level'] is not None and row['Programme_name'] is not None:
-                    st.write(f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
-                else:
-                    st.write(f"[{row['Institution']}]({row['Link']})")
+            display_numbered_list(usa_programs)
 
         with st.expander("Other countries"):
-            for index, row in other_programs.iterrows():
-                if row['Programme_level'] is not None and row['Programme_name'] is not None:
-                    st.write(f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
-                else:
-                    st.write(f"[{row['Institution']}]({row['Link']})")
+            display_numbered_list(other_programs)
 
     with col2:
         with st.expander('Collections', expanded=True):
