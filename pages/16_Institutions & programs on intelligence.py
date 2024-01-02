@@ -333,6 +333,7 @@ with st.spinner('Preparing digest...'):
 
         sheet_url = st.secrets["public_gsheets_url_forms"]
         rows = run_query(f'SELECT * FROM "{sheet_url}"')
+        rows
 
         data = []
         columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
