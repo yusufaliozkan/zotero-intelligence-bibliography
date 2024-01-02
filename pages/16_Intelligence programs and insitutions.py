@@ -115,7 +115,7 @@ with st.spinner('Preparing...'):
             display_numbered_list(usa_programs)
 
         with st.expander(f"Other countries ({len(other_programs)})"):
-            display_numbered_list(other_programs)
+            display_numbered_list(other_programs, append_country=True)
 
     with col2:
         with st.expander('Collections', expanded=True):
