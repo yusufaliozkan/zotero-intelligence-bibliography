@@ -266,7 +266,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     '[[Publication link]](' + link_to_publication + ') ' +
                     '[[Zotero link]](' + zotero_link + ')'
                 )
-            df_countries
             if not selected_country or selected_country=="":
                 st.write('Please select a country')
             

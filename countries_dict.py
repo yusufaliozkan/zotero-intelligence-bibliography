@@ -71,7 +71,8 @@ replacements = {
 df_countries['Country'] = ''
 
 for country in country_names:
-    mask = df_countries['Title'].str.contains(country, regex=False)
+    # mask = df_countries['Title'].str.contains(country, regex=False)
+    mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
     df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
 df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
@@ -151,7 +152,8 @@ df_continent = df_countries.copy()
 df_continent['Country2'] = ''
 
 for continent in continent_country_names:
-    mask = df_continent['Title'].str.contains(continent, regex=False)
+    # mask = df_continent['Title'].str.contains(continent, regex=False)
+    mask = df_continent['Title'].str.lower().str.contains(continent.lower(), regex=False)
     df_continent.loc[mask, 'Country2'] += continent + '|' if not df_continent.loc[mask, 'Country2'].empty else ''
 
 df_continent['Country2'] = df_continent['Country2'].str.rstrip('|').replace(continent_replacements, regex=True)
