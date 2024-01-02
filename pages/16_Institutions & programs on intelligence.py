@@ -341,7 +341,7 @@ with st.spinner('Preparing digest...'):
 
         # Print results.
         for row in rows:
-            data.append((row.Type, row.Institution, row.Programme-level, row.Programme-level, row.Link, row.Country, row.Status))
+            data.append((row.Type, row.Institution, row.Programme-level, row.Programme-name, row.Link, row.Country, row.Status))
         df_gs = pd.DataFrame(data, columns=columns)
         df_gs
 
