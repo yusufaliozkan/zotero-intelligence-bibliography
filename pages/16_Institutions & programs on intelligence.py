@@ -342,6 +342,7 @@ with st.spinner('Preparing digest...'):
         for row in rows:
             data.append((row.Type, row.Institution, row.Programme-level, row.Programme-level, row.Link, row.Country, row.Status))
         df_gs = pd.DataFrame(data, columns=columns)
+        df_gs
 
         pd.set_option('display.max_colwidth', None)
         df_gs = pd.DataFrame(data, columns=columns)
