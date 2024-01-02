@@ -336,12 +336,12 @@ with st.spinner('Preparing digest...'):
         rows
 
         data = []
-        columns = ['Type', 'Institution', 'Programme-level', 'Programme-name', 'Link', 'Country', 'Status']
+        columns = ['Type', 'Institution', 'Programme_level', 'Programme_name', 'Link', 'Country', 'Status']
         data
 
         # Print results.
         for row in rows:
-            data.append((row.Type, row.Institution, row.Programme-level, row.Programme-name, row.Link, row.Country, row.Status))
+            data.append((row.Type, row.Institution, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
         df_gs = pd.DataFrame(data, columns=columns)
         df_gs
 
