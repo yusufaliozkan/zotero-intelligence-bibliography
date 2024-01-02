@@ -92,6 +92,7 @@ with st.spinner('Preparing...'):
             data.append((row.Type, row.Institution, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
         df = pd.DataFrame(data, columns=columns)
         countries = df['Country'].unique()
+        df = df[df['Status'] != 'Not Active']
         df = df.sort_values(by='Institution')
 
 
