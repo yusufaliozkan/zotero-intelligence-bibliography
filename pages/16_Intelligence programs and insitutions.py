@@ -101,7 +101,7 @@ with st.spinner('Preparing...'):
             counter = 1
             for index, row in programs.iterrows():
                 if row['Programme_level'] is not None and row['Programme_name'] is not None:
-                    st.write(f"{counter}.  **Type:** {row['Type']}, **Institution:** {row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
+                    st.write(f"{counter}.  **Type:** {row['Type']}, **Program:** [{row['Programme_name']}]({row['Link']}) ({row['Programme_level']}), {row['Institution']}")
                 else:
                     st.write(f"{counter}. [{row['Institution']}]({row['Link']})")
                 counter += 1
