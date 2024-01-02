@@ -266,7 +266,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     '[[Publication link]](' + link_to_publication + ') ' +
                     '[[Zotero link]](' + zotero_link + ')'
                 )
-
+            df_countries
             if not selected_country or selected_country=="":
                 st.write('Please select a country')
             
@@ -287,7 +287,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     a = f'{collection_name}_{today}'
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
                     st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-                    df_countries
                     def format_entry(row):
                         publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                         title = str(row['Title']) if pd.notnull(row['Title']) else ''
