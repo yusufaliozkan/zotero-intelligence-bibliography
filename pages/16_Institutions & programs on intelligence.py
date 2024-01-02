@@ -68,24 +68,6 @@ with st.spinner('Preparing digest...'):
             st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
 
-    df_csv = pd.read_csv(r'all_items.csv', index_col=None)
-    df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.date
-    df_csv['Publisher'] =df_csv['Publisher'].fillna('')
-    df_csv['Journal'] =df_csv['Journal'].fillna('')
-    df_csv['FirstName2'] =df_csv['FirstName2'].fillna('')
-
-    df_csv = df_csv.drop(['Unnamed: 0'], axis=1)
-
-    today = dt.date.today()
-    today2 = dt.date.today().strftime('%d/%m/%Y')
-    st.write('Your daily intelligence studies digest - Day: '+ str(today2))
-
-    st.markdown('#### Contents')
-    st.caption('[Publications](#publications)')
-    st.caption('[Events](#events)')
-    st.caption('[Conferences](#conferences)')
-    st.caption('[Call for papers](#call-for-papers)')
-
     conn = connect()
 
     # Perform SQL query on the Google Sheet.
