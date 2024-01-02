@@ -331,7 +331,7 @@ with st.spinner('Preparing digest...'):
             rows = rows.fetchall()
             return rows
 
-        sheet_url = st.secrets["public_gsheets_url_orgs"]
+        sheet_url = st.secrets["public_gsheets_url_forms"]
         rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
         data = []
