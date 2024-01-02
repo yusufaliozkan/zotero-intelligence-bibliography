@@ -20,8 +20,6 @@ from gsheetsdb import connect
 import datetime as dt
 from fpdf import FPDF
 import base64
-from streamlit_gsheets import GSheetsConnection
-
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence studies network',
@@ -72,6 +70,8 @@ with st.spinner('Connecting...'):
     with st.expander('Events:', expanded=True):
         st.header('Events')
         # Create a connection object.
+        st.write('Coming soon!')
+        st.stop()
         conn = connect()
 
         # Perform SQL query on the Google Sheet.
