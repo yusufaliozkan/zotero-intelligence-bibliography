@@ -30,7 +30,7 @@ st.set_page_config(layout = "centered",
 st.title("Intelligence studies network")
 st.header('Institutions & programs on intelligence')
 
-with st.spinner('Preparing digest...'):
+with st.spinner('Preparing...'):
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
