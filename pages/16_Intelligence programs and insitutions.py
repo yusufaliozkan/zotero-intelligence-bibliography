@@ -88,7 +88,7 @@ with st.spinner('Preparing...'):
     for row in rows:
         data.append((row.Type, row.Institution, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
     df_gs = pd.DataFrame(data, columns=columns)
-    countries = df['Country'].unique()
+    countries = df_gs['Country'].unique()
 
 
     for country in countries:
