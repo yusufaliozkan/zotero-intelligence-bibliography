@@ -99,15 +99,15 @@ with st.spinner('Preparing...'):
         usa_programs = df[df['Country'] == 'USA']
         other_programs = df[(df['Country'] != 'UK') & (df['Country'] != 'USA')]
 
-        def display_numbered_list(programs):
+        def display_numbered_list(programs, append_country=False):
             counter = 1
             for index, row in programs.iterrows():
-                if row['Programme_level'] is not None and row['Programme_name'] is not None:
-                    st.write(f"{counter}.  **Type:** {row['Type']}, **Program:** [{row['Programme_name']}]({row['Link']}) ({row['Programme_level']}), *{row['Institution']}*")
-                else:
-                    st.write(f"{counter}. [{row['Institution']}]({row['Link']})")
+                institution_info = f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})"
+                if append_country:
+                    institution_info += f" - {row['Country']}"
+                st.write(f"{counter}. {institution_info}")
                 counter += 1
-    
+            
         with st.expander(f"United Kingdom ({len(uk_programs)})"):
             display_numbered_list(uk_programs)
 
