@@ -27,7 +27,7 @@ st.set_page_config(layout = "centered",
                     initial_sidebar_state="auto") 
 
 st.title("Intelligence studies network")
-st.header('Digest')
+st.header('Institutions & programs on intelligence studies')
 
 with st.spinner('Connecting...'):
 
