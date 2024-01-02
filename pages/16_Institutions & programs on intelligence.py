@@ -20,6 +20,8 @@ from gsheetsdb import connect
 import datetime as dt
 from fpdf import FPDF
 import base64
+from streamlit_gsheets import GSheetsConnection
+
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence studies network',
@@ -66,8 +68,8 @@ with st.spinner('Connecting...'):
         with st.expander('Contact us'):
             st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
-    st.write('Coming soon!')
-    st.stop()
+    # st.write('Coming soon!')
+    # st.stop()
     with st.expander('Events:', expanded=True):
         st.header('Events')
         # Create a connection object.
@@ -75,8 +77,6 @@ with st.spinner('Connecting...'):
         st.stop()
         conn = connect()
 
-        # Perform SQL query on the Google Sheet.
-        # Uses st.cache to only rerun when the query changes or after 10 min.
         @st.cache_resource(ttl=10)
         def run_query(query):
             rows = conn.execute(query, headers=1)
