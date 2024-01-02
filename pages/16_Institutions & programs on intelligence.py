@@ -93,7 +93,7 @@ with st.spinner('Preparing...'):
     for index, row in df_gs.iterrows():
         if row['Programme_level'] is not None and row['Programme_name'] is not None:
             st.write(
-                f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
+                f"Type: {row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
         else:
             st.write(f"[{row['Institution']}]({row['Link']})")
 
