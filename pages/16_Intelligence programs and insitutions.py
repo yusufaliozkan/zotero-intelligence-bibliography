@@ -106,7 +106,7 @@ with st.spinner('Preparing...'):
                     st.write(f"{counter}. [{row['Institution']}]({row['Link']})")
                 counter += 1
     
-        with st.expander("United Kingdom (click to expand)"):
+        with st.expander(f"Programs in UK ({len(uk_programs)})"):
             display_numbered_list(uk_programs)
 
         with st.expander("USA (click to expand)"):
