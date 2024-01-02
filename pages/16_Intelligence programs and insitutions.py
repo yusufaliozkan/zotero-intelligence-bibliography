@@ -90,21 +90,33 @@ with st.spinner('Preparing...'):
         # Print results.
         for row in rows:
             data.append((row.Type, row.Institution, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
-        df_gs = pd.DataFrame(data, columns=columns)
-        countries = df_gs['Country'].unique()
+        df_con = pd.DataFrame(data, columns=columns)
+        countries = df['Country'].unique()
 
+        uk_programs = df[df['Country'] == 'UK']
+        usa_programs = df[df['Country'] == 'USA']
+        other_programs = df[(df['Country'] != 'UK') & (df['Country'] != 'USA')]
 
-        for country in countries:
-            with st.expander(f"Institutions in {country}"):
-                filtered_data = df_gs[df_gs['Country'] == country]
-                counter = 1
-                for index, row in filtered_data.iterrows():
-                    if row['Programme_level'] is not None and row['Programme_name'] is not None:
-                        st.write(
-                            f"{counter}. {row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
-                    else:
-                        st.write(f"{counter}. [{row['Institution']}]({row['Link']})")
-                    counter += 1
+        with st.expander("Programs in UK"):
+            for index, row in uk_programs.iterrows():
+                if row['Programme_level'] is not None and row['Programme_name'] is not None:
+                    st.write(f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
+                else:
+                    st.write(f"[{row['Institution']}]({row['Link']})")
+
+        with st.expander("Programs in USA"):
+            for index, row in usa_programs.iterrows():
+                if row['Programme_level'] is not None and row['Programme_name'] is not None:
+                    st.write(f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
+                else:
+                    st.write(f"[{row['Institution']}]({row['Link']})")
+
+        with st.expander("Other countries"):
+            for index, row in other_programs.iterrows():
+                if row['Programme_level'] is not None and row['Programme_name'] is not None:
+                    st.write(f"{row['Institution']} - {row['Programme_level']} - [{row['Programme_name']}]({row['Link']})")
+                else:
+                    st.write(f"[{row['Institution']}]({row['Link']})")
 
     with col2:
         with st.expander('Collections', expanded=True):
