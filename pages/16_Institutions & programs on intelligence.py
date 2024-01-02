@@ -81,9 +81,6 @@ with st.spinner('Connecting...'):
             rows = rows.fetchall()
             return rows
 
-        conn = st.connection('gsheets', type=GSheetsConnection)
-        df = conn.read()
-
         sheet_url = st.secrets["public_gsheets_url"]
         rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
