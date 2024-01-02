@@ -68,7 +68,7 @@ with st.spinner('Connecting...'):
             st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
 
-    with st.expander('Events:', expanded=ex):
+    with st.expander('Events:', expanded=True):
         st.header('Events')
         # Create a connection object.
         conn = connect()
