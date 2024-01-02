@@ -20,7 +20,7 @@ from gsheetsdb import connect
 import datetime as dt
 from fpdf import FPDF
 import base64
-# from streamlit_gsheets import GSheetsConnection
+from streamlit_gsheets import GSheetsConnection
 
 
 st.set_page_config(layout = "centered", 
