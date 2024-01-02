@@ -106,13 +106,13 @@ with st.spinner('Preparing...'):
                     st.write(f"{counter}. [{row['Institution']}]({row['Link']})")
                 counter += 1
     
-        with st.expander(f"Programs in UK ({len(uk_programs)})"):
+        with st.expander(f"United Kingdom ({len(uk_programs)})"):
             display_numbered_list(uk_programs)
 
-        with st.expander("USA (click to expand)"):
+        with st.expander(f"USA ({len(usa_programs)})"):
             display_numbered_list(usa_programs)
 
-        with st.expander("Other countries (click to expand)"):
+        with st.expander(f"Other countries ({len(other_programs)})"):
             display_numbered_list(other_programs)
 
     with col2:
