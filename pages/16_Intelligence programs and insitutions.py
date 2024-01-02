@@ -90,7 +90,7 @@ with st.spinner('Preparing...'):
         # Print results.
         for row in rows:
             data.append((row.Type, row.Institution, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
-        df_con = pd.DataFrame(data, columns=columns)
+        df = pd.DataFrame(data, columns=columns)
         countries = df['Country'].unique()
 
         uk_programs = df[df['Country'] == 'UK']
