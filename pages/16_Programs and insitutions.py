@@ -117,9 +117,9 @@ with st.spinner('Preparing...'):
         option = st.radio("Select display option:", ("By Country", "By Type"))
 
         if option == "By Country":
-            uk_programs = df_sorted[df_sorted['Country'] == 'UK']
-            usa_programs = df_sorted[df_sorted['Country'] == 'USA']
-            other_programs = df_sorted[~df_sorted['Country'].isin(['UK', 'USA'])]
+            uk_programs = df[df['Country'] == 'UK']
+            usa_programs = df[df['Country'] == 'USA']
+            other_programs = df[~df['Country'].isin(['UK', 'USA'])]
 
             with st.expander("Programs in UK"):
                 display_numbered_list(uk_programs, "UK")
@@ -131,7 +131,7 @@ with st.spinner('Preparing...'):
                 display_numbered_list(other_programs, "Other Countries")
         else:
             for prog_type in types:
-                type_programs = df_sorted[df_sorted['Type'] == prog_type]
+                type_programs = df[df['Type'] == prog_type]
                 expander_title = f"Programs of Type '{prog_type}' ({len(type_programs)})"
 
                 with st.expander(expander_title):
