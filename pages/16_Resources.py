@@ -146,6 +146,14 @@ with col1:
 
             if prog_type != 'Academic programs':
                 if num_unique_countries!=1:
+                    prog_type = prog_type.sort_values(by=['Country'], ascending=True)
+                    current_type = None
+                    for index, row in prog_type.iterrows():
+                        if row['Country'] != current_type:
+                            current_type = row['Country']
+                            st.subheader(current_type)
+                        display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
+                        count_by_type[current_type] += 1
                     num_unique_countries = type_programs['Country'].nunique()
                     country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
                     countries_sorted = country_counts.index.tolist()
