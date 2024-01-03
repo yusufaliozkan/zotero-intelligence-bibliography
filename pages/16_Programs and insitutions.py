@@ -118,14 +118,14 @@ with st.spinner('Preparing...'):
 
         if option == "By Country":
             for country in countries:
-                country_programs = df_sorted[df_sorted['Country'] == country]
+                country_programs = df[df['Country'] == country]
                 expander_title = f"Programs in {country} ({len(country_programs)})"
 
                 with st.expander(expander_title):
                     display_numbered_list(country_programs, country)
         else:
             for prog_type in types:
-                type_programs = df_sorted[df_sorted['Type'] == prog_type]
+                type_programs = df[df['Type'] == prog_type]
                 expander_title = f"Programs of Type '{prog_type}' ({len(type_programs)})"
 
                 with st.expander(expander_title):
