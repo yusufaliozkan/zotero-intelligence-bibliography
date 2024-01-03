@@ -130,13 +130,13 @@ with col1:
                     type_programs = type_programs[type_programs['Country'].isin(selected_country)]
                     programme_levels = type_programs['Programme_level'].unique()
                 
-                num_unique_countries = type_programs['Country'].nunique()
-
                 programme_levels = type_programs['Programme_level'].unique()
                 selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
+
                 if selected_level != 'All':
                     type_programs = type_programs[type_programs['Programme_level'] == selected_level]
 
+                num_unique_countries = type_programs['Country'].nunique()
                 if num_unique_countries==1:
                     st.write(f'{len(type_programs)} program(s) found in {num_unique_countries} country')
                 else:
