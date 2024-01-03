@@ -124,9 +124,9 @@ with col1:
                 countries_sorted = country_counts.index.tolist()
                 country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
 
-                programme_levels = type_programs['Programme_level'].unique()
-
                 selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
+
+                programme_levels = type_programs['Programme_level'].unique()
                 selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
                 
                 if selected_country:
