@@ -99,37 +99,37 @@ with st.spinner('Preparing...'):
         df = df.sort_values(by='Institution')
 
 
-def display_numbered_list(programs, column_name):
-    counter = 1
-    for index, row in programs.iterrows():
-        programme_level = row['Programme_level']
-        programme_name = row['Programme_name']
-        
-        programme_info = ""
-        if programme_level and programme_name:
-            programme_info = f"{row['Institution']} - {programme_level} - [{programme_name}]({row['Link']})"
+        def display_numbered_list(programs, column_name):
+            counter = 1
+            for index, row in programs.iterrows():
+                programme_level = row['Programme_level']
+                programme_name = row['Programme_name']
+                
+                programme_info = ""
+                if programme_level and programme_name:
+                    programme_info = f"{row['Institution']} - {programme_level} - [{programme_name}]({row['Link']})"
+                else:
+                    programme_info = f"[{row['Institution']}]({row['Link']})"
+                
+                st.write(f"{counter}. {programme_info}")
+                counter += 1
+
+        option = st.radio("Select display option:", ("By Country", "By Type"))
+
+        if option == "By Country":
+            for country in countries:
+                country_programs = df_sorted[df_sorted['Country'] == country]
+                expander_title = f"Programs in {country} ({len(country_programs)})"
+
+                with st.expander(expander_title):
+                    display_numbered_list(country_programs, country)
         else:
-            programme_info = f"[{row['Institution']}]({row['Link']})"
-        
-        st.write(f"{counter}. {programme_info}")
-        counter += 1
+            for prog_type in types:
+                type_programs = df_sorted[df_sorted['Type'] == prog_type]
+                expander_title = f"Programs of Type '{prog_type}' ({len(type_programs)})"
 
-option = st.radio("Select display option:", ("By Country", "By Type"))
-
-if option == "By Country":
-    for country in countries:
-        country_programs = df_sorted[df_sorted['Country'] == country]
-        expander_title = f"Programs in {country} ({len(country_programs)})"
-
-        with st.expander(expander_title):
-            display_numbered_list(country_programs, country)
-else:
-    for prog_type in types:
-        type_programs = df_sorted[df_sorted['Type'] == prog_type]
-        expander_title = f"Programs of Type '{prog_type}' ({len(type_programs)})"
-
-        with st.expander(expander_title):
-            display_numbered_list(type_programs, prog_type)
+                with st.expander(expander_title):
+                    display_numbered_list(type_programs, prog_type)
 
     with col2:
         with st.expander('Collections', expanded=True):
