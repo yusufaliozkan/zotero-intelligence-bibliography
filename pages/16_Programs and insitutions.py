@@ -114,7 +114,7 @@ with st.spinner('Preparing...'):
                 st.write(f"{counter}. {programme_info}")
                 counter += 1
 
-        option = st.radio("Select display option:", ("By Country", "By Type"))
+        option = st.radio("Select display option:", ("By Type", "By Country"))
 
         if option == "By Country":
             uk_programs = df[df['Country'] == 'UK']
