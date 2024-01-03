@@ -127,7 +127,7 @@ with col1:
                 for country in selected_countries :
                     country_programs = type_programs[type_programs['Country'] == country]
                     st.subheader(f'{country}')
-                    display_numbered_list(country_programs, prog_type, show_country=True)       
+                    display_numbered_list(country_programs, prog_type, show_country=False)       
         else:
             with st.expander(f"{prog_type} ({len(type_programs)})"):
                 if prog_type == 'Academic programs':
