@@ -98,8 +98,7 @@ with st.spinner('Preparing...'):
         df = df[df['Status'] == 'Active']
         df = df.sort_values(by='Institution')
 
-
-        def display_numbered_list(programs, column_name):
+        def display_numbered_list(programs, column_name, show_country=False):
             counter = 1
             for index, row in programs.iterrows():
                 programme_level = row['Programme_level']
@@ -111,10 +110,13 @@ with st.spinner('Preparing...'):
                 else:
                     programme_info = f"[{row['Institution']}]({row['Link']})"
                 
+                if show_country:
+                    programme_info += f" - {row['Country']}"
+                
                 st.write(f"{counter}. {programme_info}")
                 counter += 1
 
-        option = st.radio("Select display option:", ("By Type", "By Country"))
+        option = st.radio("Select display option:", ("By Country", "By Type"))
 
         if option == "By Country":
             uk_programs = df[df['Country'] == 'UK']
@@ -124,15 +126,15 @@ with st.spinner('Preparing...'):
             with st.expander(f"Programs in UK ({len(uk_programs)})"):
                 display_numbered_list(uk_programs, "UK")
 
-            with st.expander(f"Programs in USA ({len(other_programs)})"):
+            with st.expander(f"Programs in USA ({len(usa_programs)})"):
                 display_numbered_list(usa_programs, "USA")
 
-            with st.expander(f"Other countries ({len(usa_programs)})"):
-                display_numbered_list(other_programs, "Other Countries")
+            with st.expander(f"Other countries ({len(other_programs)})"):
+                display_numbered_list(other_programs, "Other Countries", show_country=True)
         else:
             for prog_type in types:
                 type_programs = df[df['Type'] == prog_type]
-                expander_title = f"{prog_type} ({len(type_programs)})"
+                expander_title = f"Programs of Type '{prog_type}' ({len(type_programs)})"
 
                 with st.expander(expander_title):
                     display_numbered_list(type_programs, prog_type)
