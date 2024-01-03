@@ -145,7 +145,6 @@ with col1:
                     st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
 
             if prog_type != 'Academic programs':
-                st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} country**')
                 num_unique_countries = type_programs['Country'].nunique()
                 if num_unique_countries!=1:
                     country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
@@ -154,7 +153,7 @@ with col1:
                     selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
                     if selected_country:
                         type_programs = type_programs[type_programs['Country'].isin(selected_country)]
-
+                st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} country**')
             display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
 with col2:
