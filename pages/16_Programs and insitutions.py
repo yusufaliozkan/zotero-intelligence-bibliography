@@ -117,6 +117,7 @@ with col1:
 
     for prog_type in types:
         type_programs = df[df['Type'] == prog_type]
+        num_unique_countries = type_programs['Country'].nunique()
 
         with st.expander(f"{prog_type} ({len(type_programs)})"):
             if prog_type == 'Academic programs':
@@ -144,6 +145,7 @@ with col1:
                     st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
 
             display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
+            st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} country**')
 
 with col2:
     with st.expander('Collections', expanded=True):
