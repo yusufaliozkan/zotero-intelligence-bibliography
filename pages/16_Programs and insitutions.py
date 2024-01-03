@@ -108,7 +108,7 @@ with st.spinner('Preparing...'):
                 if programme_level and programme_name:
                     programme_info = f"[{programme_name}]({row['Link']}) ({programme_level}), *{row['Institution']}*, {row['Country']}"
                 else:
-                    programme_info = f"[{row['Institution']}]({row['Link']})"
+                    programme_info = f"[{row['Institution']}]({row['Link']}), {row['Country']}"
                 
                 if show_country:
                     programme_info += f" - {row['Country']}"
