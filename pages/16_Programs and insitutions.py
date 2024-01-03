@@ -121,9 +121,11 @@ with st.spinner('Preparing...'):
 
             with st.expander(f"{prog_type} ({len(type_programs)})"):
                 if prog_type == 'Academic programs':
+                    country_counts = df['Country'].value_counts().sort_values(ascending=False)
+                    countries_sorted = country_counts.index.tolist()
                     programme_levels = type_programs['Programme_level'].unique()
                     selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
-                    selected_country = st.multiselect('Filter by country:',list(countries))
+                    selected_country = st.multiselect('Filter by country:',list(countries_sorted))
 
                     if selected_level != 'All':
                         type_programs = type_programs[type_programs['Programme_level'] == selected_level]
