@@ -117,7 +117,6 @@ with st.spinner('Preparing...'):
                 counter += 1
 
         option = st.radio("Select display option:", ("By Type", "By Country"))
-
         if option == "By Country":
             uk_programs = df[df['Country'] == 'UK']
             usa_programs = df[df['Country'] == 'USA']
@@ -132,12 +131,16 @@ with st.spinner('Preparing...'):
             with st.expander(f"Other countries ({len(other_programs)})"):
                 display_numbered_list(other_programs, "Other Countries", show_country=False)
         else:
-            for prog_type in types:
-                type_programs = df[df['Type'] == prog_type]
-                expander_title = f"{prog_type} ({len(type_programs)})"
+            academic_programs = df[df['Type'] == 'Academic']  # Filter academic programs
 
-                with st.expander(expander_title):
-                    display_numbered_list(type_programs, prog_type)
+            with st.expander(f"Academic Institutions ({len(academic_programs)})"):
+                programme_levels = academic_programs['Programme_level'].unique()
+                selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
+
+                if selected_level != 'All':
+                    academic_programs = academic_programs[academic_programs['Programme_level'] == selected_level]
+
+                display_numbered_list(academic_programs, "Academic", show_country=True)
 
     with col2:
         with st.expander('Collections', expanded=True):
