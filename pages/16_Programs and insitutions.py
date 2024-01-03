@@ -130,7 +130,7 @@ with st.spinner('Preparing...'):
                 display_numbered_list(usa_programs, "USA")
 
             with st.expander(f"Other countries ({len(other_programs)})"):
-                display_numbered_list(other_programs, "Other Countries", show_country=True)
+                display_numbered_list(other_programs, "Other Countries", show_country=False)
         else:
             for prog_type in types:
                 type_programs = df[df['Type'] == prog_type]
