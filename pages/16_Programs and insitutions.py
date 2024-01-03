@@ -129,6 +129,8 @@ with col1:
                 if selected_country:
                     type_programs = type_programs[type_programs['Country'].isin(selected_country)]
                     programme_levels = type_programs['Programme_level'].unique()
+                
+                num_unique_countries = type_programs['Country'].nunique()
 
                 programme_levels = type_programs['Programme_level'].unique()
                 selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
