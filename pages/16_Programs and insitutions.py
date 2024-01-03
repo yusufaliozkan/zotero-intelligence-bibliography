@@ -123,7 +123,7 @@ with st.spinner('Preparing...'):
                 if prog_type == 'Academic programs':
                     programme_levels = type_programs['Programme_level'].unique()
                     selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
-                    selected_country = st.multiselect('Filter by country:',list(countries), list(countries))
+                    selected_country = st.multiselect('Filter by country:',list(countries))
 
                     if selected_level != 'All':
                         type_programs = type_programs[type_programs['Programme_level'] == selected_level]
