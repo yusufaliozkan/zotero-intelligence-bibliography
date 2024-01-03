@@ -145,8 +145,8 @@ with col1:
                     st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
 
             if prog_type != 'Academic programs':
-                num_unique_countries = type_programs['Country'].nunique()
                 if num_unique_countries!=1:
+                    num_unique_countries = type_programs['Country'].nunique()
                     country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
                     countries_sorted = country_counts.index.tolist()
                     country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
