@@ -132,12 +132,18 @@ with st.spinner('Preparing...'):
             with st.expander(f"Other countries ({len(other_programs)})"):
                 display_numbered_list(other_programs, "Other Countries", show_country=False)
         else:
-            for prog_type in types:
-                type_programs = df[df['Type'] == prog_type]
-                expander_title = f"{prog_type} ({len(type_programs)})"
+            academic_programs = df[df['Type'] == 'Academic']
+            programme_levels = academic_programs['Programme_level'].unique()
+            selected_levels = st.multiselect("Select programme levels:", programme_levels, default=programme_levels)
+
+            filtered_programs = academic_programs[academic_programs['Programme_level'].isin(selected_levels)]
+
+            for prog_level in selected_levels:
+                level_programs = filtered_programs[filtered_programs['Programme_level'] == prog_level]
+                expander_title = f"Academic - {prog_level} ({len(level_programs)})"
 
                 with st.expander(expander_title):
-                    display_numbered_list(type_programs, prog_type)
+                    display_numbered_list(level_programs, prog_level)
 
     with col2:
         with st.expander('Collections', expanded=True):
