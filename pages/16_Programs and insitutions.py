@@ -132,7 +132,9 @@ with st.spinner('Preparing...'):
             with st.expander(f"Other countries ({len(other_programs)})"):
                 display_numbered_list(other_programs, "Other Countries", show_country=False)
         else:
-            selected_countries = st.multiselect("Select countries:", df['Country'].unique())
+            all_countries = df['Country'].unique()
+            selected_countries = st.multiselect("Select countries:", all_countries, default=all_countries)
+
             filtered_programs = df[df['Country'].isin(selected_countries)]
 
             for country in selected_countries:
