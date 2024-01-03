@@ -138,7 +138,7 @@ with st.spinner('Preparing...'):
                 with st.expander(f"{prog_type} ({len(type_programs)})"):
                     if prog_type == 'Academic programs':
                         programme_levels = type_programs['Programme_level'].unique()
-                        selected_level = st.selectbox("Filter by Programme Level:", list(programme_levels))
+                        selected_level = st.selectbox("Filter by Programme Level:", list(programme_levels), list(programme_levels))
 
                         if selected_level != 'All':
                             type_programs = type_programs[type_programs['Programme_level'] == selected_level]
