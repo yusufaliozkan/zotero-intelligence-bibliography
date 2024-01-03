@@ -28,7 +28,7 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 
 st.title("Intelligence studies network")
-st.header('Institutions & programs on intelligence studies')
+st.header('Institutions, programs, and resources on intelligence studies')
 st.info('This page lists institutions and academic programs on intelligence studies.')
 
 
