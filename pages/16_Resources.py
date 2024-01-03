@@ -121,6 +121,11 @@ with col1:
 
         if prog_type == 'Government institutions':
             countries = type_programs['Country'].unique()
+            num_unique_countries = type_programs['Country'].nunique()
+            country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
+            countries_sorted = country_counts.index.tolist()
+            country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
+            selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
             with st.expander(f"{prog_type} ({len(type_programs)})"):
                 for country in countries:
                     country_programs = type_programs[type_programs['Country'] == country]
