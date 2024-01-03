@@ -134,7 +134,7 @@ with st.spinner('Preparing...'):
         else:
             academic_programs = df[df['Type'] == 'Academic']
             programme_levels = academic_programs['Programme_level'].unique()
-            selected_levels = st.multiselect("Select programme levels:", programme_levels, default=programme_levels)
+            selected_levels = st.expander("Academic Programs").multiselect("Select programme levels:", programme_levels, default=programme_levels)
 
             filtered_programs = academic_programs[academic_programs['Programme_level'].isin(selected_levels)]
 
