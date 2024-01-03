@@ -131,7 +131,7 @@ with st.spinner('Preparing...'):
             with st.expander(f"Other countries ({len(other_programs)})"):
                 display_numbered_list(other_programs, "Other Countries", show_country=False)
         else:
-            academic_programs = df[df['Type'] == 'Academic']  # Filter academic programs
+            academic_programs = df[df['Type'] == 'Academic programs']  # Filter academic programs
 
             with st.expander(f"Academic Institutions ({len(academic_programs)})"):
                 programme_levels = academic_programs['Programme_level'].unique()
