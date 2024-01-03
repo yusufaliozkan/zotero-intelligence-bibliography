@@ -146,7 +146,7 @@ with col1:
                 else:
                     for country in selected_countries:
                         country_programs = type_programs[type_programs['Country'] == country]
-                        st.write(f'**{len(country_programs)} {prog_type} found in {num_unique_countries} countries**')
+                        st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
                         st.subheader(country)
                         display_numbered_list(country_programs, prog_type, show_country=False)
         else:
