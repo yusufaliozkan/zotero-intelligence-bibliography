@@ -136,7 +136,7 @@ with st.spinner('Preparing...'):
                 type_programs = df[df['Type'] == prog_type]
 
                 with st.expander(f"{prog_type} ({len(type_programs)})"):
-                    if prog_type == 'Academic':
+                    if prog_type == 'Academic programs':
                         programme_levels = type_programs['Programme_level'].unique()
                         selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
 
