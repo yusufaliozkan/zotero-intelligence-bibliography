@@ -128,10 +128,10 @@ with st.spinner('Preparing...'):
                     selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
                     selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
 
-                    if selected_level != 'All':
-                        type_programs = type_programs[type_programs['Programme_level'] == selected_level]
                     if selected_country:
                         type_programs = type_programs[type_programs['Country'].isin(selected_country)]
+                    if selected_level != 'All':
+                        type_programs = type_programs[type_programs['Programme_level'] == selected_level]
 
                 display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
