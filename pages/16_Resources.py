@@ -141,7 +141,7 @@ with col1:
 
                 if len(selected_countries) == 1:
                     country_programs = type_programs[type_programs['Country'] == selected_countries[0]]
-                    # st.write(f'**{len(country_programs)} {prog_type} found in {selected_countries[0].split(" (")[0]}**')
+                    st.write(f'**{len(country_programs)} {prog_type} found in {selected_countries[0].split(" (")[0]}**')
                     display_numbered_list(country_programs, prog_type, show_country=False)
                 else:
                     for country in selected_countries:
