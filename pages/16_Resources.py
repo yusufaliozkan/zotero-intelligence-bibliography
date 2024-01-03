@@ -121,10 +121,11 @@ with col1:
 
         if prog_type == 'Government institutions':
             countries = type_programs['Country'].unique()
-            for country in countries:
-                country_programs = type_programs[type_programs['Country'] == country]
-                with st.expander(f"{country} ({len(country_programs)})"):
-                    display_numbered_list(country_programs, prog_type, show_country=False)           
+            with st.expander(f"{prog_type} ({len(type_programs)})"):
+                for country in countries:
+                    country_programs = type_programs[type_programs['Country'] == country]
+                    with st.expander(f"{country} ({len(country_programs)})"):
+                        display_numbered_list(country_programs, prog_type, show_country=True)       
         else:
             with st.expander(f"{prog_type} ({len(type_programs)})"):
                 if prog_type == 'Academic programs':
