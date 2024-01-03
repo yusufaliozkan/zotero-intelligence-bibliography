@@ -121,7 +121,6 @@ with col1:
         with st.expander(f"{prog_type} ({len(type_programs)})"):
             if prog_type == 'Academic programs':
                 country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
-                country_counts
                 countries_sorted = country_counts.index.tolist()
                 country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
 
