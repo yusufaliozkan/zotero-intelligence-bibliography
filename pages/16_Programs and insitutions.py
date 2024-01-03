@@ -143,9 +143,9 @@ with col1:
                     st.write(f'**{len(type_programs)} program(s) found in {selected_country_str}**')
                 else:
                     st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
-            else:
+            if prog_type =! 'Academic programs':
                 st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} country**')
-                display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
+            display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
 with col2:
     with st.expander('Collections', expanded=True):
