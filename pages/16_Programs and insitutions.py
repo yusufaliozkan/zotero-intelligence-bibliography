@@ -139,9 +139,9 @@ with col1:
                 num_unique_countries = type_programs['Country'].nunique()
                 if num_unique_countries==1:
                     selected_country_str = selected_country[0].split(" (")[0]
-                    st.write(f'*{len(type_programs)} program(s) found in {selected_country_str}*')
+                    st.write(f'**{len(type_programs)} program(s) found in {selected_country_str}**')
                 else:
-                    st.write(f'*{len(type_programs)} program(s) found in {num_unique_countries} countries*')
+                    st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
 
             display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
