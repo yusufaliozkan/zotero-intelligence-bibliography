@@ -121,8 +121,10 @@ with col1:
         with st.expander(f"{prog_type} ({len(type_programs)})"):
             if prog_type == 'Academic programs':
                 country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
+                country_counts
                 countries_sorted = country_counts.index.tolist()
                 country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
+
                 programme_levels = type_programs['Programme_level'].unique()
 
                 selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
