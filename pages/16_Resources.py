@@ -124,7 +124,7 @@ with col1:
             with st.expander(f"{prog_type} ({len(type_programs)})"):
                 for country in countries:
                     country_programs = type_programs[type_programs['Country'] == country]
-                    st.subheader(f'## {country}')
+                    st.subheader(f'{country}')
                     display_numbered_list(country_programs, prog_type, show_country=True)       
         else:
             with st.expander(f"{prog_type} ({len(type_programs)})"):
