@@ -127,6 +127,8 @@ with st.spinner('Preparing...'):
 
                     if selected_level != 'All':
                         type_programs = type_programs[type_programs['Programme_level'] == selected_level]
+                    if selected_country:
+                        type_programs = type_programs[type_programs['Country'] == selected_country]
 
                 display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
