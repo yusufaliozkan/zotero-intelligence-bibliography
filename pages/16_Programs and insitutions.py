@@ -129,15 +129,12 @@ with col1:
                 if selected_country:
                     type_programs = type_programs[type_programs['Country'].isin(selected_country)]
                     programme_levels = type_programs['Programme_level'].unique()
+
+                else:
+                    programme_levels = type_programs['Programme_level'].unique()
                     selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
                     if selected_level != 'All':
                         type_programs = type_programs[type_programs['Programme_level'] == selected_level]
-
-                programme_levels = type_programs['Programme_level'].unique()
-
-                selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
-                if selected_level != 'All':
-                    type_programs = type_programs[type_programs['Programme_level'] == selected_level]
 
             display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
