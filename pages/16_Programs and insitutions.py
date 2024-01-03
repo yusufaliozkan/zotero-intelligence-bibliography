@@ -111,7 +111,7 @@ with st.spinner('Preparing...'):
                     programme_info = f"[{row['Institution']}]({row['Link']}), {row['Country']}"
                 
                 if show_country:
-                    programme_info += f" - {row['Country']}"
+                    programme_info += f", {row['Country']}"
                 
                 st.write(f"{counter}. {programme_info}")
                 counter += 1
