@@ -136,8 +136,8 @@ with col1:
                 selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
                 if selected_level != 'All':
                     type_programs = type_programs[type_programs['Programme_level'] == selected_level]
-                    
-                if num_unique_countries=1:
+
+                if num_unique_countries==1:
                     st.write(f'{len(type_programs)} program(s) found in {num_unique_countries} country')
                 else:
                     st.write(f'{len(type_programs)} program(s) found in {num_unique_countries} countries')
