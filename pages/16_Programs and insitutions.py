@@ -121,7 +121,7 @@ with st.spinner('Preparing...'):
 
             with st.expander(f"{prog_type} ({len(type_programs)})"):
                 if prog_type == 'Academic programs':
-                    country_counts = df['Country'].value_counts().sort_values(ascending=False)
+                    country_counts = type_programs.value_counts().sort_values(ascending=False)
                     countries_sorted = country_counts.index.tolist()
                     country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
                     programme_levels = type_programs['Programme_level'].unique()
