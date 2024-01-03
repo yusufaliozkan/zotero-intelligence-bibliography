@@ -28,8 +28,8 @@ st.set_page_config(layout = "wide",
                     initial_sidebar_state="auto") 
 
 st.title("Intelligence studies network")
-st.header('Institutions, programs, and resources on intelligence studies')
-st.info('This page lists institutions and academic programs on intelligence studies.')
+st.header('Resources on intelligence studies')
+st.info('This page lists institutions, academic programs, and other resources on intelligence studies.')
 
 
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
