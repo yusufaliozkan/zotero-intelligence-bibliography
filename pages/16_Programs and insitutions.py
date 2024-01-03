@@ -121,13 +121,13 @@ with st.spinner('Preparing...'):
             usa_programs = df[df['Country'] == 'USA']
             other_programs = df[~df['Country'].isin(['UK', 'USA'])]
 
-            with st.expander("Programs in UK"):
+            with st.expander("Programs in UK ({len(uk_programs)})"):
                 display_numbered_list(uk_programs, "UK")
 
-            with st.expander("Programs in USA"):
+            with st.expander("Programs in USA ({len(other_programs)})"):
                 display_numbered_list(usa_programs, "USA")
 
-            with st.expander("Other countries"):
+            with st.expander("Other countries ({len(usa_programs)})"):
                 display_numbered_list(other_programs, "Other Countries")
         else:
             for prog_type in types:
