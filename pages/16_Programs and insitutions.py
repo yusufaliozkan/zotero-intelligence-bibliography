@@ -138,7 +138,7 @@ with col1:
 
                 num_unique_countries = type_programs['Country'].nunique()
                 if num_unique_countries==1:
-                    st.write(f'{len(type_programs)} program(s) found in {num_unique_countries} country')
+                    st.write(f'{len(type_programs)} program(s) found in {selected_country}')
                 else:
                     st.write(f'{len(type_programs)} program(s) found in {num_unique_countries} countries')
 
