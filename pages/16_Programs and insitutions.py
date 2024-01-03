@@ -116,7 +116,7 @@ with st.spinner('Preparing...'):
                 st.write(f"{counter}. {programme_info}")
                 counter += 1
 
-        option = st.radio("Select display option:", ("By Country", "By Type"))
+        option = st.radio("Select display option:", ("By Type", "By Country"))
 
         if option == "By Country":
             uk_programs = df[df['Country'] == 'UK']
@@ -134,7 +134,7 @@ with st.spinner('Preparing...'):
         else:
             for prog_type in types:
                 type_programs = df[df['Type'] == prog_type]
-                expander_title = f"Programs of Type '{prog_type}' ({len(type_programs)})"
+                expander_title = f"{prog_type} ({len(type_programs)})"
 
                 with st.expander(expander_title):
                     display_numbered_list(type_programs, prog_type)
