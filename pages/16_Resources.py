@@ -125,9 +125,6 @@ with col1:
                 selected_countries = st.multiselect('Filter by Country:', countries, default=countries)
 
                 for country in countries:
-                    if selected_country:
-                        type_programs = type_programs[type_programs['Country'].isin(selected_country)]
-
                     country_programs = type_programs[type_programs['Country'] == country]
                     st.subheader(f'{country}')
                     display_numbered_list(country_programs, prog_type, show_country=True)       
