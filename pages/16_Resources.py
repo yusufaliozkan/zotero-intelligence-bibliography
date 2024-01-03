@@ -146,6 +146,7 @@ with col1:
 
             if prog_type != 'Academic programs':
                 if num_unique_countries != 1:
+                    # Assuming prog_type is a DataFrame containing program information
                     prog_type = prog_type.sort_values(by=['Country'], ascending=True)
                     current_type = None
                     for index, row in prog_type.iterrows():
