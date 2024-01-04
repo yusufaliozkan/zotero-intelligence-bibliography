@@ -121,7 +121,7 @@ with col1:
 
         if prog_type == 'Government institutions':
             countries = type_programs['Country'].unique()
-            with st.expander(f"{prog_type} ({len(type_programs)})"):
+            with st.expander(f"**{prog_type} ({len(type_programs)})**"):
                 if num_unique_countries != 1:
                     country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
                     countries_sorted = country_counts.index.tolist()
