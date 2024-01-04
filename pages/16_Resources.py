@@ -176,7 +176,7 @@ with col1:
                     programme_levels = type_programs_filtered['Sub_type'].unique()
                     selected_programme_level = st.multiselect("Filter by Programme Level:", programme_levels)
                     if selected_programme_level:
-                        type_programs_filtered = type_programs_filtered[type_programs_filtered['Programme_level'].isin(selected_programme_level)]
+                        type_programs_filtered = type_programs_filtered[type_programs_filtered['Sub_type'].isin(selected_programme_level)]
 
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
 
