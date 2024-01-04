@@ -180,6 +180,7 @@ with col1:
 
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
                     country_program_counts = type_programs_filtered['Country'].value_counts()
+                    country_program_counts = country_program_counts.iloc[::-1]  # Reversing the order
                     st.bar_chart(country_program_counts)
 
                     if num_filtered_countries > 1:
