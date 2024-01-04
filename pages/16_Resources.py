@@ -101,6 +101,7 @@ with col1:
         counter = 1
         for index, row in programs.iterrows():
             programme_name = row['Programme_name']
+            programme_info = ""
             
             if not programme_name:
                 institution_info = row['Institution']
@@ -118,6 +119,7 @@ with col1:
             
             st.write(f"{counter}. {programme_info}")
             counter += 1
+
 
     for prog_type in types:
         type_programs = df[df['Type'] == prog_type]
