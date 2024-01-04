@@ -101,20 +101,17 @@ with col1:
         counter = 1
         for index, row in programs.iterrows():
             programme_name = row['Programme_name']
-            programme_info = ""
             
-            if programme_name:
-                if show_programme_level and column_name == 'Academic programs':
-                    programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
-                else:
-                    programme_info = f"[{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
-                if show_programme_level and column_name == 'Other resources':
-                    programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}),  *{row['Institution']}*, {row['Country']}"
+            if not programme_name:
+                institution_info = row['Institution']
             else:
-                if show_programme_level and column_name == 'Other resources':
-                    programme_info = f"{row['Programme_level']}: [{row['Institution']}]({row['Link']}), {row['Country']}"
-                else:
-                    programme_info = f"[{row['Institution']}]({row['Link']}), {row['Country']}"
+                programme_info = f"[{programme_name}]({row['Link']})"
+                institution_info = f"*{row['Institution']}*, {row['Country']}"
+                
+                if show_programme_level and (column_name == 'Academic programs' or column_name == 'Other resources'):
+                    programme_info = f"{row['Programme_level']}: {programme_info}"
+                    
+            programme_info = f"{programme_info}, {institution_info}"
             
             if show_country:
                 programme_info += f", {row['Country']}"
