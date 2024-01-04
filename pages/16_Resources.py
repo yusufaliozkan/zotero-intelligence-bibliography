@@ -147,7 +147,7 @@ with col1:
                     st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
                     for country in selected_countries:
                         country_programs = type_programs[type_programs['Country'] == country]
-                        st.markdown(f'## {country}')
+                        st.markdown(f'#### {country}')
                         display_numbered_list(country_programs, prog_type, show_country=False)
         else:
             with st.expander(f"**{prog_type} ({len(type_programs)})**"):
