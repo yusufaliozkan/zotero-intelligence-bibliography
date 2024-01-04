@@ -182,11 +182,9 @@ with col1:
 
                     on = st.toggle('Display in barchart')
                     if on:
-                        country_program_counts = type_programs_filtered['Country'].value_counts().sort_values(ascending=True)
-                        country_program_counts_df = country_program_counts.reset_index()
-                        country_program_counts_df.columns = ['Country', 'Count']
-                        # Create Plotly horizontal bar chart
-                        fig = px.bar(country_program_counts_df, x='Count', y='Country', orientation='h',color='Programme_level',)
+                        country_program_counts = type_programs_filtered.groupby(['Country', 'Programme_level']).size().reset_index(name='Count')
+                        fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Programme_level',
+                                    category_orders={"Programme_level": sorted(programme_levels)})
                         fig.update_layout(
                             title='Number of Academic Programs by Country',
                             xaxis_title='Number of Programs',
