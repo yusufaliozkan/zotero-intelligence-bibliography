@@ -181,12 +181,17 @@ with col1:
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
 
                     country_program_counts = type_programs_filtered['Country'].value_counts().sort_values(ascending=True)
-                    fig, ax = plt.subplots()
-                    country_program_counts.plot(kind='barh', ax=ax)
-                    ax.set_xlabel('Number of Programs')
-                    ax.set_ylabel('Country')
-                    plt.title('Number of Academic Programs by Country')
-                    st.pyplot(fig)
+                    country_program_counts_df = country_program_counts.reset_index()
+                    country_program_counts_df.columns = ['Country', 'Count']
+
+                    # Create Plotly horizontal bar chart
+                    fig = px.bar(country_program_counts_df, x='Count', y='Country', orientation='h')
+                    fig.update_layout(
+                        title='Number of Academic Programs by Country',
+                        xaxis_title='Number of Programs',
+                        yaxis_title='Country'
+                    )
+                    st.plotly_chart(fig)
 
                     if num_filtered_countries > 1:
                         st.write(f'**{len(type_programs_filtered)} {prog_type} found in {num_filtered_countries} countries**')
