@@ -447,6 +447,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
                         if on:
                             st.info('Dashboard function will be available soon!')
+                            author_df = filtered_collection_df_authors[filtered_collection_df_authors['FirstName2'] == selected_author]
+                            author_df
+
                         else:
                             for index, row in filtered_collection_df_authors.iterrows():
                                 publication_type = row['Publication type']
