@@ -180,7 +180,7 @@ with col1:
 
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
                     country_program_counts = type_programs_filtered['Country'].value_counts().sort_values(ascending=True)
-                    st.bar_chart(country_program_counts)
+                    st.bar_chart(country_program_counts, width=0, use_container_width=True)
 
                     if num_filtered_countries > 1:
                         st.write(f'**{len(type_programs_filtered)} {prog_type} found in {num_filtered_countries} countries**')
