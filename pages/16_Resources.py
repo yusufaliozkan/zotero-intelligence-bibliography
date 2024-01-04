@@ -186,13 +186,13 @@ with col1:
                         country_totals = country_program_counts.groupby('Country')['Count'].sum().reset_index(name='Total_Count')
                         sorted_countries = country_totals.sort_values(by='Total_Count', ascending=False)['Country'].tolist()
 
-                        country_program_counts['Country'] = pd.Categorical(country_program_counts['Country'], categories=sorted_countries, ordered=True)
+                        # Sort country_program_counts based on the total count within each country
+                        country_program_counts = country_program_counts.merge(country_totals, on='Country')
+                        country_program_counts = country_program_counts.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
 
-                        # Create a color map for Programme_level
-                        color_map = {level: f'rgb({i * 30 % 256},{i * 50 % 256},{i * 70 % 256})' for i, level in enumerate(sorted(country_program_counts['Programme_level'].unique()))}
-
+                        # Create the plot
                         fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Programme_level',
-                                    category_orders={"Programme_level": sorted(programme_levels)}, color_discrete_map=color_map)
+                                    category_orders={"Programme_level": sorted(programme_levels)})
                         fig.update_layout(
                             title='Number of Academic Programs by Country',
                             xaxis_title='Number of Programs',
