@@ -214,7 +214,7 @@ with st.spinner('Preparing digest...'):
         if df_csv['Publication type'].any() in ("", [], None, 0, False):
             st.write('No data to visualise')
         else:
-            trends = st.checkbox('Show trends', key='trends')
+            trends = st.toggle('Show trends', key='trends')
             if trends:
                 df_plot= df_csv['Publication type'].value_counts()
                 df_plot=df_plot.reset_index()
