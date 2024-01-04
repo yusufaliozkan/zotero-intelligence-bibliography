@@ -180,7 +180,7 @@ with col1:
 
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
 
-                    on = st.toggle('Display in barchart')
+                    on = st.toggle('Display as barchart')
                     if on:
                         country_program_counts = type_programs_filtered.groupby(['Country', 'Programme_level']).size().reset_index(name='Count')
                         country_totals = country_program_counts.groupby('Country')['Count'].sum().reset_index(name='Total_Count')
