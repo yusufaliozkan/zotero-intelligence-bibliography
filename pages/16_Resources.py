@@ -180,13 +180,6 @@ with col1:
 
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
 
-                    for country in countries_to_display:
-                        country_programs = type_programs_filtered[type_programs_filtered['Country'] == country]
-                        count_country_programs = len(country_programs)
-                        country_display_name = f"{country} ({count_country_programs})"
-                        if count_country_programs > 0:
-                            st.markdown(f'### {country_display_name}')
-                            display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=True)
                     if num_filtered_countries > 1:
                         st.write(f'**{len(type_programs_filtered)} {prog_type} found in {num_filtered_countries} countries**')
                     elif num_filtered_countries == 1:
@@ -194,6 +187,15 @@ with col1:
                         st.write(f'**{len(type_programs_filtered)} {prog_type} found in {selected_country_str}**')
                     else:
                         st.write(f'**No {prog_type} found for the selected filters**')
+
+                    for country in countries_to_display:
+                        country_programs = type_programs_filtered[type_programs_filtered['Country'] == country]
+                        count_country_programs = len(country_programs)
+                        country_display_name = f"{country} ({count_country_programs})"
+                        if count_country_programs > 0:
+                            st.markdown(f'### {country_display_name}')
+                            display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=True)
+
                 else:
                     if num_unique_countries != 1:
                         num_unique_countries = type_programs['Country'].nunique()
