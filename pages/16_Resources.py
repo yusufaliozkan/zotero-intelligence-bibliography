@@ -180,7 +180,7 @@ with col1:
                     for country in countries_to_display:
                         country_programs = type_programs[type_programs['Country'] == country]
                         if len(country_programs) > 0:  # Check if there are items to display
-                            st.markdown(f'### {country} {country_counts}')
+                            st.markdown(f'### {country}')
                             display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=True)  # Updated function call
                 else:
                     if num_unique_countries != 1:
