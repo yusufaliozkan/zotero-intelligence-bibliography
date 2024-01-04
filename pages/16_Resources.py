@@ -85,11 +85,11 @@ with col1:
     rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
     data = []
-    columns = ['Type', 'Institution', 'Programme_level', 'Programme_name', 'Link', 'Country', 'Status']
+    columns = ['Type', 'Institution', 'Sub_type', 'Programme_level', 'Programme_name', 'Link', 'Country', 'Status']
 
     # Print results.
     for row in rows:
-        data.append((row.Type, row.Institution, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
+        data.append((row.Type, row.Institution, row.Sub_type, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
     df = pd.DataFrame(data, columns=columns)
     countries = df['Country'].unique()
     types = df['Type'].unique()
