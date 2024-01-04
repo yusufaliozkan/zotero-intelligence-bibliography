@@ -451,8 +451,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             publications_by_type = author_df['Publication type'].value_counts()
                             fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                         labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                        title=f'Publications by Type for {selected_author}')
+                                        title=f'Publications by Type ({selected_author})')
                             st.plotly_chart(fig)
+
+                            author_df = filtered_collection_df_authors[filtered_collection_df_authors['FirstName2'] == selected_author]
+                            publications_by_year = author_df['Date published'].value_counts().sort_index()
+                            fig_year = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                            labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                            title=f'Publications by Year for {selected_author}')
+                            st.plotly_chart(fig_year)
 
                         else:
                             for index, row in filtered_collection_df_authors.iterrows():
