@@ -455,7 +455,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.plotly_chart(fig)
 
                             author_df = filtered_collection_df_authors[filtered_collection_df_authors['FirstName2'] == selected_author]
+                            author_df
                             publications_by_year = author_df['Date published'].value_counts().sort_index()
+                            publications_by_year
                             fig_year = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                             labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                             title=f'Publications by Year for {selected_author}')
