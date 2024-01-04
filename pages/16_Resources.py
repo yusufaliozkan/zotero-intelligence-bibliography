@@ -153,16 +153,17 @@ with col1:
 
                     # Group programs by countries with counts
                     country_program_counts = type_programs['Country'].value_counts()
+                    
                     for country, count in country_program_counts.items():
+                        country_programs = type_programs[type_programs['Country'] == country]
                         if count >= 3:
                             st.markdown(f'##### {country}')
-                            country_programs = type_programs[type_programs['Country'] == country]
                             display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=False)
                         else:
                             if len(selected_countries) > 1:
                                 st.markdown('##### Other countries')
-                                country_programs = type_programs[~(type_programs['Country'].isin(selected_countries))]
                                 display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=False)
+
         else:
             with st.expander(f"**{prog_type} ({len(type_programs)})**"):
                 if prog_type == 'Academic programs':
