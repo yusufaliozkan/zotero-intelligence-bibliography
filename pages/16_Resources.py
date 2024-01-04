@@ -103,23 +103,24 @@ with col1:
             programme_name = row['Programme_name']
             programme_info = ""
             
-            if not programme_name:
-                institution_info = row['Institution']
+            if programme_name:
+                if show_programme_level and column_name == 'Academic programs':
+                    programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
+                else:
+                    programme_info = f"[{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
+                if show_programme_level and column_name == 'Other resources':
+                    programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}), {row['Country']}"
             else:
-                programme_info = f"[{programme_name}]({row['Link']})"
-                institution_info = f"*{row['Institution']}*, {row['Country']}"
-                
-                if show_programme_level and (column_name == 'Academic programs' or column_name == 'Other resources'):
-                    programme_info = f"{row['Programme_level']}: {programme_info}"
-                    
-            programme_info = f"{programme_info}, {institution_info}"
+                if show_programme_level and column_name == 'Other resources':
+                    programme_info = f"{row['Programme_level']}: [{row['Institution']}]({row['Link']}), {row['Country']}"
+                else:
+                    programme_info = f"[{row['Institution']}]({row['Link']}), {row['Country']}"
             
             if show_country:
                 programme_info += f", {row['Country']}"
             
             st.write(f"{counter}. {programme_info}")
             counter += 1
-
 
     for prog_type in types:
         type_programs = df[df['Type'] == prog_type]
@@ -313,6 +314,6 @@ components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
 src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-© 2022 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+© 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
