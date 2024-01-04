@@ -180,10 +180,10 @@ with col1:
 
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
 
+                    on = st.toggle('Display in barchart')
                     country_program_counts = type_programs_filtered['Country'].value_counts().sort_values(ascending=True)
                     country_program_counts_df = country_program_counts.reset_index()
                     country_program_counts_df.columns = ['Country', 'Count']
-
                     # Create Plotly horizontal bar chart
                     fig = px.bar(country_program_counts_df, x='Count', y='Country', orientation='h')
                     fig.update_layout(
