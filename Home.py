@@ -444,6 +444,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         a = f'{selected_author}_{today}'
                         st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
+                        on = st.toggle('Generate dashboard')
                         for index, row in filtered_collection_df_authors.iterrows():
                             publication_type = row['Publication type']
                             title = row['Title']
