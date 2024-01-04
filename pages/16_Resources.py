@@ -162,13 +162,20 @@ with col1:
                     country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
                     countries_sorted = country_counts.index.tolist()
                     country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
+                    
+                    # Filter by country
                     selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
-
                     if selected_country:
                         type_programs = type_programs[type_programs['Country'].isin(selected_country)]
                         countries_to_display = selected_country
                     else:
                         countries_to_display = countries_sorted
+
+                    # Filter by program type
+                    programme_levels = type_programs['Programme_level'].unique()
+                    selected_programme_level = st.multiselect("Filter by Programme Level:", programme_levels)
+                    if selected_programme_level:
+                        type_programs = type_programs[type_programs['Programme_level'].isin(selected_programme_level)]
 
                     for country in countries_to_display:
                         country_programs = type_programs[type_programs['Country'] == country]
