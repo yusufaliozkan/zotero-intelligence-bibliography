@@ -97,17 +97,22 @@ with col1:
     df = df[df['Status'] == 'Active']
     df = df.sort_values(by='Institution')
 
-    def display_numbered_list(programs, column_name, show_country=False):
+    def display_numbered_list(programs, column_name, show_country=False, show_programme_level=True):
         counter = 1
         for index, row in programs.iterrows():
-            programme_level = row['Programme_level']
             programme_name = row['Programme_name']
-            
             programme_info = ""
-            if programme_level and programme_name:
-                programme_info = f"{programme_level}: [{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
+            
+            if programme_name:
+                if show_programme_level:
+                    programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
+                else:
+                    programme_info = f"[{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
             else:
-                programme_info = f"{programme_level}: [{row['Institution']}]({row['Link']}), {row['Country']}"
+                if show_programme_level:
+                    programme_info = f"{row['Programme_level']}: [{row['Institution']}]({row['Link']}), {row['Country']}"
+                else:
+                    programme_info = f"[{row['Institution']}]({row['Link']}), {row['Country']}"
             
             if show_country:
                 programme_info += f", {row['Country']}"
@@ -142,7 +147,7 @@ with col1:
                 if len(selected_countries) == 1:
                     country_programs = type_programs[type_programs['Country'] == selected_countries[0]]
                     # st.write(f'**{len(country_programs)} {prog_type} found in {selected_countries[0].split(" (")[0]}**')
-                    display_numbered_list(country_programs, prog_type, show_country=False)
+                    display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=False)
                 else:
                     st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
                     for country in selected_countries:
