@@ -182,9 +182,9 @@ with col1:
 
                     on = st.toggle('Display in barchart')
                     if on:
-                        country_program_counts = type_programs_filtered.groupby(['Country', 'Programme_level']).size().reset_index(name='Count')
-                        fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Programme_level',
-                                    category_orders={"Programme_level": sorted(programme_levels)})
+                        country_program_counts = type_programs_filtered.groupby(['Country', 'Sub_type']).size().reset_index(name='Count')
+                        fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Sub_type',
+                                    category_orders={"Sub_type": sorted(programme_levels)})
                         fig.update_layout(
                             title='Number of Academic Programs by Country',
                             xaxis_title='Number of Programs',
