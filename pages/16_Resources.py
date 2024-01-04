@@ -179,8 +179,7 @@ with col1:
                         type_programs_filtered = type_programs_filtered[type_programs_filtered['Programme_level'].isin(selected_programme_level)]
 
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
-                    country_program_counts = type_programs_filtered['Country'].value_counts()
-                    country_program_counts = country_program_counts.iloc[::-1]  # Reversing the order
+                    country_program_counts = type_programs_filtered['Country'].value_counts().sort_values(ascending=True)
                     st.bar_chart(country_program_counts)
 
                     if num_filtered_countries > 1:
