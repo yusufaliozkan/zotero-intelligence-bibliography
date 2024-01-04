@@ -170,7 +170,7 @@ with col1:
                         programme_levels = type_programs['Programme_level'].unique()
                     
                     programme_levels = type_programs['Programme_level'].unique()
-                    selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
+                    selected_level = st.multiselect("Filter by Programme Level:", ['All'] + list(programme_levels))
 
                     if selected_level != 'All':
                         type_programs = type_programs[type_programs['Programme_level'] == selected_level]
