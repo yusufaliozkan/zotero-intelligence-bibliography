@@ -448,7 +448,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if on:
                             st.info('Dashboard function will be available soon!')
                             author_df = filtered_collection_df_authors[filtered_collection_df_authors['FirstName2'] == selected_author]
-                            author_df
+                            publications_by_type = author_df['Publication type'].value_counts()
+                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                        title=f'Publications by Type for {selected_author}')
+                            st.plotly_chart(fig)
 
                         else:
                             for index, row in filtered_collection_df_authors.iterrows():
