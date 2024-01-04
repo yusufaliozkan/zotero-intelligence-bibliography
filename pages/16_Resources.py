@@ -109,7 +109,7 @@ with col1:
                 else:
                     programme_info = f"[{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
                 if show_programme_level and column_name == 'Other resources':
-                    programme_info = f"{row['Programme_level']}: [{row['Institution']}]({row['Link']}), {row['Country']}"
+                    programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}), {row['Country']}"
             else:
                 if show_programme_level and column_name == 'Other resources':
                     programme_info = f"{row['Programme_level']}: [{row['Institution']}]({row['Link']}), {row['Country']}"
