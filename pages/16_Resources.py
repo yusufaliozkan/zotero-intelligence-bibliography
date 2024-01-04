@@ -184,11 +184,11 @@ with col1:
                     if on:
                         country_program_counts = type_programs_filtered.groupby(['Country', 'Programme_level']).size().reset_index(name='Count')
                         country_totals = country_program_counts.groupby('Country')['Count'].sum().reset_index(name='Total_Count')
-                        sorted_countries = country_totals.sort_values(by='Total_Count', ascending=True)['Country'].tolist()
+                        sorted_countries = country_totals.sort_values(by='Total_Count', ascending=False)['Country'].tolist()
 
-                        # Sort country_program_counts based on the total count within each country in ascending order
+                        # Sort country_program_counts based on the total count within each country
                         country_program_counts = country_program_counts.merge(country_totals, on='Country')
-                        country_program_counts = country_program_counts.sort_values(by=['Total_Count', 'Count'], ascending=[True, False])
+                        country_program_counts = country_program_counts.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
 
                         # Create the plot
                         fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Programme_level',
