@@ -106,8 +106,6 @@ with col1:
             if programme_name:
                 if show_programme_level and column_name == 'Academic programs':
                     programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
-                if show_programme_level and column_name == 'Other resources':
-                    programme_info = f"{row['Programme_level']}: [{row['Institution']}]({row['Link']}), {row['Country']}"
                 else:
                     programme_info = f"[{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
             else:
