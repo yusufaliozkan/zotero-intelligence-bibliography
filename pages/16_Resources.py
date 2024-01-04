@@ -29,7 +29,7 @@ st.set_page_config(layout = "wide",
 
 st.title("Intelligence studies network")
 st.header('Resources on intelligence studies')
-st.info('This page lists institutions, academic programs, and  other resources on intelligence studies')
+st.info('This page lists institutions, academic programs, and  other resources on intelligence studies.')
 
 
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
@@ -85,11 +85,11 @@ with col1:
     rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
     data = []
-    columns = ['Type', 'Institution', 'Programme_level', 'Programme_name', 'Link', 'Country', 'Status']
+    columns = ['Type', 'Institution', 'Sub_type', 'Programme_level', 'Programme_name', 'Link', 'Country', 'Status']
 
     # Print results.
     for row in rows:
-        data.append((row.Type, row.Institution, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
+        data.append((row.Type, row.Institution, row.Sub_type, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
     df = pd.DataFrame(data, columns=columns)
     countries = df['Country'].unique()
     types = df['Type'].unique()
@@ -97,17 +97,24 @@ with col1:
     df = df[df['Status'] == 'Active']
     df = df.sort_values(by='Institution')
 
-    def display_numbered_list(programs, column_name, show_country=False):
+    def display_numbered_list(programs, column_name, show_country=False, show_programme_level=True):
         counter = 1
         for index, row in programs.iterrows():
-            programme_level = row['Programme_level']
             programme_name = row['Programme_name']
-            
             programme_info = ""
-            if programme_level and programme_name:
-                programme_info = f"{programme_level}: [{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
+            
+            if programme_name:
+                if show_programme_level and column_name == 'Academic programs':
+                    programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
+                else:
+                    programme_info = f"[{programme_name}]({row['Link']}), *{row['Institution']}*, {row['Country']}"
+                if show_programme_level and column_name == 'Other resources':
+                    programme_info = f"{row['Programme_level']}: [{programme_name}]({row['Link']}),  *{row['Institution']}*, {row['Country']}"
             else:
-                programme_info = f"{programme_level}: [{row['Institution']}]({row['Link']}), {row['Country']}"
+                if show_programme_level and column_name == 'Other resources':
+                    programme_info = f"{row['Programme_level']}: [{row['Institution']}]({row['Link']}), {row['Country']}"
+                else:
+                    programme_info = f"[{row['Institution']}]({row['Link']}), {row['Country']}"
             
             if show_country:
                 programme_info += f", {row['Country']}"
@@ -119,49 +126,80 @@ with col1:
         type_programs = df[df['Type'] == prog_type]
         num_unique_countries = type_programs['Country'].nunique()
 
-        with st.expander(f"{prog_type} ({len(type_programs)})"):
-            if prog_type == 'Academic programs':
-                country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
-                countries_sorted = country_counts.index.tolist()
-                country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
-
-                selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
-                
-                if selected_country:
-                    type_programs = type_programs[type_programs['Country'].isin(selected_country)]
-                    programme_levels = type_programs['Programme_level'].unique()
-                
-                programme_levels = type_programs['Programme_level'].unique()
-                selected_level = st.selectbox("Filter by Programme Level:", ['All'] + list(programme_levels))
-
-                if selected_level != 'All':
-                    type_programs = type_programs[type_programs['Programme_level'] == selected_level]
-
-                num_unique_countries = type_programs['Country'].nunique()
-                if num_unique_countries==1:
-                    selected_country_str = selected_country[0].split(" (")[0]
-                    st.write(f'**{len(type_programs)} program(s) found in {selected_country_str}**')
-                else:
-                    st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
-
-            if prog_type != 'Academic programs':
-                if num_unique_countries!=1:
-                    num_unique_countries = type_programs['Country'].nunique()
+        if prog_type == 'Government institutions':
+            countries = type_programs['Country'].unique()
+            with st.expander(f"**{prog_type} ({len(type_programs)})**"):
+                if num_unique_countries != 1:
                     country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
                     countries_sorted = country_counts.index.tolist()
                     country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
+                    selected_countries = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
+                    if selected_countries:
+                        type_programs = type_programs[type_programs['Country'].isin(selected_countries)]
+                        num_unique_countries = type_programs['Country'].nunique()
+                        if num_unique_countries == 1:
+                            selected_country_str = selected_countries[0].split(" (")[0]
+                            st.write(f'**{len(type_programs)} {prog_type} found in {selected_country_str}**')
+                        #else:
+                            # st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
+                    else:
+                        selected_countries = countries_sorted  # Show all countries if none is selected
+                        type_programs = df[df['Type'] == prog_type]  # Show all programs initially
+
+                if len(selected_countries) == 1:
+                    country_programs = type_programs[type_programs['Country'] == selected_countries[0]]
+                    # st.write(f'**{len(country_programs)} {prog_type} found in {selected_countries[0].split(" (")[0]}**')
+                    display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=False)
+                else:
+                    st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
+                    for country in selected_countries:
+                        country_programs = type_programs[type_programs['Country'] == country]
+                        st.markdown(f'##### {country}')
+                        display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=False)
+        else:
+            with st.expander(f"**{prog_type} ({len(type_programs)})**"):
+                if prog_type == 'Academic programs':
+                    country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
+                    countries_sorted = country_counts.index.tolist()
+                    country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
+
                     selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
+                    
                     if selected_country:
                         type_programs = type_programs[type_programs['Country'].isin(selected_country)]
+                        programme_levels = type_programs['Programme_level'].unique()
+                    
+                    programme_levels = type_programs['Programme_level'].unique()
+                    selected_level = st.multiselect("Filter by Programme Level:", programme_levels)
+
+                    if selected_level:
+                        type_programs = type_programs[type_programs['Programme_level'].isin(selected_level)]
+
+                    num_unique_countries = type_programs['Country'].nunique()
+                    if num_unique_countries==1:
+                        selected_country_str = selected_country[0].split(" (")[0]
+                        st.write(f'**{len(type_programs)} program(s) found in {selected_country_str}**')
+                    else:
+                        st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
+
+                if prog_type != 'Academic programs':
+                    if num_unique_countries!=1:
                         num_unique_countries = type_programs['Country'].nunique()
-                        if num_unique_countries==1:
-                            selected_country_str = selected_country[0].split(" (")[0]
-                            st.write(f'**{len(type_programs)} {prog_type} found in {selected_country_str}**')
+                        country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
+                        countries_sorted = country_counts.index.tolist()
+                        country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
+                        selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
+                        if selected_country:
+                            type_programs = type_programs[type_programs['Country'].isin(selected_country)]
+                            num_unique_countries = type_programs['Country'].nunique()
+                            if num_unique_countries==1:
+                                selected_country_str = selected_country[0].split(" (")[0]
+                                st.write(f'**{len(type_programs)} {prog_type} found in {selected_country_str}**')
+                            else:
+                                st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
                         else:
                             st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
-                    else:
-                        st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
-            display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
+                display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
 with col2:
     with st.expander('Collections', expanded=True):
@@ -276,6 +314,6 @@ components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
 src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-© 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+© 2022 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )
