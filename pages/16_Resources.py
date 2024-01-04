@@ -179,6 +179,8 @@ with col1:
                         type_programs_filtered = type_programs_filtered[type_programs_filtered['Programme_level'].isin(selected_programme_level)]
 
                     num_filtered_countries = type_programs_filtered['Country'].nunique()
+                    country_program_counts = type_programs_filtered['Country'].value_counts()
+                    st.bar_chart(country_program_counts)
 
                     if num_filtered_countries > 1:
                         st.write(f'**{len(type_programs_filtered)} {prog_type} found in {num_filtered_countries} countries**')
