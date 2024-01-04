@@ -448,7 +448,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if on:
                             st.info('Dashboard function will be available soon!')
                             filtered_collection_df_authors
-                            author_df = filtered_collection_df_authors[filtered_collection_df_authors['FirstName2'] == selected_author]
+                            author_df = filtered_collection_df_authors
                             author_df
                             publications_by_type = author_df['Publication type'].value_counts()
                             fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
