@@ -188,8 +188,11 @@ with col1:
 
                         country_program_counts['Country'] = pd.Categorical(country_program_counts['Country'], categories=sorted_countries, ordered=True)
 
+                        # Create a color map for Programme_level
+                        color_map = {level: f'rgb({i * 30 % 256},{i * 50 % 256},{i * 70 % 256})' for i, level in enumerate(sorted(country_program_counts['Programme_level'].unique()))}
+
                         fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Programme_level',
-                                    category_orders={"Programme_level": sorted(programme_levels)})
+                                    category_orders={"Programme_level": sorted(programme_levels)}, color_discrete_map=color_map)
                         fig.update_layout(
                             title='Number of Academic Programs by Country',
                             xaxis_title='Number of Programs',
