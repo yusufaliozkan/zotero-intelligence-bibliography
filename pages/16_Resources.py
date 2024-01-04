@@ -163,14 +163,14 @@ with col1:
                 countries_sorted = country_counts.index.tolist()
                 country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
 
-                selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
+                selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x], key='AP1')
                 
                 if selected_country:
                     type_programs = type_programs[type_programs['Country'].isin(selected_country)]
                     programme_levels = type_programs['Programme_level'].unique()
                 
                 programme_levels = type_programs['Programme_level'].unique()
-                selected_level = st.multiselect("Filter by Programme Level:", programme_levels)
+                selected_level = st.multiselect("Filter by Programme Level:", programme_levels, key='AP2')
 
                 if selected_level:
                     type_programs = type_programs[type_programs['Programme_level'].isin(selected_level)]
