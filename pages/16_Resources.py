@@ -155,48 +155,39 @@ with col1:
                         country_programs = type_programs[type_programs['Country'] == country]
                         st.markdown(f'##### {country}')
                         display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=False)
-
-        if prog_type == 'Academic programs':
-            with st.expander(f"**{prog_type} ({len(type_programs)})**"):
-                country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
-                countries_sorted = country_counts.index.tolist()
-                country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
-
-                selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
-                
-                if selected_country:
-                    type_programs = type_programs[type_programs['Country'].isin(selected_country)]
-                    programme_levels = type_programs['Programme_level'].unique()
-                
-                programme_levels = type_programs['Programme_level'].unique()
-                selected_level = st.multiselect("Filter by Programme Level:", programme_levels)
-
-                if selected_level:
-                    type_programs = type_programs[type_programs['Programme_level'].isin(selected_level)]
-
-                num_unique_countries = type_programs['Country'].nunique()
-                if num_unique_countries==1:
-                    selected_country_str = selected_country[0].split(" (")[0]
-                    st.write(f'**{len(type_programs)} program(s) found in {selected_country_str}**')
-                else:
-                    st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
         else:
             with st.expander(f"**{prog_type} ({len(type_programs)})**"):
+                if prog_type == 'Academic programs':
+                    country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
+                    countries_sorted = country_counts.index.tolist()
+                    country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
+
+                    selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
+                    
+                    if selected_country:
+                        type_programs = type_programs[type_programs['Country'].isin(selected_country)]
+                        programme_levels = type_programs['Programme_level'].unique()
+                    
+                    programme_levels = type_programs['Programme_level'].unique()
+                    selected_level = st.multiselect("Filter by Programme Level:", programme_levels)
+
+                    if selected_level:
+                        type_programs = type_programs[type_programs['Programme_level'].isin(selected_level)]
+
+                    num_unique_countries = type_programs['Country'].nunique()
+                    if num_unique_countries==1:
+                        selected_country_str = selected_country[0].split(" (")[0]
+                        st.write(f'**{len(type_programs)} program(s) found in {selected_country_str}**')
+                    else:
+                        st.write(f'**{len(type_programs)} program(s) found in {num_unique_countries} countries**')
+
                 if prog_type != 'Academic programs':
                     if num_unique_countries!=1:
-                        multiselect_key = f'{prog_type}_multiselect'
-                        
                         num_unique_countries = type_programs['Country'].nunique()
                         country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
                         countries_sorted = country_counts.index.tolist()
                         country_counts_dict = {country: f"{country} ({count})" for country, count in country_counts.items()}
-                        
-                        selected_country = st.multiselect(
-                            'Filter by country:',
-                            countries_sorted,
-                            format_func=lambda x: country_counts_dict[x],
-                            key=multiselect_key  # Use the generated unique key
-                        )
+                        selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
                         if selected_country:
                             type_programs = type_programs[type_programs['Country'].isin(selected_country)]
                             num_unique_countries = type_programs['Country'].nunique()
