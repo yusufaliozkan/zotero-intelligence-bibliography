@@ -449,10 +449,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.info('Dashboard function will be available soon!')
                             author_df = filtered_collection_df_authors
                             publications_by_type = author_df['Publication type'].value_counts()
-                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                        title=f'Publications by Type ({selected_author})')
-                            st.plotly_chart(fig)
+                            fig_type_pie = px.pie(names=publications_by_type.index, values=publications_by_type.values,
+                                                labels={'names': 'Publication Type', 'values': 'Number of Publications'},
+                                                title=f'Publications by Type ({selected_author})')
+                            st.plotly_chart(fig_type_pie)
 
                             author_df = filtered_collection_df_authors
                             author_df['Year'] = pd.to_datetime(author_df['Date published']).dt.year
