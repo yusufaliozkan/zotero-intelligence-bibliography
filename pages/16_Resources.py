@@ -150,7 +150,7 @@ with col1:
                         st.subheader(country)
                         display_numbered_list(country_programs, prog_type, show_country=False)
         else:
-            with st.expander(f"{prog_type} ({len(type_programs)})"):
+            with st.expander(f"**{prog_type} ({len(type_programs)})**"):
                 if prog_type == 'Academic programs':
                     country_counts = type_programs['Country'].value_counts().sort_values(ascending=False)
                     countries_sorted = country_counts.index.tolist()
