@@ -173,7 +173,7 @@ with col1:
                         countries_to_display = countries_sorted
 
                     # Filter by program type
-                    programme_levels = type_programs_filtered['Programme_level'].unique()
+                    programme_levels = type_programs_filtered['Sub_type'].unique()
                     selected_programme_level = st.multiselect("Filter by Programme Level:", programme_levels)
                     if selected_programme_level:
                         type_programs_filtered = type_programs_filtered[type_programs_filtered['Programme_level'].isin(selected_programme_level)]
