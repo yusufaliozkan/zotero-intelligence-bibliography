@@ -177,6 +177,16 @@ with col1:
                     if selected_programme_level:
                         type_programs = type_programs[type_programs['Programme_level'].isin(selected_programme_level)]
 
+                    num_filtered_countries = type_programs_filtered['Country'].nunique()
+
+                    if num_filtered_countries > 1:
+                        st.write(f'**{len(type_programs_filtered)} {prog_type} found in {num_filtered_countries} countries**')
+                    elif num_filtered_countries == 1:
+                        selected_country_str = countries_to_display[0].split(" (")[0]
+                        st.write(f'**{len(type_programs_filtered)} {prog_type} found in {selected_country_str}**')
+                    else:
+                        st.write(f'**No {prog_type} found for the selected filters**')
+
                     for country in countries_to_display:
                         country_programs = type_programs[type_programs['Country'] == country]
                         if len(country_programs) > 0:  # Check if there are items to display
