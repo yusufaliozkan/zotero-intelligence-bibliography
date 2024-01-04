@@ -111,8 +111,8 @@ with col1:
             else:
                 if show_programme_level and column_name == 'Other resources':
                     programme_info = f"{row['Programme_level']}: [{row['Institution']}]({row['Link']}), {row['Country']}"
-                else:
-                    programme_info = f"[{row['Institution']}]({row['Link']}), {row['Country']}"
+                # else:
+                #     programme_info = f"[{row['Institution']}]({row['Link']}), {row['Country']}"
             
             if show_country:
                 programme_info += f", {row['Country']}"
