@@ -166,23 +166,22 @@ with col1:
                     # Filter by country
                     selected_country = st.multiselect('Filter by country:', countries_sorted, format_func=lambda x: country_counts_dict[x])
                     if selected_country:
-                        type_programs_filtered = type_programs[type_programs['Country'].isin(selected_country)]
+                        type_programs = type_programs[type_programs['Country'].isin(selected_country)]
                         countries_to_display = selected_country
                     else:
-                        type_programs_filtered = type_programs.copy()
                         countries_to_display = countries_sorted
 
-                    # Filter by program level
-                    programme_levels = type_programs_filtered['Programme_level'].unique()
+                    # Filter by program type
+                    programme_levels = type_programs['Programme_level'].unique()
                     selected_programme_level = st.multiselect("Filter by Programme Level:", programme_levels)
                     if selected_programme_level:
-                        type_programs_filtered = type_programs_filtered[type_programs_filtered['Programme_level'].isin(selected_programme_level)]
+                        type_programs = type_programs[type_programs['Programme_level'].isin(selected_programme_level)]
 
                     for country in countries_to_display:
-                        country_programs = type_programs_filtered[type_programs_filtered['Country'] == country]
-                        if len(country_programs) > 0:  # Check if there are items left for this country
+                        country_programs = type_programs[type_programs['Country'] == country]
+                        if len(country_programs) > 0:  # Check if there are items to display
                             st.markdown(f'### {country}')
-                            display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=True)
+                            display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=True)  # Updated function call
                 else:
                     if num_unique_countries != 1:
                         num_unique_countries = type_programs['Country'].nunique()
