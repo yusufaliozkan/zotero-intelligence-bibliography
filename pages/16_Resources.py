@@ -154,15 +154,18 @@ with col1:
                     # Group programs by countries with counts
                     country_program_counts = type_programs['Country'].value_counts()
                     
+                    other_countries_flag = False  # Flag to check if 'Other countries' section already shown
                     for country, count in country_program_counts.items():
                         country_programs = type_programs[type_programs['Country'] == country]
                         if count >= 3:
                             st.markdown(f'##### {country}')
                             display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=False)
                         else:
-                            if len(selected_countries) > 1:
+                            if len(selected_countries) > 1 and not other_countries_flag:
                                 st.markdown('##### Other countries')
+                                other_countries_flag = True  # Set flag to True to prevent repetition
                                 display_numbered_list(country_programs, prog_type, show_country=False, show_programme_level=False)
+
 
         else:
             with st.expander(f"**{prog_type} ({len(type_programs)})**"):
