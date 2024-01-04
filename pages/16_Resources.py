@@ -193,10 +193,13 @@ with col1:
                         # Create the plot
                         fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Programme_level',
                                     category_orders={"Programme_level": sorted(programme_levels)})
+
+                        # Set the order of countries in the plot
                         fig.update_layout(
                             title='Number of Academic Programs by Country',
                             xaxis_title='Number of Programs',
-                            yaxis_title='Country'
+                            yaxis_title='Country',
+                            yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries}  # Set the desired order
                         )
                         st.plotly_chart(fig)
 
