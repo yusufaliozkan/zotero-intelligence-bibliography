@@ -20,6 +20,7 @@ from gsheetsdb import connect
 import datetime as dt
 from fpdf import FPDF
 import base64
+from copyright import display_custom_license
 
 
 st.set_page_config(layout = "wide", 
