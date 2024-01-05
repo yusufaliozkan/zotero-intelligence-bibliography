@@ -445,7 +445,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
                         on = st.toggle('Generate dashboard')
-                        if on:
+                        if on and len(filtered_collection_df_authors) > 0: 
                             st.info(f'Publications dashboard for {selected_author}')
                             author_df = filtered_collection_df_authors
                             publications_by_type = author_df['Publication type'].value_counts()
@@ -506,7 +506,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-
+                        else:
+                            st.write("No publications selected or available for display.")
                         else:
                             for index, row in filtered_collection_df_authors.iterrows():
                                 publication_type = row['Publication type']
