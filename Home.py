@@ -543,9 +543,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.subheader('Search collections')
 
                 df_csv_collections = pd.read_csv('all_items_duplicated.csv')
+                excluded_collections = ['97 KCL intelligence']
                 numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
-                unique_collections = [''] + list(df_csv_collections['Collection_Name'].unique())  # Adding an empty string as the first option
-                select_options = [''] + sorted(list(numeric_start_collections))
+                all_unique_collections = df_csv_collections['Collection_Name'].unique()
+                filtered_collections = [col for col in numeric_start_collections if col not in excluded_collections]
+
+
+                select_options = [''] + sorted(list(filtered_collections))
                 selected_collection = st.selectbox('Select Collection(s)', select_options)
 
                 if not selected_collection or selected_collection == '':
