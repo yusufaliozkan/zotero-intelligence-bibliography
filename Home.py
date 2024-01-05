@@ -591,21 +591,38 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
                         if on and len(filtered_collection_df) > 0: 
                             st.info(f'Dashboard for {selected_collection}')
-                            collection_df = filtered_collection_df.copy()
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                collection_df = filtered_collection_df.copy()
 
-                            publications_by_type = collection_df['Publication type'].value_counts()
-                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                        title=f'Publications by Type ({selected_collection})')
+                                publications_by_type = collection_df['Publication type'].value_counts()
+                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                            title=f'Publications by Type ({selected_collection})')
+                                col1.plotly_chart(fig)
+
+                                collection_df = filtered_collection_df.copy()
+                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Year ({selected_collection})')
+                                col1.plotly_chart(fig_year_bar)
+                        
+                            collection_author_df = filtered_collection_df.copy()
+                            collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                            collection_author_df = collection_author_df.explode('Author_name')
+                            collection_author_df.reset_index(drop=True, inplace=True)
+                            collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
+                            collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
+                            fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
+                            fig.update_layout(
+                                title=f'Top 10 Authors by Publication Count ({selected_collection})',
+                                xaxis_title='Author',
+                                yaxis_title='Number of Publications',
+                                xaxis_tickangle=-45,
+                            )
                             st.plotly_chart(fig)
-
-                            collection_df = filtered_collection_df.copy()
-                            collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                            publications_by_year = collection_df['Year'].value_counts().sort_index()
-                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                title=f'Publications by Year ({selected_collection})')
-                            st.plotly_chart(fig_year_bar)
 
                             author_df = filtered_collection_df.copy()
                             def clean_text (text):
@@ -651,22 +668,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-
-                            collection_author_df = filtered_collection_df.copy()
-                            collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                            collection_author_df = collection_author_df.explode('Author_name')
-                            collection_author_df.reset_index(drop=True, inplace=True)
-                            collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
-                            collection_author_df
-                            collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                            fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                            fig.update_layout(
-                                title=f'Top 10 Authors by Publication Count ({selected_collection})',
-                                xaxis_title='Author',
-                                yaxis_title='Number of Publications',
-                                xaxis_tickangle=-45,
-                            )
-                            st.plotly_chart(fig)
 
                         else:
                             if not on:
