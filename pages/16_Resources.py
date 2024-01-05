@@ -20,7 +20,6 @@ from gsheetsdb import connect
 import datetime as dt
 from fpdf import FPDF
 import base64
-from copyright import display_custom_license
 
 
 st.set_page_config(layout = "wide", 
@@ -353,4 +352,10 @@ with col2:
         st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 st.write('---')
 
-display_custom_license()
+components.html(
+"""
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
+src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
+© 2022 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+"""
+)
