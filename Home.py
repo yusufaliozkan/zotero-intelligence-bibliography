@@ -493,7 +493,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 return text
                             author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
                             listdf = author_df['lemma_title']
-                            st.subheader('Wordcloud')
+                            st.header(f"Word Cloud for Titles published by ({selected_author})")
                             df_list = [item for sublist in listdf for item in sublist]
                             string = pd.Series(df_list).str.cat(sep=' ')
                             wordcloud_texts = string
@@ -506,7 +506,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.axis("off")
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
-                            st.pyplot() 
+                            st.pyplot()
+
                         else:
                             for index, row in filtered_collection_df_authors.iterrows():
                                 publication_type = row['Publication type']
