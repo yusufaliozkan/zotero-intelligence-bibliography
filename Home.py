@@ -603,6 +603,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                 title=f'Publications by Year ({selected_collection})')
                             st.plotly_chart(fig_year_bar)
+                            filtered_collection_df
 
                             author_df = filtered_collection_df.copy()
                             def clean_text (text):
