@@ -352,7 +352,8 @@ with col2:
         st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 st.write('---')
 
-current_year = datetime.now().year
+current_year = datetime.datetime.now().year
+
 
 updated_html = """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
