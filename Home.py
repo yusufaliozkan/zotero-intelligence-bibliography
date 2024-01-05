@@ -26,6 +26,7 @@ import PIL
 from PIL import Image, ImageDraw, ImageFilter
 import json
 from authors_dict import df_authors, name_replacements
+from copyright 
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -1362,3 +1363,4 @@ with st.spinner('Retrieving data & updating dashboard...'):
     © 2022 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
     """
     )    
+    copyright
