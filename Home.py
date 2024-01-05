@@ -589,6 +589,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
                         if on:
                             st.info('Dashboard function will be available soon!')
+                            collections_df = filtered_collection_df.copy()
+                            collections_df
                         else:
                             if num_items_collections > 25:
                                 show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
