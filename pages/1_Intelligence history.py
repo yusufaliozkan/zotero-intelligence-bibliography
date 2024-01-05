@@ -621,4 +621,4 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.set_option('deprecation.showPyplotGlobalUse', False)
             st.pyplot() 
 
-    display_custom_license()
+display_custom_license()
