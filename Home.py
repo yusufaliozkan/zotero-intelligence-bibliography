@@ -652,8 +652,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
 
-                            collection_df['Author_name'] = collection_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                            collection_df
+                            collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                            collection_author_df = collection_author_df.explode('Author_name')
+                            collection_author_df
 
                         else:
                             if not on:
