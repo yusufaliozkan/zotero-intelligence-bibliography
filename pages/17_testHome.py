@@ -296,27 +296,49 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                        phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
-                        keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
+                        search_terms = re.findall(r'(?:\"[^"]*\"|\w+|\bOR\b|\bAND\b)', search_term)
+
 
                         df_csv = pd.read_csv('all_items.csv')
 
-                        # Search for the entire phrase first
-                        filtered_df = df_csv[
-                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                            (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                        ]
+                        filtered_df = pd.DataFrame()
 
-                        # Search for individual keywords separately and combine the results
-                        for keyword in keyword_filters:
-                            keyword_filter_df = df_csv[
-                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
-                            ]
-                            filtered_df = pd.concat([filtered_df, keyword_filter_df])
+                        split_terms = []
+                        current_group = []
+                        for term in search_terms:
+                            if term.upper() == 'AND' or term.upper() == 'OR':
+                                split_terms.append(current_group)
+                                split_terms.append(term.upper())
+                                current_group = []
+                            else:
+                                current_group.append(term)
+                        split_terms.append(current_group)
 
-                        # Remove duplicates, if any
+                        operator = 'OR'  # Default operator
+                        for item in split_terms:
+                            if isinstance(item, list):
+                                phrase_filter = '|'.join(item)
+                                conditions = []
+                                for term in item:
+                                    if term.startswith('"') and term.endswith('"'):
+                                        term = term.strip('"')
+                                        conditions.append(
+                                            (df_csv['Title'].str.contains(term, case=False, na=False, regex=False)) |
+                                            (df_csv['FirstName2'].str.contains(term, case=False, na=False, regex=False))
+                                        )
+                                    else:
+                                        conditions.append(
+                                            (df_csv['Title'].str.contains(term, case=False, na=False, regex=True)) |
+                                            (df_csv['FirstName2'].str.contains(term, case=False, na=False, regex=True))
+                                        )
+                                if operator == 'OR':
+                                    combined_condition = pd.concat(conditions, axis=1).any(axis=1)
+                                elif operator == 'AND':
+                                    combined_condition = pd.concat(conditions, axis=1).all(axis=1)
+                                else:
+                                    raise ValueError("Invalid operator. Please use 'AND' or 'OR'.")
+                                filtered_df = pd.concat([filtered_df, df_csv[combined_condition]])
+
                         filtered_df = filtered_df.drop_duplicates()
                         
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
