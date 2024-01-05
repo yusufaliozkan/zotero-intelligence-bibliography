@@ -27,7 +27,7 @@ country_names = [
     "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", 'Belgium', 'Kosovo', 'Yugoslavia','Mi̇lli̇ İsti̇hbarat Teşki̇latı', 
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'British', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
-    'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice'
+    'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid'
 ]
 replacements = {
     'Belgian': 'Belgium',
@@ -65,7 +65,8 @@ replacements = {
     'Jewish':'Israel',
     'Finnish':'Finland',
     'Christofascism':'Romania',
-    'Venice':'Italy'
+    'Venice':'Italy',
+    'Abdülhamid':'Turkey'
     }
 
 df_countries['Country'] = ''
@@ -106,7 +107,7 @@ continent_country_names = [
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'British', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
-    'Latin America','Venice', 'Christofascism'
+    'Latin America','Venice', 'Christofascism','Abdülhamid'
 ]
 continent_replacements = {
     'Belgian': 'Belgium',
@@ -145,7 +146,8 @@ continent_replacements = {
     'Finnish':'Finland',
     'Medina':'Saudi Arabia',
     'Venice':'Italy',
-    'Christofascism':'Romania'
+    'Christofascism':'Romania',
+    'Abdülhamid':'Turkey'
     }
 
 df_continent = df_countries.copy()

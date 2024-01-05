@@ -448,6 +448,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if on:
                             st.info('Dashboard function will be available soon!')
                             author_df = filtered_collection_df_authors
+                            author_df
                             publications_by_type = author_df['Publication type'].value_counts()
                             fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                         labels={'x': 'Publication Type', 'y': 'Number of Publications'},
@@ -460,7 +461,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                 labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                 title=f'Publications by Year ({selected_author})')
-                            st.plotly_chart(fig_year_bar)
+                            st.plotly_chart(fig_year_bar) 
 
                         else:
                             for index, row in filtered_collection_df_authors.iterrows():
