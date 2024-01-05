@@ -595,6 +595,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         labels={'x': 'Publication Type', 'y': 'Number of Publications'},
                                         title=f'Publications by Type ({selected_collection})')
                             st.plotly_chart(fig)
+
+                            collection_df = filtered_collection_df.copy()
+                            collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                            publications_by_year = collection_df['Year'].value_counts().sort_index()
+                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                title=f'Publications by Year ({selected_collection})')
+                            st.plotly_chart(fig_year_bar)
                         else:
                             if num_items_collections > 25:
                                 show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
