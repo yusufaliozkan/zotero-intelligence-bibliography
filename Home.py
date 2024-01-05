@@ -351,7 +351,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if on and len(filtered_df) > 0: 
                                 st.info('Dashboard will be available soon!')
                                 search_df = filtered_df.copy()
-                                search_df
+                                publications_by_type = search_df['Publication type'].value_counts()
+                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                            title=f'Publications by Type ({selected_author})')
+                                st.plotly_chart(fig)
 
                             if num_items > 50:
                                 show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
