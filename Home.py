@@ -589,8 +589,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
                         if on:
                             st.info('Dashboard function will be available soon!')
-                            collections_df = filtered_collection_df.copy()
-                            collections_df
+                            collection_df = filtered_collection_df.copy()
+                            publications_by_type = collection_df['Publication type'].value_counts()
+                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                        title=f'Publications by Type ({selected_author})')
+                            st.plotly_chart(fig)
                         else:
                             if num_items_collections > 25:
                                 show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
