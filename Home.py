@@ -444,34 +444,53 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         a = f'{selected_author}_{today}'
                         st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
-                        for index, row in filtered_collection_df_authors.iterrows():
-                            publication_type = row['Publication type']
-                            title = row['Title']
-                            authors = row['FirstName2']
-                            date_published = row['Date published']
-                            link_to_publication = row['Link to publication']
-                            zotero_link = row['Zotero link']
+                        on = st.toggle('Generate dashboard')
+                        if on:
+                            st.info('Dashboard function will be available soon!')
+                            author_df = filtered_collection_df_authors
+                            publications_by_type = author_df['Publication type'].value_counts()
+                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                        title=f'Publications by Type ({selected_author})')
+                            st.plotly_chart(fig)
 
-                            if publication_type == 'Journal article':
-                                published_by_or_in = 'Published in'
-                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                            elif publication_type == 'Book':
-                                published_by_or_in = 'Published by'
-                                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                            else:
-                                published_by_or_in = ''
-                                published_source = ''
+                            author_df = filtered_collection_df_authors
+                            author_df['Year'] = pd.to_datetime(author_df['Date published']).dt.year
+                            publications_by_year = author_df['Year'].value_counts().sort_index()
+                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                title=f'Publications by Year ({selected_author})')
+                            st.plotly_chart(fig_year_bar)
 
-                            formatted_entry = (
-                                '**' + str(publication_type) + '**' + ': ' +
-                                str(title) + ' ' +
-                                '(by ' + '*' + str(authors) + '*' + ') ' +
-                                '(Publication date: ' + str(date_published) + ') ' +
-                                ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                '[[Zotero link]](' + str(zotero_link) + ')'
-                            )
-                            st.write(f"{index + 1}) {formatted_entry}")
+                        else:
+                            for index, row in filtered_collection_df_authors.iterrows():
+                                publication_type = row['Publication type']
+                                title = row['Title']
+                                authors = row['FirstName2']
+                                date_published = row['Date published']
+                                link_to_publication = row['Link to publication']
+                                zotero_link = row['Zotero link']
+
+                                if publication_type == 'Journal article':
+                                    published_by_or_in = 'Published in'
+                                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                elif publication_type == 'Book':
+                                    published_by_or_in = 'Published by'
+                                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                                else:
+                                    published_by_or_in = ''
+                                    published_source = ''
+
+                                formatted_entry = (
+                                    '**' + str(publication_type) + '**' + ': ' +
+                                    str(title) + ' ' +
+                                    '(by ' + '*' + str(authors) + '*' + ') ' +
+                                    '(Publication date: ' + str(date_published) + ') ' +
+                                    ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                                    '[[Publication link]](' + str(link_to_publication) + ') ' +
+                                    '[[Zotero link]](' + str(zotero_link) + ')'
+                                )
+                                st.write(f"{index + 1}) {formatted_entry}")
 
 
             # SEARCH IN COLLECTIONS
@@ -825,372 +844,375 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
     with tab2:
-        st.header('Dashboard')        
-        number0 = st.slider('Select a number collections', 3,30,15)
-        df_collections_2.set_index('Name', inplace=True)
-        df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
-        plot= df_collections_2.head(number0+1)
-        # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
-        plot = plot.reset_index()
+        st.header('Dashboard')
+        on_main_dashboard = st.toggle('Display dashboard') 
+        if on_main_dashboard:      
+            number0 = st.slider('Select a number collections', 3,30,15)
+            df_collections_2.set_index('Name', inplace=True)
+            df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
+            plot= df_collections_2.head(number0+1)
+            # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
+            plot = plot.reset_index()
 
-        plot = plot[plot['Name']!='01 Intelligence history']
-        fig = px.bar(plot, x='Name', y='Number', color='Name')
-        fig.update_layout(
-            autosize=False,
-            width=600,
-            height=600,)
-        fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-        st.plotly_chart(fig, use_container_width = True)
-
-        # Visauls for all items in the library
-        df_csv = pd.read_csv('all_items.csv')
-        df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-        df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
-        df_csv['Date year'] = df_csv['Date year'].fillna('No date')
-        df = df_csv.copy()
-        df_year=df_csv['Date year'].value_counts()
-        df_year=df_year.reset_index()
-        df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-        df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-        df_year=df_year.sort_values(by='Publication year', ascending=True)
-        df_year=df_year.reset_index(drop=True)
-        max_y = int(df_year['Publication year'].max())
-        min_y = int(df_year['Publication year'].min())
-
-        with st.expander('Select parameters', expanded=False):
-            types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
-            years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
-            if st.button('Update dashboard'):
-                df_csv = df_csv[df_csv['Publication type'].isin(types)]
-                df_csv = df_csv[df_csv['Date year'] !='No date']
-                filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
-                df_csv = df_csv.loc[filter]
-                df_year=df_csv['Date year'].value_counts()
-                df_year=df_year.reset_index()
-                df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-                df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-                df_year=df_year.sort_values(by='Publication year', ascending=True)
-                df_year=df_year.reset_index(drop=True)
-
-        df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
-        df_types = df_types.sort_values(['Publication type'], ascending=[False])
-        df_types=df_types.reset_index()
-        df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
-
-        if df_csv['Title'].any() in ("", [], None, 0, False):
-            st.write('No data to visualise')
-            st.stop()
-        col1, col2 = st.columns(2)
-        with col1:
-
-            log0 = st.checkbox('Show in log scale', key='log0')
-
-            if log0:
-                fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type', log_y=True)
-                fig.update_layout(
-                    autosize=False,
-                    width=1200,
-                    height=600,)
-                fig.update_xaxes(tickangle=-70)
-                fig.update_layout(title={'text':'Item types in log scale', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                col1.plotly_chart(fig, use_container_width = True)
-            else:
-                fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type')
-                fig.update_layout(
-                    autosize=False,
-                    width=1200,
-                    height=600,)
-                fig.update_xaxes(tickangle=-70)
-                fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                col1.plotly_chart(fig, use_container_width = True)
-
-        with col2:
-            fig = px.pie(df_types, values='Count', names='Publication type')
-            fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.45, 'yanchor':'top'})
-            col2.plotly_chart(fig, use_container_width = True)
-
-        col1, col2 = st.columns(2)
-        with col1:
-            fig = px.bar(df_year, x='Publication year', y='Count')
-            fig.update_xaxes(tickangle=-70)
+            plot = plot[plot['Name']!='01 Intelligence history']
+            fig = px.bar(plot, x='Name', y='Number', color='Name')
             fig.update_layout(
                 autosize=False,
-                width=1200,
+                width=600,
                 height=600,)
-            fig.update_layout(title={'text':'All items in the library by publication year', 'y':0.95, 'x':0.5, 'yanchor':'top'})
-            col1.plotly_chart(fig, use_container_width = True)
+            fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+            st.plotly_chart(fig, use_container_width = True)
 
-        with col2:
-            max_authors = len(df_authors['Author_name'].unique())
-            num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
-            
-            # Adding a multiselect widget for publication types
-            selected_types = st.multiselect('Select publication types:', df_authors['Publication type'].unique(), default=df_authors['Publication type'].unique())
-            
-            # Filtering data based on selected publication types
-            filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
-            
-            if len(selected_types) == 0:
-                st.write('No results to display')
-            else:
-                publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
-                fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
+            # Visauls for all items in the library
+            df_csv = pd.read_csv('all_items.csv')
+            df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
+            df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+            df = df_csv.copy()
+            df_year=df_csv['Date year'].value_counts()
+            df_year=df_year.reset_index()
+            df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+            df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+            df_year=df_year.sort_values(by='Publication year', ascending=True)
+            df_year=df_year.reset_index(drop=True)
+            max_y = int(df_year['Publication year'].max())
+            min_y = int(df_year['Publication year'].min())
+
+            with st.expander('Select parameters', expanded=False):
+                types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
+                years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
+                if st.button('Update dashboard'):
+                    df_csv = df_csv[df_csv['Publication type'].isin(types)]
+                    df_csv = df_csv[df_csv['Date year'] !='No date']
+                    filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
+                    df_csv = df_csv.loc[filter]
+                    df_year=df_csv['Date year'].value_counts()
+                    df_year=df_year.reset_index()
+                    df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+                    df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+                    df_year=df_year.sort_values(by='Publication year', ascending=True)
+                    df_year=df_year.reset_index(drop=True)
+
+            df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
+            df_types = df_types.sort_values(['Publication type'], ascending=[False])
+            df_types=df_types.reset_index()
+            df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
+
+            if df_csv['Title'].any() in ("", [], None, 0, False):
+                st.write('No data to visualise')
+                st.stop()
+            col1, col2 = st.columns(2)
+            with col1:
+
+                log0 = st.checkbox('Show in log scale', key='log0')
+
+                if log0:
+                    fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type', log_y=True)
+                    fig.update_layout(
+                        autosize=False,
+                        width=1200,
+                        height=600,)
+                    fig.update_xaxes(tickangle=-70)
+                    fig.update_layout(title={'text':'Item types in log scale', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                    col1.plotly_chart(fig, use_container_width = True)
+                else:
+                    fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type')
+                    fig.update_layout(
+                        autosize=False,
+                        width=1200,
+                        height=600,)
+                    fig.update_xaxes(tickangle=-70)
+                    fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                    col1.plotly_chart(fig, use_container_width = True)
+
+            with col2:
+                fig = px.pie(df_types, values='Count', names='Publication type')
+                fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.45, 'yanchor':'top'})
+                col2.plotly_chart(fig, use_container_width = True)
+
+            col1, col2 = st.columns(2)
+            with col1:
+                fig = px.bar(df_year, x='Publication year', y='Count')
+                fig.update_xaxes(tickangle=-70)
                 fig.update_layout(
-                    title=f'Top {num_authors} Authors by Publication Count',
-                    xaxis_title='Author',
-                    yaxis_title='Number of Publications',
-                    xaxis_tickangle=-45,
-                )
-                col2.plotly_chart(fig)
+                    autosize=False,
+                    width=1200,
+                    height=600,)
+                fig.update_layout(title={'text':'All items in the library by publication year', 'y':0.95, 'x':0.5, 'yanchor':'top'})
+                col1.plotly_chart(fig, use_container_width = True)
 
-        col1, col2 = st.columns(2)
-        with col1:
-            number = st.slider('Select a number of publishers', 0, 30, 10)
-            df_publisher = pd.DataFrame(df_csv['Publisher'].value_counts())
-            df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
-            df_publisher = df_publisher.reset_index()
-            df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
-            df_publisher = df_publisher.head(number)
-
-            log1 = st.checkbox('Show in log scale', key='log1')
-            leg1 = st.checkbox('Disable legend', key='leg1', disabled=False)
-
-            if df_publisher['Publisher'].any() in ("", [], None, 0, False):
-                st.write('No publisher to display')
-            else:
-                if log1:
-                    if leg1:
-                        fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
-                        fig.update_layout(
-                            autosize=False,
-                            width=1200,
-                            height=700,
-                            showlegend=False)
-                        fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        col1.plotly_chart(fig, use_container_width = True)
-                    else:
-                        fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
-                        fig.update_layout(
-                            autosize=False,
-                            width=1200,
-                            height=700,
-                            showlegend=True)
-                        fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        col1.plotly_chart(fig, use_container_width = True)
+            with col2:
+                max_authors = len(df_authors['Author_name'].unique())
+                num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
+                
+                # Adding a multiselect widget for publication types
+                selected_types = st.multiselect('Select publication types:', df_authors['Publication type'].unique(), default=df_authors['Publication type'].unique())
+                
+                # Filtering data based on selected publication types
+                filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
+                
+                if len(selected_types) == 0:
+                    st.write('No results to display')
                 else:
-                    if leg1:
-                        fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
-                        fig.update_layout(
-                            autosize=False,
-                            width=1200,
-                            height=700,
-                            showlegend=False)
-                        fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        col1.plotly_chart(fig, use_container_width = True)
-                    else:
-                        fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
-                        fig.update_layout(
-                            autosize=False,
-                            width=1200,
-                            height=700,
-                            showlegend=True)
-                        fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        col1.plotly_chart(fig, use_container_width = True)
-                with st.expander('See publishers'):
-                    row_nu_collections = len(df_publisher.index)        
-                    for i in range(row_nu_collections):
-                        st.caption(df_publisher['Publisher'].iloc[i]
-                        )
+                    publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
+                    fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
+                    fig.update_layout(
+                        title=f'Top {num_authors} Authors by Publication Count',
+                        xaxis_title='Author',
+                        yaxis_title='Number of Publications',
+                        xaxis_tickangle=-45,
+                    )
+                    col2.plotly_chart(fig)
 
-        with col2:
-            number2 = st.slider('Select a number of journals', 0,30,10)
-            df_journal = df_csv.loc[df_csv['Publication type']=='Journal article']
-            df_journal = pd.DataFrame(df_journal['Journal'].value_counts())
-            df_journal = df_journal.sort_values(['Journal'], ascending=[False])
-            df_journal = df_journal.reset_index()
-            df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
-            df_journal = df_journal.head(number2)
+            col1, col2 = st.columns(2)
+            with col1:
+                number = st.slider('Select a number of publishers', 0, 30, 10)
+                df_publisher = pd.DataFrame(df_csv['Publisher'].value_counts())
+                df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
+                df_publisher = df_publisher.reset_index()
+                df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
+                df_publisher = df_publisher.head(number)
 
-            log2 = st.checkbox('Show in log scale', key='log2')
-            leg2 = st.checkbox('Disable legend', key='leg2')
+                log1 = st.checkbox('Show in log scale', key='log1')
+                leg1 = st.checkbox('Disable legend', key='leg1', disabled=False)
 
-            if df_journal['Journal'].any() in ("", [], None, 0, False):
-                st.write('No journal to display')
-            else:
-                if log2:
-                    if leg2:
-                        fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
-                        fig.update_layout(
-                            autosize=False,
-                            width=1200,
-                            height=700,
-                            showlegend=False)
-                        fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        col2.plotly_chart(fig, use_container_width = True)
-                    else:
-                        fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
-                        fig.update_layout(
-                            autosize=False,
-                            width=1200,
-                            height=700,
-                            showlegend=True)
-                        fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        col2.plotly_chart(fig, use_container_width = True)
+                if df_publisher['Publisher'].any() in ("", [], None, 0, False):
+                    st.write('No publisher to display')
                 else:
-                    if leg2:
-                        fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
-                        fig.update_layout(
-                            autosize=False,
-                            width=1200,
-                            height=700,
-                            showlegend=False)
-                        fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        col2.plotly_chart(fig, use_container_width = True)
+                    if log1:
+                        if leg1:
+                            fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
+                            fig.update_layout(
+                                autosize=False,
+                                width=1200,
+                                height=700,
+                                showlegend=False)
+                            fig.update_xaxes(tickangle=-70)
+                            fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                            col1.plotly_chart(fig, use_container_width = True)
+                        else:
+                            fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
+                            fig.update_layout(
+                                autosize=False,
+                                width=1200,
+                                height=700,
+                                showlegend=True)
+                            fig.update_xaxes(tickangle=-70)
+                            fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                            col1.plotly_chart(fig, use_container_width = True)
                     else:
-                        fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
-                        fig.update_layout(
-                            autosize=False,
-                            width=1200,
-                            height=700,
-                            showlegend=True)
-                        fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        col2.plotly_chart(fig, use_container_width = True)
-                with st.expander('See journals'):
-                    row_nu_collections = len(df_journal.index)        
-                    for i in range(row_nu_collections):
-                        st.caption(df_journal['Journal'].iloc[i]
-                        )
-        col1, col2 = st.columns([7,2])
-        with col1:
-            df_countries = pd.read_csv('countries.csv')
-            fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='Count', 
-                        title='Country mentions in titles', color_continuous_scale='Viridis',
-                        width=900, height=700) # Adjust the size of the map here
-            # Display the map
-            fig.show()
-            col1.plotly_chart(fig, use_container_width=True) 
-        with col2:
-            st.markdown('##### Top 15 country names mentioned in titles')
-            fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=600)
-            col2.plotly_chart(fig, use_container_width=True)
-        
-        st.write('---')
-        st.subheader('Named Entity Recognition analysis')
-        st.caption('[What is Named Entity Recognition?](https://medium.com/mysuperai/what-is-named-entity-recognition-ner-and-how-can-i-use-it-2b68cf6f545d)')
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            gpe_counts = pd.read_csv('gpe.csv')
-            fig = px.bar(gpe_counts.head(15), x='GPE', y='count', height=600, title="Top 15 locations mentioned in title & abstract")
-            fig.update_xaxes(tickangle=-65)
-            col1.plotly_chart(fig, use_container_width=True)
-        with col2:
-            person_counts = pd.read_csv('person.csv')
-            fig = px.bar(person_counts.head(15), x='PERSON', y='count', height=600, title="Top 15 person mentioned in title & abstract")
-            fig.update_xaxes(tickangle=-65)
-            col2.plotly_chart(fig, use_container_width=True)
-        with col3:
-            org_counts = pd.read_csv('org.csv')
-            fig = px.bar(org_counts.head(15), x='ORG', y='count', height=600, title="Top 15 organisations mentioned in title & abstract")
-            fig.update_xaxes(tickangle=-65)
-            col3.plotly_chart(fig, use_container_width=True)
+                        if leg1:
+                            fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
+                            fig.update_layout(
+                                autosize=False,
+                                width=1200,
+                                height=700,
+                                showlegend=False)
+                            fig.update_xaxes(tickangle=-70)
+                            fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                            col1.plotly_chart(fig, use_container_width = True)
+                        else:
+                            fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
+                            fig.update_layout(
+                                autosize=False,
+                                width=1200,
+                                height=700,
+                                showlegend=True)
+                            fig.update_xaxes(tickangle=-70)
+                            fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                            col1.plotly_chart(fig, use_container_width = True)
+                    with st.expander('See publishers'):
+                        row_nu_collections = len(df_publisher.index)        
+                        for i in range(row_nu_collections):
+                            st.caption(df_publisher['Publisher'].iloc[i]
+                            )
 
-        st.write('---')
-        df=df_csv.copy()
-        def clean_text (text):
-            text = text.lower() # lowercasing
-            text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-            text = re.sub('[0-9_]', ' ', text) # this removes numbers
-            text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-            return text
-        df['clean_title'] = df['Title'].apply(clean_text)
-        df['clean_abstract'] = df['Abstract'].astype(str).apply(clean_text)
-        df_abs_no = df.dropna(subset=['clean_abstract'])
-        df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-        df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+            with col2:
+                number2 = st.slider('Select a number of journals', 0,30,10)
+                df_journal = df_csv.loc[df_csv['Publication type']=='Journal article']
+                df_journal = pd.DataFrame(df_journal['Journal'].value_counts())
+                df_journal = df_journal.sort_values(['Journal'], ascending=[False])
+                df_journal = df_journal.reset_index()
+                df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
+                df_journal = df_journal.head(number2)
 
-        def tokenization(text):
-            text = re.split('\W+', text)
-            return text
-        df['token_title']=df['clean_title'].apply(tokenization)
-        df['token_abstract']=df['clean_abstract'].apply(tokenization)
-        stopword = nltk.corpus.stopwords.words('english')
+                log2 = st.checkbox('Show in log scale', key='log2')
+                leg2 = st.checkbox('Disable legend', key='leg2')
 
-        SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-            'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-            'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-            'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-            'examines', 'become', 'used', 'journal', 'london', 'review']
-        stopword.extend(SW)
+                if df_journal['Journal'].any() in ("", [], None, 0, False):
+                    st.write('No journal to display')
+                else:
+                    if log2:
+                        if leg2:
+                            fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
+                            fig.update_layout(
+                                autosize=False,
+                                width=1200,
+                                height=700,
+                                showlegend=False)
+                            fig.update_xaxes(tickangle=-70)
+                            fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                            col2.plotly_chart(fig, use_container_width = True)
+                        else:
+                            fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
+                            fig.update_layout(
+                                autosize=False,
+                                width=1200,
+                                height=700,
+                                showlegend=True)
+                            fig.update_xaxes(tickangle=-70)
+                            fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                            col2.plotly_chart(fig, use_container_width = True)
+                    else:
+                        if leg2:
+                            fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
+                            fig.update_layout(
+                                autosize=False,
+                                width=1200,
+                                height=700,
+                                showlegend=False)
+                            fig.update_xaxes(tickangle=-70)
+                            fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                            col2.plotly_chart(fig, use_container_width = True)
+                        else:
+                            fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
+                            fig.update_layout(
+                                autosize=False,
+                                width=1200,
+                                height=700,
+                                showlegend=True)
+                            fig.update_xaxes(tickangle=-70)
+                            fig.update_layout(title={'text':'Top ' + str(number2) + ' journals that publish intelligence articles', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                            col2.plotly_chart(fig, use_container_width = True)
+                    with st.expander('See journals'):
+                        row_nu_collections = len(df_journal.index)        
+                        for i in range(row_nu_collections):
+                            st.caption(df_journal['Journal'].iloc[i]
+                            )
+            col1, col2 = st.columns([7,2])
+            with col1:
+                df_countries = pd.read_csv('countries.csv')
+                fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='Count', 
+                            title='Country mentions in titles', color_continuous_scale='Viridis',
+                            width=900, height=700) # Adjust the size of the map here
+                # Display the map
+                fig.show()
+                col1.plotly_chart(fig, use_container_width=True) 
+            with col2:
+                st.markdown('##### Top 15 country names mentioned in titles')
+                fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=600)
+                col2.plotly_chart(fig, use_container_width=True)
+            
+            st.write('---')
+            st.subheader('Named Entity Recognition analysis')
+            st.caption('[What is Named Entity Recognition?](https://medium.com/mysuperai/what-is-named-entity-recognition-ner-and-how-can-i-use-it-2b68cf6f545d)')
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                gpe_counts = pd.read_csv('gpe.csv')
+                fig = px.bar(gpe_counts.head(15), x='GPE', y='count', height=600, title="Top 15 locations mentioned in title & abstract")
+                fig.update_xaxes(tickangle=-65)
+                col1.plotly_chart(fig, use_container_width=True)
+            with col2:
+                person_counts = pd.read_csv('person.csv')
+                fig = px.bar(person_counts.head(15), x='PERSON', y='count', height=600, title="Top 15 person mentioned in title & abstract")
+                fig.update_xaxes(tickangle=-65)
+                col2.plotly_chart(fig, use_container_width=True)
+            with col3:
+                org_counts = pd.read_csv('org.csv')
+                fig = px.bar(org_counts.head(15), x='ORG', y='count', height=600, title="Top 15 organisations mentioned in title & abstract")
+                fig.update_xaxes(tickangle=-65)
+                col3.plotly_chart(fig, use_container_width=True)
 
-        def remove_stopwords(text):
-            text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-            text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-            return text
-        df['stopword']=df['token_title'].apply(remove_stopwords)
-        df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
+            st.write('---')
+            df=df_csv.copy()
+            def clean_text (text):
+                text = text.lower() # lowercasing
+                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                return text
+            df['clean_title'] = df['Title'].apply(clean_text)
+            df['clean_abstract'] = df['Abstract'].astype(str).apply(clean_text)
+            df_abs_no = df.dropna(subset=['clean_abstract'])
+            df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+            df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
 
-        wn = nltk.WordNetLemmatizer()
-        def lemmatizer(text):
-            text = [wn.lemmatize(word) for word in text]
-            return text
+            def tokenization(text):
+                text = re.split('\W+', text)
+                return text
+            df['token_title']=df['clean_title'].apply(tokenization)
+            df['token_abstract']=df['clean_abstract'].apply(tokenization)
+            stopword = nltk.corpus.stopwords.words('english')
 
-        df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
-        df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
+            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                'examines', 'become', 'used', 'journal', 'london', 'review']
+            stopword.extend(SW)
 
-        listdf = df['lemma_title']
-        listdf_abstract = df['lemma_abstract']
+            def remove_stopwords(text):
+                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                return text
+            df['stopword']=df['token_title'].apply(remove_stopwords)
+            df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
 
-        st.subheader('Wordcloud')
-        wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
-        if wordcloud_opt=='Titles':
-            df_list = [item for sublist in listdf for item in sublist]
-            string = pd.Series(df_list).str.cat(sep=' ')
-            wordcloud_texts = string
-            wordcloud_texts_str = str(wordcloud_texts)
-            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-            plt.figure(figsize=(20,8))
-            plt.axis('off')
-            plt.title('Top words in title (Intelligence bibliography collection)')
-            plt.imshow(wordcloud)
-            plt.axis("off")
-            plt.show()
-            st.set_option('deprecation.showPyplotGlobalUse', False)
-            st.pyplot() 
+            wn = nltk.WordNetLemmatizer()
+            def lemmatizer(text):
+                text = [wn.lemmatize(word) for word in text]
+                return text
+
+            df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
+            df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
+
+            listdf = df['lemma_title']
+            listdf_abstract = df['lemma_abstract']
+
+            st.subheader('Wordcloud')
+            wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+            if wordcloud_opt=='Titles':
+                df_list = [item for sublist in listdf for item in sublist]
+                string = pd.Series(df_list).str.cat(sep=' ')
+                wordcloud_texts = string
+                wordcloud_texts_str = str(wordcloud_texts)
+                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                plt.figure(figsize=(20,8))
+                plt.axis('off')
+                plt.title('Top words in title (Intelligence bibliography collection)')
+                plt.imshow(wordcloud)
+                plt.axis("off")
+                plt.show()
+                st.set_option('deprecation.showPyplotGlobalUse', False)
+                st.pyplot() 
+            else:
+                st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
+                df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
+                string = pd.Series(df_list_abstract).str.cat(sep=' ')
+                wordcloud_texts = string
+                wordcloud_texts_str = str(wordcloud_texts)
+                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                plt.figure(figsize=(20,8))
+                plt.axis('off')
+                plt.title('Top words in abstract (Intelligence bibliography collection)')
+                plt.imshow(wordcloud)
+                plt.axis("off")
+                plt.show()
+                st.set_option('deprecation.showPyplotGlobalUse', False)
+                st.pyplot() 
+
+            # Bring everything in the library
+
+            df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
+
+            st.header('Items in the library by type: ')
+            
+            df_types = df_types.sort_values(['Publication type'], ascending=[False])
+            plot2= df_types.head(10)
+
+            st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
         else:
-            st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
-            df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
-            string = pd.Series(df_list_abstract).str.cat(sep=' ')
-            wordcloud_texts = string
-            wordcloud_texts_str = str(wordcloud_texts)
-            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-            plt.figure(figsize=(20,8))
-            plt.axis('off')
-            plt.title('Top words in abstract (Intelligence bibliography collection)')
-            plt.imshow(wordcloud)
-            plt.axis("off")
-            plt.show()
-            st.set_option('deprecation.showPyplotGlobalUse', False)
-            st.pyplot() 
-
-        # Bring everything in the library
-
-        df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
-
-        st.header('Items in the library by type: ')
-        
-        df_types = df_types.sort_values(['Publication type'], ascending=[False])
-        plot2= df_types.head(10)
-
-        st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
-
+            st.info('Toggle to see the dashboard!')
     st.write('---')
     with st.expander('Acknowledgements'):
         st.subheader('Acknowledgements')
