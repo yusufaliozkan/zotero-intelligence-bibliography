@@ -593,7 +593,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             publications_by_type = collection_df['Publication type'].value_counts()
                             fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                         labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                        title=f'Publications by Type ({selected_author})')
+                                        title=f'Publications by Type ({selected_collection})')
                             st.plotly_chart(fig)
                         else:
                             if num_items_collections > 25:
