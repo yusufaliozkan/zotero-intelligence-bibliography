@@ -593,19 +593,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.info(f'Dashboard for {selected_collection}')
                             collection_df = filtered_collection_df.copy()
 
-                            publications_by_type = collection_df['Publication type'].value_counts()
-                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                        title=f'Publications by Type ({selected_collection})')
-                            st.plotly_chart(fig)
-
-                            collection_df = filtered_collection_df.copy()
-                            collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                            publications_by_year = collection_df['Year'].value_counts().sort_index()
-                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                title=f'Publications by Year ({selected_collection})')
-                            st.plotly_chart(fig_year_bar)
+                            col1, col2 = st.columns(2)
+                            with col1:
+                                publications_by_type = collection_df['Publication type'].value_counts()
+                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                            title=f'Publications by Type ({selected_collection})')
+                                col1.plotly_chart(fig)
+                            with col2:
+                                collection_df = filtered_collection_df.copy()
+                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Year ({selected_collection})')
+                                col2.plotly_chart(fig_year_bar)
                         
                             collection_author_df = filtered_collection_df.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
