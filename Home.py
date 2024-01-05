@@ -593,82 +593,64 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.info(f'Dashboard for {selected_collection}')
                             collection_df = filtered_collection_df.copy()
 
-                            col1, col2 = st.columns(2)
-                            with col1:
-                                publications_by_type = collection_df['Publication type'].value_counts()
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type ({selected_collection})')
-                                col1.plotly_chart(fig, use_container_width = True)
-                            with col2:
-                                collection_df = filtered_collection_df.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                                publications_by_year = collection_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year ({selected_collection})')
-                                col2.plotly_chart(fig_year_bar, use_container_width = True)
-                            col1, col2 = st.columns(2)
-                            with col1:
-                                collection_author_df = filtered_collection_df.copy()
-                                collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                                collection_author_df = collection_author_df.explode('Author_name')
-                                collection_author_df.reset_index(drop=True, inplace=True)
-                                collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
-                                collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                                fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count ({selected_collection})',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
-                                )
-                                col1.plotly_chart(fig, use_container_width = True)
-                            with col2:
-                                author_df = filtered_collection_df.copy()
-                                def clean_text (text):
-                                    text = text.lower() # lowercasing
-                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                    return text
-                                author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                                author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                def tokenization(text):
-                                    text = re.split('\W+', text)
-                                    return text    
-                                author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                                stopword = nltk.corpus.stopwords.words('english')
-                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                    'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                def remove_stopwords(text):
-                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                    return text
-                                author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                                wn = nltk.WordNetLemmatizer()
-                                def lemmatizer(text):
-                                    text = [wn.lemmatize(word) for word in text]
-                                    return text
-                                author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                                listdf = author_df['lemma_title']
-                                df_list = [item for sublist in listdf for item in sublist]
-                                string = pd.Series(df_list).str.cat(sep=' ')
-                                wordcloud_texts = string
-                                wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                plt.figure(figsize=(20,8))
-                                plt.axis('off')
-                                plt.title(f"Word Cloud for Titles in ({selected_collection})")
-                                plt.imshow(wordcloud)
-                                plt.axis("off")
-                                plt.show()
-                                st.set_option('deprecation.showPyplotGlobalUse', False)
-                                col2.pyplot(use_container_width = True)
+                            publications_by_type = collection_df['Publication type'].value_counts()
+                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                        title=f'Publications by Type ({selected_collection})')
+                            st.plotly_chart(fig)
+
+                            collection_df = filtered_collection_df.copy()
+                            collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                            publications_by_year = collection_df['Year'].value_counts().sort_index()
+                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                title=f'Publications by Year ({selected_collection})')
+                            st.plotly_chart(fig_year_bar)
+
+                            author_df = filtered_collection_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles in ({selected_collection})")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
 
                         else:
                             if not on:
