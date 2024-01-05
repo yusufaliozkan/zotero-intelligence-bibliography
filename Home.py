@@ -607,7 +607,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                     labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                     title=f'Publications by Year ({selected_collection})')
-                                col1.plotly_chart(fig_year_bar)
+                                col1.plotly_chart(fig_year_bar, use_container_width = True)
                             with col2:
                                 collection_author_df = filtered_collection_df.copy()
                                 collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
@@ -622,7 +622,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     yaxis_title='Number of Publications',
                                     xaxis_tickangle=-45,
                                 )
-                                col2.plotly_chart(fig)
+                                col2.plotly_chart(fig, use_container_width = True)
 
                             author_df = filtered_collection_df.copy()
                             def clean_text (text):
@@ -667,7 +667,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.axis("off")
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
-                            st.pyplot()
+                            st.pyplot(use_container_width = True)
 
                         else:
                             if not on:
