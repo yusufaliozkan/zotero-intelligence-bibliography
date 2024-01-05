@@ -593,6 +593,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.info(f'Dashboard for {selected_collection}')
                             collection_df = filtered_collection_df.copy()
                             collection_author_df = df_authors.copy()
+                            collection_author_df
                             publications_by_type = collection_df['Publication type'].value_counts()
                             fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                         labels={'x': 'Publication Type', 'y': 'Number of Publications'},
