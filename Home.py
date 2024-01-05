@@ -586,6 +586,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         a = f'{selected_collection}_{today}'
                         st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
+                        on = st.toggle('Generate dashboard')
+                        if on:
+                            st.info('Dashboard function will be available soon!')
                         if num_items_collections > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
                             if show_first_25:
