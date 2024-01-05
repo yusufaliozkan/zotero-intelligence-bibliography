@@ -460,7 +460,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                 labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                 title=f'Publications by Year ({selected_author})')
-                            st.plotly_chart(fig_year_bar)
+                            st.plotly_chart(fig_year_bar) 
 
                         else:
                             for index, row in filtered_collection_df_authors.iterrows():
