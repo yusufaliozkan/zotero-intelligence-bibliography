@@ -26,7 +26,6 @@ import PIL
 from PIL import Image, ImageDraw, ImageFilter
 import json
 from authors_dict import df_authors, name_replacements
-from copyright 
 
 # Connecting Zotero with API 
 library_id = '2514686'
