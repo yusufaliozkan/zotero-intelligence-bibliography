@@ -45,7 +45,7 @@ with st.sidebar:
         """
         <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
         src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-        © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+        © 2024 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
         """
         )
     with st.expander('Source code'):
@@ -263,7 +263,7 @@ with tab1:
         min_year = df_gs['date'].dt.year.min()
         current_year = pd.Timestamp.now().year
 
-        slider = st.slider('Select a year', 2022, max_year, current_year)
+        slider = st.slider('Select a year', 2024, max_year, current_year)
         slider = str(slider)
         df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
         ap = ' (in ' + slider+')'
@@ -417,6 +417,6 @@ components.html(
 """
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
 src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-© 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+© 2024 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 """
 )

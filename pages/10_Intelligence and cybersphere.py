@@ -52,7 +52,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             """
             <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
             src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-            © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+            © 2024 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
             """
             )
         with st.expander('Source code'):
@@ -608,6 +608,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     """
     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
     src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-    © 2022 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+    © 2024 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
     """
     )
