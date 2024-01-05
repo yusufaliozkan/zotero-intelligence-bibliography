@@ -666,7 +666,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 yaxis_title='Number of Publications',
                                 xaxis_tickangle=-45,
                             )
-                            col2.plotly_chart(fig)
+                            st.plotly_chart(fig)
 
                         else:
                             if not on:
