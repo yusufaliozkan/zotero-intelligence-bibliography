@@ -418,7 +418,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
                                 plt.figure(figsize=(20,8))
                                 plt.axis('off')
-                                plt.title(f"Word Cloud for Titles in ({selected_collection})")
+                                plt.title(f"Word Cloud for Titles")
                                 plt.imshow(wordcloud)
                                 plt.axis("off")
                                 plt.show()
