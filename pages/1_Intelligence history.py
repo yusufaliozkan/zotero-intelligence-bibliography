@@ -20,6 +20,7 @@ from gsheetsdb import connect
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
+from custom_component import display_custom_license
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
