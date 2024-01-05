@@ -349,7 +349,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             on = st.toggle('Generate dashboard')
                             if on and len(filtered_df) > 0: 
-                                st.info(f'Dashboard for {phrase_filter}')
+                                st.info(f'Dashboard for search terms: {phrase_filter}')
                                 search_df = filtered_df.copy()
                                 publications_by_type = search_df['Publication type'].value_counts()
                                 fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
