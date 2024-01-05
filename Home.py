@@ -600,14 +600,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             labels={'x': 'Publication Type', 'y': 'Number of Publications'},
                                             title=f'Publications by Type ({selected_collection})')
                                 col1.plotly_chart(fig)
-
+                            with col2:
                                 collection_df = filtered_collection_df.copy()
                                 collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                                 publications_by_year = collection_df['Year'].value_counts().sort_index()
                                 fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                     labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                     title=f'Publications by Year ({selected_collection})')
-                                col1.plotly_chart(fig_year_bar)
+                                col2.plotly_chart(fig_year_bar)
                         
                             collection_author_df = filtered_collection_df.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
