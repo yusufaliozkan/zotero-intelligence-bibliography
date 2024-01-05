@@ -347,6 +347,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             a = 'search-result-' + today
                             st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
+                            on = st.toggle('Generate dashboard')
+                            if on:
+                                st.info('Dashboard will be available soon!')
                             if num_items > 50:
                                 show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
                                 if show_first_50:
