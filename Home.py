@@ -354,8 +354,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 publications_by_type = search_df['Publication type'].value_counts()
                                 fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                             labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type ({search_terms})')
+                                            title=f'Publications by Type')
                                 st.plotly_chart(fig)
+
+                                search_df = filtered_df.copy()
+                                search_df['Year'] = pd.to_datetime(search_df['Date published']).dt.year
+                                publications_by_year = search_df['Year'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Year')
+                                st.plotly_chart(fig_year_bar)
 
                             if num_items > 50:
                                 show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
