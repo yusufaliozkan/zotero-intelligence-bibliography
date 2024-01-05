@@ -463,16 +463,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.plotly_chart(fig_year_bar)
 
                             author_df = filtered_collection_df_authors
-                            titles_text = ' '.join(title for title in author_df['Title'] if pd.notnull(title))
-                            wordcloud = WordCloud(width=800, height=400, background_color='white').generate(titles_text)
-                            st.set_option('deprecation.showPyplotGlobalUse', False)
-                            st.header(f"Word Cloud for Titles by {selected_author}")
-                            plt.figure(figsize=(10, 5))
-                            plt.imshow(wordcloud, interpolation='bilinear')
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            st.subheader('Wordcloud')
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
                             plt.axis('off')
-                            st.pyplot()
-
-
+                            plt.title('Top words in title (Intelligence bibliography collection)')
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot() 
                         else:
                             for index, row in filtered_collection_df_authors.iterrows():
                                 publication_type = row['Publication type']
