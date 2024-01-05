@@ -588,7 +588,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         on = st.toggle('Generate dashboard')
                         if on:
-                            st.info(f'Dashboard for {filtered_collection_df}')
+                            st.info(f'Dashboard for {selected_collection}')
                             collection_df = filtered_collection_df.copy()
                             publications_by_type = collection_df['Publication type'].value_counts()
                             fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
