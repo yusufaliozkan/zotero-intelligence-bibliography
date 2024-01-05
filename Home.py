@@ -364,6 +364,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                     labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                     title=f'Publications by Year')
                                 st.plotly_chart(fig_year_bar)
+                            
+                                search_df = filtered_df.copy()
+                                search_df['Author_name'] = search_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                                search_df = search_df.explode('Author_name')
+                                search_df.reset_index(drop=True, inplace=True)
+                                search_df['Author_name'] = search_df['Author_name'].map(name_replacements).fillna(search_df['Author_name'])
+                                search_df = search_df['Author_name'].value_counts().head(10)
+                                fig = px.bar(search_df, x=search_df.index, y=search_df.values)
+                                fig.update_layout(
+                                    title=f'Top 10 Authors by Publication Count',
+                                    xaxis_title='Author',
+                                    yaxis_title='Number of Publications',
+                                    xaxis_tickangle=-45,
+                                )
+                                st.plotly_chart(fig)
+                        
 
                             if num_items > 50:
                                 show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
