@@ -189,7 +189,7 @@ continent_dict = {
     "Belgium": "Europe",
     "Belize": "North America",
     "Benin": "Africa",
-    "Bhutan": "Asia",
+    "Bhutan": "Asia", 
     "Bolivia": "South America",
     "Bosnia and Herzegovina": "Europe",
     "Botswana": "Africa",
