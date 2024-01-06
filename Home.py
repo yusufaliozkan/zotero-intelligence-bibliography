@@ -852,44 +852,90 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.plotly_chart(fig)
 
-                        if num_items_collections > 25:
-                            show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
-                            if show_first_25:
-                                filtered_type_df = filtered_type_df.head(25)                            
+                            author_df = type_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles in ({selected_type})")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
 
-                        articles_list = []  # Store articles in a list
-                        for index, row in filtered_type_df.iterrows():
-                            formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                            articles_list.append(formatted_entry)                     
-                        
-                        for index, row in filtered_type_df.iterrows():
-                            publication_type = row['Publication type']
-                            title = row['Title']
-                            authors = row['FirstName2']
-                            date_published = row['Date published']
-                            link_to_publication = row['Link to publication']
-                            zotero_link = row['Zotero link']
+                        else:
+                            if num_items_collections > 25:
+                                show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
+                                if show_first_25:
+                                    filtered_type_df = filtered_type_df.head(25)                            
 
-                            if publication_type == 'Journal article':
-                                published_by_or_in = 'Published in'
-                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                            elif publication_type == 'Book':
-                                published_by_or_in = 'Published by'
-                                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                            else:
-                                published_by_or_in = ''
-                                published_source = ''
+                            articles_list = []  # Store articles in a list
+                            for index, row in filtered_type_df.iterrows():
+                                formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                                articles_list.append(formatted_entry)                     
+                            
+                            for index, row in filtered_type_df.iterrows():
+                                publication_type = row['Publication type']
+                                title = row['Title']
+                                authors = row['FirstName2']
+                                date_published = row['Date published']
+                                link_to_publication = row['Link to publication']
+                                zotero_link = row['Zotero link']
 
-                            formatted_entry = (
-                                '**' + str(publication_type) + '**' + ': ' +
-                                str(title) + ' ' +
-                                '(by ' + '*' + str(authors) + '*' + ') ' +
-                                '(Publication date: ' + str(date_published) + ') ' +
-                                ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                '[[Zotero link]](' + str(zotero_link) + ')'
-                            )
-                            st.write(f"{index + 1}) {formatted_entry}")
+                                if publication_type == 'Journal article':
+                                    published_by_or_in = 'Published in'
+                                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                elif publication_type == 'Book':
+                                    published_by_or_in = 'Published by'
+                                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                                else:
+                                    published_by_or_in = ''
+                                    published_source = ''
+
+                                formatted_entry = (
+                                    '**' + str(publication_type) + '**' + ': ' +
+                                    str(title) + ' ' +
+                                    '(by ' + '*' + str(authors) + '*' + ') ' +
+                                    '(Publication date: ' + str(date_published) + ') ' +
+                                    ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                                    '[[Publication link]](' + str(link_to_publication) + ') ' +
+                                    '[[Zotero link]](' + str(zotero_link) + ')'
+                                )
+                                st.write(f"{index + 1}) {formatted_entry}")
 
             # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
