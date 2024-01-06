@@ -827,12 +827,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         on = st.toggle('Generate dashboard')
                         if on and len (filtered_type_df) > 0:
-                            filtered_type_df
+                            type_df = filtered_type_df.copy()
+                            collection_df = type_df.copy()
+                            collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                            publications_by_year = collection_df['Year'].value_counts().sort_index()
+                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                title=f'Publications by Year ({selected_type})')
+                            st.plotly_chart(fig_year_bar)
 
                         if num_items_collections > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
                             if show_first_25:
-                                filtered_type_df = filtered_type_df.head(25)
+                                filtered_type_df = filtered_type_df.head(25)                            
 
                         articles_list = []  # Store articles in a list
                         for index, row in filtered_type_df.iterrows():
