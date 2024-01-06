@@ -825,6 +825,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         a = f'{selected_type}_{today}'
                         st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
+                        on = st.toggle('Generate dashboard')
+                        if on and len (filtered_type_df) > 0:
+                            filtered_type_df
+
                         if num_items_collections > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
                             if show_first_25:
