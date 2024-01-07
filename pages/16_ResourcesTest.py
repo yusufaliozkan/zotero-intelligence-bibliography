@@ -96,7 +96,7 @@ with col1:
 
     df = df[df['Status'] == 'Active']
     df = df.sort_values(by='Institution')
-    df
+    df_plot = df.copy()
 
     def display_numbered_list(programs, column_name, show_country=False, show_programme_level=True):
         counter = 1
@@ -243,7 +243,7 @@ with col1:
                             st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
 
                     display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
-
+    df_plot
 
 with col2:
     with st.expander('Collections', expanded=True):
