@@ -29,7 +29,10 @@ st.set_page_config(layout = "wide",
 
 st.title("Intelligence studies network")
 st.header('Resources on intelligence studies')
-st.info('This page lists institutions, academic programs, and  other resources on intelligence studies.')
+st.info('''
+        This page lists institutions, academic programs, and  other resources on intelligence studies. 
+        **Please note that this list may not be complete. If you have suggestions, please get in touch!**
+        ''')
 
 
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
