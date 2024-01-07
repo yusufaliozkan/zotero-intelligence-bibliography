@@ -245,6 +245,27 @@ with col1:
                     display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
     df_plot
 
+    df_plot = df_plot.groupby(['Country', 'Type']).size().reset_index(name='Count')
+    country_totals = df_plot.groupby('Country')['Count'].sum().reset_index(name='Total_Count')
+    sorted_countries = country_totals.sort_values(by='Total_Count', ascending=False)['Country'].tolist()
+
+    # Sort country_program_counts based on the total count within each country
+    country_program_counts = country_program_counts.merge(country_totals, on='Country')
+    country_program_counts = country_program_counts.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
+
+    # Create the plot
+    fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Type',
+                category_orders={"Type": sorted(programme_levels)})
+
+    # Set the order of countries in the plot
+    fig.update_layout(
+        title='Number of Academic Programs by Country',
+        xaxis_title='Number of Programs',
+        yaxis_title='Country',
+        yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries}  # Set the desired order
+    )
+    st.plotly_chart(fig)
+
 with col2:
     with st.expander('Collections', expanded=True):
         st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
