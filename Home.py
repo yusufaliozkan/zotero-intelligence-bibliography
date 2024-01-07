@@ -912,7 +912,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 publication_type = row['Publication type']
                                 title = row['Title']
                                 authors = row['FirstName2']
-                                date_published = row['Date published']
+                                date_published = row['Date published'] 
                                 link_to_publication = row['Link to publication']
                                 zotero_link = row['Zotero link']
 
