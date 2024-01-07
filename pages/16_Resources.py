@@ -31,7 +31,7 @@ st.title("Intelligence studies network")
 st.header('Resources on intelligence studies')
 st.info('''
         This page lists institutions, academic programs, and  other resources on intelligence studies. 
-        **Please note that this list may not be complete. If you have suggestions, please get in touch!**
+        **Please note that this list may not be complete. If you have suggestions, please (get in touch)[https://forms.gle/qjWwpysJpTWCJh1c7]!**
         ''')
 
 
