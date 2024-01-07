@@ -260,7 +260,7 @@ with col1:
     # Set the order of countries in the plot
     fig.update_layout(
         title='Number of Academic Institutions & Programs by Country',
-        xaxis_title='Number of Programs',
+        xaxis_title='Number of Institutions & Programs',
         yaxis_title='Country',
         yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries}  # Set the desired order
     )
