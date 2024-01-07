@@ -111,7 +111,7 @@ continent_country_names = [
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia' 
 ]
 continent_replacements = {
-    'Belgian': 'Belgium', 
+    'Belgian': 'Belgium',
     'Turkish': 'Turkey',
     'British': 'United Kingdom',
     'Portuguese': 'Portugal',
