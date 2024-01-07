@@ -29,7 +29,10 @@ st.set_page_config(layout = "wide",
 
 st.title("Intelligence studies network")
 st.header('Resources on intelligence studies')
-st.info('This page lists institutions, academic programs, and  other resources on intelligence studies.')
+st.info('''
+        This page lists institutions, academic programs, and  other resources on intelligence studies. 
+        **Please note that this list may not be complete. If you have suggestions, please [get in touch](https://forms.gle/qjWwpysJpTWCJh1c7)!**
+        ''')
 
 
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
@@ -96,6 +99,7 @@ with col1:
 
     df = df[df['Status'] == 'Active']
     df = df.sort_values(by='Institution')
+    df_plot = df.copy()
 
     def display_numbered_list(programs, column_name, show_country=False, show_programme_level=True):
         counter = 1
@@ -190,19 +194,20 @@ with col1:
                         country_program_counts = country_program_counts.merge(country_totals, on='Country')
                         country_program_counts = country_program_counts.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
 
+                        sorted_countries_reverse = sorted_countries[::-1]  # Reversing the list
+
                         # Create the plot
                         fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Sub_type',
                                     category_orders={"Sub_type": sorted(programme_levels)})
 
-                        # Set the order of countries in the plot
+                        # Set the order of countries in the plot (reversed)
                         fig.update_layout(
                             title='Number of Academic Programs by Country',
                             xaxis_title='Number of Programs',
                             yaxis_title='Country',
-                            yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries}  # Set the desired order
+                            yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries_reverse}  # Set the reversed order
                         )
                         st.plotly_chart(fig)
-
                     else:
                         st.write('The chart is hidden')
 
@@ -242,6 +247,29 @@ with col1:
                             st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
 
                     display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
+
+    df_plot = df_plot[df_plot['Type'] != 'Government institutions']
+    df_plot = df_plot.groupby(['Country', 'Type']).size().reset_index(name='Count')
+    country_totals = df_plot.groupby('Country')['Count'].sum().reset_index(name='Total_Count')
+    sorted_countries = country_totals.sort_values(by='Total_Count', ascending=False)['Country'].tolist()
+
+    # Sort country_program_counts based on the total count within each country
+    df_plot = df_plot.merge(country_totals, on='Country')
+    df_plot = df_plot.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
+    sorted_countries_reverse = sorted_countries[::-1]  # Reversing the list
+
+    # Create the plot
+    fig = px.bar(df_plot, x='Count', y='Country', orientation='h', color='Type',
+                    category_orders={"Type": sorted(programme_levels)})
+
+    # Set the order of countries in the plot (reversed)
+    fig.update_layout(
+        title='Number of Academic Institutions & Programs by Country',
+        xaxis_title='Number of Institutions & Programs',
+        yaxis_title='Country',
+        yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries_reverse}  # Set the reversed order
+    )
+    st.plotly_chart(fig)
 
 with col2:
     with st.expander('Collections', expanded=True):
