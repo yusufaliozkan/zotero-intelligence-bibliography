@@ -190,6 +190,7 @@ with col1:
                         # Sort country_program_counts based on the total count within each country
                         country_program_counts = country_program_counts.merge(country_totals, on='Country')
                         country_program_counts = country_program_counts.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
+                        country_program_counts = country_program_counts[::-1]
 
                         # Create the plot
                         fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Sub_type',
