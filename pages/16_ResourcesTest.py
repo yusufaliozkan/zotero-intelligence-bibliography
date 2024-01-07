@@ -252,17 +252,18 @@ with col1:
     # Sort country_program_counts based on the total count within each country
     df_plot = df_plot.merge(country_totals, on='Country')
     df_plot = df_plot.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
+    sorted_countries_reverse = sorted_countries[::-1]  # Reversing the list
 
     # Create the plot
     fig = px.bar(df_plot, x='Count', y='Country', orientation='h', color='Type',
-                category_orders={"Type": sorted(programme_levels)})
+                    category_orders={"Type": sorted(programme_levels)})
 
-    # Set the order of countries in the plot
+    # Set the order of countries in the plot (reversed)
     fig.update_layout(
         title='Number of Academic Institutions & Programs by Country',
         xaxis_title='Number of Institutions & Programs',
         yaxis_title='Country',
-        yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries}  # Set the desired order
+        yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries_reverse}  # Set the reversed order
     )
     st.plotly_chart(fig)
 
