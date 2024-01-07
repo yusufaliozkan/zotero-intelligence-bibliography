@@ -96,6 +96,7 @@ with col1:
 
     df = df[df['Status'] == 'Active']
     df = df.sort_values(by='Institution')
+    df
 
     def display_numbered_list(programs, column_name, show_country=False, show_programme_level=True):
         counter = 1
@@ -243,7 +244,7 @@ with col1:
 
                     display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
-    df
+
 with col2:
     with st.expander('Collections', expanded=True):
         st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
