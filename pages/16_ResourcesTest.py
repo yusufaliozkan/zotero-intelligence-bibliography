@@ -250,11 +250,11 @@ with col1:
     sorted_countries = country_totals.sort_values(by='Total_Count', ascending=False)['Country'].tolist()
 
     # Sort country_program_counts based on the total count within each country
-    country_program_counts = country_program_counts.merge(country_totals, on='Country')
-    country_program_counts = country_program_counts.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
+    df_plot = df_plot.merge(country_totals, on='Country')
+    df_plot = df_plot.sort_values(by=['Total_Count', 'Count'], ascending=[False, False])
 
     # Create the plot
-    fig = px.bar(country_program_counts, x='Count', y='Country', orientation='h', color='Type',
+    fig = px.bar(df_plot, x='Count', y='Country', orientation='h', color='Type',
                 category_orders={"Type": sorted(programme_levels)})
 
     # Set the order of countries in the plot
