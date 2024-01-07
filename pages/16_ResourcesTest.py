@@ -243,8 +243,8 @@ with col1:
                             st.write(f'**{len(type_programs)} {prog_type} found in {num_unique_countries} countries**')
 
                     display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
-    df_plot
 
+    df_plot = df_plot[df_plot['Type'] != 'Government institutions']
     df_plot = df_plot.groupby(['Country', 'Type']).size().reset_index(name='Count')
     country_totals = df_plot.groupby('Country')['Count'].sum().reset_index(name='Total_Count')
     sorted_countries = country_totals.sort_values(by='Total_Count', ascending=False)['Country'].tolist()
