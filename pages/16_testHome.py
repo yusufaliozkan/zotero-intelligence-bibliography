@@ -304,19 +304,36 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         include_abstracts = st.checkbox('Search in abstracts too')
 
-                        # Search for the entire phrase first
-                        filtered_df = df_csv[
-                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                            (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                        ]
-
-                        # Search for individual keywords separately and combine the results
-                        for keyword in keyword_filters:
-                            keyword_filter_df = df_csv[
-                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
+                        if include_abstracts:
+                            # Search for the entire phrase first
+                            filtered_df = df_csv[
+                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
+                                (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
+                                (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
                             ]
-                            filtered_df = pd.concat([filtered_df, keyword_filter_df])
+
+                            # Search for individual keywords separately and combine the results
+                            for keyword in keyword_filters:
+                                keyword_filter_df = df_csv[
+                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
+                                    (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) |
+                                    (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
+                                ]
+                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
+                        else:
+                            # Search for the entire phrase first
+                            filtered_df = df_csv[
+                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
+                                (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                            ]
+
+                            # Search for individual keywords separately and combine the results
+                            for keyword in keyword_filters:
+                                keyword_filter_df = df_csv[
+                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
+                                    (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
+                                ]
+                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
 
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
