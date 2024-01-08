@@ -485,14 +485,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                                     return highlighted_text
                                     
-                                    return highlighted_text
-
                                 # Display the numbered list using Markdown syntax
 
                                 for i, article in enumerate(articles_list, start=1):
                                     # Highlight the search terms in the article entry before displaying it
                                     highlighted_article = highlight_terms(article, search_terms)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                                    if st.checkbox(f"Display abstract for article {i}"):
+                                        st.caption(f"**Abstract**: {abstracts_list[i - 1]}")
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
