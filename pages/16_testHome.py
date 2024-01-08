@@ -302,27 +302,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         df_csv = pd.read_csv('all_items.csv')
 
-                        include_abstracts = st.checkbox('Include search keywords in abstracts', value=False)
-
-                        search_columns = ['Title', 'FirstName2']
-                        if include_abstracts:
-                            search_columns.append('Abstract')
-
-                        if include_abstracts:
-                            filtered_df = df_csv[df_csv[search_columns].apply(lambda row: row.str.contains(phrase_filter, case=False, na=False, regex=True)).any(axis=1)]
-                        else:
-                            filtered_df = df_csv[df_csv[search_columns[:-1]].apply(lambda row: row.str.contains(phrase_filter, case=False, na=False, regex=True)).any(axis=1)]
-
                         # Search for the entire phrase first
                         filtered_df = df_csv[
                             (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                            (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                            (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                            (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
                         ]
 
                         # Search for individual keywords separately and combine the results
                         for keyword in keyword_filters:
-                            keyword_filter_df = df_csv[df_csv[search_columns].apply(lambda row: row.str.contains(keyword, case=False, na=False, regex=True)).any(axis=1)]
+                            keyword_filter_df = df_csv[
+                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
+                                (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
+                            ]
                             filtered_df = pd.concat([filtered_df, keyword_filter_df])
 
                         # Remove duplicates, if any
