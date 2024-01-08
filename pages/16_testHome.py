@@ -300,6 +300,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
                         keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
 
+                        df_csv = pd.read_csv('all_items.csv')
+
                         # Search for the entire phrase first
                         filtered_df = df_csv[
                             (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
