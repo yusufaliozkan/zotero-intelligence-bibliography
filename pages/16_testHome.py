@@ -310,11 +310,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df = df_csv[df_csv[search_columns].apply(lambda row: row.str.contains(phrase_filter, case=False, na=False, regex=True)).any(axis=1)]
 
                         # Search for the entire phrase first
-                        # filtered_df = df_csv[
-                        #     (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                        #     (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                        #     (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                        # ]
+                        filtered_df = df_csv[
+                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
+                            (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
+                            (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                        ]
 
                         # Search for individual keywords separately and combine the results
                         for keyword in keyword_filters:
