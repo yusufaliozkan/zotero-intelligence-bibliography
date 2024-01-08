@@ -500,7 +500,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         # Highlight search terms in the abstract using the same function
                                         highlighted_abstract = highlight_terms(abstract, search_terms)
                                         st.write(f"**Abstract for article {i}**: ")
-                                        st.caption(f"<div style='font-size: smaller;'>{highlighted_abstract}</div>", unsafe_allow_html=True)
+                                        st.caption(f"Abstract: <div style='font-size: smaller;'>{highlighted_abstract}</div>", unsafe_allow_html=True)
                                     else:
                                         st.caption(f"**Abstract for article {i}**: N/A")
 
