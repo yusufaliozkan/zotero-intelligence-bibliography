@@ -496,6 +496,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     if display_abstracts:
                                         abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                         if pd.notnull(abstract):
+                                            highlighted_abstract = highlight_terms(abstract, search_terms)  # Highlight search terms in abstract
                                             st.caption(f"**Abstract for article {i}**: {abstract}")
                                         else:
                                             st.caption(f"**Abstract for article {i}**: N/A")
