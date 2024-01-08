@@ -453,6 +453,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         filtered_df = filtered_df.head(50)
 
                                 articles_list = []  # Store articles in a list
+                                abstracts_list = [] #Store abstracts in a list
                                 for index, row in filtered_df.iterrows():
                                     formatted_entry = format_entry(row)
                                     articles_list.append(formatted_entry)  # Append formatted entry to the list
