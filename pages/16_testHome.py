@@ -302,7 +302,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         df_csv = pd.read_csv('all_items.csv')
 
-                        include_abstracts = st.checkbox('Search in abstracts too')
+                        include_abstracts = st.checkbox('Search keywords in abstracts too')
 
                         if include_abstracts:
                             # Search for the entire phrase first
