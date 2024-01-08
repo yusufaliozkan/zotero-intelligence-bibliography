@@ -499,7 +499,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         if pd.notnull(abstract):
                                             # Highlight search terms in the abstract using the same function
                                             highlighted_abstract = highlight_terms(abstract, search_terms)
-                                            st.markdown(f"<div style='font-size: small;'>**Abstract for article {i}**: {highlighted_abstract}</div>", unsafe_allow_html=True)
+                                            st.markdown(f"<small>**Abstract for article {i}**: {highlighted_abstract}</small>", unsafe_allow_html=True)
                                         else:
                                             st.markdown(f"<small>**Abstract for article {i}**: N/A</small>")
 
