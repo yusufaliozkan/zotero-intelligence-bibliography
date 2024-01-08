@@ -316,7 +316,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             for keyword in keyword_filters:
                                 keyword_filter_df = df_csv[
                                     (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) |
+                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
                                     (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
                                 ]
                                 filtered_df = pd.concat([filtered_df, keyword_filter_df])
