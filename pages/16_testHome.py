@@ -488,18 +488,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     return highlighted_text
                                     
                                 # Display the numbered list using Markdown syntax
-
                                 for i, article in enumerate(articles_list, start=1):
-                                    # Highlight the search terms in the article entry before displaying it
+                                    # Display the article with highlighted search terms
                                     highlighted_article = highlight_terms(article, search_terms)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                                    
+                                    # Display abstract under each numbered item only if the checkbox is selected
                                     if display_abstracts:
                                         abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                         if pd.notnull(abstract):
-                                            highlighted_abstract = highlight_terms(abstract, search_terms)  # Highlight search terms in abstract
-                                            st.markdown(f"**Abstract for article {i}**: {highlighted_abstract}")
+                                            # Highlight search terms in the abstract using the same function
+                                            highlighted_abstract = highlight_terms(abstract, search_terms)
+                                            st.caption(f"**Abstract for article {i}**: {highlighted_abstract}")
                                         else:
-                                            st.markdown(f"**Abstract for article {i}**: N/A")
+                                            st.caption(f"**Abstract for article {i}**: N/A")
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
