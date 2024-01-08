@@ -367,6 +367,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
                             on = st.toggle('Generate dashboard')
+                            display_abstracts = st.checkbox('Display abstracts')
+
                             if on and len(filtered_df) > 0: 
                                 st.info(f'Dashboard for search terms: {phrase_filter}')
                                 search_df = filtered_df.copy()
@@ -487,16 +489,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     
                                 # Display the numbered list using Markdown syntax
 
-                                display_abstracts = st.checkbox('Display all abstracts')
-
                                 for i, article in enumerate(articles_list, start=1):
                                     # Highlight the search terms in the article entry before displaying it
                                     highlighted_article = highlight_terms(article, search_terms)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
                                     
-                                    # Display abstract under each numbered item
-                                    abstract = filtered_df.loc[index]['Abstract']
-                                    st.caption(f"**Abstract for article {i}**: {abstract if pd.notnull(abstract) else 'N/A'}")
+                                    if display_abstracts:
+                                        for i, abstract in enumerate(abstracts_list, start=1):
+                                            st.caption(f"**Abstract for article {i}**: {abstract if pd.notnull(abstract) else 'N/A'}")
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
