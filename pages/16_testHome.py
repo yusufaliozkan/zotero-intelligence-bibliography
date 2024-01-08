@@ -495,8 +495,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
                                     
                                     if display_abstracts:
-                                        for i, abstract in enumerate(abstracts_list, start=1):
-                                            st.caption(f"**Abstract for article {i}**: {abstract if pd.notnull(abstract) else 'N/A'}")
+                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
+                                        st.caption(f"**Abstract for article {i}**: {abstract if pd.notnull(abstract) else 'N/A'}")
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
