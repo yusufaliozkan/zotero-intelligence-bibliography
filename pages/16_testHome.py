@@ -292,7 +292,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
-                search_term = st.text_input('Search keywords in titles or author names')
+                search_term = st.text_input('Search keywords in titles or author namesddd')
                 df_csv = pd.read_csv('all_items.csv')
                 df_csv
                 
