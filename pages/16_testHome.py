@@ -493,10 +493,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     # Highlight the search terms in the article entry before displaying it
                                     highlighted_article = highlight_terms(article, search_terms)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-                                    
                                     if display_abstracts:
                                         abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
-                                        st.caption(f"**Abstract for article {i}**: {abstract if pd.notnull(abstract) else 'N/A'}")
+                                        if pd.notnull(abstract):
+                                            st.caption(f"**Abstract for article {i}**: {abstract}")
+                                        else:
+                                            st.caption(f"**Abstract for article {i}**: N/A")
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
