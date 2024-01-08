@@ -501,7 +501,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         highlighted_abstract = highlight_terms(abstract, search_terms)
                                         st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                     else:
-                                        st.caption(f"**Abstract for article {i}**: N/A")
+                                        st.caption(f"**Abstract for article {i}**: No abstract")
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
