@@ -292,7 +292,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
-                search_term = st.text_input('Search keywords in titles or author names')
+                search_term = st.text_input('Search keywords in titles or abstracts')
                 
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
