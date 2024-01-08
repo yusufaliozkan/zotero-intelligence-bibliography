@@ -296,6 +296,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
+                        include_abstract_search = st.selectbox('Include search keywords in abstracts', [False, True], index=0)
                         search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                         phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
                         keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
