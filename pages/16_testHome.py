@@ -302,6 +302,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         df_csv = pd.read_csv('all_items.csv')
 
+                        include_abstracts = st.checkbox('Search in abstracts too')
+
                         # Search for the entire phrase first
                         filtered_df = df_csv[
                             (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
