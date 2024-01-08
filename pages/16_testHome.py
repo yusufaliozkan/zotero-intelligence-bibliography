@@ -497,18 +497,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 if display_abstracts:
                                     abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                     if pd.notnull(abstract):
-                                        # Highlight search terms in the abstract using the same function
-                                        highlighted_abstract = highlight_terms(abstract, search_terms)
+                                        if include_abstracts:
+                                            highlighted_abstract = highlight_terms(abstract, search_terms)
+                                        else:
+                                            highlighted_abstract = abstract 
                                         st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                     else:
                                         st.caption(f"Abstract: No abstract")
-                                else:
-                                    abstract = abstracts_list[i - 1]
-                                    if pd.notnull(abstract):
-                                        st.caption(f"Abstract: <span style='font-size: small;'>{abstract}</span>", unsafe_allow_html=True)
-                                    else:
-                                        st.caption(f"Abstract: N/A")
-
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
