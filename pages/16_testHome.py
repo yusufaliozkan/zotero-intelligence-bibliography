@@ -490,15 +490,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     # Highlight the search terms in the article entry before displaying it
                                     highlighted_article = highlight_terms(article, search_terms)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-                                display_abstracts = st.checkbox('Display all abstracts')
-                                abstracts_to_display = []
-                                for index, row in filtered_df.iterrows():
-                                    abstract = row['Abstract']
-                                    abstracts_to_display.append(abstract if pd.notnull(abstract) else 'N/A')
-                                if display_abstracts:
-                                    st.subheader('All Abstracts')
-                                    for i, abstract in enumerate(abstracts_to_display, start=1):
-                                        st.caption(f"**Abstract for article {i}**: {abstract}")
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
