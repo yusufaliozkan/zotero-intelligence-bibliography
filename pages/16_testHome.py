@@ -501,7 +501,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         highlighted_abstract = highlight_terms(abstract, search_terms)
                                         st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                     else:
-                                        st.caption(f"**Abstract for article {i}**: No abstract")
+                                        st.caption(f"Abstract: No abstract")
+                                else:
+                                    abstract = abstracts_list[i - 1]
+                                    if pd.notnull(abstract):
+                                        st.caption(f"Abstract: <span style='font-size: small;'>{abstract}</span>", unsafe_allow_html=True)
+                                    else:
+                                        st.caption(f"Abstract: N/A")
+
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
