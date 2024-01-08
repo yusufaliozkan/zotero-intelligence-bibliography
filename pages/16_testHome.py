@@ -307,7 +307,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         search_columns = ['Title', 'FirstName2']
                         if include_abstracts:
                             search_columns.append('Abstract')
-                        filtered_df = df_csv[df_csv[search_columns].apply(lambda row: row.str.contains(phrase_filter, case=False, na=False, regex=True)).any(axis=1)]
+
+                        if include_abstracts:
+                            filtered_df = df_csv[df_csv[search_columns].apply(lambda row: row.str.contains(phrase_filter, case=False, na=False, regex=True)).any(axis=1)]
+                        else:
+                            filtered_df = df_csv[df_csv[search_columns[:-1]].apply(lambda row: row.str.contains(phrase_filter, case=False, na=False, regex=True)).any(axis=1)]
 
                         # Search for the entire phrase first
                         filtered_df = df_csv[
