@@ -501,13 +501,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     if display_abstracts:
                                         abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                         if pd.notnull(abstract):
-                                            if include_abstracts:
+                                            if include_abstracts=='In title & abstract':
                                                 highlighted_abstract = highlight_terms(abstract, search_terms)
                                                 st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                             else:
                                                 highlighted_abstract = abstract 
-                                                st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
-                                            
+                                                st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)                                            
                                         else:
                                             st.caption(f"Abstract: No abstract")
                         else:
