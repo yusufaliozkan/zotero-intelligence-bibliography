@@ -292,10 +292,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
-                col1, col2 = st.columns([5,2])
-                with col1:
+                cols, cola = st.columns([5,2])
+                with cols:
                     include_abstracts = st.checkbox('Search keywords in abstracts too')
-                with col2:
+                with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
                 
                 if search_term:
