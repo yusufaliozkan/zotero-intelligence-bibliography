@@ -303,6 +303,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_csv = pd.read_csv('all_items.csv')
 
                         include_abstracts = st.checkbox('Search keywords in abstracts too')
+                        display_abstracts = st.checkbox('Display abstracts')
 
                         if include_abstracts:
                             # Search for the entire phrase first
@@ -366,7 +367,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             a = 'search-result-' + today
                             st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
-                            display_abstracts = st.checkbox('Display abstracts')
                             on = st.toggle('Generate dashboard')
 
                             if on and len(filtered_df) > 0: 
