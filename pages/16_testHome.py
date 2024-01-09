@@ -290,15 +290,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # }
             # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
 
-            st.markdown("""
-                <style>
-                    /* Narrowing the select box */
-                    div[data-testid="stSelectbox"] select {
-                        width: 150px; /* Adjust the width as needed */
-                    }
-                </style>
-            """, unsafe_allow_html=True)
-
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
                 cols, cola = st.columns([1,5])
