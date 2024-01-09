@@ -292,7 +292,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
-                cols, cola = st.columns([1,5])
+                cols, cola = st.columns([2,5])
                 with cols:
                     include_abstracts = st.selectbox('Search options', ['Search in titles','Search in titles & abstracts'])
                 with cola:
