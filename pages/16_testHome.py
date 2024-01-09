@@ -296,7 +296,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with cols:
                     include_abstracts = st.checkbox('Search keywords in abstracts too')
                 with cola:
-                    search_term = st.radio(['Search in titles','Search in titles & abstracts'])
+                    search_term = st.radio('Search options', ['Search in titles','Search in titles & abstracts'])
                 
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
