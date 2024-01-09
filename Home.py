@@ -1522,7 +1522,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 plt.axis("off")
                 plt.show()
                 st.set_option('deprecation.showPyplotGlobalUse', False)
-                st.pyplot() 
+                st.pyplot()
 
             # Bring everything in the library
 
