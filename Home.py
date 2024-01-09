@@ -292,7 +292,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
-                search_term = st.text_input('Search keywords in titles or author names')
+                cols, cola = st.columns([2,6])
+                with cols:
+                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
+                with cola:
+                    search_term = st.text_input('Search keywords in titles or abstracts')
                 
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
@@ -302,19 +306,39 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         df_csv = pd.read_csv('all_items.csv')
 
-                        # Search for the entire phrase first
-                        filtered_df = df_csv[
-                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                            (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                        ]
+                        # include_abstracts = st.checkbox('Search keywords in abstracts too')
+                        display_abstracts = st.checkbox('Display abstracts')
 
-                        # Search for individual keywords separately and combine the results
-                        for keyword in keyword_filters:
-                            keyword_filter_df = df_csv[
-                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
+                        if include_abstracts=='In title & abstract':
+                            # Search for the entire phrase first
+                            filtered_df = df_csv[
+                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
+                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
+                                (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
                             ]
-                            filtered_df = pd.concat([filtered_df, keyword_filter_df])
+
+                            # Search for individual keywords separately and combine the results
+                            for keyword in keyword_filters:
+                                keyword_filter_df = df_csv[
+                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
+                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
+                                    (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
+                                ]
+                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
+                        else:
+                            # Search for the entire phrase first
+                            filtered_df = df_csv[
+                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                            ]
+
+                            # Search for individual keywords separately and combine the results
+                            for keyword in keyword_filters:
+                                keyword_filter_df = df_csv[
+                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
+                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
+                                ]
+                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
 
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
@@ -348,6 +372,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
                             on = st.toggle('Generate dashboard')
+
                             if on and len(filtered_df) > 0: 
                                 st.info(f'Dashboard for search terms: {phrase_filter}')
                                 search_df = filtered_df.copy()
@@ -432,9 +457,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         filtered_df = filtered_df.head(50)
 
                                 articles_list = []  # Store articles in a list
+                                abstracts_list = [] #Store abstracts in a list
                                 for index, row in filtered_df.iterrows():
                                     formatted_entry = format_entry(row)
                                     articles_list.append(formatted_entry)  # Append formatted entry to the list
+                                    abstract = row['Abstract']
+                                    abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
                     
                                 def highlight_terms(text, terms):
                                     # Regular expression pattern to identify URLs
@@ -463,15 +491,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                                     return highlighted_text
                                     
-                                    return highlighted_text
-
                                 # Display the numbered list using Markdown syntax
-
                                 for i, article in enumerate(articles_list, start=1):
-                                    # Highlight the search terms in the article entry before displaying it
+                                    # Display the article with highlighted search terms
                                     highlighted_article = highlight_terms(article, search_terms)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-
+                                    
+                                    # Display abstract under each numbered item only if the checkbox is selected
+                                    if display_abstracts:
+                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
+                                        if pd.notnull(abstract):
+                                            if include_abstracts=='In title & abstract':
+                                                highlighted_abstract = highlight_terms(abstract, search_terms)
+                                            else:
+                                                highlighted_abstract = abstract 
+                                            st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
+                                        else:
+                                            st.caption(f"Abstract: No abstract")
                         else:
                             st.write("No articles found with the given keyword/phrase.")
                 else:
