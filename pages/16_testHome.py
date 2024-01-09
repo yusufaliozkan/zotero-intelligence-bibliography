@@ -292,7 +292,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
-                search_term = st.text_input('Search keywords in titles or abstracts')
+                cols, cola = st.columns([1,5])
+                with cols:
+                    include_abstracts = st.checkbox('Search keywords in abstracts too')
+                with cola:
+                    search_term = st.text_input('Search keywords in titles or abstracts')
                 
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
@@ -302,7 +306,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         df_csv = pd.read_csv('all_items.csv')
 
-                        include_abstracts = st.checkbox('Search keywords in abstracts too')
+                        # include_abstracts = st.checkbox('Search keywords in abstracts too')
                         display_abstracts = st.checkbox('Display abstracts')
 
                         if include_abstracts:
