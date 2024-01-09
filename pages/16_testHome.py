@@ -28,6 +28,7 @@ import json
 from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
 
+st.write('This is a test environment!')
 st.stop()
 
 # Connecting Zotero with API 
