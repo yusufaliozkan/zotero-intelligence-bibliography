@@ -1,5 +1,3 @@
-st.stop()
-
 from pyzotero import zotero
 import pandas as pd
 import streamlit as st
@@ -29,6 +27,8 @@ from PIL import Image, ImageDraw, ImageFilter
 import json
 from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
+
+st.stop()
 
 # Connecting Zotero with API 
 library_id = '2514686'
