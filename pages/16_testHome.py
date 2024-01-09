@@ -309,7 +309,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         # include_abstracts = st.checkbox('Search keywords in abstracts too')
                         display_abstracts = st.checkbox('Display abstracts')
 
-                        if include_abstracts:
+                        if include_abstracts=='Search in titles & abstracts':
                             # Search for the entire phrase first
                             filtered_df = df_csv[
                                 (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
