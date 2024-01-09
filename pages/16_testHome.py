@@ -492,22 +492,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     return highlighted_text
                                     
                                 # Display the numbered list using Markdown syntax
-                            for i, article in enumerate(articles_list, start=1):
-                                # Display the article with highlighted search terms
-                                highlighted_article = highlight_terms(article, search_terms)
-                                st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-                                
-                                # Display abstract under each numbered item only if the checkbox is selected
-                                if display_abstracts:
-                                    abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
-                                    if pd.notnull(abstract):
-                                        if include_abstracts:
-                                            highlighted_abstract = highlight_terms(abstract, search_terms)
+                                for i, article in enumerate(articles_list, start=1):
+                                    # Display the article with highlighted search terms
+                                    highlighted_article = highlight_terms(article, search_terms)
+                                    st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                                    
+                                    # Display abstract under each numbered item only if the checkbox is selected
+                                    if display_abstracts:
+                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
+                                        if pd.notnull(abstract):
+                                            if include_abstracts:
+                                                highlighted_abstract = highlight_terms(abstract, search_terms)
+                                            else:
+                                                highlighted_abstract = abstract 
+                                            st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                         else:
-                                            highlighted_abstract = abstract 
-                                        st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
-                                    else:
-                                        st.caption(f"Abstract: No abstract")
+                                            st.caption(f"Abstract: No abstract")
 
                         else:
                             st.write("No articles found with the given keyword/phrase.")
