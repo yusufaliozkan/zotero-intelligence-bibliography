@@ -1546,10 +1546,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     display_custom_license()
 
+st.stop()
 
-    st.stop()
-
-    from pyzotero import zotero
+from pyzotero import zotero
 import pandas as pd
 import streamlit as st
 from IPython.display import HTML
