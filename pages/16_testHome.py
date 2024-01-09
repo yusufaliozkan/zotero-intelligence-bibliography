@@ -294,7 +294,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.subheader('Search keywords')
                 cols, cola = st.columns([2,6])
                 with cols:
-                    include_abstracts = st.selectbox('Search options', ['🔍 in title','🔍 in title & abstract'])
+                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
                 
@@ -309,7 +309,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         # include_abstracts = st.checkbox('Search keywords in abstracts too')
                         display_abstracts = st.checkbox('Display abstracts')
 
-                        if include_abstracts=='🔍 in title & abstract':
+                        if include_abstracts=='In title & abstract':
                             # Search for the entire phrase first
                             filtered_df = df_csv[
                                 (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
