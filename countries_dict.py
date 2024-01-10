@@ -27,7 +27,7 @@ country_names = [
     "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe", 'Belgium', 'Kosovo', 'Yugoslavia','Mi̇lli̇ İsti̇hbarat Teşki̇latı', 
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
-    'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia'
+    'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich'
 ]
 replacements = {
     'Belgian': 'Belgium',
@@ -66,7 +66,8 @@ replacements = {
     'Christofascism':'Romania',
     'Venice':'Italy',
     'Abdülhamid':'Turkey',
-    'Czechoslovakia':'Czechia'
+    'Czechoslovakia':'Czechia',
+    'Third Reich':'Germany'
     }
 
 df_countries['Country'] = ''
@@ -107,7 +108,7 @@ continent_country_names = [
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian',  'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
-    'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia' 
+    'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -147,7 +148,8 @@ continent_replacements = {
     'Venice':'Italy',
     'Christofascism':'Romania',
     'Abdülhamid':'Turkey',
-    'Czechoslovakia':'Czechia'
+    'Czechoslovakia':'Czechia',
+    'Third Reich':'Germany'
     }
 
 df_continent = df_countries.copy()
