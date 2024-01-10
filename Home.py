@@ -671,7 +671,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
 
                 select_options = [''] + sorted(list(filtered_collections))
-                selected_collection = st.selectbox('Select Collection(s)', select_options)
+                selected_collection = st.selectbox('Select a collection', select_options)
 
                 if not selected_collection or selected_collection == '':
                     st.write('Pick a collection to see items')
