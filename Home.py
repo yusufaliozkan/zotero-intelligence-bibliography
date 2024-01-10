@@ -855,7 +855,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Publication type: ' + selected_type)
                         if selected_type == 'Thesis':
-                            st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the cyber incident at the British Library.')
+                            st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).')
                         def convert_df(filtered_type_df):
                             return filtered_type_df.to_csv(index=False).encode('utf-8-sig')
 
