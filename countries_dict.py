@@ -152,7 +152,7 @@ continent_replacements = {
     'Czechoslovakia':'Czechia',
     'Third Reich':'Germany',
     'Kriegsmarine':'Germany'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
