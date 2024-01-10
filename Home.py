@@ -164,12 +164,15 @@ st.header('Intelligence studies bibliography')
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
-Wellcome to **Intelligence studies bibliography** 
+Welcome to **Intelligence studies bibliography** 
 This website lists different sources, events, conferences, and call for papers on intelligence history and intelligence studies. 
 The current page shows the recently added or updated items. 
 **If you wish to see more sources under different themes, see the sidebar menu** :arrow_left: .
 The website has also a dynamic [digest](https://intelligence.streamlit.app/Digest) that you can tract latest publications & events.
-Check it out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction.'''
+Check it out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction.
+
+Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/). 
+'''
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
