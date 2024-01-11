@@ -1540,12 +1540,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
-            st.header('Item includion history')
+            st.header('Item inclusion history')
             df_added = df_csv.copy()
             df_added['Date added'] = pd.to_datetime(df_added['Date added'])
             df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
             monthly_counts = df_added.groupby('YearMonth').size()
-            monthly_counts
+            plt.figure(figsize=(10, 6))
+            monthly_counts.plot(kind='bar', color='skyblue')
+            plt.title('Number of Items Added per Month and Year')
+            plt.xlabel('Month and Year')
+            plt.ylabel('Number of Items')
+            plt.xticks(rotation=45)
+            plt.show()
 
         else:
             st.info('Toggle to see the dashboard!')
