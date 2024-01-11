@@ -1547,7 +1547,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             monthly_counts = df_added.groupby('YearMonth').size()
             monthly_counts.name = 'Number of items added' 
             st.bar_chart(monthly_counts)
-            monthly_counts
 
         else:
             st.info('Toggle to see the dashboard!')
