@@ -1549,7 +1549,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.bar_chart(monthly_counts)
 
             cumulative_counts = monthly_counts.cumsum()
-            cumulative_counts
+            st.line_chart(cumulative_counts)
 
 
         else:
