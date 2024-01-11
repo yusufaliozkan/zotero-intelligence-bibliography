@@ -834,7 +834,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_csv_types = pd.read_csv('all_items.csv')
                 unique_types = [''] + list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option
-                selected_type = st.selectbox('Select a publication type', unique_types) 
+                selected_type = st.selectbox('Select a publication type', unique_types)
 
                 if not selected_type or selected_type == '':
                     st.write('Pick a publication type to see items')
