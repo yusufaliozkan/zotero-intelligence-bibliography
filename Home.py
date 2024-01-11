@@ -1545,13 +1545,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_added['Date added'] = pd.to_datetime(df_added['Date added'])
             df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
             monthly_counts = df_added.groupby('YearMonth').size()
-            plt.figure(figsize=(10, 6))
-            monthly_counts.plot(kind='bar', color='skyblue')
-            plt.title('Number of Items Added per Month and Year')
-            plt.xlabel('Month and Year')
-            plt.ylabel('Number of Items')
-            plt.xticks(rotation=45)
-            plt.show()
+            st.bar_chart(monthly_counts)
 
         else:
             st.info('Toggle to see the dashboard!')
