@@ -1541,7 +1541,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
             st.header('Item includion history')
-            df_added = pd.to_datetime(df_csv['Date added'])
+            df_added = df_csv.copy()
+            df_added['Date added'] = pd.to_datetime(df_added['Date added'])
             df_added
 
         else:
