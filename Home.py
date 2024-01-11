@@ -1544,11 +1544,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col11, col12 = st.columns(2)
             with col11:
                 df_added = df_csv.copy()
+                time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
                 monthly_counts = df_added.groupby('YearMonth').size()
                 monthly_counts.name = 'Number of items added' 
-                col11.bar_chart(monthly_counts)
+                if time_interval == 'Monthly':
+                    col11.bar_chart(monthly_counts)
+                else:
+                    yearly_counts = df.groupby(df_added['Date added'].dt.to_period('Y')).size()
+                    yearly_counts
             with col12:
                 cumulative_counts = monthly_counts.cumsum()
                 col12.line_chart(cumulative_counts)
