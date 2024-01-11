@@ -1544,7 +1544,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_added = df_csv.copy()
             df_added['Date added'] = pd.to_datetime(df_added['Date added'])
             df_added['Month'] = df_added['Date added'].dt.to_period('M')
-            df_added
+            monthly_counts = df_added.groupby('Month').size()
+            monthly_counts
 
         else:
             st.info('Toggle to see the dashboard!')
