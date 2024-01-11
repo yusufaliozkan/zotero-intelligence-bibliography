@@ -1552,7 +1552,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if time_interval == 'Monthly':
                     col11.bar_chart(monthly_counts)
                 else:
-                    yearly_counts = df.groupby(df_added['Date added'].dt.to_period('Y')).astype(str)
+                    df_added['Year'] = df_added['Date added']dt.to_period('Y').astype(str)
+                    yearly_counts = df_added.groupby('Year').size()
                     yearly_counts
             with col12:
                 cumulative_counts = monthly_counts.cumsum()
