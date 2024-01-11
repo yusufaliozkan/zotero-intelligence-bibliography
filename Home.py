@@ -1543,6 +1543,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Item includion history')
             df_added = df_csv.copy()
             df_added['Date added'] = pd.to_datetime(df_added['Date added'])
+            df_added['Month'] = df_added['Date added'].dt.to_period('M')
             df_added
 
         else:
