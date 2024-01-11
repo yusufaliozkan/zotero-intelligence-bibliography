@@ -1554,7 +1554,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     df_added['Year'] = df_added['Date added'].dt.to_period('Y').astype(str)
                     yearly_counts = df_added.groupby('Year').size()
-                    yearly_counts
+                    yearly_counts.name = 'Number of items added'
+                    col11.bar_chart(yearly_counts)
             with col12:
                 cumulative_counts = monthly_counts.cumsum()
                 col12.line_chart(cumulative_counts)
