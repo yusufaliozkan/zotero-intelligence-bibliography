@@ -1545,6 +1545,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_added['Date added'] = pd.to_datetime(df_added['Date added'])
             df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
             monthly_counts = df_added.groupby('YearMonth').size()
+            monthly_counts.name = 'Number of items added' 
             st.bar_chart(monthly_counts)
             monthly_counts
 
