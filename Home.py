@@ -1548,6 +1548,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             monthly_counts.name = 'Number of items added' 
             st.bar_chart(monthly_counts)
 
+            cumulative_counts = monthly_counts.cumsum()
+            cumulative_counts
+
+
         else:
             st.info('Toggle to see the dashboard!')
     st.write('---')
