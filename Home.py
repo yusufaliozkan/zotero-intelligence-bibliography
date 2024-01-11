@@ -1545,20 +1545,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with col11:
                 df_added = df_csv.copy()
                 time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
-
-                # Convert 'Date added' column to datetime format
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
-
-                # Create 'YearMonth' and 'Year' columns for grouping
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
-
-                # Group by 'YearMonth' and count the number of items
                 monthly_counts = df_added.groupby('YearMonth').size()
                 monthly_counts.name = 'Number of items added'
-
-                # Plot the bar chart based on user selection
                 if time_interval == 'Monthly':
-                    # Plot bar chart with Altair
                     bar_chart = alt.Chart(monthly_counts.reset_index()).mark_bar().encode(
                         x='YearMonth',
                         y='Number of items added',
@@ -1568,14 +1559,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         title='Number of Items Added per Month'
                     )
                     st.altair_chart(bar_chart, use_container_width=True)
-
-                # If the user selects 'Yearly', show the yearly chart
                 else:
                     df_added['Year'] = df_added['Date added'].dt.to_period('Y').astype(str)
                     yearly_counts = df_added.groupby('Year').size()
                     yearly_counts.name = 'Number of items added'
-
-                    # Plot bar chart with Altair
                     bar_chart = alt.Chart(yearly_counts.reset_index()).mark_bar().encode(
                         x='Year',
                         y='Number of items added',
@@ -1587,7 +1574,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.altair_chart(bar_chart, use_container_width=True)
             with col12:
                 cumulative_counts = monthly_counts.cumsum()
-                col12.line_chart(cumulative_counts)
+                col12.line_chart(cumulative_counts, use_container_width=True, key='line_chart_key', **{'chart': {'title': 'Cumulative Number of Items Added'}})
 
         else:
             st.info('Toggle to see the dashboard!')
