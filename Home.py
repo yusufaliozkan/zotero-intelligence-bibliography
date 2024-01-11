@@ -1541,17 +1541,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
             st.header('Item includion history')
-            df_csv
-            # df_csv = df_csv[df_csv['Publication type'].isin(types)]
-            # df_csv = df_csv[df_csv['Date year'] !='No date']
-            # filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
-            # df_csv = df_csv.loc[filter]
-            # df_year=df_csv['Date year'].value_counts()
-            # df_year=df_year.reset_index()
-            # df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-            # df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-            # df_year=df_year.sort_values(by='Publication year', ascending=True)
-            # df_year=df_year.reset_index(drop=True)
+            df_added = pd.to_datetime(df_csv['Date added'])
+            df_added
+
         else:
             st.info('Toggle to see the dashboard!')
     st.write('---')
