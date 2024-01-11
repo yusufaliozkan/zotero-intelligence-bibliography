@@ -1546,18 +1546,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
             monthly_counts = df_added.groupby('YearMonth').size()
             monthly_counts.name = 'Number of items added' 
-            time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
-
-            if time_interval == 'Monthly':
-                st.bar_chart(monthly_counts)
-                st.write('Monthly Counts:')
-                st.write(monthly_counts)
-            else:
-                yearly_counts = df.groupby(df['Date added'].dt.to_period('Y')).size()
-                yearly_counts.name = 'Number of items added'
-                st.bar_chart(yearly_counts)
-                st.write('Yearly Counts:')
-                st.write(yearly_counts)
+            st.bar_chart(monthly_counts)
 
         else:
             st.info('Toggle to see the dashboard!')
