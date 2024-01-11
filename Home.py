@@ -1552,6 +1552,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with col12:
                 cumulative_counts = monthly_counts.cumsum()
                 col12.line_chart(cumulative_counts)
+                cumulative_counts
 
 
         else:
