@@ -1574,8 +1574,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.altair_chart(bar_chart, use_container_width=True)
             with col12:
                 cumulative_counts = monthly_counts.cumsum()
-                col12.line_chart(cumulative_counts, use_container_width=True, key='line_chart_key', **{'chart': {'title': 'Cumulative Number of Items Added'}})
-
+                cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_line().encode(
+                    x='YearMonth',
+                    y='Cumulative',
+                    tooltip=['YearMonth', 'Cumulative']
+                ).properties(
+                    width=600,
+                    title='Cumulative Number of Items Added'
+                )
+                st.altair_chart(cumulative_chart, use_container_width=True)
         else:
             st.info('Toggle to see the dashboard!')
     st.write('---')
