@@ -1062,35 +1062,35 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
 
                 df_all_items
-            df_added = pd.read_csv('all_items.csv')
-            df_added['Date added'] = pd.to_datetime(df_added['Date added'])
-            df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
-            monthly_counts = df_added.groupby('YearMonth').size()
-            monthly_counts.name = 'Number of items added'
-            cumulative_counts = monthly_counts.cumsum()
-            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Total items': cumulative_counts})).mark_bar().encode(
-                x='YearMonth',
-                y='Total items',
-                tooltip=['YearMonth', 'Total items']
-            ).properties(
-                width=600,
-                title='Total Number of Items Added'
-            )
-            step = 6
-            data_labels = cumulative_chart.mark_text(
-                align='center',
-                baseline='bottom',
-                dy=-5,  # Adjust the vertical position of labels
-                fontSize=10
-            ).encode(
-                x=alt.X('YearMonth', title='Year-Month', axis=alt.Axis(labelAngle=-45)),
-                y='Total items:Q',
-                text='Total items:Q'
-            ).transform_filter(
-                alt.datum.YearMonth % step == 0
-            )
-            st.subheader('Total Number of Items Added per Month (cumulative)')
-            st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
+                df_added = pd.read_csv('all_items.csv')
+                df_added['Date added'] = pd.to_datetime(df_added['Date added'])
+                df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
+                monthly_counts = df_added.groupby('YearMonth').size()
+                monthly_counts.name = 'Number of items added'
+                cumulative_counts = monthly_counts.cumsum()
+                cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Total items': cumulative_counts})).mark_bar().encode(
+                    x='YearMonth',
+                    y='Total items',
+                    tooltip=['YearMonth', 'Total items']
+                ).properties(
+                    width=600,
+                    title='Total Number of Items Added'
+                )
+                step = 6
+                data_labels = cumulative_chart.mark_text(
+                    align='center',
+                    baseline='bottom',
+                    dy=-5,  # Adjust the vertical position of labels
+                    fontSize=10
+                ).encode(
+                    x=alt.X('YearMonth', title='Year-Month', axis=alt.Axis(labelAngle=-45)),
+                    y='Total items:Q',
+                    text='Total items:Q'
+                ).transform_filter(
+                    alt.datum.YearMonth % step == 0
+                )
+                st.subheader('Total Number of Items Added per Month (cumulative)')
+                st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
 
 
         with col2:
