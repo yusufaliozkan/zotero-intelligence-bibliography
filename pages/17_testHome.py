@@ -1138,11 +1138,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 df_all = df_all.sort_values(by=['Date published'], ascending=False)
 
-                years = st.slider('Publication years between:', int(min_y), int(max_y), (int(min_y), int(max_y)), key='years')
-                filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
-                df_all = df_all.loc[filter]
-                number_of_items = len(df_all)
-                st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
+                min_year = st.number_input('Minimum Year', int(min_y), int(max_y), int(min_y), key='min_year')
+                max_year = st.number_input('Maximum Year', int(min_y), int(max_y), int(max_y), key='max_year')
+
+                if min_year > max_year:
+                    st.warning("Please select a valid range with the minimum year less than or equal to the maximum year.")
+                else:
+                    filter = (df_all['Date year'] >= min_year) & (df_all['Date year'] <= max_year)
+                    df_filtered = df_all.loc[filter]
+                    number_of_items = len(df_filtered)
+                    st.write(f"{number_of_items} sources found published between {min_year} and {max_year}")
                 
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
