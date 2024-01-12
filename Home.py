@@ -1078,7 +1078,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             cumulative_counts = monthly_counts.cumsum()
 
             # Plot the cumulative bar chart using Altair
-            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_bar().encode(
+            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_line().encode(
                 x='YearMonth',
                 y='Cumulative',
                 tooltip=['YearMonth', 'Cumulative']
