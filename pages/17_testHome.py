@@ -1124,9 +1124,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + zotero_link + ')'
                     )
                 df_all = pd.read_csv('all_items.csv')
-                # df_all['Date published2'] =df_all['Date published']
-                # df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                # df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
+                df_all['Date published2'] =df_all['Date published']
+                df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
+                selected_year_range = st.slider("Select a Year Range", int(df_all['Date year'].min()), int(df_all['Date year'].max()), (int(df_all['Date year'].min()), int(df_all['Date year'].max())))
+
                 
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
