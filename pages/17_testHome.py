@@ -1139,6 +1139,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
                 filtered_df = df_all[(df_all['Date year'] >= selected_year_range[0]) & (df_all['Date year'] <= selected_year_range[1])]
 
+
                 
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
