@@ -1586,7 +1586,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.altair_chart(cumulative_chart, use_container_width=True)
                 else:
                     cumulative_counts_y = yearly_counts.cumsum()
-                    cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts_y.index, 'Cumulative': cumulative_counts_y})).mark_line().encode(
+                    cumulative_chart = alt.Chart(pd.DataFrame({'Year': cumulative_counts_y.index, 'Cumulative': cumulative_counts_y})).mark_line().encode(
                         x='Year',
                         y='Cumulative',
                         tooltip=['Year', 'Cumulative']
