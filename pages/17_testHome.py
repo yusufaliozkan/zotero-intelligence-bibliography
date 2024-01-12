@@ -1127,18 +1127,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all['Date published2'] =df_all['Date published']
                 df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
-                default_year_value = 0 
-                df_all['Date year'] = df_all['Date year'].fillna(default_year_value).astype(int)
-                min_year = int(df_all['Date year'].min())
-                max_year = int(df_all['Date year'].max())
-                selected_year_range = st.slider(
-                    "Select a Year Range",
-                    min_value=min_year,  # Set the minimum value of the slider
-                    max_value=max_year,  # Set the maximum value of the slider
-                    value=(min_year, max_year)
-                )
-                filtered_df = df_all[(df_all['Date year'] >= selected_year_range[0]) & (df_all['Date year'] <= selected_year_range[1])]
-
+                df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+                max_y = int(df_year['Publication year'].max())
+                min_y = int(df_year['Publication year'].min())
+                max_y
 
                 
                 articles_list = []  # Store articles in a list
