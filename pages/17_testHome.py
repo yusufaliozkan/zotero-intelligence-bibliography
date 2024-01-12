@@ -1124,6 +1124,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + zotero_link + ')'
                     )
                 df_all = pd.read_csv('all_items.csv')
+                df_all['Date published'] = pd.to_datetime(df_all['Date published'], errors='coerce')
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
                 for index, row in df_all.iterrows():
