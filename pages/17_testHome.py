@@ -1127,9 +1127,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all['Date published2'] =df_all['Date published']
                 df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
-                df_csv['Date year'] = df_csv['Date year'].fillna('No date')
-                max_y = int(df_year['Publication year'].max())
-                min_y = int(df_year['Publication year'].min())
+                df_all['Date year'] = df_all['Date year'].fillna('No date')
+                max_y = int(df_all['Publication year'].max())
+                min_y = int(df_all['Publication year'].min())
                 max_y
 
                 
