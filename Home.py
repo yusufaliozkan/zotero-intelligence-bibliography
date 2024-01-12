@@ -1068,23 +1068,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
             monthly_counts = df_added.groupby('YearMonth').size()
             monthly_counts.name = 'Number of items added'
             cumulative_counts = monthly_counts.cumsum()
-            bar_chart = alt.Chart(monthly_counts.reset_index()).mark_bar().encode(
-                x='YearMonth',
-                y='Number of items added',
-                tooltip=['YearMonth', 'Number of items added']
-            ).properties(
-                width=600,
-                title='Number of Items Added per Month'
-            )
-
             cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_line().encode(
                 x='YearMonth',
                 y='Cumulative',
                 tooltip=['YearMonth', 'Cumulative']
+            ).properties(
+                width=600,
+                title='Cumulative Number of Items Added'
             )
 
-            # Overlay bar and line charts
-            st.altair_chart(bar_chart + cumulative_chart, use_container_width=True)
+            st.altair_chart(cumulative_chart, use_container_width=True)
 
         with col2:
             with st.expander('Collections', expanded=True):
