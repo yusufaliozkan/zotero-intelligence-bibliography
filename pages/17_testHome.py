@@ -1144,18 +1144,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all = df_all.loc[filter]
                 number_of_items = len(df_all)
                 st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
-                df_all
                 
-                # articles_list = []  # Store articles in a list
-                # abstracts_list = [] #Store abstracts in a list
-                # for index, row in df_all.iterrows():
-                #     formatted_entry = format_entry(row)
-                #     articles_list.append(formatted_entry)  # Append formatted entry to the list
-                #     abstract = row['Abstract']
-                #     abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                # for i, article in enumerate(articles_list, start=1):
-                #     # Display the article with highlighted search terms
-                #     st.markdown(f"{i}. {article}", unsafe_allow_html=True)
+                articles_list = []  # Store articles in a list
+                abstracts_list = [] #Store abstracts in a list
+                for index, row in df_all.iterrows():
+                    formatted_entry = format_entry(row)
+                    articles_list.append(formatted_entry)  # Append formatted entry to the list
+                    abstract = row['Abstract']
+                    abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                for i, article in enumerate(articles_list, start=1):
+                    # Display the article with highlighted search terms
+                    st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
         with col2:
             with st.expander('Collections', expanded=True):
