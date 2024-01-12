@@ -1125,9 +1125,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 df_all = pd.read_csv('all_items.csv')
                 df_all['Date published2'] = pd.to_datetime(df_all['Date published'], errors='coerce')
+                if 'Date published2' in df_all.columns:
+                    selected_year = st.slider('Select Publication Year', min_value=df_all['Date published2'].dt.year.min(),
+                                            max_value=df_all['Date published2'].dt.year.max())
+
+                    # Filter the DataFrame based on the selected year
+                    filtered_df = df_all[df_all['Date published'].dt.year == selected_year]
                 selected_year = st.slider('Select Publication Year', min_value=df_all['Date published2'].dt.year.min(),
                           max_value=df_all['Date published2'].dt.year.max())
-                          
+                
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
                 for index, row in df_all.iterrows():
