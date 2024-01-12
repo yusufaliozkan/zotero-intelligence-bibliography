@@ -1131,6 +1131,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 max_y = numeric_years.max()
                 min_y = numeric_years.min()
 
+                df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
+                df_all['Date published'] = df_all['Date published'].fillna('')
+                df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
+                df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                df_all = df_all.sort_values(by=['Date published'], ascending=False)
+
                 years = st.slider('Publication years between:', int(min_y), int(max_y), (int(min_y), int(max_y)), key='years')
                 filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] < years[1])
                 df_all = df_all.loc[filter]
