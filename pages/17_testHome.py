@@ -1130,11 +1130,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 default_year_value = 0 
                 df_all['Date year'] = df_all['Date year'].fillna(default_year_value).astype(int)
                 selected_year_range = st.slider("Select a Year Range", int(df_all['Date year'].min()), int(df_all['Date year'].max()), (int(df_all['Date year'].min()), int(df_all['Date year'].max())))
+                filtered_df = df_all[(df_all['Date year'] >= selected_year_range[0]) & (df_all['Date year'] <= selected_year_range[1])]
 
                 
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
-                for index, row in df_all.iterrows():
+                for index, row in filtered_df.iterrows():
                     formatted_entry = format_entry(row)
                     articles_list.append(formatted_entry)  # Append formatted entry to the list
                     abstract = row['Abstract']
