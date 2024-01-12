@@ -1076,7 +1076,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 width=600,
                 title='Cumulative Number of Items Added'
             )
-            st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
+
+            st.altair_chart(cumulative_chart, use_container_width=True)
 
         with col2:
             with st.expander('Collections', expanded=True):
