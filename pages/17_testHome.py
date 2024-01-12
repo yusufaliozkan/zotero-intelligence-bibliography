@@ -1126,9 +1126,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all = pd.read_csv('all_items.csv')
                 df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
-                df_all['Date year'] = df_all['Date year'].fillna('No date', pd.NaT)
-                numeric_years = pd.to_numeric(df_all['Date year'], errors='coerce')
-                numeric_years = numeric_years.dropna()
+                df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
+                numeric_years = df_all['Date year'].dropna().astype(int)
                 max_y = int(df_all['Date year'].max())
                 min_y = int(df_all['Date year'].min())
                 max_y
