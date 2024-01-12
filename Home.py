@@ -1076,7 +1076,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Create the Altair chart
             cumulative_chart = alt.Chart(cumulative_df).mark_line().encode(
-                x=alt.X('YearMonth', axis=alt.Axis(labelExpr='index % 6 == 0'), title='YearMonth'),
+                x=alt.X('YearMonth', axis=alt.Axis(tickMinStep=6)),  # Set tickMinStep to 6 for every 6 months
                 y='Cumulative',
                 tooltip=['YearMonth', 'Cumulative']
             ).properties(
