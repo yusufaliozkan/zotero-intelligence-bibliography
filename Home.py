@@ -1068,7 +1068,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             monthly_counts = df_added.groupby('YearMonth').size()
             monthly_counts.name = 'Number of items added'
             cumulative_counts = monthly_counts.cumsum()
-            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_line().encode(
+            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_bar().encode(
                 x='YearMonth',
                 y='Cumulative',
                 tooltip=['YearMonth', 'Cumulative']
