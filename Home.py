@@ -1076,18 +1076,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 width=600,
                 title='Number of Items Added per Month'
             )
-            st.altair_chart(bar_chart, use_container_width=True)
 
-            # Plot the cumulative line chart
             cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_line().encode(
                 x='YearMonth',
                 y='Cumulative',
                 tooltip=['YearMonth', 'Cumulative']
-            ).properties(
-                width=600,
-                title='Cumulative Number of Items Added'
             )
-            st.altair_chart(cumulative_chart, use_container_width=True)
+
+            # Overlay bar and line charts
+            st.altair_chart(bar_chart + cumulative_chart, use_container_width=True)
 
         with col2:
             with st.expander('Collections', expanded=True):
