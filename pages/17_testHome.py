@@ -1132,8 +1132,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     abstract = row['Abstract']
                     abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
                 for i, article in enumerate(articles_list, start=1):
-                # Display the article with highlighted search terms
-                st.markdown(f"{i}. {format_entry}", unsafe_allow_html=True)
+                    # Display the article with highlighted search terms
+                    st.markdown(f"{i}. {format_entry}", unsafe_allow_html=True)
 
         with col2:
             with st.expander('Collections', expanded=True):
