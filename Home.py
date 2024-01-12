@@ -1065,11 +1065,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_added = pd.read_csv('all_items.csv')
             df_added['Date added'] = pd.to_datetime(df_added['Date added'])
             df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
+
+            # Calculate monthly counts and cumulative counts
             monthly_counts = df_added.groupby('YearMonth').size()
             monthly_counts.name = 'Number of items added'
             cumulative_counts = monthly_counts.cumsum()
-            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_line().encode(
-                x='YearMonth',
+
+            # Create a DataFrame for the cumulative chart
+            cumulative_df = pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})
+
+            # Create the Altair chart
+            cumulative_chart = alt.Chart(cumulative_df).mark_line().encode(
+                x=alt.X('YearMonth', axis=alt.Axis(tickMinStep=6)),  # Set tickMinStep to 6 for every 6 months
                 y='Cumulative',
                 tooltip=['YearMonth', 'Cumulative']
             ).properties(
@@ -1077,6 +1084,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 title='Cumulative Number of Items Added'
             )
 
+            # Show the Altair chart in Streamlit
             st.altair_chart(cumulative_chart, use_container_width=True)
 
         with col2:
