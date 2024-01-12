@@ -1142,7 +1142,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
                 df_all = df_all.loc[filter]
                 number_of_items = len(df_all)
-                st.write(f"{number_of_items} sources found published between {int(min_y)} and {int(max_y)}")
+                st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
                 
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
