@@ -1076,11 +1076,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 width=600,
                 title='Cumulative Number of Items Added'
             )
-
-            # Streamlit App
-            st.title('Cumulative Number of Items Added per Month')
-
-            # Display the cumulative chart using st.altair_chart
             st.altair_chart(cumulative_chart, use_container_width=True)
 
         with col2:
