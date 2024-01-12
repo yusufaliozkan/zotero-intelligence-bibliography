@@ -1090,7 +1090,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 alt.datum.YearMonth % step == 0
             )
             st.subheader('Cumulative Number of Items Added per Month')
-            st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
+            st.altair_chart(cumulative_chart + data_labels, use_container_width=False)
 
         with col2:
             with st.expander('Collections', expanded=True):
