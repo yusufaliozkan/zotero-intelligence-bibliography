@@ -1076,26 +1076,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 width=600,
                 title='Cumulative Number of Items Added'
             )
-
-            # Display data labels for every 6 months
-            step = 6
-            data_labels = cumulative_chart.mark_text(
-                align='center',
-                baseline='bottom',
-                dy=-5,  # Adjust the vertical position of labels
-                fontSize=10
-            ).encode(
-                x=alt.X('YearMonth', title='Year-Month', axis=alt.Axis(labelAngle=-45)),
-                y='Cumulative:Q',
-                text='Cumulative:Q'
-            ).transform_filter(
-                alt.datum.YearMonth % step == 0
-            )
-
-            # Streamlit App
-            st.title('Cumulative Number of Items Added per Month')
-
-            # Display the cumulative chart with data labels using st.altair_chart
             st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
 
         with col2:
