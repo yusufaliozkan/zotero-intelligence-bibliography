@@ -1125,7 +1125,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 df_all = pd.read_csv('all_items.csv')
                 df_all['Date published2'] =df_all['Date published']
-                df_all['Date published2'].dtype
+                a=df_all['Date published2'].dtype
+                a
                 df_all['Date published2'] = pd.to_datetime(df_all['Date published2'], errors='coerce')
 
                 selected_year = st.slider('Select Publication Year', min_value=df_all['Date published2'].dt.year.min(),
