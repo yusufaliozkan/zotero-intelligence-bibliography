@@ -1063,6 +1063,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_all_items
 
+            df_added = df_csv.copy()
+            df_added['Date added'] = pd.to_datetime(df_added['Date added'])
+            df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
+            cumulative_counts = monthly_counts.cumsum()
+            monthly_counts = df_added.groupby('YearMonth').size()
+            monthly_counts.name = 'Number of items added'
+            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_line().encode(
+                x='YearMonth',
+                y='Cumulative',
+                tooltip=['YearMonth', 'Cumulative']
+            ).properties(
+                width=600,
+                title='Cumulative Number of Items Added'
+            )
+            st.altair_chart(cumulative_chart, use_container_width=True)
+
         with col2:
             with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
