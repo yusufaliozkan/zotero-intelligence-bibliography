@@ -1128,8 +1128,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
                 df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
                 numeric_years = df_all['Date year'].dropna().astype(int)
-                max_y = int(df_all['Date year'].max())
-                min_y = int(df_all['Date year'].min())
+                max_y = int(numeric_years.max())
+                min_y = int(numeric_years.min())
 
                 years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years33')
                 filter = (df_all['Date year'].astype(int) >= years[0]) & (df_all['Date year'].astype(int) < years[1])
