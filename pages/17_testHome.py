@@ -1130,7 +1130,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 numeric_years = df_all['Date year'].dropna().astype(int)
                 max_y = int(df_all['Date year'].max())
                 min_y = int(df_all['Date year'].min())
-                max_y
+                
+                years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years')
 
                 
                 articles_list = []  # Store articles in a list
