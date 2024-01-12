@@ -1124,42 +1124,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + zotero_link + ')'
                     )
                 df_all = pd.read_csv('all_items.csv')
-
-                # Convert 'Date published' to datetime and handle timezones
-                df_all['Date published2'] = pd.to_datetime(df_all['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
-
-                # Extract the year and handle 'No date' values
+                df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
                 df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
-
-                # Replace non-finite values with a default value before calculating max and min
-                default_value = -1  # Choose a suitable default value
-                df_all['Date year'] = df_all['Date year'].fillna(default_value)
-
-                # Filter out non-numeric values before calculating max and min
-                numeric_years = df_all['Date year'].astype(int)
-
-                # Calculate max and min using the filtered numeric_years
+                numeric_years = df_all['Date year'].dropna()
                 max_y = numeric_years.max()
                 min_y = numeric_years.min()
 
-                # Streamlit slider for selecting publication years
-                years = st.slider('Publication years between:', min_y, max_y, (min_y, max_y), key='years')
-
-                # Filter the DataFrame based on the selected years
-                filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] < years[1])
+                years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years33')
+                filter = (df_all['Date year'].astype(int) >= years[0]) & (df_all['Date year'].astype(int) < years[1])
                 df_all = df_all.loc[filter]
-
-                # Rest of your code remains unchanged
-                articles_list = []  
-                abstracts_list = [] 
+                
+                articles_list = []  # Store articles in a list
+                abstracts_list = [] #Store abstracts in a list
                 for index, row in df_all.iterrows():
                     formatted_entry = format_entry(row)
-                    articles_list.append(formatted_entry)
+                    articles_list.append(formatted_entry)  # Append formatted entry to the list
                     abstract = row['Abstract']
                     abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-
                 for i, article in enumerate(articles_list, start=1):
+                    # Display the article with highlighted search terms
                     st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
         with col2:
