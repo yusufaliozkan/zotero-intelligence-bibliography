@@ -1129,7 +1129,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
                 default_year_value = 0 
                 df_all['Date year'] = df_all['Date year'].fillna(default_year_value).astype(int)
-                selected_year_range = st.slider("Select a Year Range", int(df_all['Date year'].min()), int(df_all['Date year'].max()), (int(df_all['Date year'].min()), int(df_all['Date year'].max())))
+                selected_year_range = st.slider(
+                    "Select a Year Range",
+                    min_value=int(df_all['Date year'].min()),  # Set the minimum value of the slider
+                    max_value=int(df_all['Date year'].max()),  # Set the maximum value of the slider
+                    value=(int(df_all['Date year'].min()), int(df_all['Date year'].max()))
+                )
                 filtered_df = df_all[(df_all['Date year'] >= selected_year_range[0]) & (df_all['Date year'] <= selected_year_range[1])]
 
                 
