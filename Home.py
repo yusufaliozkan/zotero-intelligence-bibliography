@@ -1062,6 +1062,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
 
                 df_all_items
+                
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
