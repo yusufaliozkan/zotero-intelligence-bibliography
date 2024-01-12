@@ -1124,6 +1124,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + zotero_link + ')'
                     )
                 df_all = pd.read_csv('all_items.csv')
+                articles_list = []  # Store articles in a list
+                abstracts_list = [] #Store abstracts in a list
                 for index, row in df_all.iterrows():
                     formatted_entry = format_entry(row)
                     articles_list.append(formatted_entry)  # Append formatted entry to the list
