@@ -1063,12 +1063,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_all_items
             df_added = pd.read_csv('all_items.csv')
+
+            # Convert 'Date added' column to datetime format
             df_added['Date added'] = pd.to_datetime(df_added['Date added'])
+
+            # Create 'YearMonth' column for grouping
             df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
+
+            # Group by 'YearMonth' and count the number of items
             monthly_counts = df_added.groupby('YearMonth').size()
             monthly_counts.name = 'Number of items added'
+
+            # Calculate cumulative sum
             cumulative_counts = monthly_counts.cumsum()
-            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_line().encode(
+
+            # Plot the cumulative bar chart using Altair
+            cumulative_chart = alt.Chart(pd.DataFrame({'YearMonth': cumulative_counts.index, 'Cumulative': cumulative_counts})).mark_bar().encode(
                 x='YearMonth',
                 y='Cumulative',
                 tooltip=['YearMonth', 'Cumulative']
@@ -1077,7 +1087,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 title='Cumulative Number of Items Added'
             )
 
-            st.altair_chart(cumulative_chart, use_container_width=True)
+            # Display data labels for every 6 months
+            step = 6
+            data_labels = cumulative_chart.mark_text(
+                align='center',
+                baseline='bottom',
+                dy=-5,  # Adjust the vertical position of labels
+                fontSize=10
+            ).encode(
+                x=alt.X('YearMonth', title='Year-Month', axis=alt.Axis(labelAngle=-45)),
+                y='Cumulative:Q',
+                text='Cumulative:Q'
+            ).transform_filter(
+                alt.datum.YearMonth % step == 0
+            )
+
+            # Streamlit App
+            st.title('Cumulative Number of Items Added per Month')
+
+            # Display the cumulative chart with data labels using st.altair_chart
+            st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
 
         with col2:
             with st.expander('Collections', expanded=True):
