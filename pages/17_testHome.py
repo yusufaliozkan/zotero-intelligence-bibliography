@@ -1127,6 +1127,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all['Date published2'] =df_all['Date published']
                 df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
+                df_all['Date year'] = df_all['Date year'].fillna('No date')
                 df_all['Date year'] = df_all['Date year'].astype(int)
                 selected_year_range = st.slider("Select a Year Range", int(df_all['Date year'].min()), int(df_all['Date year'].max()), (int(df_all['Date year'].min()), int(df_all['Date year'].max())))
 
