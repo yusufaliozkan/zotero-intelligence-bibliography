@@ -1132,7 +1132,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 min_y = numeric_years.min()
 
                 years = st.slider('Publication years between:', int(min_y), int(max_y), (int(min_y), int(max_y)), key='years')
-                filter = (df_all['Date year'].astype(int) >= years[0]) & (df_all['Date year'].astype(int) < years[1])
+                filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] < years[1])
                 df_all = df_all.loc[filter]
                 
                 articles_list = []  # Store articles in a list
