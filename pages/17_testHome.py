@@ -1125,7 +1125,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 df_all = pd.read_csv('all_items.csv')
                 df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-
+                df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
                 
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
