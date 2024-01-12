@@ -1062,7 +1062,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
 
                 df_all_items
-                
+
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
@@ -1092,7 +1092,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
                 st.subheader('Total Number of Items Added per Month (cumulative)')
                 st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
-
 
         with col2:
             with st.expander('Collections', expanded=True):
