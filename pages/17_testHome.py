@@ -1139,7 +1139,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 df_all = df_all.sort_values(by=['Date published'], ascending=False)
 
-                years = st.slider('Publication years between:', current_year, int(min(numeric_years)), int(max_y), (current_year, current_year), key='years')
+                current_year = date.today().year
+                years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year), key='years')
+
                 filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
                 df_all = df_all.loc[filter]
                 number_of_items = len(df_all)
