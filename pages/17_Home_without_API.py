@@ -1134,8 +1134,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.header('Dashboard')
         on_main_dashboard = st.toggle('Display dashboard') 
         if on_main_dashboard:
-            df_collections_2 = pd.read_csv('all_items_duplicated.csv')  
-            df_collections_2
+            df_collections = pd.read_csv('all_items_duplicated.csv')  
+            df_collections
             number0 = st.slider('Select a number collections', 3,30,15)
             df_collections_2.set_index('Name', inplace=True)
             df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
