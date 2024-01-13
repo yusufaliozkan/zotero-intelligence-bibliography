@@ -28,7 +28,7 @@ country_names = [
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
-    'Bundesnachrichtendienst'
+    'Bundesnachrichtendienst','Vappala Balachandran'
 ]
 replacements = { 
     'Belgian': 'Belgium',
@@ -70,7 +70,8 @@ replacements = {
     'Czechoslovakia':'Czechia',
     'Third Reich':'Germany',
     'Kriegsmarine':'Germany',
-    'Bundesnachrichtendienst':'Germany'
+    'Bundesnachrichtendienst':'Germany',
+    'Vappala Balachandran':'India'
     }
 
 df_countries['Country'] = ''
@@ -111,7 +112,7 @@ continent_country_names = [
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian',  'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
-    'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst'
+    'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -154,8 +155,9 @@ continent_replacements = {
     'Czechoslovakia':'Czechia',
     'Third Reich':'Germany',
     'Kriegsmarine':'Germany',
-    'Bundesnachrichtendienst':'Germany'
-    }
+    'Bundesnachrichtendienst':'Germany',
+    'Vappala Balachandran':'India'
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
