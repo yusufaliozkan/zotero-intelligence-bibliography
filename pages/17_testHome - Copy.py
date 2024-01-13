@@ -69,7 +69,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         df_intro = pd.read_csv('all_items.csv')
         num_items = len(df_intro)
         st.write('There are '+  '**'+str(num_items)+ '**' + ' items in this library.')
-        st.write('The library last updated on ' + '**'+ df_intro.loc[0]['Date modified']+'**')
+        st.write('The library last updated on ' + '**'+ df_intro.loc[0]['Date added']+'**')
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
