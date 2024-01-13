@@ -1061,7 +1061,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 a = 'intelligence-bibliography-all-' + today
                 st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
 
-                df_all_items 
+                df_all_items
 
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
