@@ -45,7 +45,7 @@ zot = zotero.Zotero(library_id, library_type)
 
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
-    items = zot.top(limit=10)
+    items = zot.top(limit=5)
 
     data=[]
     columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue']
@@ -1061,7 +1061,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 a = 'intelligence-bibliography-all-' + today
                 st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
 
-                df_all_items 
+                df_all_items
 
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
