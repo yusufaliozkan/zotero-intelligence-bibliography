@@ -866,74 +866,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
-            df = df_intro.copy()
-            df
-            df['Abstract'] = df['Abstract'].str.strip()
-            df['Abstract'] = df['Abstract'].fillna('No abstract')
-            
-            df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
-            df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
+            df_intro = df_intro.head(10)
 
-            def convert_df(df):
-                return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-            csv = convert_df(df_download)
-            # csv = df_download
-            # # st.caption(collection_name)
-            today = datetime.date.today().isoformat()
-            a = 'recently-added-' + today
-            st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
-            
-            display = st.checkbox('Display theme and abstract')
+            df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
+            df_intro['Date published'] = df_intro['Date published'].fillna('')
+            df_intro['No date flag'] = df_intro['Date published'].isnull().astype(np.uint8)
+            df_intro = df_intro.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+            df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
+            df_intro = df_intro.reset_index(drop=True)
+            df_intro
 
-            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                        ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                        ' (Published on: ' + df['Date published']+') ' +
-                        '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                        )
-            
-            row_nu_1 = len(df_last.index)
-            for i in range(row_nu_1):
-                publication_type = df['Publication type'].iloc[i]
-                if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                ' (Published on: ' + df['Date published']+') ' +
-                                " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
-                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                )
-                    st.write(f"{i+1}) " + df_last.iloc[i])
-                else:
-                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                ' (Published on: ' + df['Date published']+') ' +
-                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                )
-                    st.write(f"{i+1}) " + df_last.iloc[i])
+                articles_list = []  # Store articles in a list
+                for index, row in filtered_type_df.iterrows():
+                    formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                    articles_list.append(formatted_entry)                     
                 
-                if display:
-                    a=''
-                    b=''
-                    c=''
-                    if 'Name_x' in df:
-                        a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
-                        if df['Name_x'].iloc[i]=='':
-                            a=''
-                    if 'Name_y' in df:
-                        b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
-                        if df['Name_y'].iloc[i]=='':
-                            b=''
-                    if 'Name' in df:
-                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
-                        if df['Name'].iloc[i]=='':
-                            c=''
-                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                    if not any([a, b, c]):
-                        st.caption('No theme to display!')
-                    
-                    st.caption('Abstract: '+ df['Abstract'].iloc[i])
+                for index, row in filtered_type_df.iterrows():
+                    publication_type = row['Publication type']
+                    title = row['Title']
+                    authors = row['FirstName2']
+                    date_published = row['Date published'] 
+                    link_to_publication = row['Link to publication']
+                    zotero_link = row['Zotero link']
+
+                    if publication_type == 'Journal article':
+                        published_by_or_in = 'Published in'
+                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                    elif publication_type == 'Book':
+                        published_by_or_in = 'Published by'
+                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                    else:
+                        published_by_or_in = ''
+                        published_source = ''
+
+                    formatted_entry = (
+                        '**' + str(publication_type) + '**' + ': ' +
+                        str(title) + ' ' +
+                        '(by ' + '*' + str(authors) + '*' + ') ' +
+                        '(Publication date: ' + str(date_published) + ') ' +
+                        ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                        '[[Publication link]](' + str(link_to_publication) + ') ' +
+                        '[[Zotero link]](' + str(zotero_link) + ')'
+                    )
+                    st.write(f"{index + 1}) {formatted_entry}")
 
             st.header('All items in database')
             with st.expander('Click to expand', expanded=False):
