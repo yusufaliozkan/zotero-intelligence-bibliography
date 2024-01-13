@@ -867,6 +867,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
             df = df_intro.copy()
+            df
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
             
