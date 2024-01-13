@@ -61,8 +61,6 @@ Links to PhD theses catalouged by the British EThOS may not be working due to th
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
-    count = zot.count_items()
-
     col1, col2 = st.columns([3,5])
     with col2:
         with st.expander('Intro'):
