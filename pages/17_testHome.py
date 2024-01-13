@@ -179,12 +179,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
     count = zot.count_items()
 
     col1, col2 = st.columns([3,5])
-    with col2:
-        with st.expander('Intro'):
-            st.info(into)
-    with col1:
-        st.write('There are '+  '**'+str(count)+ '**' + ' items in this library.')
-        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+    # with col2:
+    #     with st.expander('Intro'):
+    #         st.info(into)
+    # with col1:
+    #     st.write('There are '+  '**'+str(count)+ '**' + ' items in this library.')
+    #     st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
