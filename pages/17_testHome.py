@@ -309,7 +309,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
-                if search_term and len(re.findall(r'\w+', search_term)) < 2:
+                if search_term and len(re.findall(r'\b\w{2,}\b', search_term)) < 0:
                     st.warning("Please enter at least two words for the search.")
                 elif search_term:
                     with st.expander('Click to expand', expanded=True):
