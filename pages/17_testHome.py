@@ -230,7 +230,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
     # Recently added items
 
-    tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', 'Surprise me'])
+    tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', '🔀 Surprise me'])
     with tab1:
         col1, col2 = st.columns([5,2]) 
         with col1:
@@ -1703,6 +1703,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.info('Toggle to see the dashboard!')
 
     with tab3:
+            st.subheader('Suggest random sources')
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
