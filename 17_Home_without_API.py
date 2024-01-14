@@ -1133,22 +1133,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab2:
         st.header('Dashboard')
         on_main_dashboard = st.toggle('Display dashboard') 
-        if on_main_dashboard:      
-            number0 = st.slider('Select a number collections', 3,30,15)
-            df_collections_2.set_index('Name', inplace=True)
-            df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
-            plot= df_collections_2.head(number0+1)
-            # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
-            plot = plot.reset_index()
-
-            plot = plot[plot['Name']!='01 Intelligence history']
-            fig = px.bar(plot, x='Name', y='Number', color='Name')
+        if on_main_dashboard:
+            df_collections = pd.read_csv('all_items_duplicated.csv')  
+            df_collections = df_collections[['Collection_Name']]
+            df_collections = df_collections[df_collections['Collection_Name']!='01 Intelligence history']
+            item_counts = df_collections['Collection_Name'].value_counts()
+            number_of_collections  = st.slider('Select a number collections', 3,30,15)
+            top_collections = item_counts.head(number_of_collections)
+            top_collections = item_counts.head(number_of_collections).reset_index()
+            top_collections.columns = ['Collection_Name', 'Count']
+            fig = px.bar(top_collections, x='Collection_Name', y='Count', color='Collection_Name',
+                        labels={'x': 'Collection Name', 'y': 'Number of Items'},
+                        title=f'Top {number_of_collections} Collections with Color')
             fig.update_layout(
                 autosize=False,
                 width=600,
                 height=600,)
-            fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             st.plotly_chart(fig, use_container_width = True)
+
 
             # Visauls for all items in the library
             df_csv = pd.read_csv('all_items.csv')
