@@ -185,6 +185,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with col1:
         st.write('There are '+  '**'+str(count)+ '**' + ' items in this library.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+        df_intro = pd.read_csv('all_items.csv')
+        df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
+        current_date = pd.to_datetime('now', utc=True)
+
+        items_added_last_five_days = df_intro[df_intro['Date added'] >= current_date - pd.Timedelta(days=5)]
+        st.write(f'{len(items_added_last_five_days)} items added in the last five days.')
+
+
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
