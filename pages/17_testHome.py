@@ -174,7 +174,7 @@ Check it out the [short guide](https://medium.com/@yaliozkan/introduction-to-int
 Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/). 
 '''
 
-with st.spinner('Retrieving data & updating dashboard...'):
+with st.spinner('Retrieving data & updating dashboard...'): 
 
     count = zot.count_items()
 
