@@ -191,7 +191,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.month == current_date.month)
         ]
 
-        st.write(f'There are '+  '**'+str({count})+ '**' + ' items in this library.')
+        st.write(f'There are '+  '**'+str(count)+ '**' + ' items in this library. {len(items_added_this_month)} items added in {current_date.strftime("%B %Y")}.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
         st.write(f'{len(items_added_this_month)} items added in {current_date.strftime("%B %Y")}.')
