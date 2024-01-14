@@ -1137,7 +1137,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections = pd.read_csv('all_items_duplicated.csv')  
             df_collections = df_collections[['Collection_Name']]
             item_counts = df_collections['Collection_Name'].value_counts()
-            number0 = st.slider('Select a number collections', 3,30,15)
+            number_of_collections  = st.slider('Select a number collections', 3,30,15)
             top_collections = item_counts.head(number_of_collections)
             st.dataframe(top_collections)
             plt.bar(top_collections.index, top_collections)
