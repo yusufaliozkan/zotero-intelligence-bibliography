@@ -324,6 +324,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         # Use Pyzotero to perform the search
                         zotero_results = perform_zotero_search(search_term)
 
+                        # Process the results as needed
+                        # For demonstration, let's just print the titles of the items
+                        for item in zotero_results:
+                            st.write(item['data']['title'])
+
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
                 cols, cola = st.columns([2,6])
