@@ -1140,6 +1140,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             item_counts = df_collections['Collection_Name'].value_counts()
             number_of_collections  = st.slider('Select a number collections', 3,30,15)
             top_collections = item_counts.head(number_of_collections)
+            top_collections = item_counts.head(number_of_collections).reset_index()
+            top_collections.columns = ['Collection_Name', 'Count']
             fig = px.bar(top_collections, x='Collection_Name', y='Count', color='Collection_Name',
                         labels={'x': 'Collection Name', 'y': 'Number of Items'},
                         title=f'Top {number_of_collections} Collections with Color')
