@@ -309,8 +309,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
-                
-                if search_term:
+                if search_term and len(re.findall(r'\w+', search_term)) < 2:
+                    st.warning("Please enter at least two words for the search.")
+                elif search_term:
                     with st.expander('Click to expand', expanded=True):
                         search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                         phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
