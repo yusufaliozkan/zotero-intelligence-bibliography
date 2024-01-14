@@ -46,6 +46,9 @@ zot = zotero.Zotero(library_id, library_type)
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
     items = zot.top(limit=5)
+    recently_modified_cutoff = zot.last_sync() - 7 * 24 * 60 * 60  # 7 days in seconds
+    items = [item for item in items if item['data']['dateModified'] < recently_modified_cutoff]
+    items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
     items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
 
 
