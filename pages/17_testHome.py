@@ -183,7 +183,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with st.expander('Intro'):
             st.info(into)
     with col1:
-        df
         df_intro = pd.read_csv('all_items.csv')
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
