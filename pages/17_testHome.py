@@ -46,7 +46,7 @@ zot = zotero.Zotero(library_id, library_type)
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
     items = zot.top(limit=5)
-
+    items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
     data=[]
     columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue']
 
@@ -176,14 +176,13 @@ Links to PhD theses catalouged by the British EThOS may not be working due to th
 
 with st.spinner('Retrieving data & updating dashboard...'): 
 
-    count = zot.count_items()
+    item_count = zot.num_items()
 
     col1, col2 = st.columns([3,5])
     with col2:
         with st.expander('Intro'):
             st.info(into)
     with col1:
-        df
         df_intro = pd.read_csv('all_items.csv')
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
@@ -191,8 +190,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.year == current_date.year) & 
             (df_intro['Date added'].dt.month == current_date.month)
         ]
-        st.write(f'**{count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
+        st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+
+
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
