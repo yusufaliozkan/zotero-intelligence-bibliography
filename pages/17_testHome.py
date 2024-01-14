@@ -192,6 +192,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
         ]
         st.write(f'**{count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+        item_count = zot.num_items()
+        st.write(f'Number of items in the library: {item_count}')
+
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
