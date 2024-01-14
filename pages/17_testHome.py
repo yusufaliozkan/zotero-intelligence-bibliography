@@ -45,7 +45,9 @@ zot = zotero.Zotero(library_id, library_type)
 
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
-    items = zot.top(limit=5)
+    seven_days_ago = datetime.now() - timedelta(days=7)
+    formatted_seven_days_ago = seven_days_ago.strftime('%Y-%m-%dT%H:%M:%SZ')
+    items = zot.top(since=formatted_seven_days_ago, limit=5)
     items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
 
 
