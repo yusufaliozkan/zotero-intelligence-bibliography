@@ -183,8 +183,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with st.expander('Intro'):
             st.info(into)
     with col1:
-        st.write('There are '+  '**'+str(count)+ '**' + ' items in this library.')
-        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
         df_intro = pd.read_csv('all_items.csv')
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
@@ -192,6 +190,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.year == current_date.year) & 
             (df_intro['Date added'].dt.month == current_date.month)
         ]
+
+        st.write(f'There are '+  '**'+str({count})+ '**' + ' items in this library.')
+        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+
         st.write(f'{len(items_added_this_month)} items added in {current_date.strftime("%B %Y")}.')
 
 
