@@ -45,7 +45,7 @@ zot = zotero.Zotero(library_id, library_type)
 
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
-    include_item_types = ['journalArticle']
+    include_item_types = ['thesis']
     items = zot.top(itemType=include_item_types, limit=5)
 
     data=[]
