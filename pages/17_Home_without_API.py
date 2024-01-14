@@ -1140,12 +1140,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             number_of_collections  = st.slider('Select a number collections', 3,30,15)
             top_collections = item_counts.head(number_of_collections)
             st.dataframe(top_collections)
-            plt.bar(top_collections.index, top_collections)
-            plt.xlabel('Collection Name')
-            plt.ylabel('Number of Items')
-            plt.title(f'Top {number_of_collections} Collections')
-            st.pyplot()
-
+            fig = px.bar(x=top_collections.index, y=top_collections.values, labels={'x': 'Collection Name', 'y': 'Number of Items'},
+                        title=f'Top {number_of_collections} Collections')
+            st.plotly_chart(fig)
+            
             item_counts.set_index('Collection_Name', inplace=True)
             item_counts
             df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
