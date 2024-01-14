@@ -315,7 +315,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.subheader('Search keywords')
                 cols, cola = st.columns([2, 6])
                 with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
+                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'], key='newww')
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
 
