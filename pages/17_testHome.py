@@ -188,8 +188,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
         df_intro = pd.read_csv('all_items.csv')
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
-        items_added_last_five_days = df_intro[df_intro['Date added'] >= current_date - pd.Timedelta(days=1)]
-        st.write(f'{len(items_added_last_five_days)} items added in the last 24 hrs.')
+        items_added_this_month = df_intro[
+            (df_intro['Date added'].dt.year == current_date.year) & 
+            (df_intro['Date added'].dt.month == current_date.month)
+        ]
+        st.write(f'{len(items_added_this_month)} items added in the current calendar month.')
+
 
 
 
