@@ -176,7 +176,7 @@ Links to PhD theses catalouged by the British EThOS may not be working due to th
 
 with st.spinner('Retrieving data & updating dashboard...'): 
 
-    count = zot.count_items()
+    item_count = zot.num_items()
 
     col1, col2 = st.columns([3,5])
     with col2:
@@ -190,10 +190,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.year == current_date.year) & 
             (df_intro['Date added'].dt.month == current_date.month)
         ]
-        st.write(f'**{count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
+        st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
-        item_count = zot.num_items()
-        st.write(f'Number of items in the library: {item_count}')
+
 
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
