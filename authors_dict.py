@@ -6,7 +6,7 @@ df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', 
 df_authors = df_authors.explode('Author_name')
 df_authors.reset_index(drop=True, inplace=True)
 df_authors = df_authors.dropna(subset=['FirstName2'])
-name_replacements = {
+name_replacements = { 
     'David Gioe': 'David V. Gioe',
     'David Vincent Gioe': 'David V. Gioe',
     'Michael Goodman': 'Michael S. Goodman',
