@@ -1145,6 +1145,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig = px.bar(top_collections, x='Collection_Name', y='Count', color='Collection_Name',
                         labels={'x': 'Collection Name', 'y': 'Number of Items'},
                         title=f'Top {number_of_collections} Collections with Color')
+            fig.update_layout(
+                autosize=False,
+                width=600,
+                height=600,)
             st.plotly_chart(fig, use_container_width = True)
 
 
