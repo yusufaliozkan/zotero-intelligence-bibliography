@@ -1138,6 +1138,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections = df_collections[['Collection_Name']]
             item_counts = df_collections['Collection_Name'].value_counts()
             number0 = st.slider('Select a number collections', 3,30,15)
+            top_collections = item_counts.head(number_of_collections)
+            st.dataframe(top_collections)
+            plt.bar(top_collections.index, top_collections)
+            plt.xlabel('Collection Name')
+            plt.ylabel('Number of Items')
+            plt.title(f'Top {number_of_collections} Collections')
+            st.pyplot()
+
             item_counts.set_index('Collection_Name', inplace=True)
             item_counts
             df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
