@@ -1099,7 +1099,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 ).transform_filter(
                     alt.datum.YearMonth % step == 0
                 )
-                st.subheader('Growth of the')
+                st.subheader('Growth of the library')
                 st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
 
                 def format_entry(row):
