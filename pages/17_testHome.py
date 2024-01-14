@@ -174,7 +174,7 @@ Check it out the [short guide](https://medium.com/@yaliozkan/introduction-to-int
 Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/). 
 '''
 
-with st.spinner('Retrieving data & updating dashboard...'):
+with st.spinner('Retrieving data & updating dashboard...'): 
 
     count = zot.count_items()
 
@@ -183,16 +183,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with st.expander('Intro'):
             st.info(into)
     with col1:
-        st.write('There are '+  '**'+str(count)+ '**' + ' items in this library.')
-        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+        df
         df_intro = pd.read_csv('all_items.csv')
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
-
-        items_added_last_five_days = df_intro[df_intro['Date added'] >= current_date - pd.Timedelta(days=5)]
-        st.write(f'{len(items_added_last_five_days)} items added in the last five days.')
-
-
+        items_added_this_month = df_intro[
+            (df_intro['Date added'].dt.year == current_date.year) & 
+            (df_intro['Date added'].dt.month == current_date.month)
+        ]
+        st.write(f'**{count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
+        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
