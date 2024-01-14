@@ -189,7 +189,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
 
-        items_added_last_five_days = df_intro[df_intro['Date added'] >= current_date - pd.Timedelta(days=1)]
+        items_added_last_five_days = df_intro[df_intro['Date added'] >= current_date - pd.Timedelta(days=10000)]
         st.write(f'{len(items_added_last_five_days)} items added in the last five days.')
 
 
