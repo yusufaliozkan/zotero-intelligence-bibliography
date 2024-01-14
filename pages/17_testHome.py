@@ -192,7 +192,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.year == current_date.year) & 
             (df_intro['Date added'].dt.month == current_date.month)
         ]
-        st.write(f'{len(items_added_this_month)} items added in the current calendar month.')
+        st.write(f'{len(items_added_this_month)} items added in {current_date.strftime("%B %Y")}.')
+
 
 
 
