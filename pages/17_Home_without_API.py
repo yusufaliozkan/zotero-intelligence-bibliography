@@ -1140,25 +1140,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             item_counts = df_collections['Collection_Name'].value_counts()
             number_of_collections  = st.slider('Select a number collections', 3,30,15)
             top_collections = item_counts.head(number_of_collections)
-            st.dataframe(top_collections)
-            fig = px.bar(x=top_collections.index, y=top_collections.values, labels={'x': 'Collection Name', 'y': 'Number of Items'},
-                        title=f'Top {number_of_collections} Collections')
-            st.plotly_chart(fig, use_container_width = True)
+            fig = px.bar(top_collections, x='Collection_Name', y='Count', color='Collection_Name',
+                        labels={'x': 'Collection Name', 'y': 'Number of Items'},
+                        title=f'Top {number_of_collections} Collections with Color')
+            st.plotly_chart(fig)
 
-            item_counts.set_index('Collection_Name', inplace=True)
-            df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
-            plot= df_collections_2.head(number0+1)
-            # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
-            plot = plot.reset_index()
-
-            plot = plot[plot['Name']!='01 Intelligence history']
-            fig = px.bar(plot, x='Name', y='Number', color='Name')
-            fig.update_layout(
-                autosize=False,
-                width=600,
-                height=600,)
-            fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-            st.plotly_chart(fig, use_container_width = True)
 
             # Visauls for all items in the library
             df_csv = pd.read_csv('all_items.csv')
