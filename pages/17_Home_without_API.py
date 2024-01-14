@@ -1145,7 +1145,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig = px.bar(top_collections, x='Collection_Name', y='Count', color='Collection_Name',
                         labels={'x': 'Collection Name', 'y': 'Number of Items'},
                         title=f'Top {number_of_collections} Collections with Color')
-            st.plotly_chart(fig)
+            st.plotly_chart(fig, use_container_width = True)
 
 
             # Visauls for all items in the library
