@@ -1136,6 +1136,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         if on_main_dashboard:
             df_collections = pd.read_csv('all_items_duplicated.csv')  
             df_collections = df_collections[['Collection_Name']]
+            df_collections = df_collections[df_collections['Collection_Name']!='01 Intelligence history']
             item_counts = df_collections['Collection_Name'].value_counts()
             item_counts = item_counts[item_counts['Collection_Name']!='01 Intelligence history']
             number_of_collections  = st.slider('Select a number collections', 3,30,15)
