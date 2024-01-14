@@ -302,6 +302,28 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # }
             # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
 
+            def perform_zotero_search(search_term, qmode='titleCreatorYear'):
+                # Set search parameters
+                zot.add_parameters(q=search_term, qmode=qmode)
+
+                # Perform the search
+                items = zot.everything(zot.top())
+
+                # Process the search results as needed
+                return items
+            if search_option == "Search keywords":
+                st.subheader('Search keywords')
+                cols, cola = st.columns([2, 6])
+                with cols:
+                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
+                with cola:
+                    search_term = st.text_input('Search keywords in titles or abstracts')
+
+                if search_term:
+                    with st.expander('Click to expand', expanded=True):
+                        # Use Pyzotero to perform the search
+                        zotero_results = perform_zotero_search(search_term)
+
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
                 cols, cola = st.columns([2,6])
