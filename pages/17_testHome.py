@@ -1179,6 +1179,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 number_of_items = len(df_all)
                 st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
                 
+                if number_of_items > 50:
+                    show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True, key='all_items')
+                    if show_first_50:
+                        df_all = df_all.head(50)
                 articles_list = []  # Store articles in a list
                 abstracts_list = [] #Store abstracts in a list
                 for index, row in df_all.iterrows():
