@@ -996,17 +996,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df['Abstract'] = df['Abstract'].str.strip()
                 df['Abstract'] = df['Abstract'].fillna('No abstract')
                 
-                df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
-                df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
-
-                def convert_df(df):
-                    return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv = convert_df(df_download)
-                # csv = df_download
-                # # st.caption(collection_name)
-                today = datetime.date.today().isoformat()
-                a = 'recently-added-' + today
-                st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                # df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
+                # df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
+                # def convert_df(df):
+                #     return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                # csv = convert_df(df_download)
+                # # csv = df_download
+                # # # st.caption(collection_name)
+                # today = datetime.date.today().isoformat()
+                # a = 'recently-added-' + today
+                # st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
                 
                 display = st.checkbox('Display theme and abstract')
 
