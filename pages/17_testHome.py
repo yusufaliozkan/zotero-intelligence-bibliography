@@ -1155,7 +1155,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # csv = df_download
                     # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
-                    a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + + str(years[1]) + today
+                    a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1]) + today
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_all)
                     if years[0] == years[1] or years[0]==current_year:
