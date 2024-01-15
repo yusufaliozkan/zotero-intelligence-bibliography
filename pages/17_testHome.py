@@ -990,57 +990,72 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
-
-            # Clean and preprocess data
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
+            
+            df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
+            df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
 
-            df_download = df[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
-
-            # Convert dataframe to CSV
-            def convert_df_to_csv(df):
-                return df.to_csv(index=False, encoding='utf-8-sig')
-
-            csv_data = convert_df_to_csv(df_download)
-
-            # Download button
+            def convert_df(df):
+                return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+            csv = convert_df(df_download)
+            # csv = df_download
+            # # st.caption(collection_name)
             today = datetime.date.today().isoformat()
-            csv_filename = 'recently-added-' + today + '.csv'
-            st.download_button('💾 Download recently added items', csv_data, csv_filename, mime="text/csv", key='download-csv-3')
-
-            # Display theme and abstract
+            a = 'recently-added-' + today
+            st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
+            
             display = st.checkbox('Display theme and abstract')
 
-            # Display information
-            for i, row in df.iterrows():
-                publication_type = row['Publication type']
-
-                # Handle missing author information
-                authors = row['Authors'] if pd.notna(row['Authors']) else 'No author info'
-
-                # Build publication information
-                publication_info = (
-                    f'**{publication_type}**: {row["Title"]}, '
-                    f'(by *{authors}*) '
-                    f'(Published on: {row["Date published"]}) '
-                    f'[[Publication link]]({row["Link to publication"]}) '
-                    f'[[Zotero link]]({row["Zotero link"]})'
-                )
-
-                # Add venue information for specific publication types
+            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                        ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                        ' (Published on: ' + df['Date published']+') ' +
+                        '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                        )
+            
+            row_nu_1 = len(df_last.index)
+            for i in range(row_nu_1):
+                publication_type = df['Publication type'].iloc[i]
                 if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                    publication_info += f' (Published in: *{row["Pub_venue"]}*)'
-
-                st.write(f"{i+1}) {publication_info}")
-
-                # Display themes and abstract if selected
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+') ' +
+                                " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
+                    st.write(f"{i+1}) " + df_last.iloc[i])
+                else:
+                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + df['Date published']+') ' +
+                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                )
+                    st.write(f"{i+1}) " + df_last.iloc[i])
+                
                 if display:
-                    themes = [row['Name_x'], row['Name_y'], row['Name']]
-                    theme_links = [row['Link_x'], row['Link_y'], row['Link']]
-                    themes = [f'[[{name}]]({link})' for name, link in zip(themes, theme_links) if name]
-
-                    st.caption('Theme(s): ' + ' '.join(themes) if themes else 'No theme to display!')
-                    st.caption('Abstract: ' + row['Abstract'])
+                    a=''
+                    b=''
+                    c=''
+                    if 'Name_x' in df:
+                        a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
+                        if df['Name_x'].iloc[i]=='':
+                            a=''
+                    if 'Name_y' in df:
+                        b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
+                        if df['Name_y'].iloc[i]=='':
+                            b=''
+                    if 'Name' in df:
+                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
+                        if df['Name'].iloc[i]=='':
+                            c=''
+                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                    if not any([a, b, c]):
+                        st.caption('No theme to display!')
+                    
+                    st.caption('Abstract: '+ df['Abstract'].iloc[i])
             
             st.markdown('#### Recently published')
             display2 = st.checkbox('Display abstracts')
