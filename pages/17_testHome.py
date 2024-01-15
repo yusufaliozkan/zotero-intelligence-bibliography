@@ -989,7 +989,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
 
             # RECENTLY ADDED ITEMS
-            st.header('Recently added or updated items')
+            st.header('Recent items')
             tab1, tab2 = st.tabs(['Recently added items', 'Recently published items'])
             with tab1:
                 df['Abstract'] = df['Abstract'].str.strip()
