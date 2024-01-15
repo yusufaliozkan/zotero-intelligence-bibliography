@@ -1059,6 +1059,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             for index, formatted_entry in enumerate(articles_list):
                 st.write(f"{index + 1}) {formatted_entry}")
                 if display2:
+                    df_intro
                     st.caption(row['Abstract'])
 
 
