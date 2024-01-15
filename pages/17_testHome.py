@@ -1027,10 +1027,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     f'[[Zotero link]]({row["Zotero link"]})'
                 )
 
-                if publication_type == "Report":
-                    institution = row["Institution"]
-                    publication_info += f' (Produced by *{institution}*)'
-                elif publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
+                # Add venue information for specific publication types
+                if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
                     publication_info += f' (Published in: *{row["Pub_venue"]}*)'
 
                 st.write(f"{i+1}) {publication_info}")
