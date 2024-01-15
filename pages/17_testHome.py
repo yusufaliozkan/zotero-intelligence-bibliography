@@ -1041,6 +1041,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     st.caption('Theme(s): ' + ' '.join(themes) if themes else 'No theme to display!')
                     st.caption('Abstract: ' + row['Abstract'])
+            
+            st.markdown('#### Recently published')
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
