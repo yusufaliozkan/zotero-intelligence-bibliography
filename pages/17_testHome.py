@@ -1151,8 +1151,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     
                     number_of_items = len(df_all)
 
-                    show_all_results = st.button('See all results')
-
                     articles_list = []  # Store articles in a list
                     abstracts_list = []  # Store abstracts in a list
 
@@ -1162,12 +1160,30 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         abstract = row['Abstract']
                         abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
 
-                    # Show all results if the button is clicked
-                    results_to_show = number_of_items if show_all_results else 20
+                    # Set the number of items to display per batch
+                    items_per_batch = 20
 
-                    for i, article in enumerate(articles_list[:results_to_show], start=1):
-                        # Display the article with highlighted search terms
-                        st.markdown(f"{i}. {article}", unsafe_allow_html=True)
+                    # Initialize a variable to keep track of the starting index for each batch
+                    start_index = 0
+
+                    # Display the items in batches using a loop
+                    while start_index < number_of_items:
+                        end_index = start_index + items_per_batch
+                        batch_articles = articles_list[start_index:end_index]
+
+                        for i, article in enumerate(batch_articles, start=start_index + 1):
+                            # Display the article with highlighted search terms
+                            st.markdown(f"{i}. {article}", unsafe_allow_html=True)
+
+                        # If there are more items, display a button to show the next batch
+                        if end_index < number_of_items:
+                            show_next_batch = st.button('Show Next 20')
+                            if show_next_batch:
+                                start_index = end_index
+                            else:
+                                break
+                        else:
+                            break
                 else:
                     df_all_items
                 df_added = pd.read_csv('all_items.csv')
