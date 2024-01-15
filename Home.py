@@ -303,7 +303,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
 
             if search_option == "Search keywords":
-                st.markdown('##### Search keywords')
+                st.subheader('Search keywords')
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
