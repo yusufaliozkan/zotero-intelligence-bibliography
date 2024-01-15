@@ -1177,7 +1177,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         # If there are more items, display a button to show the next batch
                         if end_index < number_of_items:
-                            show_next_batch = st.button('Show Next 20')
+                            show_next_batch = st.button('Show Next 20', key={i})
                             if show_next_batch:
                                 start_index = end_index
                             else:
