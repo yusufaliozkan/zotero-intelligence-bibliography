@@ -1147,7 +1147,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
                     df_all = df_all.loc[filter]
                     number_of_items = len(df_all)
-                    if years[0] == years[1] OR years[0]==current_year:
+                    if years[0] == years[1] or years[0]==current_year:
                         st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
                     else:
                         st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
