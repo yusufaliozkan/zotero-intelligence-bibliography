@@ -1145,17 +1145,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
                     df_all = df_all.reset_index(drop=True)
-                    df_all
                     df_all = df_all.loc[filter]
                     df_all_download = df_all.copy()
-                    df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'Link to publication', 'Zotero link']]
-                    def convert_df(df_all):
-                        return df_all.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                    csv_selected = convert_df(df_all)
+                    df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
+                    df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
+                    df_all_download
+                    def convert_df(df_all_download):
+                        return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                    csv_selected = convert_df(df_all_download)
                     # csv = df_download
                     # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
-                    a = 'intelligence-bibliography-selected-' + today
+                    a = 'intelligence-bibliography-selected-period' + today
                     st.download_button('💾 Download all items', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_all)
                     if years[0] == years[1] or years[0]==current_year:
