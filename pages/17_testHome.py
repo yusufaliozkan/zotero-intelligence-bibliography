@@ -233,7 +233,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', '🔀 Surprise me'])
     with tab1:
         col1, col2 = st.columns([6,2]) 
-        with col1:
+        with col1: 
 
             # SEARCH KEYWORD OR AUTHOR NAMES
 
