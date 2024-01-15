@@ -1075,8 +1075,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write(f"{index + 1}) {formatted_entry}")
                 if display:
                     st.caption(df_intro.iloc[index]['Abstract'])
-                    df_intro
-
 
             st.header('All items in database')
             with st.expander('Click to expand', expanded=False):
