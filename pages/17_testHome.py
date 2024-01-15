@@ -987,6 +987,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
 
+
             # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
 
@@ -1014,8 +1015,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             for i, row in df.iterrows():
                 publication_type = row['Publication type']
 
+                # Handle missing author information
                 authors = row['Authors'] if pd.notna(row['Authors']) else 'No author info'
-                
+
                 # Build publication information
                 publication_info = (
                     f'**{publication_type}**: {row["Title"]}, '
@@ -1028,7 +1030,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Add venue information for specific publication types
                 if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
                     publication_info += f' (Published in: *{row["Pub_venue"]}*)'
-                
+
                 st.write(f"{i+1}) {publication_info}")
 
                 # Display themes and abstract if selected
@@ -1039,6 +1041,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     st.caption('Theme(s): ' + ' '.join(themes) if themes else 'No theme to display!')
                     st.caption('Abstract: ' + row['Abstract'])
+
 
             st.header('All items in database')
             with st.expander('Click to expand', expanded=False):
