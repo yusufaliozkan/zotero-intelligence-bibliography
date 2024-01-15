@@ -1143,7 +1143,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
 
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
-                    df_all = df_all.reset_index(drop=True)
+                    # df_all = df_all.reset_index(drop=True)
                     df_all = df_all.loc[filter]
                     df_all_download = df_all.copy()
                     df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
