@@ -1144,7 +1144,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     current_year = date.today().year
                     years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year), key='years')
 
-                    filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
+                    filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] < years[1])
                     df_all = df_all.loc[filter]
                     number_of_items = len(df_all)
                     st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
