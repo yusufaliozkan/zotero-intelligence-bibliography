@@ -1050,7 +1050,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
             df_intro = df_intro.reset_index(drop=True)   
             articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
-            st.write(f"{index + 1}) {formatted_entry}")
+            for index, formatted_entry in enumerate(random_sources):
+                st.write(f"{index + 1}) {formatted_entry}")
 
 
             st.header('All items in database')
