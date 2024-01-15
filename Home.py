@@ -45,7 +45,7 @@ zot = zotero.Zotero(library_id, library_type)
 
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
-    items = zot.top(limit=10)
+    items = zot.top(limit=5)
     items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
 
     data=[]
