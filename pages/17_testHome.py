@@ -1041,6 +1041,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     st.caption('Theme(s): ' + ' '.join(themes) if themes else 'No theme to display!')
                     st.caption('Abstract: ' + row['Abstract'])
+            df_intro = pd.read_csv('all_items.csv')
+            df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
+            df_intro['Date published'] = df_intro['Date published'].fillna('')
+            df_intro['No date flag'] = df_intro['Date published'].isnull().astype(np.uint8)
+            df_intro = df_intro.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+            df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
+            df_intro = df_intro.reset_index(drop=True)   
+            articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
 
 
             st.header('All items in database')
