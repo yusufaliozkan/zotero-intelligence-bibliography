@@ -1151,12 +1151,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     
                     number_of_items = len(df_all)
 
-                    if number_of_items > 50:
-                        show_first_50 = st.button('See the next 20 results')
-                        if show_first_50:
-                            df_all = df_all.head(50)
-                    else:
-                        show_first_50 = True
+                    show_all_results = st.button('See all results')
 
                     articles_list = []  # Store articles in a list
                     abstracts_list = []  # Store abstracts in a list
@@ -1167,8 +1162,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         abstract = row['Abstract']
                         abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
 
-                    # Show the first 20 or all results based on the button click
-                    results_to_show = 20 if show_first_50 else number_of_items
+                    # Show all results if the button is clicked
+                    results_to_show = number_of_items if show_all_results else 20
 
                     for i, article in enumerate(articles_list[:results_to_show], start=1):
                         # Display the article with highlighted search terms
