@@ -992,7 +992,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Recent items')
             tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
             with tab11:
-                st.markdown('#### Recently added or updated')
+                st.markdown('#### Recently added or updated items')
                 df['Abstract'] = df['Abstract'].str.strip()
                 df['Abstract'] = df['Abstract'].fillna('No abstract')
                 
@@ -1059,7 +1059,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         st.caption('Abstract: '+ df['Abstract'].iloc[i])
             with tab12:
-                st.markdown('#### Recently published')
+                st.markdown('#### Recently published items')
                 display2 = st.checkbox('Display abstracts', key='recently_published')
                 df_intro = pd.read_csv('all_items.csv')
                 df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
