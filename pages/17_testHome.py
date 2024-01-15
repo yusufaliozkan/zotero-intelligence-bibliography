@@ -1010,6 +1010,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Display theme and abstract
             display = st.checkbox('Display theme and abstract')
+            df['Authors'] = df['Authors'].fillna('')
 
             # Display information
             for i, row in df.iterrows():
@@ -1021,7 +1022,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Build publication information
                 publication_info = (
                     f'**{publication_type}**: {row["Title"]}, '
-                    f'(by {authors}) '
+                    f'(by *{authors}*) '
                     f'(Published on: {row["Date published"]}) '
                     f'[[Publication link]]({row["Link to publication"]}) '
                     f'[[Zotero link]]({row["Zotero link"]})'
