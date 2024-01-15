@@ -1093,7 +1093,78 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 a = 'intelligence-bibliography-all-' + today
                 st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
 
-                df_all_items
+                on = st.toggle('See as a list')
+                if on:
+                    df_all_items
+                else:
+                    def format_entry(row):
+                        publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                        title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                        authors = str(row['FirstName2'])
+                        date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                        link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                        zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                        published_by_or_in = ''
+                        published_source = ''
+
+                        if publication_type == 'Journal article':
+                            published_by_or_in = 'Published in'
+                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                        elif publication_type == 'Book':
+                            published_by_or_in = 'Published by'
+                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                        else:
+                            # For other types, leave the fields empty
+                            published_by_or_in = ''
+                            published_source = ''
+
+                        return (
+                            '**' + publication_type + '**' + ': ' +
+                            title + ' ' +
+                            '(by ' + '*' + authors + '*' + ') ' +
+                            '(Publication date: ' + str(date_published) + ') ' +
+                            ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                            '[[Publication link]](' + link_to_publication + ') ' +
+                            '[[Zotero link]](' + zotero_link + ')'
+                        )
+                    df_all = pd.read_csv('all_items.csv')
+                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
+                    df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
+                    numeric_years = df_all['Date year'].dropna()
+                    current_year = date.today().year
+                    min_y = numeric_years.min()
+                    max_y = numeric_years.max()
+
+                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
+                    df_all['Date published'] = df_all['Date published'].fillna('')
+                    df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
+                    df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                    df_all = df_all.sort_values(by=['Date published'], ascending=False)
+
+                    current_year = date.today().year
+                    years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year), key='years')
+
+                    filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
+                    df_all = df_all.loc[filter]
+                    number_of_items = len(df_all)
+                    st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
+                    
+                    if number_of_items > 50:
+                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True, key='all_items')
+                        if show_first_50:
+                            df_all = df_all.head(50)
+                    articles_list = []  # Store articles in a list
+                    abstracts_list = [] #Store abstracts in a list
+                    for index, row in df_all.iterrows():
+                        formatted_entry = format_entry(row)
+                        articles_list.append(formatted_entry)  # Append formatted entry to the list
+                        abstract = row['Abstract']
+                        abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                    for i, article in enumerate(articles_list, start=1):
+                        # Display the article with highlighted search terms
+                        st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
@@ -1124,75 +1195,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
                 st.subheader('Growth of the library')
                 st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
-
-                def format_entry(row):
-                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                    authors = str(row['FirstName2'])
-                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-                    published_by_or_in = ''
-                    published_source = ''
-
-                    if publication_type == 'Journal article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
-                        published_by_or_in = 'Published by'
-                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                    else:
-                        # For other types, leave the fields empty
-                        published_by_or_in = ''
-                        published_source = ''
-
-                    return (
-                        '**' + publication_type + '**' + ': ' +
-                        title + ' ' +
-                        '(by ' + '*' + authors + '*' + ') ' +
-                        '(Publication date: ' + str(date_published) + ') ' +
-                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                        '[[Publication link]](' + link_to_publication + ') ' +
-                        '[[Zotero link]](' + zotero_link + ')'
-                    )
-                df_all = pd.read_csv('all_items.csv')
-                df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
-                df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
-                numeric_years = df_all['Date year'].dropna()
-                current_year = date.today().year
-                min_y = numeric_years.min()
-                max_y = numeric_years.max()
-
-                df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
-                df_all['Date published'] = df_all['Date published'].fillna('')
-                df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
-                df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                df_all = df_all.sort_values(by=['Date published'], ascending=False)
-
-                current_year = date.today().year
-                years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year), key='years')
-
-                filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
-                df_all = df_all.loc[filter]
-                number_of_items = len(df_all)
-                st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
-                
-                if number_of_items > 50:
-                    show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True, key='all_items')
-                    if show_first_50:
-                        df_all = df_all.head(50)
-                articles_list = []  # Store articles in a list
-                abstracts_list = [] #Store abstracts in a list
-                for index, row in df_all.iterrows():
-                    formatted_entry = format_entry(row)
-                    articles_list.append(formatted_entry)  # Append formatted entry to the list
-                    abstract = row['Abstract']
-                    abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                for i, article in enumerate(articles_list, start=1):
-                    # Display the article with highlighted search terms
-                    st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
         with col2:
             with st.expander('Collections', expanded=True):
