@@ -1013,11 +1013,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Display information
             for i, row in df.iterrows():
                 publication_type = row['Publication type']
+
+                authors = row['Authors'] if pd.notna(row['Authors']) else 'No author info'
                 
                 # Build publication information
                 publication_info = (
                     f'**{publication_type}**: {row["Title"]}, '
-                    f'(by *{row["Authors"]}*) '
+                    f'(by *{authors}*) '
                     f'(Published on: {row["Date published"]}) '
                     f'[[Publication link]]({row["Link to publication"]}) '
                     f'[[Zotero link]]({row["Zotero link"]})'
