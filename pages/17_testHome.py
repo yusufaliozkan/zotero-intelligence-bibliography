@@ -1149,41 +1149,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     number_of_items = len(df_all)
                     st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
                     
-                    number_of_items = len(df_all)
-
+                    if number_of_items > 25:
+                        show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
+                        if show_first_25:
+                            df_all = df_all.head(25)
                     articles_list = []  # Store articles in a list
-                    abstracts_list = []  # Store abstracts in a list
-
+                    abstracts_list = [] #Store abstracts in a list
                     for index, row in df_all.iterrows():
                         formatted_entry = format_entry(row)
                         articles_list.append(formatted_entry)  # Append formatted entry to the list
                         abstract = row['Abstract']
                         abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-
-                    # Set the number of items to display per batch
-                    items_per_batch = 20
-
-                    # Initialize a variable to keep track of the starting index for each batch
-                    start_index = 0
-
-                    # Display the items in batches using a loop
-                    while start_index < number_of_items:
-                        end_index = start_index + items_per_batch
-                        batch_articles = articles_list[start_index:end_index]
-
-                        for i, article in enumerate(batch_articles, start=start_index + 1):
-                            # Display the article with highlighted search terms
-                            st.markdown(f"{i}. {article}", unsafe_allow_html=True)
-
-                        # If there are more items, display a button to show the next batch
-                        if end_index < number_of_items:
-                            show_next_batch = st.button('Show Next 20', key={i})
-                            if show_next_batch:
-                                start_index = end_index
-                            else:
-                                break
-                        else:
-                            break
+                    for i, article in enumerate(articles_list, start=1):
+                        # Display the article with highlighted search terms
+                        st.markdown(f"{i}. {article}", unsafe_allow_html=True)
                 else:
                     df_all_items
                 df_added = pd.read_csv('all_items.csv')
