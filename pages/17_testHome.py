@@ -1043,6 +1043,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.caption('Abstract: ' + row['Abstract'])
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
+            df_intro = df_intro[df_intro['Date published'] <= current_date]
             df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
             df_intro['Date published'] = df_intro['Date published'].fillna('')
             df_intro['No date flag'] = df_intro['Date published'].isnull().astype(np.uint8)
