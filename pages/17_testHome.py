@@ -230,7 +230,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
     # Recently added items
 
-    tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
+    tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', '🔀 Surprise me'])
     with tab1:
         col1, col2 = st.columns([5,2]) 
         with col1:
@@ -987,74 +987,61 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
 
+
             # RECENTLY ADDED ITEMS
             st.header('Recently added or updated items')
+
+            # Clean and preprocess data
             df['Abstract'] = df['Abstract'].str.strip()
             df['Abstract'] = df['Abstract'].fillna('No abstract')
-            
-            df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
-            df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
 
-            def convert_df(df):
-                return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-            csv = convert_df(df_download)
-            # csv = df_download
-            # # st.caption(collection_name)
+            df_download = df[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
+
+            # Convert dataframe to CSV
+            def convert_df_to_csv(df):
+                return df.to_csv(index=False, encoding='utf-8-sig')
+
+            csv_data = convert_df_to_csv(df_download)
+
+            # Download button
             today = datetime.date.today().isoformat()
-            a = 'recently-added-' + today
-            st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
-            
+            csv_filename = 'recently-added-' + today + '.csv'
+            st.download_button('💾 Download recently added items', csv_data, csv_filename, mime="text/csv", key='download-csv-3')
+
+            # Display theme and abstract
             display = st.checkbox('Display theme and abstract')
 
-            df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                        ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                        ' (Published on: ' + df['Date published']+') ' +
-                        '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                        "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                        )
-            
-            row_nu_1 = len(df_last.index)
-            for i in range(row_nu_1):
-                publication_type = df['Publication type'].iloc[i]
+            # Display information
+            for i, row in df.iterrows():
+                publication_type = row['Publication type']
+
+                # Handle missing author information
+                authors = row['Authors'] if pd.notna(row['Authors']) else 'No author info'
+
+                # Build publication information
+                publication_info = (
+                    f'**{publication_type}**: {row["Title"]}, '
+                    f'(by *{authors}*) '
+                    f'(Published on: {row["Date published"]}) '
+                    f'[[Publication link]]({row["Link to publication"]}) '
+                    f'[[Zotero link]]({row["Zotero link"]})'
+                )
+
+                # Add venue information for specific publication types
                 if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                ' (Published on: ' + df['Date published']+') ' +
-                                " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
-                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                )
-                    st.write(f"{i+1}) " + df_last.iloc[i])
-                else:
-                    df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                ' (Published on: ' + df['Date published']+') ' +
-                                '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                )
-                    st.write(f"{i+1}) " + df_last.iloc[i])
-                
+                    publication_info += f' (Published in: *{row["Pub_venue"]}*)'
+
+                st.write(f"{i+1}) {publication_info}")
+
+                # Display themes and abstract if selected
                 if display:
-                    a=''
-                    b=''
-                    c=''
-                    if 'Name_x' in df:
-                        a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
-                        if df['Name_x'].iloc[i]=='':
-                            a=''
-                    if 'Name_y' in df:
-                        b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
-                        if df['Name_y'].iloc[i]=='':
-                            b=''
-                    if 'Name' in df:
-                        c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
-                        if df['Name'].iloc[i]=='':
-                            c=''
-                    st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                    if not any([a, b, c]):
-                        st.caption('No theme to display!')
-                    
-                    st.caption('Abstract: '+ df['Abstract'].iloc[i])
+                    themes = [row['Name_x'], row['Name_y'], row['Name']]
+                    theme_links = [row['Link_x'], row['Link_y'], row['Link']]
+                    themes = [f'[[{name}]]({link})' for name, link in zip(themes, theme_links) if name]
+
+                    st.caption('Theme(s): ' + ' '.join(themes) if themes else 'No theme to display!')
+                    st.caption('Abstract: ' + row['Abstract'])
+
 
             st.header('All items in database')
             with st.expander('Click to expand', expanded=False):
@@ -1701,6 +1688,28 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.altair_chart(cumulative_chart, use_container_width=True)
         else:
             st.info('Toggle to see the dashboard!')
+
+    with tab3:
+            st.header('Suggest random sources')
+            df_intro = pd.read_csv('all_items.csv')
+            df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
+            df_intro['Date published'] = df_intro['Date published'].fillna('')
+            df_intro['No date flag'] = df_intro['Date published'].isnull().astype(np.uint8)
+            df_intro = df_intro.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+            df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
+            df_intro = df_intro.reset_index(drop=True)   
+            articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
+            if st.button("Refresh Random 5 Sources"):
+                # Shuffle the list and select the first 5 elements
+                random_sources = np.random.choice(articles_list, 5, replace=False)
+                # Display the selected random sources
+                for index, formatted_entry in enumerate(random_sources):
+                    st.write(f"{index + 1}) {formatted_entry}")
+            else:
+                # Display the initial 5 sources
+                for index, formatted_entry in enumerate(articles_list[:5]):
+                    st.write(f"{index + 1}) {formatted_entry}")
     st.write('---')
     with st.expander('Acknowledgements'):
         st.subheader('Acknowledgements')
