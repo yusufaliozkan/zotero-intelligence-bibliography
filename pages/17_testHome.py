@@ -1157,7 +1157,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # # st.caption(collection_name)
                     today = datetime.date.today().isoformat()
                     a = 'intelligence-bibliography-selected-period' + today
-                    st.download_button('💾 Download all items', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                    st.download_button('💾 Download all selected items', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_all)
                     if years[0] == years[1] or years[0]==current_year:
                         st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
