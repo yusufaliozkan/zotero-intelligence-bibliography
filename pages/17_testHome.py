@@ -1149,18 +1149,28 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     number_of_items = len(df_all)
                     st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
                     
+                    number_of_items = len(df_all)
+
                     if number_of_items > 50:
-                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True, key='all_items')
+                        show_first_50 = st.button('See the next 20 results')
                         if show_first_50:
                             df_all = df_all.head(50)
+                    else:
+                        show_first_50 = True
+
                     articles_list = []  # Store articles in a list
-                    abstracts_list = [] #Store abstracts in a list
+                    abstracts_list = []  # Store abstracts in a list
+
                     for index, row in df_all.iterrows():
                         formatted_entry = format_entry(row)
                         articles_list.append(formatted_entry)  # Append formatted entry to the list
                         abstract = row['Abstract']
                         abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                    for i, article in enumerate(articles_list, start=1):
+
+                    # Show the first 20 or all results based on the button click
+                    results_to_show = 20 if show_first_50 else number_of_items
+
+                    for i, article in enumerate(articles_list[:results_to_show], start=1):
                         # Display the article with highlighted search terms
                         st.markdown(f"{i}. {article}", unsafe_allow_html=True)
                 else:
