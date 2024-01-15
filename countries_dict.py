@@ -159,7 +159,7 @@ continent_replacements = {
     'Bundesnachrichtendienst':'Germany',
     'Vappala Balachandran':'India',
     'Andropov':'Russia'
-    } 
+    }
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
