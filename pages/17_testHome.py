@@ -1010,7 +1010,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Display theme and abstract
             display = st.checkbox('Display theme and abstract')
-            df['Authors'] = df['Authors'].fillna()
 
             # Display information
             for i, row in df.iterrows():
