@@ -233,7 +233,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', '🔀 Surprise me'])
     with tab1:
         col1, col2 = st.columns([6,2]) 
-        with col1:
+        with col1: 
 
             # SEARCH KEYWORD OR AUTHOR NAMES
 
@@ -992,21 +992,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Recent items')
             tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
             with tab11:
-                st.markdown('#### Recently added or updated')
+                st.markdown('#### Recently added or updated items')
                 df['Abstract'] = df['Abstract'].str.strip()
                 df['Abstract'] = df['Abstract'].fillna('No abstract')
                 
-                df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
-                df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
-
-                def convert_df(df):
-                    return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv = convert_df(df_download)
-                # csv = df_download
-                # # st.caption(collection_name)
-                today = datetime.date.today().isoformat()
-                a = 'recently-added-' + today
-                st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                # df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
+                # df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
+                # def convert_df(df):
+                #     return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                # csv = convert_df(df_download)
+                # # csv = df_download
+                # # # st.caption(collection_name)
+                # today = datetime.date.today().isoformat()
+                # a = 'recently-added-' + today
+                # st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
                 
                 display = st.checkbox('Display theme and abstract')
 
@@ -1060,7 +1059,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         st.caption('Abstract: '+ df['Abstract'].iloc[i])
             with tab12:
-                st.markdown('#### Recently published')
+                st.markdown('#### Recently published items')
                 display2 = st.checkbox('Display abstracts', key='recently_published')
                 df_intro = pd.read_csv('all_items.csv')
                 df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
