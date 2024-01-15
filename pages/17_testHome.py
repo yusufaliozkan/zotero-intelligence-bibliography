@@ -990,8 +990,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # RECENTLY ADDED ITEMS
             st.header('Recent items')
-            tab1, tab2 = st.tabs(['Recently added items', 'Recently published items'])
-            with tab1:
+            tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
+            with tab11:
                 df['Abstract'] = df['Abstract'].str.strip()
                 df['Abstract'] = df['Abstract'].fillna('No abstract')
                 
@@ -1058,7 +1058,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.caption('No theme to display!')
                         
                         st.caption('Abstract: '+ df['Abstract'].iloc[i])
-            with tab2:
+            with tab12:
                 st.markdown('#### Recently published')
                 display2 = st.checkbox('Display abstracts')
                 df_intro = pd.read_csv('all_items.csv')
