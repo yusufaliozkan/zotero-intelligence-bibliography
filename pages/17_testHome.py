@@ -1073,7 +1073,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
             for index, formatted_entry in enumerate(articles_list):
                 st.write(f"{index + 1}) {formatted_entry}")
-                if display2:
+                if display:
                     st.caption(df_intro.iloc[index]['Abstract'])
 
 
