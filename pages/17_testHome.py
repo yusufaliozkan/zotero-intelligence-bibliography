@@ -1147,7 +1147,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
                     df_all = df_all.loc[filter]
                     number_of_items = len(df_all)
-                    st.write(f"{number_of_items} sources found published between {int(years[0])} and {int(years[1])}")
+                    if years[0] = years[1]:
+                        st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
+                    else:
+                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
                     
                     if number_of_items > 25:
                         show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
