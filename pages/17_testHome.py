@@ -1021,7 +1021,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Build publication information
                 publication_info = (
                     f'**{publication_type}**: {row["Title"]}, '
-                    f'(by *{authors}*) '
+                    f'(by {authors}) '
                     f'(Published on: {row["Date published"]}) '
                     f'[[Publication link]]({row["Link to publication"]}) '
                     f'[[Zotero link]]({row["Zotero link"]})'
