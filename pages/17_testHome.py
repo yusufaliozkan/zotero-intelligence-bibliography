@@ -302,7 +302,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # }
             # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
 
-            def perform_zotero_search(search_term, qmode='titleCreatorYear'):
+            def perform_zotero_search(search_term, qmode='everything'):
                 # Set search parameters
                 zot.add_parameters(q=search_term, qmode=qmode)
 
