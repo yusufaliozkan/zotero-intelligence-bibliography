@@ -1148,7 +1148,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_all_download = df_all.copy()
                     df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
                     df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
-                    df_all_download
+
                     def convert_df(df_all_download):
                         return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
                     csv_selected = convert_df(df_all_download)
@@ -1180,6 +1180,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
                     df_all_items
+
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
