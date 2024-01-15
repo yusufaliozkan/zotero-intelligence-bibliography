@@ -1112,7 +1112,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             # For other types, leave the fields empty
                             published_by_or_in = ''
-                            published_source = '' 
+                            published_source = ''
 
                         return (
                             '**' + publication_type + '**' + ': ' +
