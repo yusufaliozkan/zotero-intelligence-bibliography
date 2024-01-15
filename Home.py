@@ -1090,7 +1090,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # # st.caption(collection_name)
                 today = datetime.date.today().isoformat()
                 a = 'intelligence-bibliography-all-' + today
-                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
 
                 on = st.toggle('See as a list')
                 if on:
@@ -1145,6 +1144,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
                     df_all = df_all.loc[filter]
+                    df_all = df_all.reset_index(drop=True)
+                    df_all_download = df_all.copy()
+                    df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
+                    df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
+
+                    def convert_df(df_all_download):
+                        return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                    csv_selected = convert_df(df_all_download)
+                    # csv = df_download
+                    # # st.caption(collection_name)
+                    today = datetime.date.today().isoformat()
+                    a = 'intelligence-bibliography-selected-period' + today
+                    st.download_button('💾 Download all selected items', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_all)
                     if years[0] == years[1] or years[0]==current_year:
                         st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
@@ -1166,7 +1178,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         # Display the article with highlighted search terms
                         st.markdown(f"{i}. {article}", unsafe_allow_html=True)
                 else:
+                    st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
                     df_all_items
+
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
