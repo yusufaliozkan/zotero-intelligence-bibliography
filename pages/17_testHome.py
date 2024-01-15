@@ -1043,6 +1043,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.caption('Abstract: ' + row['Abstract'])
             
             st.markdown('#### Recently published')
+            display2 = st.checkbox('Display abstracts')
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
@@ -1057,6 +1058,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
             for index, formatted_entry in enumerate(articles_list):
                 st.write(f"{index + 1}) {formatted_entry}")
+                if display2:
+                    st.caption(row['Abstract'])
 
 
             st.header('All items in database')
