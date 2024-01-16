@@ -1192,7 +1192,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     tooltip=['YearMonth', 'Total items']
                 ).properties(
                     width=200,
-                    height=100,  # Adjust the height here
+                    height=200,  # Adjust the height here
                     title='Total Number of Items Added'
                 )
                 step = 6
