@@ -50,7 +50,7 @@ replacements = {
     'Mossad': 'Israel',
     'Norwegian': 'Norway',
     'Ottoman Special Organization':'Turkey',
-    'Ottoman':'Turkey',
+    r'\bOttoman\b':'Turkey',
     'Italian':'Italy',
     'KGB':'Russia',
     'Teşkilat-ı Mahsusa':'Turkey',
@@ -78,7 +78,6 @@ replacements = {
 df_countries['Country'] = ''
 
 for country in country_names:
-    # mask = df_countries['Title'].str.contains(country, regex=False)
     mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
     df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
