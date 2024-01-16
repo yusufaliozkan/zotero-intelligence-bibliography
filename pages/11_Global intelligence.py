@@ -564,7 +564,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             country_pub_counts = df_continent_chart['Continent'].value_counts().sort_values(ascending=False)
             top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
             top_10_df = pd.DataFrame({'Continent': top_10_countries.index, 'Publications': top_10_countries.values})
-            fig = px.pie(top_10_df, x='Publications', y='Continent', orientation='h')
+            fig = px.bar(top_10_df, x='Publications', y='Continent', orientation='h')
             fig.update_layout(title='Number of Publications by continent', xaxis_title='Number of Publications', yaxis_title='Continent')
             st.plotly_chart(fig)
 
