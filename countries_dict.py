@@ -50,7 +50,7 @@ replacements = {
     'Mossad': 'Israel',
     'Norwegian': 'Norway',
     'Ottoman Special Organization':'Turkey',
-    'Ottoman':'Turkey',
+    r'\bOttoman\b':'Turkey',
     'Italian':'Italy',
     'KGB':'Russia',
     'Teşkilat-ı Mahsusa':'Turkey',
@@ -75,11 +75,17 @@ replacements = {
     'Andropov':'Russia'
     }
 
+replacements['\\bOttoman\\b'] = 'Turkey'
+
 df_countries['Country'] = ''
 
 for country in country_names:
-    # mask = df_countries['Title'].str.contains(country, regex=False)
-    mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
+    if country.lower() == 'oman':
+        # Special handling for 'Oman' to avoid categorizing 'Ottoman' titles under 'Oman'
+        mask = df_countries['Title'].str.lower().str.contains(r'\bOman\b', regex=True)
+    else:
+        mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
+        
     df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
 df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
