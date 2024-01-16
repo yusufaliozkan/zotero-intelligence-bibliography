@@ -81,13 +81,7 @@ for country in country_names:
     mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
     df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
-# Iterate through each row and perform replacement
-for index, row in df_countries.iterrows():
-    for key, value in replacements.items():
-        if key.lower() in row['Title'].lower():
-            df_countries.at[index, 'Country'] += value + '|'
-
-df_countries['Country'] = df_countries['Country'].str.rstrip('|')
+df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
 df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|')).explode('Country')
 df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
 df_countries['Country'].replace('', 'Country not known', inplace=True)
@@ -140,7 +134,7 @@ continent_replacements = {
     'Mossad': 'Israel',
     'Norwegian': 'Norway',
     'Ottoman Special Organization':'Turkey',
-    r'\bOttoman\b':'Turkey',
+    'Ottoman':'Turkey',
     'Italian':'Italy',
     'KGB':'Russia',
     'Teşkilat-ı Mahsusa':'Turkey',
