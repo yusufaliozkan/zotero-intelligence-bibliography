@@ -1114,7 +1114,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             published_by_or_in = ''
                             published_source = ''
 
-                        return (
+                        return ( 
                             '**' + publication_type + '**' + ': ' +
                             title + ' ' +
                             '(by ' + '*' + authors + '*' + ') ' +
