@@ -551,7 +551,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count += 1
                             if display2:
                                 st.caption(row['Abstract'])
-            col11, col12 = st.columns([3,1])
+            col11, col12 = st.columns([3,2])
             with col11:
                 df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
                 country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
