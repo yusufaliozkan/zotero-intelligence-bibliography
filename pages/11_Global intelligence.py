@@ -551,22 +551,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count += 1
                             if display2:
                                 st.caption(row['Abstract'])
-
-            df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
-            country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
-            top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
-            top_10_df = pd.DataFrame({'Country': top_10_countries.index, 'Publications': top_10_countries.values})
-            fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
-            fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
-            st.plotly_chart(fig)
-
-            df_continent_chart = df_continent_chart[df_continent_chart['Continent'] != 'Unknown']
-            country_pub_counts = df_continent_chart['Continent'].value_counts().sort_values(ascending=False)
-            top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
-            top_10_df = pd.DataFrame({'Continent': top_10_countries.index, 'Publications': top_10_countries.values})
-            fig = px.pie(top_10_df, values='Publications', names='Continent', title='Number of Publications by Continent')
-            fig.update_layout(title='Number of Publications by continent', xaxis_title='Number of Publications', yaxis_title='Continent')
-            st.plotly_chart(fig)
+            col11, col12 = st.columns(2)
+            with col11:
+                df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
+                country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
+                top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
+                top_10_df = pd.DataFrame({'Country': top_10_countries.index, 'Publications': top_10_countries.values})
+                fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
+                fig.update_layout(title='Top 10 Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
+                col11.plotly_chart(fig)
+            with col12:
+                df_continent_chart = df_continent_chart[df_continent_chart['Continent'] != 'Unknown']
+                country_pub_counts = df_continent_chart['Continent'].value_counts().sort_values(ascending=False)
+                top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
+                top_10_df = pd.DataFrame({'Continent': top_10_countries.index, 'Publications': top_10_countries.values})
+                fig = px.pie(top_10_df, values='Publications', names='Continent', title='Number of Publications by Continent')
+                fig.update_layout(title='Number of Publications by continent', xaxis_title='Number of Publications', yaxis_title='Continent')
+                col12.plotly_chart(fig)
 
 #UNTIL HERE
         with col2:
