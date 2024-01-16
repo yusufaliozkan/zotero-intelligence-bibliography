@@ -134,7 +134,7 @@ continent_replacements = {
     'Mossad': 'Israel',
     'Norwegian': 'Norway',
     'Ottoman Special Organization':'Turkey',
-    'Ottoman':'Turkey',
+    r'\bOttoman\b':'Turkey',
     'Italian':'Italy',
     'KGB':'Russia',
     'Teşkilat-ı Mahsusa':'Turkey',
