@@ -239,36 +239,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types", "Publication year"))
 
-            # df_authors = pd.read_csv('all_items.csv')
-            # # df_authors['FirstName2'].fillna('', inplace=True)
-            # df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-            # df_authors = df_authors.explode('Author_name')
-            # df_authors.reset_index(drop=True, inplace=True)
-            # df_authors = df_authors.dropna(subset=['FirstName2'])
-            # name_replacements = {
-            #     'David Gioe': 'David V. Gioe',
-            #     'David Vincent Gioe': 'David V. Gioe',
-            #     'Michael Goodman': 'Michael S. Goodman',
-            #     'Michael S Goodman': 'Michael S. Goodman',
-            #     'Michael Simon Goodman': 'Michael S. Goodman',
-            #     'Thomas Maguire':'Thomas J. Maguire',
-            #     'Thomas Joseph Maguire':'Thomas J. Maguire',
-            #     'Huw John Davies':'Huw J. Davies',
-            #     'Huw Davies':'Huw J. Davies',
-            #     'Philip H.J. Davies':'Philip H. J. Davies',
-            #     'Philip Davies':'Philip H. J. Davies',
-            #     'Dan Lomas':'Daniel W. B. Lomas',
-            #     'Richard Aldrich':'Richard J. Aldrich',
-            #     'Richard J Aldrich':'Richard J. Aldrich',
-            #     'Steven Wagner':'Steven B. Wagner',
-            #     'Daniel Larsen':'Daniel R. Larsen',
-            #     'Daniel Richard Larsen':'Daniel R. Larsen',
-            #     'Loch Johnson':'Loch K. Johnson',
-            #     'Sir David Omand Gcb':'David Omand',
-            #     'Sir David Omand':'David Omand'
-            # }
-            # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
-
             if search_option == "Search keywords":
                 st.subheader('Search keywords')
                 cols, cola = st.columns([2,6])
@@ -278,220 +248,219 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     search_term = st.text_input('Search keywords in titles or abstracts')
                 
                 if search_term:
-                    with st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                        phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
-                        keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
+                    search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
+                    phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
+                    keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
 
-                        df_csv = pd.read_csv('all_items.csv')
+                    df_csv = pd.read_csv('all_items.csv')
 
-                        # include_abstracts = st.checkbox('Search keywords in abstracts too')
-                        display_abstracts = st.checkbox('Display abstracts')
+                    # include_abstracts = st.checkbox('Search keywords in abstracts too')
+                    display_abstracts = st.checkbox('Display abstracts')
 
-                        if include_abstracts=='In title & abstract':
-                            # Search for the entire phrase first
-                            filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
-                                (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                    if include_abstracts=='In title & abstract':
+                        # Search for the entire phrase first
+                        filtered_df = df_csv[
+                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
+                            # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
+                            (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                        ]
+
+                        # Search for individual keywords separately and combine the results
+                        for keyword in keyword_filters:
+                            keyword_filter_df = df_csv[
+                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
+                                # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
+                                (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
                             ]
+                            filtered_df = pd.concat([filtered_df, keyword_filter_df])
+                    else:
+                        # Search for the entire phrase first
+                        filtered_df = df_csv[
+                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                            # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                        ]
 
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
-                                    (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
+                        # Search for individual keywords separately and combine the results
+                        for keyword in keyword_filters:
+                            keyword_filter_df = df_csv[
+                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
+                                # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
+                            ]
+                            filtered_df = pd.concat([filtered_df, keyword_filter_df])
+
+                    # Remove duplicates, if any
+                    filtered_df = filtered_df.drop_duplicates()
+                    
+                    filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                    filtered_df['Date published'] = filtered_df['Date published'].fillna('')
+                    filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
+                    filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                    filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
+
+                    types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                    types2 = st.multiselect('Publication types', types, types, key='original2')
+
+                    if types2:
+                        filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+
+                    if not filtered_df.empty:
+                        num_items = len(filtered_df)
+                        st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
+
+                        download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                        download_filtered = download_filtered.reset_index(drop=True)
+
+                        def convert_df(download_filtered):
+                            return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                        
+                        csv = convert_df(download_filtered)
+                        today = datetime.date.today().isoformat()
+                        a = 'search-result-' + today
+                        st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
+                        on = st.toggle('Generate dashboard')
+
+                        if on and len(filtered_df) > 0: 
+                            st.info(f'Dashboard for search terms: {phrase_filter}')
+                            search_df = filtered_df.copy()
+                            publications_by_type = search_df['Publication type'].value_counts()
+                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                        title=f'Publications by Type')
+                            st.plotly_chart(fig)
+
+                            search_df = filtered_df.copy()
+                            search_df['Year'] = pd.to_datetime(search_df['Date published']).dt.year
+                            publications_by_year = search_df['Year'].value_counts().sort_index()
+                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                title=f'Publications by Year')
+                            st.plotly_chart(fig_year_bar)
+                        
+                            search_df = filtered_df.copy()
+                            search_df['Author_name'] = search_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                            search_df = search_df.explode('Author_name')
+                            search_df.reset_index(drop=True, inplace=True)
+                            search_df['Author_name'] = search_df['Author_name'].map(name_replacements).fillna(search_df['Author_name'])
+                            search_df = search_df['Author_name'].value_counts().head(10)
+                            fig = px.bar(search_df, x=search_df.index, y=search_df.values)
+                            fig.update_layout(
+                                title=f'Top 10 Authors by Publication Count',
+                                xaxis_title='Author',
+                                yaxis_title='Number of Publications',
+                                xaxis_tickangle=-45,
+                            )
+                            st.plotly_chart(fig)
+
+                            search_df = filtered_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            search_df['clean_title'] = search_df['Title'].apply(clean_text)
+                            search_df['clean_title'] = search_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            search_df['token_title']=search_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            search_df['stopword']=search_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            search_df['lemma_title'] = search_df['stopword'].apply(lemmatizer)
+                            listdf = search_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
+
                         else:
-                            # Search for the entire phrase first
-                            filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                            ]
+                            with st.container(height=600):
+                                if num_items > 50:
+                                    show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
+                                    if show_first_50:
+                                        filtered_df = filtered_df.head(50)
 
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
+                                articles_list = []  # Store articles in a list
+                                abstracts_list = [] #Store abstracts in a list
+                                for index, row in filtered_df.iterrows():
+                                    formatted_entry = format_entry(row)
+                                    articles_list.append(formatted_entry)  # Append formatted entry to the list
+                                    abstract = row['Abstract']
+                                    abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                    
+                                def highlight_terms(text, terms):
+                                    # Regular expression pattern to identify URLs
+                                    url_pattern = r'https?://\S+'
 
-                        # Remove duplicates, if any
-                        filtered_df = filtered_df.drop_duplicates()
-                        
-                        filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                        filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
-                        filtered_df['Date published'] = filtered_df['Date published'].fillna('')
-                        filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
-                        filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                        filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
+                                    # Find all URLs in the text
+                                    urls = re.findall(url_pattern, text)
+                                    
+                                    # Replace URLs in the text with placeholders to avoid highlighting
+                                    for url in urls:
+                                        text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
 
-                        types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                        types2 = st.multiselect('Publication types', types, types, key='original2')
+                                    # Create a regex pattern to find the search terms in the text
+                                    pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
 
-                        if types2:
-                            filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+                                    # Use HTML tags to highlight the terms in the text, excluding URLs
+                                    highlighted_text = pattern.sub(
+                                        lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
+                                                    if match.group(0) not in urls else match.group(0),
+                                        text
+                                    )
 
-                        if not filtered_df.empty:
-                            num_items = len(filtered_df)
-                            st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
+                                    # Restore the original URLs in the highlighted text
+                                    for index, url in enumerate(urls):
+                                        highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
 
-                            download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
-                            download_filtered = download_filtered.reset_index(drop=True)
-
-                            def convert_df(download_filtered):
-                                return download_filtered.to_csv(index=False).encode('utf-8-sig')
-                            
-                            csv = convert_df(download_filtered)
-                            today = datetime.date.today().isoformat()
-                            a = 'search-result-' + today
-                            st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
-
-                            on = st.toggle('Generate dashboard')
-
-                            if on and len(filtered_df) > 0: 
-                                st.info(f'Dashboard for search terms: {phrase_filter}')
-                                search_df = filtered_df.copy()
-                                publications_by_type = search_df['Publication type'].value_counts()
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type')
-                                st.plotly_chart(fig)
-
-                                search_df = filtered_df.copy()
-                                search_df['Year'] = pd.to_datetime(search_df['Date published']).dt.year
-                                publications_by_year = search_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year')
-                                st.plotly_chart(fig_year_bar)
-                            
-                                search_df = filtered_df.copy()
-                                search_df['Author_name'] = search_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                                search_df = search_df.explode('Author_name')
-                                search_df.reset_index(drop=True, inplace=True)
-                                search_df['Author_name'] = search_df['Author_name'].map(name_replacements).fillna(search_df['Author_name'])
-                                search_df = search_df['Author_name'].value_counts().head(10)
-                                fig = px.bar(search_df, x=search_df.index, y=search_df.values)
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
-                                )
-                                st.plotly_chart(fig)
-
-                                search_df = filtered_df.copy()
-                                def clean_text (text):
-                                    text = text.lower() # lowercasing
-                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                    return text
-                                search_df['clean_title'] = search_df['Title'].apply(clean_text)
-                                search_df['clean_title'] = search_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                def tokenization(text):
-                                    text = re.split('\W+', text)
-                                    return text    
-                                search_df['token_title']=search_df['clean_title'].apply(tokenization)
-                                stopword = nltk.corpus.stopwords.words('english')
-                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                    'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                def remove_stopwords(text):
-                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                    return text
-                                search_df['stopword']=search_df['token_title'].apply(remove_stopwords)
-                                wn = nltk.WordNetLemmatizer()
-                                def lemmatizer(text):
-                                    text = [wn.lemmatize(word) for word in text]
-                                    return text
-                                search_df['lemma_title'] = search_df['stopword'].apply(lemmatizer)
-                                listdf = search_df['lemma_title']
-                                df_list = [item for sublist in listdf for item in sublist]
-                                string = pd.Series(df_list).str.cat(sep=' ')
-                                wordcloud_texts = string
-                                wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                plt.figure(figsize=(20,8))
-                                plt.axis('off')
-                                plt.title(f"Word Cloud for Titles")
-                                plt.imshow(wordcloud)
-                                plt.axis("off")
-                                plt.show()
-                                st.set_option('deprecation.showPyplotGlobalUse', False)
-                                st.pyplot()
-
-                            else:
-                                with st.container(height=600):
-                                    if num_items > 50:
-                                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
-                                        if show_first_50:
-                                            filtered_df = filtered_df.head(50)
-
-                                    articles_list = []  # Store articles in a list
-                                    abstracts_list = [] #Store abstracts in a list
-                                    for index, row in filtered_df.iterrows():
-                                        formatted_entry = format_entry(row)
-                                        articles_list.append(formatted_entry)  # Append formatted entry to the list
-                                        abstract = row['Abstract']
-                                        abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                        
-                                    def highlight_terms(text, terms):
-                                        # Regular expression pattern to identify URLs
-                                        url_pattern = r'https?://\S+'
-
-                                        # Find all URLs in the text
-                                        urls = re.findall(url_pattern, text)
-                                        
-                                        # Replace URLs in the text with placeholders to avoid highlighting
-                                        for url in urls:
-                                            text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
-
-                                        # Create a regex pattern to find the search terms in the text
-                                        pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
-
-                                        # Use HTML tags to highlight the terms in the text, excluding URLs
-                                        highlighted_text = pattern.sub(
-                                            lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
-                                                        if match.group(0) not in urls else match.group(0),
-                                            text
-                                        )
-
-                                        # Restore the original URLs in the highlighted text
-                                        for index, url in enumerate(urls):
-                                            highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
-
-                                        return highlighted_text
-                                        
-                                    # Display the numbered list using Markdown syntax
-                                    for i, article in enumerate(articles_list, start=1):
-                                        # Display the article with highlighted search terms
-                                        highlighted_article = highlight_terms(article, search_terms)
-                                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-                                        
-                                        # Display abstract under each numbered item only if the checkbox is selected
-                                        if display_abstracts:
-                                            abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
-                                            if pd.notnull(abstract):
-                                                if include_abstracts=='In title & abstract':
-                                                    highlighted_abstract = highlight_terms(abstract, search_terms)
-                                                else:
-                                                    highlighted_abstract = abstract 
-                                                st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
+                                    return highlighted_text
+                                    
+                                # Display the numbered list using Markdown syntax
+                                for i, article in enumerate(articles_list, start=1):
+                                    # Display the article with highlighted search terms
+                                    highlighted_article = highlight_terms(article, search_terms)
+                                    st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                                    
+                                    # Display abstract under each numbered item only if the checkbox is selected
+                                    if display_abstracts:
+                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
+                                        if pd.notnull(abstract):
+                                            if include_abstracts=='In title & abstract':
+                                                highlighted_abstract = highlight_terms(abstract, search_terms)
                                             else:
-                                                st.caption(f"Abstract: No abstract")
-                        else:
-                            st.write("No articles found with the given keyword/phrase.")
-                else:
-                    st.write("Please enter a keyword or author name to search.")
+                                                highlighted_abstract = abstract 
+                                            st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
+                                        else:
+                                            st.caption(f"Abstract: No abstract")
+                    else:
+                        st.write("No articles found with the given keyword/phrase.")
+            else:
+                st.write("Please enter a keyword or author name to search.")
 
             # SEARCH AUTHORS
             elif search_option == "Search author":
