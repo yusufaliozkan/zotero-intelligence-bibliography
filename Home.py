@@ -1176,7 +1176,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         title=f'Publications by Type')
                             st.plotly_chart(fig)
 
-                            collection_df = filtered_collection_df.copy()
+                            collection_df = df_all.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                             publications_by_year = collection_df['Year'].value_counts().sort_index()
                             fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
@@ -1184,7 +1184,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 title=f'Publications by Year')
                             st.plotly_chart(fig_year_bar)
                         
-                            collection_author_df = filtered_collection_df.copy()
+                            collection_author_df = df_all.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                             collection_author_df = collection_author_df.explode('Author_name')
                             collection_author_df.reset_index(drop=True, inplace=True)
@@ -1199,7 +1199,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.plotly_chart(fig)
 
-                            author_df = filtered_collection_df.copy()
+                            author_df = df_all.copy()
                             def clean_text (text):
                                 text = text.lower() # lowercasing
                                 text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
