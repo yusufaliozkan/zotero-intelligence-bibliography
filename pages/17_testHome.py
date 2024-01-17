@@ -635,7 +635,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 )
                                                 st.write(f"{index + 1}) {formatted_entry}")
                                 else:
-                                    st.write('No publication type is selected.')
+                                    st.write('No publication type selected.')
 
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
