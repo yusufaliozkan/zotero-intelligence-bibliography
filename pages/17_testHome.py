@@ -459,8 +459,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             st.caption(f"Abstract: No abstract")
                     else:
                         st.write("No articles found with the given keyword/phrase.")
-            else:
-                st.write("Please enter a keyword or author name to search.")
+                else:
+                    st.write("Please enter a keyword or author name to search.")
 
             # SEARCH AUTHORS
             elif search_option == "Search author":
