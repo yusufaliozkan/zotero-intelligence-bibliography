@@ -1171,19 +1171,33 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collection_df = df_all.copy()
                             
                             publications_by_type = collection_df['Publication type'].value_counts()
-                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                        title=f'Publications by Type')
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                            title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
+                            else:
+                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                            title=f'Publications by Type in {int(years[0])}')
                             st.plotly_chart(fig)
 
-                            collection_df = df_all.copy()
-                            collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                            publications_by_year = collection_df['Year'].value_counts().sort_index()
-                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                title=f'Publications by Year')
-                            st.plotly_chart(fig_year_bar)
-                        
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                collection_df = df_all.copy()
+                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
+                                st.plotly_chart(fig_year_bar)
+                            else:
+                                collection_df = df_all.copy()
+                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
+                                publications_by_year = collection_df['Month'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Month', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Month in {int(years[0])}')
+                                st.plotly_chart(fig_year_bar)
+
                             collection_author_df = df_all.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                             collection_author_df = collection_author_df.explode('Author_name')
@@ -1191,12 +1205,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
                             collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
                             fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                            fig.update_layout(
-                                title=f'Top 10 Authors by Publication Count',
-                                xaxis_title='Author',
-                                yaxis_title='Number of Publications',
-                                xaxis_tickangle=-45,
-                            )
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                fig.update_layout(
+                                    title=f'Top 10 Authors by Publication Count between {int(years[0])} and {int(years[1])}',
+                                    xaxis_title='Author',
+                                    yaxis_title='Number of Publications',
+                                    xaxis_tickangle=-45,
+                                )
+                            else:
+                                fig.update_layout(
+                                    title=f'Top 10 Authors by Publication Count in {int(years[0])}',
+                                    xaxis_title='Author',
+                                    yaxis_title='Number of Publications',
+                                    xaxis_tickangle=-45,
+                                )
                             st.plotly_chart(fig)
 
                             author_df = df_all.copy()
@@ -1237,7 +1259,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
                             plt.figure(figsize=(20,8))
                             plt.axis('off')
-                            plt.title(f"Word Cloud for Titles in")
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
+                            else:
+                                plt.title(f"Word Cloud for Titles in {int(years[0])}")
                             plt.imshow(wordcloud)
                             plt.axis("off")
                             plt.show()
