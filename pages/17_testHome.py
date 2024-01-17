@@ -1174,11 +1174,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if abs(years[1]-years[0])>0:
                                 fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                             labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type in {int(years[0])}')
+                                            title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
                             else:
                                 fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                             labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
+                                            title=f'Publications by Type in {int(years[0])}')
                             st.plotly_chart(fig)
 
                             if abs(years[1]-years[0])>0:
