@@ -773,7 +773,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             if not on:
-                                if len(filtered_collection_df_authors) != 0:
+                                if len(filtered_collection_df) != 0:
                                     with st.container(height=600):
                                         if num_items_collections > 25:
                                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
