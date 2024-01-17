@@ -1177,7 +1177,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.plotly_chart(fig)
 
                             if abs(years[1]-years[0])>3:
-
                                 collection_df = df_all.copy()
                                 collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                                 publications_by_year = collection_df['Year'].value_counts().sort_index()
@@ -1187,6 +1186,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.plotly_chart(fig_year_bar)
                             else:
                                 st.write('new calculation needed')
+                                collection_df = df_all.copy()
+                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
+                                publications_by_year = collection_df['Month'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Year')
+                                st.plotly_chart(fig_year_bar)
+
                             collection_author_df = df_all.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                             collection_author_df = collection_author_df.explode('Author_name')
