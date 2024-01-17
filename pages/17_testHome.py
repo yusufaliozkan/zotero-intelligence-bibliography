@@ -1178,7 +1178,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             if abs(years[1]-years[0])>3:
                                 collection_df = df_all.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                collection_df['Year'] = pd.to_datetime(collection_df['Date published'])
+                                collection_df['Year'] = collection_df['Date published'].dt.year
                                 collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month_name()
                                 publications_by_year_month = df_all.groupby(['Year', 'Month']).size().reset_index(name='Count')
 
