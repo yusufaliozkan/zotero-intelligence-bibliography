@@ -513,7 +513,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     on = st.toggle('Generate dashboard')
                                             
-                    if len(filtered_collection_df_authors) > 0:
+                    if on and len(filtered_collection_df_authors) > 0:
                         with st.expander('Click to expand', expanded=True):
                             st.info(f'Publications dashboard for {selected_author}')
                             author_df = filtered_collection_df_authors
