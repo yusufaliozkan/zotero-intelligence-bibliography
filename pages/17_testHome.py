@@ -1301,7 +1301,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         with col2:
             with st.expander('Collections', expanded=True):
-                if st.button("Intelligence history"):
+                if st.button("1_Intelligence history"):
                     st.switch_page("1_Intelligence history.py")
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
