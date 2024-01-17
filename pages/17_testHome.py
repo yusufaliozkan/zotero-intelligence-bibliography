@@ -400,67 +400,64 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.pyplot()
 
                         else:
-                            if num_items < 5:
-                                with st.container(height=300)
-                            else:
-                                with st.container(height=600):
-                                    if num_items > 50:
-                                        show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
-                                        if show_first_50:
-                                            filtered_df = filtered_df.head(50)
+                            with st.container(height=600):
+                                if num_items > 50:
+                                    show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
+                                    if show_first_50:
+                                        filtered_df = filtered_df.head(50)
 
-                                    articles_list = []  # Store articles in a list
-                                    abstracts_list = [] #Store abstracts in a list
-                                    for index, row in filtered_df.iterrows():
-                                        formatted_entry = format_entry(row)
-                                        articles_list.append(formatted_entry)  # Append formatted entry to the list
-                                        abstract = row['Abstract']
-                                        abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                        
-                                    def highlight_terms(text, terms):
-                                        # Regular expression pattern to identify URLs
-                                        url_pattern = r'https?://\S+'
+                                articles_list = []  # Store articles in a list
+                                abstracts_list = [] #Store abstracts in a list
+                                for index, row in filtered_df.iterrows():
+                                    formatted_entry = format_entry(row)
+                                    articles_list.append(formatted_entry)  # Append formatted entry to the list
+                                    abstract = row['Abstract']
+                                    abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                    
+                                def highlight_terms(text, terms):
+                                    # Regular expression pattern to identify URLs
+                                    url_pattern = r'https?://\S+'
 
-                                        # Find all URLs in the text
-                                        urls = re.findall(url_pattern, text)
-                                        
-                                        # Replace URLs in the text with placeholders to avoid highlighting
-                                        for url in urls:
-                                            text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
+                                    # Find all URLs in the text
+                                    urls = re.findall(url_pattern, text)
+                                    
+                                    # Replace URLs in the text with placeholders to avoid highlighting
+                                    for url in urls:
+                                        text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
 
-                                        # Create a regex pattern to find the search terms in the text
-                                        pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
+                                    # Create a regex pattern to find the search terms in the text
+                                    pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
 
-                                        # Use HTML tags to highlight the terms in the text, excluding URLs
-                                        highlighted_text = pattern.sub(
-                                            lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
-                                                        if match.group(0) not in urls else match.group(0),
-                                            text
-                                        )
+                                    # Use HTML tags to highlight the terms in the text, excluding URLs
+                                    highlighted_text = pattern.sub(
+                                        lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
+                                                    if match.group(0) not in urls else match.group(0),
+                                        text
+                                    )
 
-                                        # Restore the original URLs in the highlighted text
-                                        for index, url in enumerate(urls):
-                                            highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+                                    # Restore the original URLs in the highlighted text
+                                    for index, url in enumerate(urls):
+                                        highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
 
-                                        return highlighted_text
-                                        
-                                    # Display the numbered list using Markdown syntax
-                                    for i, article in enumerate(articles_list, start=1):
-                                        # Display the article with highlighted search terms
-                                        highlighted_article = highlight_terms(article, search_terms)
-                                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-                                        
-                                        # Display abstract under each numbered item only if the checkbox is selected
-                                        if display_abstracts:
-                                            abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
-                                            if pd.notnull(abstract):
-                                                if include_abstracts=='In title & abstract':
-                                                    highlighted_abstract = highlight_terms(abstract, search_terms)
-                                                else:
-                                                    highlighted_abstract = abstract 
-                                                st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
+                                    return highlighted_text
+                                    
+                                # Display the numbered list using Markdown syntax
+                                for i, article in enumerate(articles_list, start=1):
+                                    # Display the article with highlighted search terms
+                                    highlighted_article = highlight_terms(article, search_terms)
+                                    st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                                    
+                                    # Display abstract under each numbered item only if the checkbox is selected
+                                    if display_abstracts:
+                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
+                                        if pd.notnull(abstract):
+                                            if include_abstracts=='In title & abstract':
+                                                highlighted_abstract = highlight_terms(abstract, search_terms)
                                             else:
-                                                st.caption(f"Abstract: No abstract")
+                                                highlighted_abstract = abstract 
+                                            st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
+                                        else:
+                                            st.caption(f"Abstract: No abstract")
                     else:
                         st.write("No articles found with the given keyword/phrase.")
                 else:
