@@ -1166,11 +1166,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
 
                     dashboard_all = st.toggle('Generate dashboard')
-                    
                     if dashboard_all:
-                        st.write('Dashboard')
                         if dashboard_all and len(df_all) > 0: 
-                            st.info(f'Dashboard for items')
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                st.info(f'Dashboard for items published between {int(years[0])} and {int(years[1])}')
+                            else:
+                                st.info(f'Dashboard for items published in {int(years[0])}')
                             collection_df = df_all.copy()
                             
                             publications_by_type = collection_df['Publication type'].value_counts()
