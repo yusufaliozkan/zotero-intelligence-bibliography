@@ -575,7 +575,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-                    if not on:  # If the toggle is off, display the publications
+                    elif not on:  # If the toggle is off, display the publications
                         if len(filtered_collection_df_authors) != 0:
                             with st.container(height=600):
                                     for index, row in filtered_collection_df_authors.iterrows():
