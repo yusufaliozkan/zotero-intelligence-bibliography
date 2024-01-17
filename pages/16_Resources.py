@@ -39,8 +39,6 @@ image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 with st.sidebar:
 
-    st.image(image, width=150)
-    st.sidebar.markdown("# Intelligence studies network")
     sidebar_content()
 
 
