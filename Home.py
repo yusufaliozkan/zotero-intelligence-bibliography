@@ -1171,14 +1171,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collection_df = df_all.copy()
                             
                             publications_by_type = collection_df['Publication type'].value_counts()
-                            if abs(years[1]-years[0])>0:
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
-                            else:
+                            if abs(years[1]-years[0])=1:
                                 fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                             labels={'x': 'Publication Type', 'y': 'Number of Publications'},
                                             title=f'Publications by Type in {int(years[0])}')
+
+                            else:
+                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                            title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
                             st.plotly_chart(fig)
 
                             if abs(years[1]-years[0])>0:
