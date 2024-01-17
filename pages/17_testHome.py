@@ -1179,6 +1179,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if abs(years[1]-years[0])>3:
                                 collection_df = df_all.copy()
                                 collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month_name()
+                                collection_df['YearMonth'] = collection_df['Year'].astype(str) + ' - ' + collection_df['Month']
+                                publications_by_year_month = collection_df['YearMonth'].value_counts().sort_index()
+                                fig_year_month_bar = px.bar(publications_by_year_month, 
+                                                            x=publications_by_year_month.index, 
+                                                            y=publications_by_year_month.values,
+                                                            labels={'x': 'Publication Year-Month', 'y': 'Number of Publications'},
+                                                            title='Publications by Year-Month')
+
+                                # Rotating x-axis labels for better readability
+                                fig_year_month_bar.update_xaxes(tickangle=45, tickmode='array')
+
+                                # Displaying the chart
+                                st.plotly_chart(fig_year_month_bar)
+
                                 publications_by_year = collection_df['Year'].value_counts().sort_index()
                                 fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                     labels={'x': 'Publication Year', 'y': 'Number of Publications'},
