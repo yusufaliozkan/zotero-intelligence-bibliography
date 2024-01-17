@@ -1161,21 +1161,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
                     else:
                         st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
+
+                    dashboard_all = st.toggle('Generate dashboard')
                     
-                    if number_of_items > 25:
-                        show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
-                        if show_first_25:
-                            df_all = df_all.head(25)
-                    articles_list = []  # Store articles in a list
-                    abstracts_list = [] #Store abstracts in a list
-                    for index, row in df_all.iterrows():
-                        formatted_entry = format_entry(row)
-                        articles_list.append(formatted_entry)  # Append formatted entry to the list
-                        abstract = row['Abstract']
-                        abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                    for i, article in enumerate(articles_list, start=1):
-                        # Display the article with highlighted search terms
-                        st.markdown(f"{i}. {article}", unsafe_allow_html=True)
+                    if dashboard_all:
+                        st.write('Dashboard')
+                    else:
+                        if number_of_items > 25:
+                            show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
+                            if show_first_25:
+                                df_all = df_all.head(25)
+                        articles_list = []  # Store articles in a list
+                        abstracts_list = [] #Store abstracts in a list
+                        for index, row in df_all.iterrows():
+                            formatted_entry = format_entry(row)
+                            articles_list.append(formatted_entry)  # Append formatted entry to the list
+                            abstract = row['Abstract']
+                            abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                        for i, article in enumerate(articles_list, start=1):
+                            # Display the article with highlighted search terms
+                            st.markdown(f"{i}. {article}", unsafe_allow_html=True)
                 else:
                     st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
                     df_all_items
