@@ -772,44 +772,48 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             if not on:
-                                if num_items_collections > 25:
-                                    show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
-                                    if show_first_25:
-                                        filtered_collection_df = filtered_collection_df.head(25)
+                                if len(filtered_collection_df) != 0:
+                                    with st.container(height=600):
+                                        if num_items_collections > 25:
+                                            show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
+                                            if show_first_25:
+                                                filtered_collection_df = filtered_collection_df.head(25)
 
-                                articles_list = []  # Store articles in a list
-                                for index, row in filtered_collection_df.iterrows():
-                                    formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                                    articles_list.append(formatted_entry)                     
-                                
-                                for index, row in filtered_collection_df.iterrows():
-                                    publication_type = row['Publication type']
-                                    title = row['Title']
-                                    authors = row['FirstName2']
-                                    date_published = row['Date published']
-                                    link_to_publication = row['Link to publication']
-                                    zotero_link = row['Zotero link']
+                                        articles_list = []  # Store articles in a list
+                                        for index, row in filtered_collection_df.iterrows():
+                                            formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                                            articles_list.append(formatted_entry)                     
+                                        
+                                        for index, row in filtered_collection_df.iterrows():
+                                            publication_type = row['Publication type']
+                                            title = row['Title']
+                                            authors = row['FirstName2']
+                                            date_published = row['Date published']
+                                            link_to_publication = row['Link to publication']
+                                            zotero_link = row['Zotero link']
 
-                                    if publication_type == 'Journal article':
-                                        published_by_or_in = 'Published in'
-                                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                                    elif publication_type == 'Book':
-                                        published_by_or_in = 'Published by'
-                                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                                    else:
-                                        published_by_or_in = ''
-                                        published_source = ''
+                                            if publication_type == 'Journal article':
+                                                published_by_or_in = 'Published in'
+                                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                            elif publication_type == 'Book':
+                                                published_by_or_in = 'Published by'
+                                                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                                            else:
+                                                published_by_or_in = ''
+                                                published_source = ''
 
-                                    formatted_entry = (
-                                        '**' + str(publication_type) + '**' + ': ' +
-                                        str(title) + ' ' +
-                                        '(by ' + '*' + str(authors) + '*' + ') ' +
-                                        '(Publication date: ' + str(date_published) + ') ' +
-                                        ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                        '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                        '[[Zotero link]](' + str(zotero_link) + ')'
-                                    )
-                                    st.write(f"{index + 1}) {formatted_entry}")
+                                            formatted_entry = (
+                                                '**' + str(publication_type) + '**' + ': ' +
+                                                str(title) + ' ' +
+                                                '(by ' + '*' + str(authors) + '*' + ') ' +
+                                                '(Publication date: ' + str(date_published) + ') ' +
+                                                ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                                                '[[Publication link]](' + str(link_to_publication) + ') ' +
+                                                '[[Zotero link]](' + str(zotero_link) + ')'
+                                            )
+                                            st.write(f"{index + 1}) {formatted_entry}")
+                                else:
+                                    st.write('No publication type selected.')
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
 
