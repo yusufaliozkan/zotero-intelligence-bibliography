@@ -1207,16 +1207,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
                             if abs(years[1]-years[0])>0:
                                 fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count',
+                                    title=f'Top 10 Authors by Publication Count between {int(years[0])} and {int(years[1])}',
                                     xaxis_title='Author',
-                                    yaxis_title=f'Number of Publications between {int(years[0])} and {int(years[1])}',
+                                    yaxis_title='Number of Publications',
                                     xaxis_tickangle=-45,
                                 )
                             else:
                                 fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count',
+                                    title=f'Top 10 Authors by Publication Count in {int(years[0])}',
                                     xaxis_title='Author',
-                                    yaxis_title=f'Number of Publications in {int(years[0])}',
+                                    yaxis_title='Number of Publications',
                                     xaxis_tickangle=-45,
                                 )
                             st.plotly_chart(fig)
