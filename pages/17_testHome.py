@@ -1065,8 +1065,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     else:
                         st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
 
-                    warning_message = st.warning('Items without a publication date are not listed here!')
-                    warning_message
+                    st.warning('Items without a publication date are not listed here!')
 
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
