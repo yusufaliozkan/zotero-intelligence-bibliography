@@ -1093,9 +1093,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 on = st.toggle('See as a table')
                 if on:
-                    st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
-                    df_all_items
-                else:
                     def format_entry(row):
                         publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                         title = str(row['Title']) if pd.notnull(row['Title']) else ''
@@ -1286,6 +1283,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         for i, article in enumerate(articles_list, start=1):
                             # Display the article with highlighted search terms
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
+                else:
+                    st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
+                    df_all_items
 
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
