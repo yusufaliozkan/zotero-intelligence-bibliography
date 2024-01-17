@@ -1259,7 +1259,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
                             plt.figure(figsize=(20,8))
                             plt.axis('off')
-                            plt.title(f"Word Cloud for Titles in between {int(years[0])} and {int(years[1])}")
+                            if abs(years[1]-years[0])>0:
+                                plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
+                            else:
+                                plt.title(f"Word Cloud for Titles in {int(years[0])}")
                             plt.imshow(wordcloud)
                             plt.axis("off")
                             plt.show()
