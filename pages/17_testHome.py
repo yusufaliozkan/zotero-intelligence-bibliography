@@ -1168,7 +1168,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     dashboard_all = st.toggle('Generate dashboard')
                     
                     if dashboard_all:
-                        if on and len(df_all) > 0: 
+                        if on and len(df_all) < 0: 
                             st.info(f'Dashboard for items')
                             collection_df = df_all.copy()
                             
