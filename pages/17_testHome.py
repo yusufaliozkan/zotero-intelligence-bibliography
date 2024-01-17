@@ -1300,6 +1300,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         with col2:
             with st.expander('Collections', expanded=True):
+                if st.write('Intelligence history'):
+                    st.switch_page('pages/1_Intelligence history.py')
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
                 st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
