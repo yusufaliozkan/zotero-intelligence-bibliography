@@ -1146,7 +1146,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.set_option('deprecation.showPyplotGlobalUse', False)
                         st.pyplot()
                 else:
-                    with st.container(height=450):
+                    with st.container(height=600):
                         if number_of_items > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
                             if show_first_25:
