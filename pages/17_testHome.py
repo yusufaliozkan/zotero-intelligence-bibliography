@@ -634,8 +634,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         )
                                         st.write(f"{index + 1}) {formatted_entry}")
 
-                            else:  # If toggle is on but no publications are available
-                                st.write("No publication type selected.")
+                                else:  # If toggle is on but no publications are available
+                                    st.write("No publication type selected.")
 
             # SEARCH IN COLLECTIONS
             elif search_option == "Search collections":
