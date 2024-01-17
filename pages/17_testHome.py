@@ -1013,7 +1013,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_all = df_all[df_all['Publication type'].isin(types)]
 
                     df_all = df_all['Publication type'].nunique()
-                    df_all = df_all[df_all['Publication type'].isin(types)]
                     df_all = df_all.reset_index(drop=True)
 
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
