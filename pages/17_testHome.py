@@ -511,8 +511,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     a = f'{selected_author}_{today}'
                     st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
-                    with st.expander('Click to expand', expanded=False):
-                        on = st.toggle('Generate dashboard')
+                    on = st.toggle('Generate dashboard')
+                    with st.expander('Click to expand', expanded=False):                        
                         if on and len(filtered_collection_df_authors) > 0: 
                             st.info(f'Publications dashboard for {selected_author}')
                             author_df = filtered_collection_df_authors
