@@ -1180,10 +1180,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 collection_df = df_all.copy()
                                 collection_df['Year'] = pd.to_datetime(collection_df['Date published'])
                                 collection_df['YearMonth'] = collection_df['Date published'].dt.to_period('M')
-                                publications_by_year = collection_df['YearMonth'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year')
+                                publications_by_year_month = df_all['YearMonth'].value_counts().sort_index()
+                                fig_year_month_bar = px.bar(
+                                    publications_by_year_month,
+                                    x=publications_by_year_month.index.astype(str),  # Convert the PeriodIndex to string
+                                    y=publications_by_year_month.values,
+                                    labels={'x': 'Publication Year-Month', 'y': 'Number of Publications'},
+                                    title='Publications by Year-Month'
+                                )
                                 st.plotly_chart(fig_year_bar)
                             else:
                                 collection_df = df_all.copy()
