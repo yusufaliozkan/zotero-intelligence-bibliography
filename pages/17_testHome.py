@@ -1187,21 +1187,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             else:
                                 st.write('new calculation needed')
                                 collection_df = df_all.copy()
-                                collection_df['Month'] = pd.to_datetime(collection_df['Date published'])
-                                collection_df['Year'] = collection_df['Date published'].dt.year
-                                collection_df['Month'] = collection_df['Date published'].dt.month_name()
-                                publications_by_year_month = collection_df.groupby(['Year', 'Month']).size().reset_index(name='Count')
-                                fig_year_month_bar = px.bar(publications_by_year_month, 
-                                                            x=publications_by_year_month['Year'].astype(str) + '-' + publications_by_year_month['Month'],
-                                                            y=publications_by_year_month['Count'],
-                                                            labels={'x': 'Publication Year-Month', 'y': 'Number of Publications'},
-                                                            title='Publications by Year and Month')
-
-                                # Sort the x-axis in chronological order
-                                fig_year_month_bar.update_xaxes(categoryorder='category ascending')
-
-                                # Show the Plotly chart in Streamlit
-                                st.plotly_chart(fig_year_month_bar)
+                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
+                                publications_by_year = collection_df['Month'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Month', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Year')
+                                st.plotly_chart(fig_year_bar)
 
                             collection_author_df = df_all.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
