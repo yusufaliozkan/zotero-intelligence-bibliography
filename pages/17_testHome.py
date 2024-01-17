@@ -254,9 +254,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     df_csv = pd.read_csv('all_items.csv')
 
-                    # include_abstracts = st.checkbox('Search keywords in abstracts too')
-                    display_abstracts = st.checkbox('Display abstracts')
-
                     if include_abstracts=='In title & abstract':
                         # Search for the entire phrase first
                         filtered_df = df_csv[
@@ -401,6 +398,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             with st.container(height=600):
+                                display_abstracts = st.checkbox('Display abstracts')
                                 if num_items > 50:
                                     show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
                                     if show_first_50:
