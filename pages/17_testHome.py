@@ -1186,7 +1186,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.plotly_chart(fig_year_bar)
                             else:
                                 collection_df = df_all.copy()
-                                collection_df['Month'] = pd.to_datetime(collection_df['Date published'])
+                                collection_df['Month'] = pd.to_datetime(collection_df['Date published'], errors='coerce')
                                 collection_df['MonthYear'] = collection_df['Date published'].dt.to_period('M')
                                 publications_by_month_year = collection_df['MonthYear'].value_counts().sort_index()
                                 fig_month_year_bar = px.bar(
