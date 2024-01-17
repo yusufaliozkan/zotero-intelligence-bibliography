@@ -1147,6 +1147,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
                     else:
+                        with st.container(height=100):
                         if number_of_items > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
                             if show_first_25:
@@ -1300,8 +1301,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         with col2:
             with st.expander('Collections', expanded=True):
-                if st.button('1_Intelligence history'):
-                    st.switch_page('pages/1_Intelligence history.py')
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
                 st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
