@@ -1187,12 +1187,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             else:
                                 collection_df = df_all.copy()
                                 collection_df['Month'] = pd.to_datetime(collection_df['Date published'])
-                                collection_df['YearMonth'] = collection_df['Date published'].dt.to_period('M')
-                                publications_by_year = collection_df['YearMonth'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year')
-                                st.plotly_chart(fig_year_bar)
+                                collection_df['Year'] = collection_df['Date published'].dt.year
+                                collection_df['Month'] = collection_df['Date published'].dt.month_name()
+                                publications_by_year_month = collection_df.groupby(['Year', 'Month']).size().reset_index(name='Count')
+
+                                fig_year_month_bar = px.bar(
+                                    publications_by_year_month,
+                                    x=publications_by_year_month.apply(lambda x: f"{x['Month']} {x['Year']}", axis=1),
+                                    y='Count',
+                                    labels={'x': 'Publication Month-Year', 'y': 'Number of Publications'},
+                                    title='Publications by Month-Year'
+                                )
+                                st.plotly_chart(fig_year_month_bar)
 
                             collection_author_df = df_all.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
