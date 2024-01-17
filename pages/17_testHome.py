@@ -1009,7 +1009,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     pub_types = df_all['Publication type'].unique()
                     selected_type = st.multiselect("Filter by publication type:", pub_types)
                     if selected_type:
-                        df_all = df_all[df_all['df_all'].isin(selected_type)]
+                        df_all = df_all[df_all['Publication type'].isin(selected_type)]
                     
                     df_all = df_all.reset_index(drop=True)
 
