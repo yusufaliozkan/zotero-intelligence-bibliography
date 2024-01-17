@@ -401,7 +401,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             if num_items < 5:
-                                with st.container(height=300):
+                                with st.container(height=300)
                             else:
                                 with st.container(height=600):
                                     if num_items > 50:
