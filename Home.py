@@ -1173,7 +1173,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             publications_by_type = collection_df['Publication type'].value_counts()
                             fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                         labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                        title=f'Publications by Type ({selected_collection})')
+                                        title=f'Publications by Type')
                             st.plotly_chart(fig)
 
                             collection_df = filtered_collection_df.copy()
@@ -1181,7 +1181,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             publications_by_year = collection_df['Year'].value_counts().sort_index()
                             fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                 labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                title=f'Publications by Year ({selected_collection})')
+                                                title=f'Publications by Year')
                             st.plotly_chart(fig_year_bar)
                         
                             collection_author_df = filtered_collection_df.copy()
@@ -1192,7 +1192,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
                             fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
                             fig.update_layout(
-                                title=f'Top 10 Authors by Publication Count ({selected_collection})',
+                                title=f'Top 10 Authors by Publication Count',
                                 xaxis_title='Author',
                                 yaxis_title='Number of Publications',
                                 xaxis_tickangle=-45,
