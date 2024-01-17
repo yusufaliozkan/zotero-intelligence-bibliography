@@ -1190,7 +1190,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                     title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
                                 st.plotly_chart(fig_year_bar)
                             else:
-                                st.write('new calculation needed')
                                 collection_df = df_all.copy()
                                 collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
                                 publications_by_year = collection_df['Month'].value_counts().sort_index()
@@ -1206,12 +1205,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
                             collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
                             fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                            fig.update_layout(
-                                title=f'Top 10 Authors by Publication Count',
-                                xaxis_title='Author',
-                                yaxis_title='Number of Publications',
-                                xaxis_tickangle=-45,
-                            )
+                            if abs(years[1]-years[0])>0:
+                                fig.update_layout(
+                                    title=f'Top 10 Authors by Publication Count',
+                                    xaxis_title='Author',
+                                    yaxis_title=f'Number of Publications between {int(years[0])} and {int(years[1])}',
+                                    xaxis_tickangle=-45,
+                                )
+                            else:
+                                fig.update_layout(
+                                    title=f'Top 10 Authors by Publication Count',
+                                    xaxis_title='Author',
+                                    yaxis_title=f'Number of Publications in {int(years[0])}',
+                                    xaxis_tickangle=-45,
+                                )
                             st.plotly_chart(fig)
 
                             author_df = df_all.copy()
