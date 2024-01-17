@@ -1180,16 +1180,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 collection_df = df_all.copy()
                                 collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                                 collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month_name()
-                                collection_df['YearMonth'] = collection_df['Year'].astype(str) + ' - ' + collection_df['Month']
-                                publications_by_year_month = collection_df['YearMonth'].value_counts().sort_index()
-                                fig_year_month_bar = px.bar(publications_by_year_month, 
-                                                            x=publications_by_year_month.index, 
-                                                            y=publications_by_year_month.values,
-                                                            labels={'x': 'Publication Year-Month', 'y': 'Number of Publications'},
-                                                            title='Publications by Year-Month')
+                                publications_by_year_month = df_all.groupby(['Year', 'Month']).size().reset_index(name='Count')
 
-                                # Rotating x-axis labels for better readability
-                                fig_year_month_bar.update_xaxes(tickangle=45, tickmode='array')
+                                fig_year_month_bar = px.bar(publications_by_year_month, 
+                                                            x=publications_by_year_month['Year'].astype(str) + '-' + publications_by_year_month['Month'],
+                                                            y=publications_by_year_month['Count'],
+                                                            labels={'x': 'Publication Year-Month', 'y': 'Number of Publications'},
+                                                            title='Publications by Year and Month')
+
+                                # Sort the x-axis in chronological order
+                                fig_year_month_bar.update_xaxes(categoryorder='category ascending')
+
+                                # Show the Plotly chart in Streamlit
+                                st.plotly_chart(fig_year_month_bar)
 
                                 # Displaying the chart
                                 st.plotly_chart(fig_year_month_bar)
