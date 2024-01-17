@@ -1185,24 +1185,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                     title=f'Publications by Year')
                                 st.plotly_chart(fig_year_bar)
                             else:
+                                st.write('new calculation needed')
                                 collection_df = df_all.copy()
-                                collection_df['Month'] = pd.to_datetime(collection_df['Date published'], errors='coerce')
-                                collection_df['MonthYear'] = collection_df['Date published'].dt.to_period('M')
-                                publications_by_month_year = collection_df['MonthYear'].value_counts().sort_index()
-                                fig_month_year_bar = px.bar(
-                                    publications_by_month_year, 
-                                    x=publications_by_month_year.index.astype(str),  # Convert to string for better display
-                                    y=publications_by_month_year.values,
-                                    labels={'x': 'Month and Year', 'y': 'Number of Publications'},
-                                    title='Publications by Month and Year'
-                                )
-                                st.plotly_chart(fig_month_year_bar)
-
-
-                                collection_df['YearMonth'] = collection_df['Date published'].dt.to_period('M')
-                                publications_by_year = collection_df['YearMonth'].value_counts().sort_index()
+                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
+                                publications_by_year = collection_df['Month'].value_counts().sort_index()
                                 fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                    labels={'x': 'Publication Month', 'y': 'Number of Publications'},
                                                     title=f'Publications by Year')
                                 st.plotly_chart(fig_year_bar)
 
