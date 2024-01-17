@@ -988,6 +988,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
             elif search_option == "Publication year":
+                st.subheader('Items by publication year')
                 def format_entry(row):
                     publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                     title = str(row['Title']) if pd.notnull(row['Title']) else ''
