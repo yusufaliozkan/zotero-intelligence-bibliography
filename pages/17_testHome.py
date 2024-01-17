@@ -322,7 +322,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
 
                         if on and len(filtered_df) > 0:
-                            with st.expander('Click to expand', expanded=True)
+                            with st.expander('Click to expand', expanded=True):
                                 st.info(f'Dashboard for search terms: {phrase_filter}')
                                 search_df = filtered_df.copy()
                                 publications_by_type = search_df['Publication type'].value_counts()
