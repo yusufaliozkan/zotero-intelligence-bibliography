@@ -1044,10 +1044,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_all = df_all.loc[filter]
                     df_all = df_all.reset_index(drop=True)
 
-                    if years[0] == years[1] or years[0]==current_year:
-                        st.markdown(f'#### Items published in **{int(years[0])}**')
-                    else:
-                        st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
+                    # if years[0] == years[1] or years[0]==current_year:
+                    #     st.markdown(f'#### Items published in **{int(years[0])}**')
+                    # else:
+                    #     st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
 
                     df_all_download = df_all.copy()
                     df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
