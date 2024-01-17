@@ -605,7 +605,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             if not on:  # If the toggle is off, display the publications
                                 with st.container(height=600):
-                                    if len(filtered_collection_df_authors) =! 0:
+                                    if len(filtered_collection_df_authors) != 0:
                                         for index, row in filtered_collection_df_authors.iterrows():
                                             publication_type = row['Publication type']
                                             title = row['Title']
