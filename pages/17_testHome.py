@@ -512,8 +512,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
                     on = st.toggle('Generate dashboard')
-                    with st.expander('Click to expand', expanded=False):                        
-                        if on and len(filtered_collection_df_authors) > 0: 
+                                            
+                    if on and len(filtered_collection_df_authors) > 0:
+                        with st.expander('Click to expand', expanded=False):
                             st.info(f'Publications dashboard for {selected_author}')
                             author_df = filtered_collection_df_authors
                             publications_by_type = author_df['Publication type'].value_counts()
