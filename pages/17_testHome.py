@@ -1008,12 +1008,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     pub_types = df_all['Publication type'].unique()
                     types = st.multiselect('Publication type', pub_types, key='original')
-
-                    df_all = df_all[df_all['Publication type'].isin(types) if types else True]
-                    df_all = df_all['Publication type'].nunique()
-
-
-                    df_all = df_all['Publication type'].nunique()
+                    
                     df_all = df_all[df_all['Publication type'].isin(types)]
                     df_all = df_all.reset_index(drop=True)
 
