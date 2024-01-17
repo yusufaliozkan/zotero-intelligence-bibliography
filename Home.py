@@ -160,8 +160,8 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence studies network", anchor=None)
-st.header('Intelligence studies bibliography', anchor=None)
+st.title("Intelligence studies network", anchor=False)
+st.header('Intelligence studies bibliography', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
@@ -1252,7 +1252,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if display2:
                         st.caption(df_intro.iloc[index]['Abstract'])
 
-            st.header('All items in database')
+            st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
                 df_all_items = pd.read_csv('all_items.csv')
                 df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
@@ -1407,7 +1407,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
     with tab2:
-        st.header('Dashboard')
+        st.header('Dashboard', anchor=False)
         on_main_dashboard = st.toggle('Display dashboard') 
         if on_main_dashboard:      
             number0 = st.slider('Select a number collections', 3,30,15)
@@ -1768,14 +1768,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
 
-            st.header('Items in the library by type: ')
+            st.header('Items in the library by type: ', anchor=False)
             
             df_types = df_types.sort_values(['Publication type'], ascending=[False])
             plot2= df_types.head(10)
 
             st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
-            st.header('Item inclusion history')
+            st.header('Item inclusion history', anchor=False)
             df_added = df_csv.copy()
             time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
             col11, col12 = st.columns(2)
@@ -1834,7 +1834,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.info('Toggle to see the dashboard!')
 
     with tab3:
-            st.header('Suggest random sources', anchor=None)
+            st.header('Suggest random sources', anchor=False)
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
