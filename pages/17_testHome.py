@@ -527,6 +527,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
                         filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
                         filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+                        publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
 
                         num_items_collections = len(filtered_collection_df_authors)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
