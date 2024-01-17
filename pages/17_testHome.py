@@ -1007,9 +1007,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
 
                     pub_types = df_all['Publication type'].unique()
-                    types = st.multiselect('Publication type', pub_types, pub_types, key='original')
+                    selected_type = st.multiselect("Filter by publication type:", pub_types)
+                    if selected_type:
+                        df_all = df_all[df_all['df_all'].isin(selected_type)]
                     
-                    df_all = df_all[df_all['Publication type'].isin(types)]
                     df_all = df_all.reset_index(drop=True)
 
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
