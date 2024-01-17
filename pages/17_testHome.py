@@ -1005,7 +1005,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     current_year = date.today().year
                     years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
-                    types = st.multiselect('Publication type', df_all['Publication type'].unique(),df_all['Publication type'].unique(), key='original')
+
+                    pub_types = df_all['Publication type'].unique()
+                    types = st.multiselect('Publication type', pub_types, key='original')
                     df_all = df_all[df_all['Publication type'].isin(types)]
                     df_all = df_all.reset_index(drop=True)
 
