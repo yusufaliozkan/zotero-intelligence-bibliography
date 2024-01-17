@@ -686,7 +686,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         csv = convert_df(filtered_collection_df)
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(filtered_collection_df)
-                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in filtered_collection_df.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                         a = f'{selected_collection}_{today}'
                         st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
@@ -817,6 +817,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
 
+            # PUBLICATION TYPES
             elif search_option == "Publication types":
                 st.subheader('Publication types')
 
