@@ -1178,26 +1178,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             if abs(years[1]-years[0])>3:
                                 collection_df = df_all.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published'])
-                                collection_df['Year'] = collection_df['Date published'].dt.year
-                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month_name()
-                                publications_by_year_month = df_all.groupby(['Year', 'Month']).size().reset_index(name='Count')
-
-                                fig_year_month_bar = px.bar(publications_by_year_month, 
-                                                            x=publications_by_year_month['Year'].astype(str) + '-' + publications_by_year_month['Month'],
-                                                            y=publications_by_year_month['Count'],
-                                                            labels={'x': 'Publication Year-Month', 'y': 'Number of Publications'},
-                                                            title='Publications by Year and Month')
-
-                                # Sort the x-axis in chronological order
-                                fig_year_month_bar.update_xaxes(categoryorder='category ascending')
-
-                                # Show the Plotly chart in Streamlit
-                                st.plotly_chart(fig_year_month_bar)
-
-                                # Displaying the chart
-                                st.plotly_chart(fig_year_month_bar)
-
+                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                                 publications_by_year = collection_df['Year'].value_counts().sort_index()
                                 fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                     labels={'x': 'Publication Year', 'y': 'Number of Publications'},
