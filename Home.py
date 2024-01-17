@@ -1181,7 +1181,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             title=f'Publications by Type in {int(years[0])}')
                             st.plotly_chart(fig)
 
-                            if abs(years[1]-years[0])>0:
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
                                 collection_df = df_all.copy()
                                 collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                                 publications_by_year = collection_df['Year'].value_counts().sort_index()
@@ -1205,7 +1205,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
                             collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
                             fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                            if abs(years[1]-years[0])>0:
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
                                 fig.update_layout(
                                     title=f'Top 10 Authors by Publication Count between {int(years[0])} and {int(years[1])}',
                                     xaxis_title='Author',
@@ -1259,7 +1259,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
                             plt.figure(figsize=(20,8))
                             plt.axis('off')
-                            if abs(years[1]-years[0])>0:
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
                                 plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
                             else:
                                 plt.title(f"Word Cloud for Titles in {int(years[0])}")
