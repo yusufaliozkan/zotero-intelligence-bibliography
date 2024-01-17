@@ -1114,7 +1114,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             published_by_or_in = ''
                             published_source = ''
 
-                        return (
+                        return ( 
                             '**' + publication_type + '**' + ': ' +
                             title + ' ' +
                             '(by ' + '*' + authors + '*' + ') ' +
@@ -1191,7 +1191,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     y='Total items',
                     tooltip=['YearMonth', 'Total items']
                 ).properties(
-                    width=600,
+                    width=500,
+                    height=600,  # Adjust the height here
                     title='Total Number of Items Added'
                 )
                 step = 6
