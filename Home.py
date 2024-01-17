@@ -1091,7 +1091,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 today = datetime.date.today().isoformat()
                 a = 'intelligence-bibliography-all-' + today
 
-                on = st.toggle('See as a table')
+                on = st.toggle('See as a list')
                 if on:
                     def format_entry(row):
                         publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
