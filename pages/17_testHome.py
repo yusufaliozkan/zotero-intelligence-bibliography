@@ -1176,7 +1176,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         title=f'Publications by Type')
                             st.plotly_chart(fig)
 
-                            if abs(years[1]-years[0])>1:
+                            if abs(years[1]-years[0])>0:
                                 collection_df = df_all.copy()
                                 collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                                 publications_by_year = collection_df['Year'].value_counts().sort_index()
