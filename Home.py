@@ -160,8 +160,8 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence studies network")
-st.header('Intelligence studies bibliography')
+st.title("Intelligence studies network", anchor=None)
+st.header('Intelligence studies bibliography', anchor=None)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
@@ -235,7 +235,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
 
             # Title input from the user
-            st.header('Search in database')
+            st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types", "Publication year"))
 
@@ -270,7 +270,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
 
             if search_option == "Search keywords":
-                st.subheader('Search keywords')
+                st.subheader('Search keywords', anchor=None)
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
@@ -1163,7 +1163,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
             # RECENTLY ADDED ITEMS
-            st.header('Recent items')
+            st.header('Recent items', anchor=None)
             tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
             with tab11:
                 st.markdown('#### Recently added or updated items')
@@ -1834,7 +1834,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.info('Toggle to see the dashboard!')
 
     with tab3:
-            st.header('Suggest random sources')
+            st.header('Suggest random sources', anchor=None)
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
