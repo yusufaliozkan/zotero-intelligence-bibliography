@@ -535,7 +535,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
                         download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
                         csv = convert_df(download_filtered)
-            
+             
                         today = datetime.date.today().isoformat()
                         a = f'{selected_author}_{today}'
                         st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
