@@ -1034,6 +1034,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_all)
+
+                    publications_by_type = df_all['Publication type'].value_counts()
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                    st.write(f"**{number_of_items}** sources found ({breakdown_string})")
+
                     if years[0] == years[1] or years[0]==current_year:
                         st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
                     else:
