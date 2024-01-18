@@ -160,8 +160,8 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence studies network")
-st.header('Intelligence studies bibliography')
+st.title("Intelligence studies network", anchor=False)
+st.header('Intelligence studies bibliography', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
@@ -235,12 +235,42 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
 
             # Title input from the user
-            st.header('Search in database')
+            st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types", "Publication year"))
 
+            # df_authors = pd.read_csv('all_items.csv')
+            # # df_authors['FirstName2'].fillna('', inplace=True)
+            # df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+            # df_authors = df_authors.explode('Author_name')
+            # df_authors.reset_index(drop=True, inplace=True)
+            # df_authors = df_authors.dropna(subset=['FirstName2'])
+            # name_replacements = {
+            #     'David Gioe': 'David V. Gioe',
+            #     'David Vincent Gioe': 'David V. Gioe',
+            #     'Michael Goodman': 'Michael S. Goodman',
+            #     'Michael S Goodman': 'Michael S. Goodman',
+            #     'Michael Simon Goodman': 'Michael S. Goodman',
+            #     'Thomas Maguire':'Thomas J. Maguire',
+            #     'Thomas Joseph Maguire':'Thomas J. Maguire',
+            #     'Huw John Davies':'Huw J. Davies',
+            #     'Huw Davies':'Huw J. Davies',
+            #     'Philip H.J. Davies':'Philip H. J. Davies',
+            #     'Philip Davies':'Philip H. J. Davies',
+            #     'Dan Lomas':'Daniel W. B. Lomas',
+            #     'Richard Aldrich':'Richard J. Aldrich',
+            #     'Richard J Aldrich':'Richard J. Aldrich',
+            #     'Steven Wagner':'Steven B. Wagner',
+            #     'Daniel Larsen':'Daniel R. Larsen',
+            #     'Daniel Richard Larsen':'Daniel R. Larsen',
+            #     'Loch Johnson':'Loch K. Johnson',
+            #     'Sir David Omand Gcb':'David Omand',
+            #     'Sir David Omand':'David Omand'
+            # }
+            # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
+
             if search_option == "Search keywords":
-                st.subheader('Search keywords')
+                st.subheader('Search keywords', anchor=None)
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
@@ -248,79 +278,81 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     search_term = st.text_input('Search keywords in titles or abstracts')
                 
                 if search_term:
-                    search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                    phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
-                    keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
+                    with st.expander('Click to expand', expanded=True):
+                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
+                        phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
+                        keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
 
-                    df_csv = pd.read_csv('all_items.csv')
+                        df_csv = pd.read_csv('all_items.csv')
 
-                    if include_abstracts=='In title & abstract':
-                        # Search for the entire phrase first
-                        filtered_df = df_csv[
-                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                            # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
-                            (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                        ]
+                        # include_abstracts = st.checkbox('Search keywords in abstracts too')
+                        display_abstracts = st.checkbox('Display abstracts')
 
-                        # Search for individual keywords separately and combine the results
-                        for keyword in keyword_filters:
-                            keyword_filter_df = df_csv[
-                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
-                                (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
+                        if include_abstracts=='In title & abstract':
+                            # Search for the entire phrase first
+                            filtered_df = df_csv[
+                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
+                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
+                                (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
                             ]
-                            filtered_df = pd.concat([filtered_df, keyword_filter_df])
-                    else:
-                        # Search for the entire phrase first
-                        filtered_df = df_csv[
-                            (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                            # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                        ]
 
-                        # Search for individual keywords separately and combine the results
-                        for keyword in keyword_filters:
-                            keyword_filter_df = df_csv[
-                                (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
-                                # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
+                            # Search for individual keywords separately and combine the results
+                            for keyword in keyword_filters:
+                                keyword_filter_df = df_csv[
+                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
+                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
+                                    (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
+                                ]
+                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
+                        else:
+                            # Search for the entire phrase first
+                            filtered_df = df_csv[
+                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
                             ]
-                            filtered_df = pd.concat([filtered_df, keyword_filter_df])
 
-                    # Remove duplicates, if any
-                    filtered_df = filtered_df.drop_duplicates()
-                    
-                    filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
-                    filtered_df['Date published'] = filtered_df['Date published'].fillna('')
-                    filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
-                    filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
+                            # Search for individual keywords separately and combine the results
+                            for keyword in keyword_filters:
+                                keyword_filter_df = df_csv[
+                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
+                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
+                                ]
+                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
 
-                    types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                    types2 = st.multiselect('Publication types', types, types, key='original2')
-
-                    if types2:
-                        filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
-
-                    if not filtered_df.empty:
-                        num_items = len(filtered_df)
-                        st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
-
-                        download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
-                        download_filtered = download_filtered.reset_index(drop=True)
-
-                        def convert_df(download_filtered):
-                            return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                        # Remove duplicates, if any
+                        filtered_df = filtered_df.drop_duplicates()
                         
-                        csv = convert_df(download_filtered)
-                        today = datetime.date.today().isoformat()
-                        a = 'search-result-' + today
-                        st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+                        filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                        filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                        filtered_df['Date published'] = filtered_df['Date published'].fillna('')
+                        filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
+                        filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                        filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
 
-                        on = st.toggle('Generate dashboard')
+                        types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                        types2 = st.multiselect('Publication types', types, types, key='original2')
 
-                        if on and len(filtered_df) > 0:
-                            # with st.container(height=600):
-                            with st.expander('Click to expand', expanded=True):
+                        if types2:
+                            filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+
+                        if not filtered_df.empty:
+                            num_items = len(filtered_df)
+                            st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
+
+                            download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                            download_filtered = download_filtered.reset_index(drop=True)
+
+                            def convert_df(download_filtered):
+                                return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                            
+                            csv = convert_df(download_filtered)
+                            today = datetime.date.today().isoformat()
+                            a = 'search-result-' + today
+                            st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
+                            on = st.toggle('Generate dashboard')
+
+                            if on and len(filtered_df) > 0: 
                                 st.info(f'Dashboard for search terms: {phrase_filter}')
                                 search_df = filtered_df.copy()
                                 publications_by_type = search_df['Publication type'].value_counts()
@@ -397,9 +429,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.set_option('deprecation.showPyplotGlobalUse', False)
                                 st.pyplot()
 
-                        else:
-                            with st.container(height=600):
-                                display_abstracts = st.checkbox('Display abstracts')
+                            else:
                                 if num_items > 50:
                                     show_first_50 = st.checkbox("Show only first 50 items (untick to see all)", value=True)
                                     if show_first_50:
@@ -457,8 +487,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                         else:
                                             st.caption(f"Abstract: No abstract")
-                    else:
-                        st.write("No articles found with the given keyword/phrase.")
+                        else:
+                            st.write("No articles found with the given keyword/phrase.")
                 else:
                     st.write("Please enter a keyword or author name to search.")
 
@@ -491,30 +521,27 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
 
-                    st.markdown('#### Publications by ' + selected_author)
-                    types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
-                    filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
-                    filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
-                    publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
+                    with st.expander('Click to expand', expanded=True):
+                        st.markdown('#### Publications by ' + selected_author)
+                        st.write('*Please note that this database **may not show** all research outputs of the author.*')
+                        types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
+                        filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
+                        filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+                        publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
+                        num_items_collections = len(filtered_collection_df_authors)
+                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                        st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+                        def convert_df(filtered_collection_df_authors):
+                            return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
+                        download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                        csv = convert_df(download_filtered)
+            
+                        today = datetime.date.today().isoformat()
+                        a = f'{selected_author}_{today}'
+                        st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
-                    num_items_collections = len(filtered_collection_df_authors)
-                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-                    st.write('*Please note that this database **may not show** all research outputs of the author.*')
-
-                    def convert_df(filtered_collection_df_authors):
-                        return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
-                    download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
-                    csv = convert_df(download_filtered)
-        
-                    today = datetime.date.today().isoformat()
-                    a = f'{selected_author}_{today}'
-                    st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
-
-                    on = st.toggle('Generate dashboard')
-                                            
-                    if on and len(filtered_collection_df_authors) > 0:
-                        with st.expander('Click to expand', expanded=True):
+                        on = st.toggle('Generate dashboard')
+                        if on and len(filtered_collection_df_authors) > 0: 
                             st.info(f'Publications dashboard for {selected_author}')
                             author_df = filtered_collection_df_authors
                             publications_by_type = author_df['Publication type'].value_counts()
@@ -575,42 +602,39 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-                    elif not on:  # If the toggle is off, display the publications
-                        if len(filtered_collection_df_authors) != 0:
-                            with st.container(height=600):
-                                    for index, row in filtered_collection_df_authors.iterrows():
-                                        publication_type = row['Publication type']
-                                        title = row['Title']
-                                        authors = row['FirstName2']
-                                        date_published = row['Date published']
-                                        link_to_publication = row['Link to publication']
-                                        zotero_link = row['Zotero link']
-
-                                        if publication_type == 'Journal article':
-                                            published_by_or_in = 'Published in'
-                                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                                        elif publication_type == 'Book':
-                                            published_by_or_in = 'Published by'
-                                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                                        else:
-                                            published_by_or_in = ''
-                                            published_source = ''
-
-                                        formatted_entry = (
-                                            '**' + str(publication_type) + '**' + ': ' +
-                                            str(title) + ' ' +
-                                            '(by ' + '*' + str(authors) + '*' + ') ' +
-                                            '(Publication date: ' + str(date_published) + ') ' +
-                                            ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                            '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                            '[[Zotero link]](' + str(zotero_link) + ')'
-                                        )
-                                        st.write(f"{index + 1}) {formatted_entry}")
                         else:
-                            st.write('No publication type selected.')
+                            if not on:  # If the toggle is off, display the publications
+                                for index, row in filtered_collection_df_authors.iterrows():
+                                    publication_type = row['Publication type']
+                                    title = row['Title']
+                                    authors = row['FirstName2']
+                                    date_published = row['Date published']
+                                    link_to_publication = row['Link to publication']
+                                    zotero_link = row['Zotero link']
 
-                    else:  # If toggle is on but no publications are available
-                        st.write("No publication type selected.")
+                                    if publication_type == 'Journal article':
+                                        published_by_or_in = 'Published in'
+                                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                    elif publication_type == 'Book':
+                                        published_by_or_in = 'Published by'
+                                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                                    else:
+                                        published_by_or_in = ''
+                                        published_source = ''
+
+                                    formatted_entry = (
+                                        '**' + str(publication_type) + '**' + ': ' +
+                                        str(title) + ' ' +
+                                        '(by ' + '*' + str(authors) + '*' + ') ' +
+                                        '(Publication date: ' + str(date_published) + ') ' +
+                                        ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                                        '[[Publication link]](' + str(link_to_publication) + ') ' +
+                                        '[[Zotero link]](' + str(zotero_link) + ')'
+                                    )
+                                    st.write(f"{index + 1}) {formatted_entry}")
+
+                            else:  # If toggle is on but no publications are available
+                                st.write("No publication type selected.")
 
             # SEARCH IN COLLECTIONS
             elif search_option == "Search collections":
@@ -742,52 +766,47 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             if not on:
-                                if len(filtered_collection_df) != 0:
-                                    with st.container(height=600):
-                                        if num_items_collections > 25:
-                                            show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
-                                            if show_first_25:
-                                                filtered_collection_df = filtered_collection_df.head(25)
+                                if num_items_collections > 25:
+                                    show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
+                                    if show_first_25:
+                                        filtered_collection_df = filtered_collection_df.head(25)
 
-                                        articles_list = []  # Store articles in a list
-                                        for index, row in filtered_collection_df.iterrows():
-                                            formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                                            articles_list.append(formatted_entry)                     
-                                        
-                                        for index, row in filtered_collection_df.iterrows():
-                                            publication_type = row['Publication type']
-                                            title = row['Title']
-                                            authors = row['FirstName2']
-                                            date_published = row['Date published']
-                                            link_to_publication = row['Link to publication']
-                                            zotero_link = row['Zotero link']
+                                articles_list = []  # Store articles in a list
+                                for index, row in filtered_collection_df.iterrows():
+                                    formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                                    articles_list.append(formatted_entry)                     
+                                
+                                for index, row in filtered_collection_df.iterrows():
+                                    publication_type = row['Publication type']
+                                    title = row['Title']
+                                    authors = row['FirstName2']
+                                    date_published = row['Date published']
+                                    link_to_publication = row['Link to publication']
+                                    zotero_link = row['Zotero link']
 
-                                            if publication_type == 'Journal article':
-                                                published_by_or_in = 'Published in'
-                                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                                            elif publication_type == 'Book':
-                                                published_by_or_in = 'Published by'
-                                                published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                                            else:
-                                                published_by_or_in = ''
-                                                published_source = ''
+                                    if publication_type == 'Journal article':
+                                        published_by_or_in = 'Published in'
+                                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                    elif publication_type == 'Book':
+                                        published_by_or_in = 'Published by'
+                                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                                    else:
+                                        published_by_or_in = ''
+                                        published_source = ''
 
-                                            formatted_entry = (
-                                                '**' + str(publication_type) + '**' + ': ' +
-                                                str(title) + ' ' +
-                                                '(by ' + '*' + str(authors) + '*' + ') ' +
-                                                '(Publication date: ' + str(date_published) + ') ' +
-                                                ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                                '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                                '[[Zotero link]](' + str(zotero_link) + ')'
-                                            )
-                                            st.write(f"{index + 1}) {formatted_entry}")
-                                else:
-                                    st.write('No publication type selected.')
+                                    formatted_entry = (
+                                        '**' + str(publication_type) + '**' + ': ' +
+                                        str(title) + ' ' +
+                                        '(by ' + '*' + str(authors) + '*' + ') ' +
+                                        '(Publication date: ' + str(date_published) + ') ' +
+                                        ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                                        '[[Publication link]](' + str(link_to_publication) + ') ' +
+                                        '[[Zotero link]](' + str(zotero_link) + ')'
+                                    )
+                                    st.write(f"{index + 1}) {formatted_entry}")
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
 
-            # PUBLICATION TYPES
             elif search_option == "Publication types":
                 st.subheader('Publication types')
 
@@ -969,62 +988,68 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + link_to_publication + ') ' +
                         '[[Zotero link]](' + zotero_link + ')'
                     )
-                df_all = pd.read_csv('all_items.csv')
-                df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
-                df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
-                numeric_years = df_all['Date year'].dropna()
-                current_year = date.today().year
-                min_y = numeric_years.min()
-                max_y = numeric_years.max()
+                with st.expander('Click to expand', expanded=True):                    
+                    df_all = pd.read_csv('all_items.csv')
+                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
+                    df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
+                    numeric_years = df_all['Date year'].dropna()
+                    current_year = date.today().year
+                    min_y = numeric_years.min()
+                    max_y = numeric_years.max()
 
-                df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
-                df_all['Date published'] = df_all['Date published'].fillna('')
-                df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
-                df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                df_all = df_all.sort_values(by=['Date published'], ascending=False)
+                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
+                    df_all['Date published'] = df_all['Date published'].fillna('')
+                    df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
+                    df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                    df_all = df_all.sort_values(by=['Date published'], ascending=False)
 
-                current_year = date.today().year
-                years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
+                    current_year = date.today().year
+                    years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
 
-                filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
-                df_all = df_all.loc[filter]
+                    filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
+                    df_all = df_all.loc[filter]
 
-                pub_types = df_all['Publication type'].unique()
-                selected_type = st.multiselect("Filter by publication type:", pub_types)
-                if selected_type:
-                    df_all = df_all[df_all['Publication type'].isin(selected_type)]
-                
-                df_all = df_all.reset_index(drop=True)
+                    pub_types = df_all['Publication type'].unique()
+                    selected_type = st.multiselect("Filter by publication type:", pub_types)
+                    if selected_type:
+                        df_all = df_all[df_all['Publication type'].isin(selected_type)]
+                    
+                    df_all = df_all.reset_index(drop=True)
 
-                # if years[0] == years[1] or years[0]==current_year:
-                #     st.markdown(f'#### Items published in **{int(years[0])}**')
-                # else:
-                #     st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
+                    # if years[0] == years[1] or years[0]==current_year:
+                    #     st.markdown(f'#### Items published in **{int(years[0])}**')
+                    # else:
+                    #     st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
 
-                df_all_download = df_all.copy()
-                df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
-                df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
-                def convert_df(df_all_download):
-                    return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv_selected = convert_df(df_all_download)
-                # csv = df_download
-                # # st.caption(collection_name)
-                a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
-                st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
-                number_of_items = len(df_all)
-                if years[0] == years[1] or years[0]==current_year:
-                    st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
-                else:
-                    st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
+                    df_all_download = df_all.copy()
+                    df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
+                    df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
+                    def convert_df(df_all_download):
+                        return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                    csv_selected = convert_df(df_all_download)
+                    # csv = df_download
+                    # # st.caption(collection_name)
+                    a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
+                    st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                    number_of_items = len(df_all)
 
-                st.warning('Items without a publication date are not listed here!')
+                    publications_by_type = df_all['Publication type'].value_counts()
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
-                dashboard_all = st.toggle('Generate dashboard')
-                if dashboard_all:
-                    if dashboard_all and len(df_all) > 0:
-                        with st.expander('Click to expand', expanded=True):
+                    if years[0] == years[1] or years[0]==current_year:
+                        st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
+                        st.write(f'({breakdown_string})')       
+                    else:
+                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
+                        st.write(f'({breakdown_string})')                        
+
+                    st.warning('Items without a publication date are not listed here!')
+
+                    dashboard_all = st.toggle('Generate dashboard')
+                    if dashboard_all:
+                        if dashboard_all and len(df_all) > 0: 
                             if abs(years[1]-years[0])>0 and years[0]<current_year:
                                 st.info(f'Dashboard for items published between {int(years[0])} and {int(years[1])}')
                             else:
@@ -1129,8 +1154,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-                else:
-                    with st.container(height=600):
+                    else:
                         if number_of_items > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
                             if show_first_25:
@@ -1147,7 +1171,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
             # RECENTLY ADDED ITEMS
-            st.header('Recent items')
+            st.header('Recent items', anchor=None)
             tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
             with tab11:
                 st.markdown('#### Recently added or updated items')
@@ -1236,7 +1260,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if display2:
                         st.caption(df_intro.iloc[index]['Abstract'])
 
-            st.header('All items in database')
+            st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
                 df_all_items = pd.read_csv('all_items.csv')
                 df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
@@ -1391,7 +1415,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
     with tab2:
-        st.header('Dashboard')
+        st.header('Dashboard', anchor=False)
         on_main_dashboard = st.toggle('Display dashboard') 
         if on_main_dashboard:      
             number0 = st.slider('Select a number collections', 3,30,15)
@@ -1752,14 +1776,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
 
-            st.header('Items in the library by type: ')
+            st.header('Items in the library by type: ', anchor=False)
             
             df_types = df_types.sort_values(['Publication type'], ascending=[False])
             plot2= df_types.head(10)
 
             st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
-            st.header('Item inclusion history')
+            st.header('Item inclusion history', anchor=False)
             df_added = df_csv.copy()
             time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
             col11, col12 = st.columns(2)
@@ -1818,7 +1842,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.info('Toggle to see the dashboard!')
 
     with tab3:
-            st.header('Suggest random sources')
+            st.header('Suggest random sources', anchor=False)
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
