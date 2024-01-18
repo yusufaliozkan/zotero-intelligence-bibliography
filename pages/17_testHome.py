@@ -1167,7 +1167,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             abstract = row['Abstract']
                             abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
                         if not show_first_25:
-                            if not show_first_25:
+                            with st.container():
+                                st.write("Displaying all items")
                         for i, article in enumerate(articles_list, start=1):
                             # Display the article with highlighted search terms
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
