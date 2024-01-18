@@ -1037,12 +1037,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     publications_by_type = df_all['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.write(f"**{number_of_items}** sources found ({breakdown_string})")
 
                     if years[0] == years[1] or years[0]==current_year:
-                        st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
+                        st.write(f"**{number_of_items}** sources found published in **{int(years[0])}** ({breakdown_string})")
                     else:
-                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
+                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}** ({breakdown_string})")                        
 
                     st.warning('Items without a publication date are not listed here!')
 
