@@ -27,6 +27,7 @@ from PIL import Image, ImageDraw, ImageFilter
 import json
 from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
+from sidebar_content import sidebar_content
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -159,8 +160,8 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence studies network")
-st.header('Intelligence studies bibliography')
+st.title("Intelligence studies network", anchor=False)
+st.header('Intelligence studies bibliography', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
@@ -193,42 +194,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
-
-
-    image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
-
-    with st.sidebar:
-        st.image(image, width=150)
-        st.sidebar.markdown("# Intelligence studies network")
-        with st.expander('About'):
-            st.write('''This website lists secondary sources on intelligence studies and intelligence history.
-            The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
-            This website uses [Zotero API](https://github.com/urschrei/pyzotero) to connect the *Intelligence bibliography Zotero group library*.
-            To see more details about the sources, please visit the group library [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/library). 
-            If you need more information about Zotero, visit [this page](https://www.intelligencenetwork.org/zotero).
-            ''')
-            st.write('This website was built and is managed by [Yusuf Ozkan](https://www.kcl.ac.uk/people/yusuf-ali-ozkan) | [Twitter](https://twitter.com/yaliozkan) | [LinkedIn](https://www.linkedin.com/in/yusuf-ali-ozkan/) | [ORCID](https://orcid.org/0000-0002-3098-275X) | [GitHub](https://github.com/YusufAliOzkan)')
-            components.html(
-            """
-            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
-            src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-            © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-            """
-            )
-        with st.expander('Source code'):
-            st.info('''
-            Source code of this app is available [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography).
-            ''')
-        with st.expander('Disclaimer'):
-            st.warning('''
-            This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
-            The list is created based on the creator's subjective views.
-            ''')
-        with st.expander('Contact us'):
-            st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
-            st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
-        st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
-    # Recently added items
+    sidebar_content()
 
     tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', '🔀 Surprise me'])
     with tab1:
@@ -269,8 +235,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
 
             # Title input from the user
-            st.header('Search in database')
-            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types"))
+            st.header('Search in database', anchor=None)
+            st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types", "Publication year"))
 
             # df_authors = pd.read_csv('all_items.csv')
             # # df_authors['FirstName2'].fillna('', inplace=True)
@@ -303,7 +270,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
 
             if search_option == "Search keywords":
-                st.subheader('Search keywords')
+                st.subheader('Search keywords', anchor=None)
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
@@ -556,13 +523,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Publications by ' + selected_author)
-                        num_items_collections = len(filtered_collection_df_authors)
-                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                        st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                         st.write('*Please note that this database **may not show** all research outputs of the author.*')
                         types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
                         filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
                         filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+                        publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
+                        num_items_collections = len(filtered_collection_df_authors)
+                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                        st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                         def convert_df(filtered_collection_df_authors):
                             return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
                         download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
@@ -705,6 +673,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
                         filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
                         filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                        publications_by_type = filtered_collection_df['Publication type'].value_counts()
                         def convert_df(filtered_collection_df):
                             return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
 
@@ -987,142 +956,39 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
 
+            elif search_option == "Publication year":                
+                st.subheader('Items by publication year')
+                def format_entry(row):
+                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                    authors = str(row['FirstName2'])
+                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                    published_by_or_in = ''
+                    published_source = ''
 
-            # RECENTLY ADDED ITEMS
-            st.header('Recent items')
-            tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
-            with tab11:
-                st.markdown('#### Recently added or updated items')
-                df['Abstract'] = df['Abstract'].str.strip()
-                df['Abstract'] = df['Abstract'].fillna('No abstract')
-                
-                # df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
-                # df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
-                # def convert_df(df):
-                #     return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                # csv = convert_df(df_download)
-                # # csv = df_download
-                # # # st.caption(collection_name)
-                # today = datetime.date.today().isoformat()
-                # a = 'recently-added-' + today
-                # st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
-                
-                display = st.checkbox('Display theme and abstract')
-
-                df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                            ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                            ' (Published on: ' + df['Date published']+') ' +
-                            '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                            )
-                
-                row_nu_1 = len(df_last.index)
-                for i in range(row_nu_1):
-                    publication_type = df['Publication type'].iloc[i]
-                    if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                    ' (Published on: ' + df['Date published']+') ' +
-                                    " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
-                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                    )
-                        st.write(f"{i+1}) " + df_last.iloc[i])
+                    if publication_type == 'Journal article':
+                        published_by_or_in = 'Published in'
+                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                    elif publication_type == 'Book':
+                        published_by_or_in = 'Published by'
+                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
                     else:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                    ' (Published on: ' + df['Date published']+') ' +
-                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                    )
-                        st.write(f"{i+1}) " + df_last.iloc[i])
-                    
-                    if display:
-                        a=''
-                        b=''
-                        c=''
-                        if 'Name_x' in df:
-                            a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
-                            if df['Name_x'].iloc[i]=='':
-                                a=''
-                        if 'Name_y' in df:
-                            b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
-                            if df['Name_y'].iloc[i]=='':
-                                b=''
-                        if 'Name' in df:
-                            c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
-                            if df['Name'].iloc[i]=='':
-                                c=''
-                        st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
-                        if not any([a, b, c]):
-                            st.caption('No theme to display!')
-                        
-                        st.caption('Abstract: '+ df['Abstract'].iloc[i])
-            with tab12:
-                st.markdown('#### Recently published items')
-                display2 = st.checkbox('Display abstracts', key='recently_published')
-                df_intro = pd.read_csv('all_items.csv')
-                df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
-                df_intro = df_intro[df_intro['Date published'] <= current_date]
-                df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
-                df_intro['Date published'] = df_intro['Date published'].fillna('')
-                df_intro['No date flag'] = df_intro['Date published'].isnull().astype(np.uint8)
-                df_intro = df_intro.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
-                df_intro = df_intro.reset_index(drop=True)
-                df_intro = df_intro.head(5)
-                articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
-                for index, formatted_entry in enumerate(articles_list):
-                    st.write(f"{index + 1}) {formatted_entry}")
-                    if display2:
-                        st.caption(df_intro.iloc[index]['Abstract'])
-
-            st.header('All items in database')
-            with st.expander('Click to expand', expanded=False):
-                df_all_items = pd.read_csv('all_items.csv')
-                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
-
-                def convert_df(df_all_items):
-                    return df_all_items.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv = convert_df(df_all_items)
-                # csv = df_download
-                # # st.caption(collection_name)
-                today = datetime.date.today().isoformat()
-                a = 'intelligence-bibliography-all-' + today
-
-                on = st.toggle('See as a list')
-                if on:
-                    def format_entry(row):
-                        publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                        title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                        authors = str(row['FirstName2'])
-                        date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                        link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                        zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                        # For other types, leave the fields empty
                         published_by_or_in = ''
                         published_source = ''
 
-                        if publication_type == 'Journal article':
-                            published_by_or_in = 'Published in'
-                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                        elif publication_type == 'Book':
-                            published_by_or_in = 'Published by'
-                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                        else:
-                            # For other types, leave the fields empty
-                            published_by_or_in = ''
-                            published_source = ''
-
-                        return ( 
-                            '**' + publication_type + '**' + ': ' +
-                            title + ' ' +
-                            '(by ' + '*' + authors + '*' + ') ' +
-                            '(Publication date: ' + str(date_published) + ') ' +
-                            ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                            '[[Publication link]](' + link_to_publication + ') ' +
-                            '[[Zotero link]](' + zotero_link + ')'
-                        )
+                    return ( 
+                        '**' + publication_type + '**' + ': ' +
+                        title + ' ' +
+                        '(by ' + '*' + authors + '*' + ') ' +
+                        '(Publication date: ' + str(date_published) + ') ' +
+                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                        '[[Publication link]](' + link_to_publication + ') ' +
+                        '[[Zotero link]](' + zotero_link + ')'
+                    )
+                with st.expander('Click to expand', expanded=True):                    
                     df_all = pd.read_csv('all_items.csv')
                     df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
@@ -1144,11 +1010,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
                     df_all = df_all.loc[filter]
+
+                    pub_types = df_all['Publication type'].unique()
+                    selected_type = st.multiselect("Filter by publication type:", pub_types)
+                    if selected_type:
+                        df_all = df_all[df_all['Publication type'].isin(selected_type)]
+                    
                     df_all = df_all.reset_index(drop=True)
+
+                    # if years[0] == years[1] or years[0]==current_year:
+                    #     st.markdown(f'#### Items published in **{int(years[0])}**')
+                    # else:
+                    #     st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
+
                     df_all_download = df_all.copy()
                     df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
                     df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
-
                     def convert_df(df_all_download):
                         return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
                     csv_selected = convert_df(df_all_download)
@@ -1157,17 +1034,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_all)
+
+                    publications_by_type = df_all['Publication type'].value_counts()
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+
                     if years[0] == years[1] or years[0]==current_year:
                         st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
+                        st.write(f'({breakdown_string})')       
                     else:
                         st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
+                        st.write(f'({breakdown_string})')                        
+
+                    st.warning('Items without a publication date are not listed here!')
 
                     dashboard_all = st.toggle('Generate dashboard')
-                    
                     if dashboard_all:
-                        st.write('Dashboard')
-                        if on and len(df_all) > 0: 
-                            st.info(f'Dashboard for items')
+                        if dashboard_all and len(df_all) > 0: 
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                st.info(f'Dashboard for items published between {int(years[0])} and {int(years[1])}')
+                            else:
+                                st.info(f'Dashboard for items published in {int(years[0])}')
                             collection_df = df_all.copy()
                             
                             publications_by_type = collection_df['Publication type'].value_counts()
@@ -1283,9 +1169,111 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         for i, article in enumerate(articles_list, start=1):
                             # Display the article with highlighted search terms
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
-                else:
-                    st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
-                    df_all_items
+
+            # RECENTLY ADDED ITEMS
+            st.header('Recent items', anchor=None)
+            tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
+            with tab11:
+                st.markdown('#### Recently added or updated items')
+                df['Abstract'] = df['Abstract'].str.strip()
+                df['Abstract'] = df['Abstract'].fillna('No abstract')
+                
+                # df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
+                # df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
+                # def convert_df(df):
+                #     return df.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                # csv = convert_df(df_download)
+                # # csv = df_download
+                # # # st.caption(collection_name)
+                # today = datetime.date.today().isoformat()
+                # a = 'recently-added-' + today
+                # st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                
+                display = st.checkbox('Display theme and abstract')
+
+                df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                            ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                            ' (Published on: ' + df['Date published']+') ' +
+                            '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                            )
+                
+                row_nu_1 = len(df_last.index)
+                for i in range(row_nu_1):
+                    publication_type = df['Publication type'].iloc[i]
+                    if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
+                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                    ' (Published on: ' + df['Date published']+') ' +
+                                    " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
+                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                    )
+                        st.write(f"{i+1}) " + df_last.iloc[i])
+                    else:
+                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                    ' (Published on: ' + df['Date published']+') ' +
+                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                    )
+                        st.write(f"{i+1}) " + df_last.iloc[i])
+                    
+                    if display:
+                        a=''
+                        b=''
+                        c=''
+                        if 'Name_x' in df:
+                            a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
+                            if df['Name_x'].iloc[i]=='':
+                                a=''
+                        if 'Name_y' in df:
+                            b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
+                            if df['Name_y'].iloc[i]=='':
+                                b=''
+                        if 'Name' in df:
+                            c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
+                            if df['Name'].iloc[i]=='':
+                                c=''
+                        st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                        if not any([a, b, c]):
+                            st.caption('No theme to display!')
+                        
+                        st.caption('Abstract: '+ df['Abstract'].iloc[i])
+            with tab12:
+                st.markdown('#### Recently published items')
+                display2 = st.checkbox('Display abstracts', key='recently_published')
+                df_intro = pd.read_csv('all_items.csv')
+                df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
+                df_intro = df_intro[df_intro['Date published'] <= current_date]
+                df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
+                df_intro['Date published'] = df_intro['Date published'].fillna('')
+                df_intro['No date flag'] = df_intro['Date published'].isnull().astype(np.uint8)
+                df_intro = df_intro.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
+                df_intro = df_intro.reset_index(drop=True)
+                df_intro = df_intro.head(5)
+                articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
+                for index, formatted_entry in enumerate(articles_list):
+                    st.write(f"{index + 1}) {formatted_entry}")
+                    if display2:
+                        st.caption(df_intro.iloc[index]['Abstract'])
+
+            st.header('All items in database', anchor=False)
+            with st.expander('Click to expand', expanded=False):
+                df_all_items = pd.read_csv('all_items.csv')
+                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+
+                def convert_df(df_all_items):
+                    return df_all_items.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                csv = convert_df(df_all_items)
+                # csv = df_download
+                # # st.caption(collection_name)
+                today = datetime.date.today().isoformat()
+                a = 'intelligence-bibliography-all-' + today
+                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
+                df_all_items
 
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
@@ -1427,7 +1415,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
     with tab2:
-        st.header('Dashboard')
+        st.header('Dashboard', anchor=False)
         on_main_dashboard = st.toggle('Display dashboard') 
         if on_main_dashboard:      
             number0 = st.slider('Select a number collections', 3,30,15)
@@ -1788,14 +1776,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
 
-            st.header('Items in the library by type: ')
+            st.header('Items in the library by type: ', anchor=False)
             
             df_types = df_types.sort_values(['Publication type'], ascending=[False])
             plot2= df_types.head(10)
 
             st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
-            st.header('Item inclusion history')
+            st.header('Item inclusion history', anchor=False)
             df_added = df_csv.copy()
             time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
             col11, col12 = st.columns(2)
@@ -1854,7 +1842,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.info('Toggle to see the dashboard!')
 
     with tab3:
-            st.header('Suggest random sources')
+            st.header('Suggest random sources', anchor=False)
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')

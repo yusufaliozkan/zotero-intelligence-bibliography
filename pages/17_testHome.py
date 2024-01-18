@@ -27,6 +27,7 @@ from PIL import Image, ImageDraw, ImageFilter
 import json
 from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
+from sidebar_content import sidebar_content
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -159,8 +160,8 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence studies network")
-st.header('Intelligence studies bibliography')
+st.title("Intelligence studies network", anchor=False)
+st.header('Intelligence studies bibliography', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
@@ -193,42 +194,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
-
-
-    image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
-
-    with st.sidebar:
-        st.image(image, width=150)
-        st.sidebar.markdown("# Intelligence studies network")
-        with st.expander('About'):
-            st.write('''This website lists secondary sources on intelligence studies and intelligence history.
-            The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
-            This website uses [Zotero API](https://github.com/urschrei/pyzotero) to connect the *Intelligence bibliography Zotero group library*.
-            To see more details about the sources, please visit the group library [here](https://www.zotero.org/groups/2514686/intelligence_bibliography/library). 
-            If you need more information about Zotero, visit [this page](https://www.intelligencenetwork.org/zotero).
-            ''')
-            st.write('This website was built and is managed by [Yusuf Ozkan](https://www.kcl.ac.uk/people/yusuf-ali-ozkan) | [Twitter](https://twitter.com/yaliozkan) | [LinkedIn](https://www.linkedin.com/in/yusuf-ali-ozkan/) | [ORCID](https://orcid.org/0000-0002-3098-275X) | [GitHub](https://github.com/YusufAliOzkan)')
-            components.html(
-            """
-            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
-            src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-            © 2022 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-            """
-            )
-        with st.expander('Source code'):
-            st.info('''
-            Source code of this app is available [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography).
-            ''')
-        with st.expander('Disclaimer'):
-            st.warning('''
-            This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
-            The list is created based on the creator's subjective views.
-            ''')
-        with st.expander('Contact us'):
-            st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
-            st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
-        st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest)')
-    # Recently added items
+    sidebar_content()
 
     tab1, tab2, tab3 = st.tabs(['📑 Publications', '📊 Dashboard', '🔀 Surprise me'])
     with tab1:
@@ -269,8 +235,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
 
             # Title input from the user
-            st.header('Search in database')
-            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types"))
+            st.header('Search in database', anchor=None)
+            st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types", "Publication year"))
 
             # df_authors = pd.read_csv('all_items.csv')
             # # df_authors['FirstName2'].fillna('', inplace=True)
@@ -303,7 +270,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
 
             if search_option == "Search keywords":
-                st.subheader('Search keywords')
+                st.subheader('Search keywords', anchor=None)
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
@@ -556,13 +523,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Publications by ' + selected_author)
-                        num_items_collections = len(filtered_collection_df_authors)
-                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                        st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                         st.write('*Please note that this database **may not show** all research outputs of the author.*')
                         types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
                         filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
                         filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+                        publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
+                        num_items_collections = len(filtered_collection_df_authors)
+                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                        st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                         def convert_df(filtered_collection_df_authors):
                             return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
                         download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
@@ -705,6 +673,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
                         filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
                         filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                        publications_by_type = filtered_collection_df['Publication type'].value_counts()
                         def convert_df(filtered_collection_df):
                             return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
 
@@ -987,9 +956,222 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
 
+            elif search_option == "Publication year":                
+                st.subheader('Items by publication year')
+                def format_entry(row):
+                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                    authors = str(row['FirstName2'])
+                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                    published_by_or_in = ''
+                    published_source = ''
+
+                    if publication_type == 'Journal article':
+                        published_by_or_in = 'Published in'
+                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                    elif publication_type == 'Book':
+                        published_by_or_in = 'Published by'
+                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                    else:
+                        # For other types, leave the fields empty
+                        published_by_or_in = ''
+                        published_source = ''
+
+                    return ( 
+                        '**' + publication_type + '**' + ': ' +
+                        title + ' ' +
+                        '(by ' + '*' + authors + '*' + ') ' +
+                        '(Publication date: ' + str(date_published) + ') ' +
+                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                        '[[Publication link]](' + link_to_publication + ') ' +
+                        '[[Zotero link]](' + zotero_link + ')'
+                    )
+                with st.expander('Click to expand', expanded=True):                    
+                    df_all = pd.read_csv('all_items.csv')
+                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
+                    df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
+                    numeric_years = df_all['Date year'].dropna()
+                    current_year = date.today().year
+                    min_y = numeric_years.min()
+                    max_y = numeric_years.max()
+
+                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
+                    df_all['Date published'] = df_all['Date published'].fillna('')
+                    df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
+                    df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                    df_all = df_all.sort_values(by=['Date published'], ascending=False)
+
+                    current_year = date.today().year
+                    years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
+
+                    filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
+                    df_all = df_all.loc[filter]
+
+                    pub_types = df_all['Publication type'].unique()
+                    selected_type = st.multiselect("Filter by publication type:", pub_types)
+                    if selected_type:
+                        df_all = df_all[df_all['Publication type'].isin(selected_type)]
+                    
+                    df_all = df_all.reset_index(drop=True)
+
+                    # if years[0] == years[1] or years[0]==current_year:
+                    #     st.markdown(f'#### Items published in **{int(years[0])}**')
+                    # else:
+                    #     st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
+
+                    df_all_download = df_all.copy()
+                    df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
+                    df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
+                    def convert_df(df_all_download):
+                        return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                    csv_selected = convert_df(df_all_download)
+                    # csv = df_download
+                    # # st.caption(collection_name)
+                    a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
+                    st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                    number_of_items = len(df_all)
+
+                    publications_by_type = df_all['Publication type'].value_counts()
+                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+
+                    if years[0] == years[1] or years[0]==current_year:
+                        st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
+                        st.write(f'({breakdown_string})')       
+                    else:
+                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
+                        st.write(f'({breakdown_string})')                        
+
+                    st.warning('Items without a publication date are not listed here!')
+
+                    dashboard_all = st.toggle('Generate dashboard')
+                    if dashboard_all:
+                        if dashboard_all and len(df_all) > 0: 
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                st.info(f'Dashboard for items published between {int(years[0])} and {int(years[1])}')
+                            else:
+                                st.info(f'Dashboard for items published in {int(years[0])}')
+                            collection_df = df_all.copy()
+                            
+                            publications_by_type = collection_df['Publication type'].value_counts()
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                            title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
+                            else:
+                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                            title=f'Publications by Type in {int(years[0])}')
+                            st.plotly_chart(fig)
+
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                collection_df = df_all.copy()
+                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
+                                st.plotly_chart(fig_year_bar)
+                            else:
+                                collection_df = df_all.copy()
+                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
+                                publications_by_year = collection_df['Month'].value_counts().sort_index()
+                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                    labels={'x': 'Publication Month', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Month in {int(years[0])}')
+                                st.plotly_chart(fig_year_bar)
+
+                            collection_author_df = df_all.copy()
+                            collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                            collection_author_df = collection_author_df.explode('Author_name')
+                            collection_author_df.reset_index(drop=True, inplace=True)
+                            collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
+                            collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
+                            fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                fig.update_layout(
+                                    title=f'Top 10 Authors by Publication Count between {int(years[0])} and {int(years[1])}',
+                                    xaxis_title='Author',
+                                    yaxis_title='Number of Publications',
+                                    xaxis_tickangle=-45,
+                                )
+                            else:
+                                fig.update_layout(
+                                    title=f'Top 10 Authors by Publication Count in {int(years[0])}',
+                                    xaxis_title='Author',
+                                    yaxis_title='Number of Publications',
+                                    xaxis_tickangle=-45,
+                                )
+                            st.plotly_chart(fig)
+
+                            author_df = df_all.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
+                            else:
+                                plt.title(f"Word Cloud for Titles in {int(years[0])}")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
+                    else:
+                        if number_of_items > 25:
+                            show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
+                            if show_first_25:
+                                df_all = df_all.head(25)
+                        articles_list = []  # Store articles in a list
+                        abstracts_list = [] #Store abstracts in a list
+                        for index, row in df_all.iterrows():
+                            formatted_entry = format_entry(row)
+                            articles_list.append(formatted_entry)  # Append formatted entry to the list
+                            abstract = row['Abstract']
+                            abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                        for i, article in enumerate(articles_list, start=1):
+                            # Display the article with highlighted search terms
+                            st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
             # RECENTLY ADDED ITEMS
-            st.header('Recent items')
+            st.header('Recent items', anchor=None)
             tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
             with tab11:
                 st.markdown('#### Recently added or updated items')
@@ -1078,7 +1260,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if display2:
                         st.caption(df_intro.iloc[index]['Abstract'])
 
-            st.header('All items in database')
+            st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
                 df_all_items = pd.read_csv('all_items.csv')
                 df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
@@ -1090,202 +1272,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # # st.caption(collection_name)
                 today = datetime.date.today().isoformat()
                 a = 'intelligence-bibliography-all-' + today
-
-                on = st.toggle('See as a table')
-                if on:
-                    st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
-                    df_all_items
-                else:
-                    def format_entry(row):
-                        publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                        title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                        authors = str(row['FirstName2'])
-                        date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                        link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                        zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-                        published_by_or_in = ''
-                        published_source = ''
-
-                        if publication_type == 'Journal article':
-                            published_by_or_in = 'Published in'
-                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                        elif publication_type == 'Book':
-                            published_by_or_in = 'Published by'
-                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                        else:
-                            # For other types, leave the fields empty
-                            published_by_or_in = ''
-                            published_source = ''
-
-                        return ( 
-                            '**' + publication_type + '**' + ': ' +
-                            title + ' ' +
-                            '(by ' + '*' + authors + '*' + ') ' +
-                            '(Publication date: ' + str(date_published) + ') ' +
-                            ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                            '[[Publication link]](' + link_to_publication + ') ' +
-                            '[[Zotero link]](' + zotero_link + ')'
-                        )
-                    df_all = pd.read_csv('all_items.csv')
-                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
-                    df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
-                    numeric_years = df_all['Date year'].dropna()
-                    current_year = date.today().year
-                    min_y = numeric_years.min()
-                    max_y = numeric_years.max()
-
-                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
-                    df_all['Date published'] = df_all['Date published'].fillna('')
-                    df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
-                    df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    df_all = df_all.sort_values(by=['Date published'], ascending=False)
-
-                    current_year = date.today().year
-                    years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
-
-                    filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
-                    df_all = df_all.loc[filter]
-                    df_all = df_all.reset_index(drop=True)
-                    df_all_download = df_all.copy()
-                    df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
-                    df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
-
-                    def convert_df(df_all_download):
-                        return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                    csv_selected = convert_df(df_all_download)
-                    # csv = df_download
-                    # # st.caption(collection_name)
-                    a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
-                    st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
-                    number_of_items = len(df_all)
-                    if years[0] == years[1] or years[0]==current_year:
-                        st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
-                    else:
-                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
-
-                    dashboard_all = st.toggle('Generate dashboard')
-                    
-                    if dashboard_all:
-                        st.write('Dashboard')
-                        if on and len(df_all) > 0: 
-                            st.info(f'Dashboard for items')
-                            collection_df = df_all.copy()
-                            
-                            publications_by_type = collection_df['Publication type'].value_counts()
-                            if abs(years[1]-years[0])>0:
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
-                            else:
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type in {int(years[0])}')
-                            st.plotly_chart(fig)
-
-                            if abs(years[1]-years[0])>0:
-                                collection_df = df_all.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                                publications_by_year = collection_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
-                                st.plotly_chart(fig_year_bar)
-                            else:
-                                collection_df = df_all.copy()
-                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
-                                publications_by_year = collection_df['Month'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Month', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Month in {int(years[0])}')
-                                st.plotly_chart(fig_year_bar)
-
-                            collection_author_df = df_all.copy()
-                            collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                            collection_author_df = collection_author_df.explode('Author_name')
-                            collection_author_df.reset_index(drop=True, inplace=True)
-                            collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
-                            collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                            fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                            if abs(years[1]-years[0])>0:
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count between {int(years[0])} and {int(years[1])}',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
-                                )
-                            else:
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count in {int(years[0])}',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
-                                )
-                            st.plotly_chart(fig)
-
-                            author_df = df_all.copy()
-                            def clean_text (text):
-                                text = text.lower() # lowercasing
-                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                return text
-                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            def tokenization(text):
-                                text = re.split('\W+', text)
-                                return text    
-                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            stopword = nltk.corpus.stopwords.words('english')
-                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                'examines', 'become', 'used', 'journal', 'london', 'review']
-                            stopword.extend(SW)
-                            def remove_stopwords(text):
-                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                return text
-                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            wn = nltk.WordNetLemmatizer()
-                            def lemmatizer(text):
-                                text = [wn.lemmatize(word) for word in text]
-                                return text
-                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            listdf = author_df['lemma_title']
-                            df_list = [item for sublist in listdf for item in sublist]
-                            string = pd.Series(df_list).str.cat(sep=' ')
-                            wordcloud_texts = string
-                            wordcloud_texts_str = str(wordcloud_texts)
-                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            plt.figure(figsize=(20,8))
-                            plt.axis('off')
-                            if abs(years[1]-years[0])>0:
-                                plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
-                            else:
-                                plt.title(f"Word Cloud for Titles in {int(years[0])}")
-                            plt.imshow(wordcloud)
-                            plt.axis("off")
-                            plt.show()
-                            st.set_option('deprecation.showPyplotGlobalUse', False)
-                            st.pyplot()
-                    else:
-                        if number_of_items > 25:
-                            show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
-                            if show_first_25:
-                                df_all = df_all.head(25)
-                        articles_list = []  # Store articles in a list
-                        abstracts_list = [] #Store abstracts in a list
-                        for index, row in df_all.iterrows():
-                            formatted_entry = format_entry(row)
-                            articles_list.append(formatted_entry)  # Append formatted entry to the list
-                            abstract = row['Abstract']
-                            abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                        for i, article in enumerate(articles_list, start=1):
-                            # Display the article with highlighted search terms
-                            st.markdown(f"{i}. {article}", unsafe_allow_html=True)
+                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
+                df_all_items
 
                 df_added = pd.read_csv('all_items.csv')
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
@@ -1427,7 +1415,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
     with tab2:
-        st.header('Dashboard')
+        st.header('Dashboard', anchor=False)
         on_main_dashboard = st.toggle('Display dashboard') 
         if on_main_dashboard:      
             number0 = st.slider('Select a number collections', 3,30,15)
@@ -1788,14 +1776,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
 
-            st.header('Items in the library by type: ')
+            st.header('Items in the library by type: ', anchor=False)
             
             df_types = df_types.sort_values(['Publication type'], ascending=[False])
             plot2= df_types.head(10)
 
             st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
-            st.header('Item inclusion history')
+            st.header('Item inclusion history', anchor=False)
             df_added = df_csv.copy()
             time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
             col11, col12 = st.columns(2)
@@ -1854,7 +1842,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.info('Toggle to see the dashboard!')
 
     with tab3:
-            st.header('Suggest random sources')
+            st.header('Suggest random sources', anchor=False)
             df_intro = pd.read_csv('all_items.csv')
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
