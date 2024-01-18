@@ -1158,7 +1158,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if number_of_items > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
                             if show_first_25:
-                                df_all = df_all.head(25)
+                                with st.container(height=300):
+                                    df_all = df_all.head(25)
                         articles_list = []  # Store articles in a list
                         abstracts_list = [] #Store abstracts in a list
                         for index, row in df_all.iterrows():
