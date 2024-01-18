@@ -1041,7 +1041,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if years[0] == years[1] or years[0]==current_year:
                         st.write(f"**{number_of_items}** sources found published in **{int(years[0])}** ({breakdown_string})")
                     else:
-                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}** ({breakdown_string})")                        
+                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
+                        st.write(f'({breakdown_string})')                        
 
                     st.warning('Items without a publication date are not listed here!')
 
