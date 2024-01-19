@@ -14,6 +14,7 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
+from nltk.corpus import wordnet
 nltk.download('all')
 from nltk.corpus import stopwords
 nltk.download('stopwords')
