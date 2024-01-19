@@ -589,23 +589,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 text = [wn.lemmatize(word) for word in text]
                                 return text
                             author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            def get_wordnet_pos(tag):
-                                if tag.startswith('N'):
-                                    return wordnet.NOUN
-                                elif tag.startswith('V'):
-                                    return wordnet.VERB
-                                elif tag.startswith('R'):
-                                    return wordnet.ADV
-                                elif tag.startswith('J'):
-                                    return wordnet.ADJ
-                                else:
-                                    return wordnet.NOUN  # default to noun if not found
-                            def lemmatizer_with_pos(text):
-                                tagged_text = nltk.pos_tag(text)
-                                lemmatized_text = [wn.lemmatize(word, get_wordnet_pos(pos)) for word, pos in tagged_text]
-                                return lemmatized_text
-                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer_with_pos)
-
                             listdf = author_df['lemma_title']
                             df_list = [item for sublist in listdf for item in sublist]
                             string = pd.Series(df_list).str.cat(sep=' ')
