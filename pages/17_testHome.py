@@ -591,11 +591,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
                             listdf = author_df['lemma_title']
                             df_list = [item for sublist in listdf for item in sublist]
-                            string = pd.Series(df_list).str.cat(sep=' ')
-                            wordcloud_texts = string
-                            wordcloud_texts_str = str(wordcloud_texts)
-                            wordcloud_texts
-                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            selected_words = st.multiselect("Select Words to Include in Word Cloud", df_list, default=df_list)
+                            filtered_wordcloud_texts = ' '.join(word for word in selected_words)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(filtered_wordcloud_texts)
+
+                            # string = pd.Series(df_list).str.cat(sep=' ')
+
+                            # wordcloud_texts = string
+                            # wordcloud_texts_str = str(wordcloud_texts)
+                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
                             plt.figure(figsize=(20,8))
                             plt.axis('off')
                             plt.title(f"Word Cloud for Titles published by ({selected_author})")
