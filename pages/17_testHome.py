@@ -1003,6 +1003,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
                     numeric_years = df_all['Date year'].dropna()
                     current_year = date.today().year
+                    df_all
                     min_y = numeric_years.min()
                     max_y = numeric_years.max()
 
