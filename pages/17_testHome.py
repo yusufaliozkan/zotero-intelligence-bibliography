@@ -325,7 +325,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df
-                        filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y')
+                        filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                         filtered_df['Date published'] = filtered_df['Date published'].fillna('')
                         filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
                         filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
@@ -992,7 +992,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 with st.expander('Click to expand', expanded=True):                    
                     df_all = pd.read_csv('all_items.csv')
-                    filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all
                     df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
                     df_all
                     df_all['Date year'] = df_all['Date published'].dt.strftime('%Y')
