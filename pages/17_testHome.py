@@ -996,14 +996,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         .str.strip()
                         .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
                     )
-                    df_all
                     # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     # df_all
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
                     df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
                     numeric_years = df_all['Date year'].dropna()
                     current_year = date.today().year
-                    df_all
                     min_y = numeric_years.min()
                     max_y = numeric_years.max()
 
@@ -1013,7 +1011,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
                     df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                     df_all = df_all.sort_values(by=['Date published'], ascending=False)
-                    df_all
 
                     current_year = date.today().year
                     years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
