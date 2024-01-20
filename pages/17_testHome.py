@@ -990,7 +990,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + zotero_link + ')'
                     )
                 with st.expander('Click to expand', expanded=True):  
-                    df_all = pd.read_csv('all_items_duplicated.csv') 
+                    df_all = pd.read_csv('all_items.csv') 
                     df_all['Date published'] = (
                         df_all['Date published']
                         .str.strip()
