@@ -992,7 +992,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with st.expander('Click to expand', expanded=True):                    
                     df_all = pd.read_csv('all_items.csv')
                     df_all['Date published'] = df_all['Date published'].dropna
-                    # df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all['Date year'] = df_all['Date published'].dt.strftime('%Y')
                     df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
                     numeric_years = df_all['Date year'].dropna()
