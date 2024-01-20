@@ -996,6 +996,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         .str.strip()
                         .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
                     )
+                    df_all
                     df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
