@@ -990,8 +990,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 #         '[[Zotero link]](' + zotero_link + ')'
                 #     )
                 with st.expander('Click to expand', expanded=True):  
-                    df_all = pd.read_csv('all_items.csv') 
-                    df_all             
                     df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
