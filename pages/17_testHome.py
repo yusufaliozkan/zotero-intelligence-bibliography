@@ -322,7 +322,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
-                        filtered_df = pd.read_csv('all_items.csv')
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                         filtered_df['Date published'] = filtered_df['Date published'].fillna('')
@@ -659,10 +658,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
+                    filtered_collection_df['Date year'] = filtered_collection_df['Date published'].dt.strftime('%Y')
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
                     filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
                     filtered_collection_df = filtered_collection_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                     filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
+                    filtered_collection_df
 
                     publications_by_type = filtered_collection_df['Publication type'].value_counts()
 
@@ -991,6 +992,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 with st.expander('Click to expand', expanded=True):  
                     df_all = pd.read_csv('all_items.csv')               
+                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
