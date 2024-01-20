@@ -958,36 +958,36 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             elif search_option == "Publication year":                
                 st.subheader('Items by publication year')
-                def format_entry(row):
-                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                    authors = str(row['FirstName2'])
-                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-                    published_by_or_in = ''
-                    published_source = ''
+                # def format_entry(row):
+                #     publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
+                #     title = str(row['Title']) if pd.notnull(row['Title']) else ''
+                #     authors = str(row['FirstName2'])
+                #     date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
+                #     link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
+                #     zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
+                #     published_by_or_in = ''
+                #     published_source = ''
 
-                    if publication_type == 'Journal article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
-                        published_by_or_in = 'Published by'
-                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                    else:
-                        # For other types, leave the fields empty
-                        published_by_or_in = ''
-                        published_source = ''
+                #     if publication_type == 'Journal article':
+                #         published_by_or_in = 'Published in'
+                #         published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                #     elif publication_type == 'Book':
+                #         published_by_or_in = 'Published by'
+                #         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                #     else:
+                #         # For other types, leave the fields empty
+                #         published_by_or_in = ''
+                #         published_source = ''
 
-                    return ( 
-                        '**' + publication_type + '**' + ': ' +
-                        title + ' ' +
-                        '(by ' + '*' + authors + '*' + ') ' +
-                        '(Publication date: ' + str(date_published) + ') ' +
-                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                        '[[Publication link]](' + link_to_publication + ') ' +
-                        '[[Zotero link]](' + zotero_link + ')'
-                    )
+                #     return ( 
+                #         '**' + publication_type + '**' + ': ' +
+                #         title + ' ' +
+                #         '(by ' + '*' + authors + '*' + ') ' +
+                #         '(Publication date: ' + str(date_published) + ') ' +
+                #         ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
+                #         '[[Publication link]](' + link_to_publication + ') ' +
+                #         '[[Zotero link]](' + zotero_link + ')'
+                #     )
                 with st.expander('Click to expand', expanded=True):  
                     df_all = pd.read_csv('all_items.csv')               
                     df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
