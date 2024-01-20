@@ -991,7 +991,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 with st.expander('Click to expand', expanded=True):                    
                     df_all = pd.read_csv('all_items.csv')
-                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'], errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     parsing_errors = df_all[df_all['Date published2'].isna()]
                     st.write('errors', parsing_errors)
 
