@@ -657,6 +657,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
                     filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    filtered_collection_df
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
                     filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
@@ -991,7 +992,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with st.expander('Click to expand', expanded=True):  
                     df_all = pd.read_csv('all_items.csv') 
                     df_all             
-                    df_all['Date published'] = pd.to_datetime(df_all['Date published'], errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
                     df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
