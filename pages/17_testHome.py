@@ -322,7 +322,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
-                        
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                         filtered_df['Date published'] = filtered_df['Date published'].fillna('')
@@ -658,6 +657,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
                     filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    filtered_collection_df
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
                     filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
@@ -989,9 +989,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + link_to_publication + ') ' +
                         '[[Zotero link]](' + zotero_link + ')'
                     )
-                with st.expander('Click to expand', expanded=True):                    
-                    df_all = pd.read_csv('all_items.csv')
-                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                with st.expander('Click to expand', expanded=True):  
+                    df_all = pd.read_csv('all_items.csv') 
+                    df_all['Date published2'] = (
+                        df_all['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
+                    # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    # df_all
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
                     df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
                     numeric_years = df_all['Date year'].dropna()
@@ -999,7 +1005,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     min_y = numeric_years.min()
                     max_y = numeric_years.max()
 
-                    df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    df_all['Date published'] = (
+                        df_all['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
+                    # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
                     df_all['Date published'] = df_all['Date published'].fillna('')
                     df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
