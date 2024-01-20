@@ -992,7 +992,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with st.expander('Click to expand', expanded=True):                    
                     df_all = pd.read_csv('all_items.csv')
                     df_all = df_all.drop_duplicates()
-                    df_all
+                    df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
                     df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all
                     df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
