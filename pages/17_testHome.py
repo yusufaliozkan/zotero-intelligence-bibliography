@@ -657,8 +657,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
                     filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
-                    filtered_collection_df['Date year'] = filtered_collection_df['Date published'].dt.strftime('%Y')
+                    filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y')
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
                     filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
                     filtered_collection_df = filtered_collection_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
