@@ -998,6 +998,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     current_year = date.today().year
                     min_y = numeric_years.min()
                     max_y = numeric_years.max()
+                    df_all
 
                     df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
