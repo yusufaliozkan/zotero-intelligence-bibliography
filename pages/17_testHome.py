@@ -991,9 +991,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 with st.expander('Click to expand', expanded=True):                    
                     df_all = pd.read_csv('all_items.csv')
-                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce')#.dt.tz_convert('Europe/London')
+                    df_all['Date published2'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    parsing_errors = df_all[df_all['Date published2'].isna()]
+                    st.write(parsing_errors)
+
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
                     df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
+                  
                     numeric_years = df_all['Date year'].dropna()
                     current_year = date.today().year
                     min_y = numeric_years.min()
