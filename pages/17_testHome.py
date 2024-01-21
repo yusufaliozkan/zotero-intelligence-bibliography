@@ -68,7 +68,7 @@ def zotero_data(library_id, library_type):
         ))
     df = pd.DataFrame(data, columns=columns)
     return df
-
+df
 data
 
 df = zotero_data(library_id, library_type) 
