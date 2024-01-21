@@ -1202,7 +1202,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 display = st.checkbox('Display theme and abstract')
 
-                df['Authors'] = df['Authors'].fillna('No author')
+                df['Authors'].fillna('No author')
 
                 df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                             ' (by ' + '*' + df['Authors'] + '*' + ') ' +
