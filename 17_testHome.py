@@ -14,7 +14,6 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
-from nltk.corpus import wordnet
 nltk.download('all')
 from nltk.corpus import stopwords
 nltk.download('stopwords')
@@ -322,6 +321,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
+                        
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                         filtered_df['Date published'] = filtered_df['Date published'].fillna('')
@@ -657,7 +657,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
                     filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    filtered_collection_df
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
                     filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
                     filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
@@ -989,7 +988,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + link_to_publication + ') ' +
                         '[[Zotero link]](' + zotero_link + ')'
                     )
-                with st.expander('Click to expand', expanded=True):  
+                with st.expander('Click to expand', expanded=True):                    
                     df_all = pd.read_csv('all_items.csv') 
                     df_all['Date published2'] = (
                         df_all['Date published']
@@ -1002,7 +1001,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
                     numeric_years = df_all['Date year'].dropna()
                     current_year = date.today().year
-                    min_y = numeric_years.min()
+                    min_y = numeric_years.min() 
                     max_y = numeric_years.max()
 
                     df_all['Date published'] = (
@@ -1017,7 +1016,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                     df_all = df_all.sort_values(by=['Date published'], ascending=False)
 
-                    current_year = date.today().year
+                    current_year = date.today().year 
                     years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
 
                     filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
