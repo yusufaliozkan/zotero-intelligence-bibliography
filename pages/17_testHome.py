@@ -68,6 +68,8 @@ def zotero_data(library_id, library_type):
         ))
     df = pd.DataFrame(data, columns=columns)
     return df
+result_df = zotero_data(library_id, library_type)
+
 json_representation = result_df.to_json(orient='records', lines=True)
 json_representation
 df = zotero_data(library_id, library_type) 
