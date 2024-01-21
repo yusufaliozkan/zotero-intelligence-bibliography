@@ -69,7 +69,10 @@ def zotero_data(library_id, library_type):
     df = pd.DataFrame(data, columns=columns)
     return df
 
-df = zotero_data(library_id, library_type) 
+df = zotero_data(library_id, library_type)
+
+json_representation = result_df.to_json(orient='records', lines=True)
+print(json_representation)
 
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
 df['Abstract'] = df['Abstract'].fillna('No abstract')
