@@ -49,7 +49,7 @@ def zotero_data(library_id, library_type):
     items = zot.top(limit=5)
     items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
     data=[]
-    columns = []
+    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue']
 
     for item in items:
         creators = item['data']['creators']
@@ -68,10 +68,7 @@ def zotero_data(library_id, library_type):
         ))
     df = pd.DataFrame(data, columns=columns)
     return df
-result_df = zotero_data(library_id, library_type)
-
-json_representation = result_df.to_json(orient='records', lines=True)
-json_representation
+data
 df = zotero_data(library_id, library_type) 
 
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
