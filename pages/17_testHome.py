@@ -76,7 +76,7 @@ df['Abstract'] = df['Abstract'].fillna('No abstract')
 
 split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
-df['Authors'] = df['Authors'].fillna('null')  
+df['Authors'] = df['Authors'].fillna('No author')  
 
 # Change type name
 type_map = {
