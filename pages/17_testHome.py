@@ -1449,7 +1449,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_collections_2 = pd.read_csv('all_items_duplicated.csv') 
             df_collections_2 = df_collections_2['Collection_Name'].value_counts()
-            number0 = st.slider('Select a number collections', 3,30,15)
+            number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
 
                             # author_df = filtered_collection_df_authors
                             # publications_by_type = author_df['Publication type'].value_counts()
