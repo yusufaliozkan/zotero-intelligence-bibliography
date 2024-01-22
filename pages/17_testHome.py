@@ -1459,7 +1459,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_year=df_year.reset_index(drop=True)
             max_y = int(df_year['Publication year'].max())
             min_y = int(df_year['Publication year'].min())            
-            with st.expander('Select parameters', expanded=False):
+            with st.expander('Select parameters', expanded=True):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
                 years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years2')
                 if st.button('Update dashboard'):
