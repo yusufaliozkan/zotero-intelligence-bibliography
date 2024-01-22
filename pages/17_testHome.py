@@ -1463,6 +1463,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_year=df_year.reset_index(drop=True)
             max_y = int(df_year['Publication year'].max())
             min_y = int(df_year['Publication year'].min())
+
+            df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
+            df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
+
+
          
             with st.expander('Select parameters', expanded=True):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
