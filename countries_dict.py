@@ -162,13 +162,13 @@ continent_replacements = {
     'Christofascism':'Romania',
     'Abdülhamid':'Turkey',
     'Czechoslovakia':'Czechia',
-    'Czechoslovakia':'Czechia',
+    'Czechoslovakia':'Czechia'
     'Third Reich':'Germany',
     'Kriegsmarine':'Germany',
     'Bundesnachrichtendienst':'Germany',
     'Vappala Balachandran':'India',
     'Andropov':'Russia',
-    'Kosova':'Kosovo','Czechia'
+    'Kosova':'Kosovo',
     }
 
 df_continent = df_countries.copy()
