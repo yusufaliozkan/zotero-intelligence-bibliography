@@ -1447,10 +1447,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # st.plotly_chart(fig, use_container_width = True)
 
             df_csv = pd.read_csv('all_items_duplicated.csv')
+            df_collections_2 =df_csv.copy()
 
             df_csv = df_csv.drop_duplicates(subset=['Zotero link'], keep='first')
             df_csv = df_csv.reset_index(drop=True)
-            df_csv 
             df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
             df_csv['Date year'] = df_csv['Date year'].fillna('No date')
@@ -1471,6 +1471,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_csv = df_csv[df_csv['Publication type'].isin(types)]
                     df_csv = df_csv[df_csv['Date year'] !='No date']
                     filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
+
                     df_csv = df_csv.loc[filter]
                     df_year=df_csv['Date year'].value_counts()
                     df_year=df_year.reset_index()
@@ -1479,8 +1480,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_year=df_year.sort_values(by='Publication year', ascending=True)
                     df_year=df_year.reset_index(drop=True)
 
+                    df_collections_2 = df_collections_2[df_collections_2['Publication type'].isin(types)]
+                    df_collections_2 = df_collections_2[df_collections_2['Date year'] !='No date']
+                    filter_collection = (df_collections_2['Date year'].astype(int)>=years[0]) & (df_collections_2['Date year'].astype(int)<years[1])
+                    df_collections_2 df_collections_2.loc[filter_collection]
+
+
+
             ## COLLECTIONS IN THE LIBRARY
-            df_collections_2 = df_csv['Collection_Name'].value_counts().reset_index()
+            df_collections_2 = df_collections_2['Collection_Name'].value_counts().reset_index()
             df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
             number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
             plot= df_collections_2.head(number0+1)
