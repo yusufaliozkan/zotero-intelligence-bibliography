@@ -1536,7 +1536,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 col1.plotly_chart(fig, use_container_width = True)
 
             with col2:
-
+            df_csv
             df_csv['Author_name'] = df_csv['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
             df_csv
                             collection_author_df = collection_author_df.explode('Author_name')
