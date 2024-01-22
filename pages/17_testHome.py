@@ -1458,7 +1458,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             df_year=df_year.reset_index(drop=True)
             max_y = int(df_year['Publication year'].max())
-            min_y = int(df_year['Publication year'].min())            
+            min_y = int(df_year['Publication year'].min())
+
+            df_csv = df_csv.drop_duplicates(subset=['Zotero link'], keep='first')
+            df_csv = df_csv.reset_index(drop=True)
+            df_csv          
             with st.expander('Select parameters', expanded=True):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
                 years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years2')
@@ -1488,9 +1492,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             st.plotly_chart(fig, use_container_width = True)
 
-            df_csv = df_csv.drop_duplicates(subset=['Zotero link', 'Date year'], keep='first')
-            df_csv = df_csv.reset_index(drop=True)
-            df_csv
 
             # PUBLICATION TYPES
             df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
