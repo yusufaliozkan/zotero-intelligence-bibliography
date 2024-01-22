@@ -388,7 +388,7 @@ continent_dict = {
     'Belgium': 'Europe',
     'Kosovo': 'Europe',
     'Yugoslavia': 'Europe',
-    'Taiwan':'Asia'
+    "Taiwan":'Asia'
 }
 
 def get_continent(country):
