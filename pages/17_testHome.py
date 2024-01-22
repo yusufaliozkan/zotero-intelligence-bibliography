@@ -1474,6 +1474,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_year=df_year.sort_values(by='Publication year', ascending=True)
                     df_year=df_year.reset_index(drop=True)
 
+            ## COLLECTIONS IN THE LIBRARY
             df_csv = df_csv['Collection_Name'].value_counts().reset_index()
             df_csv.columns = ['Collection_Name', 'Number_of_Items']
             number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
@@ -1488,6 +1489,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.plotly_chart(fig, use_container_width = True)
 
             # Visauls for all items in the library
+            df_csv
             df_csv = pd.read_csv('all_items.csv')
             df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
