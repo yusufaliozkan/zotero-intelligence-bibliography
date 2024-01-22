@@ -1452,7 +1452,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
             plot= df_collections_2.head(number0+1)
             plot = plot[plot['Collection_Name']!='01 Intelligence history']
-            plot
             fig = px.bar(plot, x='Collection_Name', y='Number_of_Items', color='Collection_Name')
             fig.update_layout(
                 autosize=False,
@@ -1460,17 +1459,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 height=600,)
             fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             st.plotly_chart(fig, use_container_width = True)
-
-
-                            # author_df = filtered_collection_df_authors
-                            # publications_by_type = author_df['Publication type'].value_counts()
-                            # fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                            #             labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                            #             title=f'Publications by Type ({selected_author})')
-                            # st.plotly_chart(fig)
-
-
-
             fig = px.bar(plot, x='Name', y='Number', color='Name')
             fig.update_layout(
                 autosize=False,
