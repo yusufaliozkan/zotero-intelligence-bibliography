@@ -1538,18 +1538,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with col2:
                 df_csv['Author_name'] = df_csv['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                 df_csv
-                            collection_author_df = collection_author_df.explode('Author_name')
-                            collection_author_df.reset_index(drop=True, inplace=True)
-                            collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
-                            collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                            fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                            fig.update_layout(
-                                title=f'Top 10 Authors by Publication Count ({selected_collection})',
-                                xaxis_title='Author',
-                                yaxis_title='Number of Publications',
-                                xaxis_tickangle=-45,
-                            )
-                            st.plotly_chart(fig)
+                collection_author_df = collection_author_df.explode('Author_name')
+                collection_author_df.reset_index(drop=True, inplace=True)
+                collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
+                collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
+                fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
+                fig.update_layout(
+                    title=f'Top 10 Authors by Publication Count ({selected_collection})',
+                    xaxis_title='Author',
+                    yaxis_title='Number of Publications',
+                    xaxis_tickangle=-45,
+                )
+                st.plotly_chart(fig)
 
 
                 max_authors = len(df_authors['Author_name'].unique())
