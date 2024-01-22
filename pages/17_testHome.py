@@ -1483,7 +1483,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_collections_2 = df_collections_2[df_collections_2['Publication type'].isin(types)]
                     df_collections_2 = df_collections_2[df_collections_2['Date year'] !='No date']
                     filter_collection = (df_collections_2['Date year'].astype(int)>=years[0]) & (df_collections_2['Date year'].astype(int)<years[1])
-                    df_collections_2 df_collections_2.loc[filter_collection]
+                    df_collections_2 = df_collections_2.loc[filter_collection]
 
 
 
