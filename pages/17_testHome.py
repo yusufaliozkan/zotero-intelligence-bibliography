@@ -1451,12 +1451,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections_2 = df_collections_2['Collection_Name'].value_counts()
             number0 = st.slider('Select a number collections', 3,30,15)
 
-                            author_df = filtered_collection_df_authors
-                            publications_by_type = author_df['Publication type'].value_counts()
-                            fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                        labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                        title=f'Publications by Type ({selected_author})')
-                            st.plotly_chart(fig)
+                            # author_df = filtered_collection_df_authors
+                            # publications_by_type = author_df['Publication type'].value_counts()
+                            # fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                            #             labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                            #             title=f'Publications by Type ({selected_author})')
+                            # st.plotly_chart(fig)
 
             number0 = st.slider('Select a number collections', 3,30,15)
             df_collections_2.set_index('Name', inplace=True)
