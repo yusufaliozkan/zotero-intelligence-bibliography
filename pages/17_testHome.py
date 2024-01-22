@@ -1489,7 +1489,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.plotly_chart(fig, use_container_width = True)
             df_csv
 
-            df_csv = df_csv.drop_duplicates(subset='Zotero', keep='first')
+            df_csv = df_csv.drop_duplicates(subset='Zotero link', keep='first')
 
             # PUBLICATION TYPES
             df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
