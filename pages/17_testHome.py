@@ -1568,30 +1568,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     yaxis_title='Number of Publications',
                     xaxis_tickangle=-45,
                 )
-                st.plotly_chart(fig)
-
-
-                max_authors = len(df_authors['Author_name'].unique())
-                num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
-                
-                # Adding a multiselect widget for publication types
-                selected_types = st.multiselect('Select publication types:', df_authors['Publication type'].unique(), default=df_authors['Publication type'].unique())
-                
-                # Filtering data based on selected publication types
-                filtered_authors = df_authors[df_authors['Publication type'].isin(selected_types)]
-                
-                if len(selected_types) == 0:
-                    st.write('No results to display')
-                else:
-                    publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
-                    fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
-                    fig.update_layout(
-                        title=f'Top {num_authors} Authors by Publication Count',
-                        xaxis_title='Author',
-                        yaxis_title='Number of Publications',
-                        xaxis_tickangle=-45,
-                    )
-                    col2.plotly_chart(fig)
+                col2.plotly_chart(fig)
 
             col1, col2 = st.columns(2)
             with col1:
