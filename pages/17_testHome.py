@@ -1429,51 +1429,51 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.header('Dashboard', anchor=False)
         on_main_dashboard = st.toggle('Display dashboard') 
 
-                  
-        # number0 = st.slider('Select a number collections', 3,30,15)
-        # df_collections_2.set_index('Name', inplace=True)
-        # df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
-        # plot= df_collections_2.head(number0+1)
-        # # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
-        # plot = plot.reset_index()
+        if on_main_dashboard:            
+            # number0 = st.slider('Select a number collections', 3,30,15)
+            # df_collections_2.set_index('Name', inplace=True)
+            # df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
+            # plot= df_collections_2.head(number0+1)
+            # # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
+            # plot = plot.reset_index()
 
-        # plot = plot[plot['Name']!='01 Intelligence history']
-        # fig = px.bar(plot, x='Name', y='Number', color='Name')
-        # fig.update_layout(
-        #     autosize=False,
-        #     width=600,
-        #     height=600,)
-        # fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-        # st.plotly_chart(fig, use_container_width = True)
+            # plot = plot[plot['Name']!='01 Intelligence history']
+            # fig = px.bar(plot, x='Name', y='Number', color='Name')
+            # fig.update_layout(
+            #     autosize=False,
+            #     width=600,
+            #     height=600,)
+            # fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+            # st.plotly_chart(fig, use_container_width = True)
 
-        df_csv = pd.read_csv('all_items_duplicated.csv') 
-        df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-        df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
-        df_csv['Date year'] = df_csv['Date year'].fillna('No date')
-        df = df_csv.copy()
-        df_year=df_csv['Date year'].value_counts()
-        df_year=df_year.reset_index()
-        df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-        df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-        df_year=df_year.sort_values(by='Publication year', ascending=True)
-        df_year=df_year.reset_index(drop=True)
-        max_y = int(df_year['Publication year'].max())
-        min_y = int(df_year['Publication year'].min())            
-        with st.expander('Select parameters', expanded=True):
-            types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
-            years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years2')
-            if st.button('Update dashboard'):
-                df_csv = df_csv[df_csv['Publication type'].isin(types)]
-                df_csv = df_csv[df_csv['Date year'] !='No date']
-                filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
-                df_csv = df_csv.loc[filter]
-                df_year=df_csv['Date year'].value_counts()
-                df_year=df_year.reset_index()
-                df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-                df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
-                df_year=df_year.sort_values(by='Publication year', ascending=True)
-                df_year=df_year.reset_index(drop=True)
-        if on_main_dashboard:  
+            df_csv = pd.read_csv('all_items_duplicated.csv') 
+            df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
+            df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+            df = df_csv.copy()
+            df_year=df_csv['Date year'].value_counts()
+            df_year=df_year.reset_index()
+            df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+            df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+            df_year=df_year.sort_values(by='Publication year', ascending=True)
+            df_year=df_year.reset_index(drop=True)
+            max_y = int(df_year['Publication year'].max())
+            min_y = int(df_year['Publication year'].min())            
+            with st.expander('Select parameters', expanded=True):
+                types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
+                years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years2')
+                if st.button('Update dashboard'):
+                    df_csv = df_csv[df_csv['Publication type'].isin(types)]
+                    df_csv = df_csv[df_csv['Date year'] !='No date']
+                    filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
+                    df_csv = df_csv.loc[filter]
+                    df_year=df_csv['Date year'].value_counts()
+                    df_year=df_year.reset_index()
+                    df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+                    df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+                    df_year=df_year.sort_values(by='Publication year', ascending=True)
+                    df_year=df_year.reset_index(drop=True)
+
             ## COLLECTIONS IN THE LIBRARY
             df_collections_2 = df_csv['Collection_Name'].value_counts().reset_index()
             df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
@@ -1499,7 +1499,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.stop()
             col1, col2 = st.columns(2)
             with col1:
-
                 log0 = st.checkbox('Show in log scale', key='log0')
 
                 if log0:
@@ -1520,7 +1519,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     fig.update_xaxes(tickangle=-70)
                     fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.4, 'yanchor':'top'})
                     col1.plotly_chart(fig, use_container_width = True)
-
             with col2:
                 fig = px.pie(df_types, values='Count', names='Publication type')
                 fig.update_layout(title={'text':'Item types', 'y':0.95, 'x':0.45, 'yanchor':'top'})
@@ -1538,6 +1536,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 col1.plotly_chart(fig, use_container_width = True)
 
             with col2:
+                df_csv
                 max_authors = len(df_authors['Author_name'].unique())
                 num_authors = st.slider('Select number of authors to display:', 1, min(50, max_authors), 20)
                 
