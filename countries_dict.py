@@ -162,7 +162,6 @@ continent_replacements = {
     'Christofascism':'Romania',
     'Abdülhamid':'Turkey',
     'Czechoslovakia':'Czechia',
-    'Czechoslovakia':'Czechia',
     'Third Reich':'Germany',
     'Kriegsmarine':'Germany',
     'Bundesnachrichtendienst':'Germany',
