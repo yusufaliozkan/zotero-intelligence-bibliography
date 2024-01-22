@@ -1489,6 +1489,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.plotly_chart(fig, use_container_width = True)
 
             df_csv = df_csv.drop_duplicates(subset='Zotero link', keep='first')
+            df_csv = df_csv.reset_index(drop=True)
             df_csv
 
             # PUBLICATION TYPES
