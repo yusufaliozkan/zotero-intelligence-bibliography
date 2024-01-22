@@ -1488,7 +1488,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             st.plotly_chart(fig, use_container_width = True)
 
-            df_csv = df_csv.drop_duplicates(subset='Zotero link', keep='first')
+            df_csv = df_csv.drop_duplicates(subset=['Zotero link', 'Date year'], keep='first')
             df_csv = df_csv.reset_index(drop=True)
             df_csv
 
