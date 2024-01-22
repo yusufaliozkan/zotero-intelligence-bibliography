@@ -1543,7 +1543,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_csv = df_csv['Author_name'].value_counts().head(10)
                 fig = px.bar(df_csv, x=df_csv.index, y=df_csv.values)
                 fig.update_layout(
-                    title=f'Top 10 Authors by Publication Count ({selected_collection})',
+                    title=f'Top 10 Authors by Publication Count',
                     xaxis_title='Author',
                     yaxis_title='Number of Publications',
                     xaxis_tickangle=-45,
