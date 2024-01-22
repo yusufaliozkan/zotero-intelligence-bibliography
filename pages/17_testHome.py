@@ -1475,10 +1475,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_year=df_year.reset_index(drop=True)
 
             ## COLLECTIONS IN THE LIBRARY
-            df_csv = df_csv['Collection_Name'].value_counts().reset_index()
-            df_csv.columns = ['Collection_Name', 'Number_of_Items']
+            df_collections_2 = df_csv.copy()
+            df_collections_2 = df_collections_2['Collection_Name'].value_counts().reset_index()
+            df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
             number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
-            plot= df_csv.head(number0+1)
+            plot= df_collections_2.head(number0+1)
             plot = plot[plot['Collection_Name']!='01 Intelligence history']
             fig = px.bar(plot, x='Collection_Name', y='Number_of_Items', color='Collection_Name')
             fig.update_layout(
