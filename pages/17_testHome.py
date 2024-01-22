@@ -1451,9 +1451,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_csv = df_csv.drop_duplicates(subset=['Zotero link'], keep='first')
             df_csv=df_csv.reset_index(drop=True)
+            unique_values_count = df_csv['Zotero link'].nunique()
+            unique_values_count
             df_csv
             df_csv2 = pd.read_csv('all_items.csv')
             df_csv2=df_csv2.reset_index(drop=True)
+            unique_values_count2 = df_csv2['Zotero link'].nunique()
+            unique_values_count2
             df_csv2
             df_csv = df_csv.reset_index(drop=True)
             df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
