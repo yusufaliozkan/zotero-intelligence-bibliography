@@ -1448,7 +1448,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_collections_2 = pd.read_csv('all_items_duplicated.csv') 
             df_collections_2 = df_collections_2['Collection_Name'].value_counts()
-            df_collections_2.set_index('Collection_Name', inplace=True)
+            df_collections_2 = df_collections_2.rename(columns={'index': 'Collection_Name', 'Collection_Name': 'Number_of_Items'})
             number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
             df_collections_2
 
