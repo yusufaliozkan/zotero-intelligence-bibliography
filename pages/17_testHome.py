@@ -1450,6 +1450,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections_2 =df_csv.copy()
 
             df_csv = df_csv.drop_duplicates(subset=['Zotero link'], keep='first')
+            df_csv
+            df_csv2 = pd.read_csv('all_items.csv')
+            df_csv2
             df_csv = df_csv.reset_index(drop=True)
             df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
