@@ -1432,6 +1432,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         if on_main_dashboard:            
             number0 = st.slider('Select a number collections', 3,30,15)
             df_collections_2.set_index('Name', inplace=True)
+            df_collections_2
             df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
             plot= df_collections_2.head(number0+1)
             # st.bar_chart(plot['Number'].sort_values(), height=600, width=600, use_container_width=True)
