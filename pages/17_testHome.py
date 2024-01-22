@@ -1446,12 +1446,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             # st.plotly_chart(fig, use_container_width = True)
 
-            df_collections_2 = pd.read_csv('all_items_duplicated.csv') 
-            df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-            df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
-            df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
-            df = df_collections_2.copy()
-            df_year=df_collections_2['Date year'].value_counts()
+            df_csv = pd.read_csv('all_items_duplicated.csv') 
+            df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
+            df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+            df = df_csv.copy()
+            df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
@@ -1460,19 +1460,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
             max_y = int(df_year['Publication year'].max())
             min_y = int(df_year['Publication year'].min())            
             with st.expander('Select parameters', expanded=False):
-                types = st.multiselect('Publication type', df_collections_2['Publication type'].unique(), df_collections_2['Publication type'].unique())
+                types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
                 years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years2')
                 if st.button('Update dashboard'):
-                    df_collections_2 = df_collections_2[df_collections_2['Publication type'].isin(types)]
-                    df_collections_2 = df_collections_2[df_collections_2['Date year'] !='No date']
-                    filter = (df_collections_2['Date year'].astype(int)>=years[0]) & (df_collections_2['Date year'].astype(int)<years[1])
-                    df_collections_2 = df_collections_2.loc[filter]
-                    df_year=df_collections_2['Date year'].value_counts()
+                    df_csv = df_csv[df_csv['Publication type'].isin(types)]
+                    df_csv = df_csv[df_csv['Date year'] !='No date']
+                    filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
+                    df_csv = df_csv.loc[filter]
+                    df_year=df_csv['Date year'].value_counts()
                     df_year=df_year.reset_index()
                     df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
                     df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
                     df_year=df_year.sort_values(by='Publication year', ascending=True)
                     df_year=df_year.reset_index(drop=True)
+                    df_collections_2 = df_csv.copy()
 
             df_collections_2 = df_collections_2['Collection_Name'].value_counts().reset_index()
             df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
