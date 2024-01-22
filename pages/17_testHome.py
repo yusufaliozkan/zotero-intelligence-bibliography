@@ -1596,6 +1596,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1, col2 = st.columns(2)
             with col1:
                 number = st.slider('Select a number of publishers', 0, 30, 10)
+                df_csv
                 df_publisher = pd.DataFrame(df_csv['Publisher'].value_counts())
                 df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
                 df_publisher = df_publisher.reset_index()
