@@ -1459,7 +1459,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 height=600,)
             fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             st.plotly_chart(fig, use_container_width = True)
-            fig = px.bar(plot, x='Name', y='Number', color='Name')
+            fig = px.bar(plot, x='Collection_Name', y='Number_of_Items', color='Collection_Name')
             fig.update_layout(
                 autosize=False,
                 width=600,
