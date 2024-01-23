@@ -1829,7 +1829,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
             st.header('Item inclusion history', anchor=False)
-            df_added = df_csv.copy()
+            df_added = pd.read_csv('all_items.csv')
             time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
             col11, col12 = st.columns(2)
             with col11:
