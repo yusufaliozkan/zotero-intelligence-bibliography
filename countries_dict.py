@@ -28,7 +28,7 @@ country_names = [
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
-    'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur'
+    'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East'
 ]
 replacements = { 
     'Belgian': 'Belgium',
@@ -75,6 +75,7 @@ replacements = {
     'Andropov':'Russia',
     'Kosova':'Kosovo',
     'Yom Kippur':'Israel'
+    'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East':'Israel'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -122,7 +123,7 @@ continent_country_names = [
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
-    'Kosova', 'Yom Kippur'
+    'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -169,7 +170,8 @@ continent_replacements = {
     'Vappala Balachandran':'India',
     'Andropov':'Russia',
     'Kosova':'Kosovo',
-    'Yom Kippur':'Israel'
+    'Yom Kippur':'Israel',
+    'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East':'Israel'
     }
 
 df_continent = df_countries.copy()
@@ -185,7 +187,7 @@ df_continent = df_continent.assign(Country2=df_continent['Country2'].str.split('
 df_continent = df_continent.drop_duplicates(subset=['Country2', 'Zotero link'])
 df_continent['Country2'].replace('', 'Country2 not known', inplace=True)
 
-continent_dict = {
+continent_dict = { 
     "Africa":"Africa",
     'Eastern Europe':'Europe',
     "Asia":"Asia",
