@@ -29,7 +29,7 @@ country_names = [
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
-    "The Politics and Intelligence of the Oslo Peace Process"
+    "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet'
 ]
 replacements = { 
     'Belgian': 'Belgium',
@@ -77,7 +77,8 @@ replacements = {
     'Kosova':'Kosovo',
     'Yom Kippur':'Israel',
     "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East":"Israel",
-    "The Politics and Intelligence of the Oslo Peace Process":'Israel'
+    "The Politics and Intelligence of the Oslo Peace Process":'Israel',
+    'Shin bet':'Israel'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -125,7 +126,8 @@ continent_country_names = [
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
-    'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process"
+    'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process",
+    'Shin bet'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -174,7 +176,8 @@ continent_replacements = {
     'Kosova':'Kosovo',
     'Yom Kippur':'Israel',
     "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East":"Israel",
-    "The Politics and Intelligence of the Oslo Peace Process":'Israel'
+    "The Politics and Intelligence of the Oslo Peace Process":'Israel',
+    'Shin bet':'Israel'
     }
 
 df_continent = df_countries.copy()
