@@ -1499,7 +1499,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_collections_2 = df_collections_2.loc[filter_collection]
 
             if df_csv['Title'].any() in ("", [], None, 0, False):
-                st.write('No data to visualise')
+                st.warning('No data to visualise. Select a correct parameter.')
 
             else:                
                 ## COLLECTIONS IN THE LIBRARY
