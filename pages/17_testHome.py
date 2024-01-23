@@ -1489,6 +1489,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 years = st.slider('Publication years between:', min_y, max_y+1, (min_y,max_y+1), key='years2')
                 if st.button('Update dashboard'):
                     df_csv = df_csv[df_csv['Publication type'].isin(types)]
+                    df_csv = df_csv[df_csv['Journal'].isin(journals)]
                     df_csv = df_csv[df_csv['Date year'] !='No date']
                     filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
 
