@@ -1832,6 +1832,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.set_option('deprecation.showPyplotGlobalUse', False)
                     st.pyplot() 
 
+                # Bring everything in the library
+
+                df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
+
+                st.header('Items in the library by type: ', anchor=False)
+                
+                df_types = df_types.sort_values(['Publication type'], ascending=[False])
+                plot2= df_types.head(10)
+
+                st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
+
             st.header('Item inclusion history', anchor=False)
             df_added = pd.read_csv('all_items.csv')
             time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
