@@ -171,7 +171,7 @@ continent_replacements = {
     'Andropov':'Russia',
     'Kosova':'Kosovo',
     'Yom Kippur':'Israel',
-    "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East':'Israel"
+    "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East":"Israel"
     }
 
 df_continent = df_countries.copy()
