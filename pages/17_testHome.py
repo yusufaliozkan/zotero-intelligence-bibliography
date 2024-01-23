@@ -1476,12 +1476,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if st.button('Update dashboard'):
                     df_csv = df_csv[df_csv['Publication type'].isin(types)]
                     df_csv = df_csv[~((df_csv['Date year'] == 'No date') & df_csv['Date published'].notnull())]
-                    filter = (df_csv['Date year'].astype(int) >= years[0]) & (df_csv['Date year'].astype(int) < years[1])
+                    filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
+
                     df_csv = df_csv.loc[filter]
-                    
-                    df_year = df_csv['Date year'].value_counts().reset_index().rename(columns={'index':'Publication year', 'Date year':'Count'})
-                    df_year.drop(df_year[df_year['Publication year'] == 'No date'].index, inplace=True)
-                    df_year = df_year.sort_values(by='Publication year', ascending=True).reset_index(drop=True)
+                    df_year=df_csv['Date year'].value_counts()
+                    df_year=df_year.reset_index()
+                    df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+                    df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+                    df_year=df_year.sort_values(by='Publication year', ascending=True)
+                    df_year=df_year.reset_index(drop=True)
 
                     df_collections_2 = df_collections_2[df_collections_2['Publication type'].isin(types)]
                     df_collections_2 = df_collections_2[df_collections_2['Date year'] !='No date']
