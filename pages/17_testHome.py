@@ -963,7 +963,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_csv = df_csv[df_csv['Publication type']=='Journal article']
                 journal_counts = df_csv['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
-                journals = st.selectbox('Select a journal', unique_journals_sorted)     
+                journals = st.multiselect('Select a journal', unique_journals_sorted)     
                 selected_journal_df = df_csv[df_csv['Journal'].isin(journals)]
 
                 selected_journal_df['Date published'] = pd.to_datetime(selected_journal_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
@@ -997,7 +997,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         publications_by_year = collection_df['Year'].value_counts().sort_index()
                         fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                             labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                            title=f'Publications by Year ({journals})')
+                                            title=f'Publications by Year for selected journal(s)')
                         st.plotly_chart(fig_year_bar)
 
                         collection_author_df = type_df.copy()
@@ -1008,7 +1008,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
                         fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
                         fig.update_layout(
-                            title=f'Top 10 Authors by Publication Count ({selected_type})',
+                            title=f'Top 10 Authors by Publication Count for selected journal(s)',
                             xaxis_title='Author',
                             yaxis_title='Number of Publications',
                             xaxis_tickangle=-45,
@@ -1053,7 +1053,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
                         plt.figure(figsize=(20,8))
                         plt.axis('off')
-                        plt.title(f"Word Cloud for Titles in ({selected_type})")
+                        plt.title(f"Word Cloud for Titles published in selected journal(s)")
                         plt.imshow(wordcloud)
                         plt.axis("off")
                         plt.show()
