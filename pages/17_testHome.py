@@ -1559,10 +1559,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_csv['Author_name'] = df_csv['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                 df_csv = df_csv.explode('Author_name')
                 df_csv.reset_index(drop=True, inplace=True)
-                df_csv['Author_name'] = df_csv['Author_name'].map(name_replacements).fillna(df_csv['Author_name'])
                 max_authors = len(df_csv['Author_name'].unique())
                 num_authors = st.slider('Select number of authors to display:', 1, min(30, max_authors), 20)
-                df_csv_authors = df_csv_authors['Author_name'].value_counts().head(num_authors)
+                df_csv['Author_name'] = df_csv['Author_name'].map(name_replacements).fillna(df_csv['Author_name'])
+                df_csv_authors = df_csv['Author_name'].value_counts().head(num_authors)
                 fig = px.bar(df_csv_authors, x=df_csv_authors.index, y=df_csv_authors.values)
                 fig.update_layout(
                     title=f'Top 20 Authors by Publication Count',
