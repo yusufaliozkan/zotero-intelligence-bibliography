@@ -1474,9 +1474,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
             df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
-
-
-         
+ 
             with st.expander('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
 
@@ -1512,6 +1510,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             else:                
                 ## COLLECTIONS IN THE LIBRARY
+                st.markdown(f'#### Intelligence studies bibliography dashboard (publications between {min_y} and {max_y})')
+
                 df_collections_2 = df_collections_2['Collection_Name'].value_counts().reset_index()
                 df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
                 number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
