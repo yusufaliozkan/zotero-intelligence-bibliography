@@ -1484,7 +1484,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_journals = df_journals[df_journals['Publication type'] == 'Journal article']
                 journal_counts = df_journals['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
-                journals = st.selectbox('Select a journal', unique_journals_sorted)
+                journals = st.multiselect('Select a journal', unique_journals_sorted)
 
                 years = st.slider('Publication years between:', min_y, max_y+1, (min_y,max_y+1), key='years2')
                 if st.button('Update dashboard'):
