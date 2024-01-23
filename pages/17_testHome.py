@@ -1503,6 +1503,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_year=df_year.reset_index(drop=True)
 
                     df_collections_2 = df_collections_2[df_collections_2['Publication type'].isin(types)]
+                    if journals:
+                        df_collections_2 = df_collections_2[df_csv['Journal'].isin(journals)]
                     df_collections_2 = df_collections_2[df_collections_2['Journal'].isin(journals)]
                     df_collections_2 = df_collections_2[df_collections_2['Date year'] !='No date']
                     filter_collection = (df_collections_2['Date year'].astype(int)>=years[0]) & (df_collections_2['Date year'].astype(int)<years[1])
