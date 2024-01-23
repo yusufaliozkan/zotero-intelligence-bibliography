@@ -817,8 +817,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if not selected_type or selected_type == '':
                     st.write('Pick a publication type to see items')
                 else:
-                    filtered_type_df = df_csv_types[df_csv_types['Publication type'].isin(selected_type)]
-                    # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+                    if selected_type:
+                        filtered_type_df = df_csv_types[df_csv_types['Publication type'].isin(selected_type)]
+                        # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
                     filtered_type_df['Date published'] = pd.to_datetime(filtered_type_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     filtered_type_df['Date published'] = filtered_type_df['Date published'].dt.strftime('%Y-%m-%d')
