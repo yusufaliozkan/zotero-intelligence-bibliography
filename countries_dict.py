@@ -28,7 +28,7 @@ country_names = [
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
-    'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova'
+    'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur'
 ]
 replacements = { 
     'Belgian': 'Belgium',
@@ -73,7 +73,8 @@ replacements = {
     'Bundesnachrichtendienst':'Germany',
     'Vappala Balachandran':'India',
     'Andropov':'Russia',
-    'Kosova':'Kosovo'
+    'Kosova':'Kosovo',
+    'Yom Kippur':'Israel'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -121,7 +122,7 @@ continent_country_names = [
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
-    'Kosova'
+    'Kosova', 'Yom Kippur'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -168,6 +169,7 @@ continent_replacements = {
     'Vappala Balachandran':'India',
     'Andropov':'Russia',
     'Kosova':'Kosovo',
+    'Yom Kippur':'Israel'
     }
 
 df_continent = df_countries.copy()
