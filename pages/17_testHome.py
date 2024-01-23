@@ -1521,9 +1521,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_types=df_types.reset_index()
             df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
 
-            if df_csv['Title'].any() in ("", [], None, 0, False):
-                st.write('No data to visualise')
-                st.stop()
+            with st.container():
+                if df_csv['Title'].any() in ("", [], None, 0, False):
+                    st.write('No data to visualise')
+                    st.stop()
             col1, col2 = st.columns(2)
             with col1:
                 log0 = st.checkbox('Show in log scale', key='log0')
