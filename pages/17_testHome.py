@@ -1498,8 +1498,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filter_collection = (df_collections_2['Date year'].astype(int)>=years[0]) & (df_collections_2['Date year'].astype(int)<years[1])
                     df_collections_2 = df_collections_2.loc[filter_collection]
 
-
-
+            if df_csv['Title'].any() in ("", [], None, 0, False):
+                st.write('No data to visualise')
+                st.stop()
+                
             ## COLLECTIONS IN THE LIBRARY
             df_collections_2 = df_collections_2['Collection_Name'].value_counts().reset_index()
             df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
@@ -1521,10 +1523,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_types=df_types.reset_index()
             df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
 
-            with st.container():
-                if df_csv['Title'].any() in ("", [], None, 0, False):
-                    st.write('No data to visualise')
-                    st.stop()
+
             col1, col2 = st.columns(2)
             with col1:
                 log0 = st.checkbox('Show in log scale', key='log0')
