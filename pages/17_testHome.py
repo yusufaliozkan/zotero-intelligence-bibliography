@@ -964,8 +964,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 journal_counts = df_csv['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
                 journals = st.multiselect('Select a journal', unique_journals_sorted)     
-                selected_journal = df_csv[df_csv['Journal'].isin(journals)]
-                selected_journal
+                selected_journal_df = df_csv[df_csv['Journal'].isin(journals)]
 
                 selected_journal_df['Date published'] = (
                     selected_journal_df['Date published']
