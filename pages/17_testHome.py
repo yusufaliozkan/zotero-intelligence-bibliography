@@ -1560,7 +1560,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_csv = df_csv.explode('Author_name')
                 df_csv.reset_index(drop=True, inplace=True)
                 df_csv['Author_name'] = df_csv['Author_name'].map(name_replacements).fillna(df_csv['Author_name'])
-                df_csv_authors = df_csv['Author_name'].value_counts().head(10)
+                df_csv_authors = df_csv['Author_name'].value_counts().head(15)
                 fig = px.bar(df_csv_authors, x=df_csv_authors.index, y=df_csv_authors.values)
                 fig.update_layout(
                     title=f'Top 10 Authors by Publication Count',
