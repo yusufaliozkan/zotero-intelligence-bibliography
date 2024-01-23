@@ -1450,8 +1450,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections_2 =df_csv.copy()
 
             df_csv = pd.read_csv('all_items.csv')
-            df_csv=df_csv.reset_index(drop=True)
-
             df_csv = df_csv.reset_index(drop=True)
             df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
@@ -1477,7 +1475,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years2')
                 if st.button('Update dashboard'):
                     df_csv = df_csv[df_csv['Publication type'].isin(types)]
-                    df_csv = df_csv[df_csv['Date year'] !='No date']
+                    # df_csv = df_csv[df_csv['Date year'] !='No date']
                     filter = (df_csv['Date year'].astype(int)>=years[0]) & (df_csv['Date year'].astype(int)<years[1])
 
                     df_csv = df_csv.loc[filter]
