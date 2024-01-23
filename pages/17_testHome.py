@@ -1513,7 +1513,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             else:                
                 ## COLLECTIONS IN THE LIBRARY
-                st.markdown(f'#### Intelligence studies bibliography dashboard (publications between {min_y} and {max_y})')
+                st.markdown(f'#### Intelligence studies bibliography dashboard (publications between {years[0]} and {years[1]})')
 
                 df_collections_2 = df_collections_2['Collection_Name'].value_counts().reset_index()
                 df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
