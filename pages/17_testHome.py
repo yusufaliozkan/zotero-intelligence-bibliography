@@ -1556,6 +1556,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 col1.plotly_chart(fig, use_container_width = True)
 
             with col2:
+                max_authors = len(df_authors['Author_name'].unique())
+                num_authors = st.slider('Select number of authors to display:', 1, min(30, max_authors), 20)
                 df_csv['Author_name'] = df_csv['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                 df_csv = df_csv.explode('Author_name')
                 df_csv.reset_index(drop=True, inplace=True)
