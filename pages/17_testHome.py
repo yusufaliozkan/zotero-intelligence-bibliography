@@ -959,7 +959,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             elif search_option == "Search journal":
                 st.subheader('Search journal')
 
-                df_csv_types = pd.read_csv('all_items.csv')
+                df_csv = pd.read_csv('all_items.csv')
                 df_csv = df_csv[df_csv['Publication type']=='Journal article']
                 journal_counts = df_journals['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
