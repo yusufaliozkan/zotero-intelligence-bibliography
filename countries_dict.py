@@ -178,7 +178,7 @@ continent_replacements = {
     "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East":"Israel",
     "The Politics and Intelligence of the Oslo Peace Process":'Israel',
     'Shin bet':'Israel'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
