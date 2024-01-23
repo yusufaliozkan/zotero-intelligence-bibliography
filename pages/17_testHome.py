@@ -1479,11 +1479,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
          
             with st.expander('**Select filters**', expanded=True):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
+
                 df_journals = df_csv[df_csv['Publication type']=='Journal article']
                 unique_journals = [''] + list(df_journals['Journal'].unique())
                 sorted_unique_journals = df_journals['Journal'].value_counts().to_dict()
                 sorted_unique_journals = sorted(unique_journals)
                 journals = st.multiselect('Select a journal', unique_journals)
+                
                 years = st.slider('Publication years between:', min_y, max_y+1, (min_y,max_y+1), key='years2')
                 if st.button('Update dashboard'):
                     df_csv = df_csv[df_csv['Publication type'].isin(types)]
