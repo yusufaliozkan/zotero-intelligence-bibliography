@@ -967,7 +967,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_journal = df_csv[df_csv['Journal'].isin(journals)]
                 selected_journal_df = st.multiselect('Select a publication type', selected_journal)
 
-                selected_journal_df['Date published'] = pd.to_datetime(selected_journal_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                selected_journal_df['Date published'] = (
+                    selected_journal_df['Date published']
+                    .str.strip()
+                    .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                )
                 selected_journal_df['Date published'] = selected_journal_df['Date published'].dt.strftime('%Y-%m-%d')
                 selected_journal_df['Date published'] = selected_journal_df['Date published'].fillna('')
                 selected_journal_df['No date flag'] = selected_journal_df['Date published'].isnull().astype(np.uint8)
