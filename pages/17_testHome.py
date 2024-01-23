@@ -985,7 +985,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     today = datetime.date.today().isoformat()
                     num_items_collections = len(selected_journal_df)
                     st.write(f"**{num_items_collections}** sources found")
-                    a = f'{selected_type}_{today}'
+                    a = f'selected_journal_{today}'
                     st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
                     on = st.toggle('Generate dashboard')
