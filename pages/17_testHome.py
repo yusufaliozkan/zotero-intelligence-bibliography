@@ -977,7 +977,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # publications_by_type = filtered_collection_df['Publication type'].value_counts()
                 
                 with st.expander('Click to expand', expanded=True):
-                    st.markdown('#### Publication type: ' + str(journals))
+                    st.markdown('#### Journal: ' + str(journals))
                     def convert_df(selected_journal_df):
                         return selected_journal_df.to_csv(index=False).encode('utf-8-sig')
 
