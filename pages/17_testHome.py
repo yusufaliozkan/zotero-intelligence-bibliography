@@ -831,7 +831,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # publications_by_type = filtered_collection_df['Publication type'].value_counts()
                     
                     with st.expander('Click to expand', expanded=True):
-                        st.markdown('#### Publication type: ' + selected_type)
+                        st.markdown('#### Publication type: ' + str(selected_type))
                         if selected_type == 'Thesis':
                             st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).')
                         def convert_df(filtered_type_df):
