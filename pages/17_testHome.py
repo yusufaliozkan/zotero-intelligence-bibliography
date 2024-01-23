@@ -1557,6 +1557,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             with col2:
                 df_authors = df_csv.copy()
+                df_authors
                 df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                 df_authors = df_authors.explode('Author_name')
                 df_authors.reset_index(drop=True, inplace=True)
