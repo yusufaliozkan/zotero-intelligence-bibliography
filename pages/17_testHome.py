@@ -1477,7 +1477,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
 
          
-            with st.expander('Select parameters', expanded=True):
+            with st.expander('Select filters', expanded=True):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
                 years = st.slider('Publication years between:', min_y, max_y+1, (min_y,max_y+1), key='years2')
                 if st.button('Update dashboard'):
