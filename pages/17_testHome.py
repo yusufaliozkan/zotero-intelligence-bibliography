@@ -1480,7 +1480,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('**Select filters**', expanded=True):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
 
-                df_journals = df_csv[['Publication type']=='Journal article']
+                df_journals = df_csv[df_csv['Publication type'] == 'Journal article']
                 unique_journals = [''] + list(df_journals['Journal'].unique())
                 sorted_unique_journals = df_journals['Journal'].value_counts().to_dict()
                 sorted_unique_journals = sorted(unique_journals)
