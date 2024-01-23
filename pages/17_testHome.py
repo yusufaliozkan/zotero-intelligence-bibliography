@@ -1483,7 +1483,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_journals = pd.read_csv('all_items.csv')
                 df_journals = df_journals[df_journals['Publication type'] == 'Journal article']
                 df_journals
-                unique_journals = sorted(list(df_journals['Journal'].unique()))
+                unique_journals = df_journals['Journal'].unique()
                 journals = st.multiselect('Select a journal', unique_journals)
 
 
