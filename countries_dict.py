@@ -28,7 +28,7 @@ country_names = [
     'Belgian','Turkish', 'Ottoman Special Organization', 'Belgian', 'Portuguese', 'Chinese', 'Greek', 'Spanish', 'French', 'Canadian', 'Czechoslovak', 'Soviet','Polish', 'KGB',
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
-    'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East'
+    'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East"
 ]
 replacements = { 
     'Belgian': 'Belgium',
@@ -74,8 +74,8 @@ replacements = {
     'Vappala Balachandran':'India',
     'Andropov':'Russia',
     'Kosova':'Kosovo',
-    'Yom Kippur':'Israel'
-    'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East':'Israel'
+    'Yom Kippur':'Israel',
+    "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East":"Israel"
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -171,7 +171,7 @@ continent_replacements = {
     'Andropov':'Russia',
     'Kosova':'Kosovo',
     'Yom Kippur':'Israel',
-    'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East':'Israel'
+    "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East':'Israel"
     }
 
 df_continent = df_countries.copy()
