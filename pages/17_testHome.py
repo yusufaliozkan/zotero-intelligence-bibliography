@@ -1521,7 +1521,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_types=df_types.reset_index()
             df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
 
-            if df_csv['Title'].any() or df_collections_2['Title'].any() in ("", [], None, 0, False):
+            if df_csv['Title'].any() in ("", [], None, 0, False):
                 st.write('No data to visualise')
                 st.stop()
             col1, col2 = st.columns(2)
