@@ -1451,7 +1451,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_csv = pd.read_csv('all_items.csv')
             df_csv = df_csv.reset_index(drop=True)
-            df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+
+            df_csv['Date published'] = (
+                df_csv['Date published']
+                .str.strip()
+                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+            )
+            
+            # df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
             df_csv['Date year'] = df_csv['Date year'].fillna('No date')
             df = df_csv.copy()
