@@ -961,7 +961,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_csv = pd.read_csv('all_items.csv')
                 df_csv = df_csv[df_csv['Publication type']=='Journal article']
-                journal_counts = df_journals['Journal'].value_counts()
+                journal_counts = df_csv['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
                 journals = st.multiselect('Select a journal', unique_journals_sorted)     
                 selected_journal = df_csv[df_csv['Journal'].isin(journals)]
