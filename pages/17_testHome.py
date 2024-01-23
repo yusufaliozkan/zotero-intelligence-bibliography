@@ -997,7 +997,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         publications_by_year = collection_df['Year'].value_counts().sort_index()
                         fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                             labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                            title=f'Publications by Year ({selected_type})')
+                                            title=f'Publications by Year ({journals})')
                         st.plotly_chart(fig_year_bar)
 
                         collection_author_df = type_df.copy()
