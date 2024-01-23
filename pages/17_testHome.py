@@ -990,7 +990,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     on = st.toggle('Generate dashboard')
                     if on and len (selected_journal_df) > 0:
-                        st.info(f'Dashboard for {selected_type}')
+                        st.info(f'Dashboard for {journals}')
                         type_df = selected_journal_df.copy()
                         collection_df = type_df.copy()
                         collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
