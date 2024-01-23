@@ -1477,7 +1477,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
 
          
-            with st.expander('**Select filters**', expanded=True):
+            with st.expander('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
 
                 df_journals = pd.read_csv('all_items.csv')
