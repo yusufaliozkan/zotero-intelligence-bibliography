@@ -1482,7 +1482,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_journals = df_journals[df_journals['Publication type'] == 'Journal article']
                 journal_counts = df_journals['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
-                journals = st.multiselect('Select a journal', unique_journals_sorted)
+                journals = st.multiselect('Select a journal', unique_journals_sorted, default=None)
                 if journals is None:
                     selected_journals = unique_journals_sorted
                 else:
