@@ -1480,7 +1480,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('**Select filters**', expanded=True):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
 
-                df_journals = df_csv[df_csv['Publication type'] == 'Journal article']
+                df_journals = pd.read_csv('all_items.csv')
+                df_journals = df_journals[df_journals['Publication type'] == 'Journal article']
                 df_journals
                 unique_journals = sorted(list(df_journals['Journal'].unique()))
                 journals = st.multiselect('Select a journal', unique_journals)
