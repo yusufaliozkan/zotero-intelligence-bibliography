@@ -4,7 +4,6 @@ df_countries = pd.read_csv('all_items_duplicated.csv')
 df_countries = df_countries[df_countries['Collection_Name']=='14 Global intelligence']
 oman_mask = df_countries['Country'] == 'Oman'
 romania_mask = df_countries['Title'].str.lower().str.contains(r'\bromania\b|\bromanian\b', regex=True)
-df_countries.loc[oman_mask & romania_mask, 'Country'] = 'Country not known'
 
 country_names = [
     "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia",
@@ -89,6 +88,7 @@ replacements = {
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
+df_countries.loc[oman_mask & romania_mask, 'Country'] = 'Country not known'
 
 df_countries['Country'] = ''
 
