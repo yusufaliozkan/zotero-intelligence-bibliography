@@ -1,6 +1,6 @@
 import pandas as pd
 
-df_countries = pd.read_csv('all_items_duplicated.csv')
+df_countries = pd.read_csv('all_items_duplicated.csv') 
 df_countries = df_countries[df_countries['Collection_Name']=='14 Global intelligence']
 country_names = [
     "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia",
