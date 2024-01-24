@@ -32,7 +32,7 @@ country_names = [
     "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Omani'
 ]
 replacements = {
-    'Omani','Oman',
+    'Omani':'Oman',
     'Belgian': 'Belgium',
     'Turkish': 'Turkey',
     'Portuguese': 'Portugal',
