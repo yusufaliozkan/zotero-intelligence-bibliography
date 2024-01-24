@@ -29,10 +29,10 @@ country_names = [
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
-    "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Arabizing the Omani intelligence services: Clash of cultures?',
+    "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Omani',
 ]
 replacements = {
-    'Arabizing the Omani intelligence services: Clash of cultures?':'Oman',
+    'Omani':'Oman',
     'Belgian': 'Belgium',
     'Turkish': 'Turkey',
     'Portuguese': 'Portugal',
@@ -89,13 +89,13 @@ replacements['\\bRomania\\b'] = 'Romania'
 
 df_countries['Country'] = ''
 
+
 for country in country_names:
     if country.lower() == 'oman':
         # Special handling for 'Oman' to avoid categorizing 'Ottoman' titles under 'Oman'
-        mask = df_countries['Title'].str.lower().str.contains(r'\bOman\b(?!i)', regex=True)
+        mask = df_countries['Title'].str.lower().str.contains(r'\bOman\b', regex=True)
     elif country.lower() == 'omani':
-        # Look for both 'Oman' and 'Omani' in titles
-        mask = df_countries['Title'].str.lower().str.contains(r'\bOman(?:i)?\b', regex=True)
+        mask = df_countries['Title'].str.lower().str.contains(r'\bOmani\b', regex=True)
     else:
         mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
         
