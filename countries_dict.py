@@ -2,9 +2,6 @@ import pandas as pd
 
 df_countries = pd.read_csv('all_items_duplicated.csv')
 df_countries = df_countries[df_countries['Collection_Name']=='14 Global intelligence']
-oman_mask = df_countries['Country'] == 'Oman'
-romania_mask = df_countries['Title'].str.lower().str.contains(r'\bromania\b|\bromanian\b', regex=True)
-
 country_names = [
     "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia",
     "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
@@ -103,8 +100,6 @@ for country in country_names:
 df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
 df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|')).explode('Country')
 df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
-df_countries.loc[oman_mask & romania_mask, 'Country'] = 'Country not known'
-
 df_countries['Country'].replace('', 'Country not known', inplace=True) 
 
 continent_country_names = [
