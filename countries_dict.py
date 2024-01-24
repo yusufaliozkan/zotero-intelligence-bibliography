@@ -82,7 +82,7 @@ replacements = {
     'Sixteenth-Century Istanbul':'Turkey',
     'Cheka':'Russia',
      'Omani':'Oman'
-    }
+    } 
 
 replacements['\\bOttoman\\b'] = 'Turkey'
 
