@@ -193,7 +193,7 @@ continent_replacements = {
      'Omani':'Oman',
      'Putin':'Russia',
      'New memoirs from Moscow':'Russia'
-    } 
+    }
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
