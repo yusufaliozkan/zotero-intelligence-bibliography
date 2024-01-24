@@ -101,7 +101,7 @@ for country in country_names:
     if country.lower() == 'oman':
         # Special handling for 'Oman' to avoid categorizing 'Ottoman' titles under 'Oman'
         mask = df_countries['Title'].str.lower().str.contains(r'\bOman\b', regex=True)
-    else if country.lower()=='omani':
+    elif country.lower()=='omani':
         mask = df_countries['Title'].str.lower().str.contains(r'\bOmani\b', regex=True)
     else:
         mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
