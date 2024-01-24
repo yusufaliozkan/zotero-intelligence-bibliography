@@ -29,7 +29,7 @@ country_names = [
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
-    "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul'
+    "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka'
 ]
 replacements = { 
     'Belgian': 'Belgium',
@@ -79,7 +79,8 @@ replacements = {
     "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East":"Israel",
     "The Politics and Intelligence of the Oslo Peace Process":'Israel',
     'Shin bet':'Israel',
-    'Sixteenth-Century Istanbul':'Turkey'
+    'Sixteenth-Century Istanbul':'Turkey',
+    'Cheka':'Russia'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -128,7 +129,7 @@ continent_country_names = [
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
     'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process",
-    'Shin bet','Sixteenth-Century Istanbul'
+    'Shin bet','Sixteenth-Century Istanbul','Cheka'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -179,7 +180,8 @@ continent_replacements = {
     "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East":"Israel",
     "The Politics and Intelligence of the Oslo Peace Process":'Israel',
     'Shin bet':'Israel',
-    'Sixteenth-Century Istanbul':'Turkey'
+    'Sixteenth-Century Istanbul':'Turkey',
+    'Cheka':'Russia'
     } 
 
 df_continent = df_countries.copy()
