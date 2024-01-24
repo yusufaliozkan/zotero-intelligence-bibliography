@@ -85,7 +85,7 @@ replacements = {
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
-replacements['\\bRomania\\b'] = 'Turkey'
+replacements['\\bRomania\\b'] = 'Romania'
 
 df_countries['Country'] = ''
 
