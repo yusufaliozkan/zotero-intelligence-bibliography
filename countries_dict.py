@@ -106,7 +106,7 @@ for country in country_names:
 df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
 df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|')).explode('Country')
 df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
-df_countries['Country'].replace('', 'Country not known', inplace=True) 
+df_countries['Country'].replace('', 'Country not known', inplace=True)
 
 continent_country_names = [
     "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia",
