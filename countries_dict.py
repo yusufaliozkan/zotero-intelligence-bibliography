@@ -92,13 +92,11 @@ for country in country_names:
     if country.lower() == 'oman':
         # Special handling for 'Oman' to avoid categorizing 'Ottoman' titles under 'Oman'
         mask_oman = df_countries['Title'].str.lower().str.contains(r'\bOman\b', regex=True)
+        df_countries.loc[mask_oman, 'Country'] += 'Oman|' if not df_countries.loc[mask_oman, 'Country'].empty else ''
+    elif country.lower() == 'romania':
+        # Special handling for 'Romania' to categorize titles containing 'Romanian' under 'Romania'
         mask_romanian = df_countries['Title'].str.lower().str.contains(r'\bRomanian\b', regex=True)
-        
-        # Titles containing 'Romanian' should be listed under 'Romania'
         df_countries.loc[mask_romanian, 'Country'] += 'Romania|' if not df_countries.loc[mask_romanian, 'Country'].empty else ''
-        
-        # Titles not containing 'Romanian' but containing 'Oman' are processed normally
-        df_countries.loc[~mask_romanian & mask_oman, 'Country'] += 'Oman|' if not df_countries.loc[~mask_romanian & mask_oman, 'Country'].empty else ''
     else:
         mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
         df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
