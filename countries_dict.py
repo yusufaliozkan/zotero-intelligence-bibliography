@@ -29,9 +29,11 @@ country_names = [
     'FSB', 'Dutch', 'German', 'Mossad', 'Norwegian', 'Ottoman', 'Italian', 'Teşkilat-ı Mahsusa', 'Tsar', 'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT',
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
-    "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka', 'Omani'
+    "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Arabizing the Omani intelligence services: Clash of cultures',
+    'Putin', 'New memoirs from Moscow'
 ]
-replacements = { 
+replacements = {
+    'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
     'Belgian': 'Belgium',
     'Turkish': 'Turkey',
     'Portuguese': 'Portugal',
@@ -81,17 +83,22 @@ replacements = {
     'Shin bet':'Israel',
     'Sixteenth-Century Istanbul':'Turkey',
     'Cheka':'Russia',
-     'Omani':'Oman'
+    'Putin':'Russia',
+    'New memoirs from Moscow':'Russia'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
+replacements['\\bRomania\\b'] = 'Romania'
 
 df_countries['Country'] = ''
+
 
 for country in country_names:
     if country.lower() == 'oman':
         # Special handling for 'Oman' to avoid categorizing 'Ottoman' titles under 'Oman'
         mask = df_countries['Title'].str.lower().str.contains(r'\bOman\b', regex=True)
+    elif country.lower() == 'omani':
+        mask = df_countries['Title'].str.lower().str.contains(r'\bOmani\b', regex=True)
     else:
         mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
         
@@ -130,7 +137,7 @@ continent_country_names = [
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
     'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process",
-    'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani'
+    'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -183,7 +190,9 @@ continent_replacements = {
     'Shin bet':'Israel',
     'Sixteenth-Century Istanbul':'Turkey',
     'Cheka':'Russia',
-     'Omani':'Oman'
+     'Omani':'Oman',
+     'Putin':'Russia',
+     'New memoirs from Moscow':'Russia'
     } 
 
 df_continent = df_countries.copy()
