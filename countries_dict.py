@@ -30,7 +30,7 @@ country_names = [
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
     "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Arabizing the Omani intelligence services: Clash of cultures',
-    'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun'
+    'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -87,7 +87,13 @@ replacements = {
     'New memoirs from Moscow':'Russia',
     "Mao's Secret":'China',
     'Burma':'Myanmar',
-    'Shedding light on the rising Sun':'Japan'
+    'Shedding light on the rising Sun':'Japan',
+    'The nonuse of intelligence':'Israel',
+    'Moshe Dayan':'Israel',
+    'Scandinavia':'Norway',
+    'Scandinavia':'Sweden',
+    'Scandinavia':'Denmark',
+    'Scandinavia':'Finland'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -143,7 +149,8 @@ continent_country_names = [
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
     'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process",
-    'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun'
+    'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
+    'Moshe Dayan', 'Scandinavia'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -196,12 +203,18 @@ continent_replacements = {
     'Shin bet':'Israel',
     'Sixteenth-Century Istanbul':'Turkey',
     'Cheka':'Russia',
-     'Omani':'Oman',
-     'Putin':'Russia',
-     'New memoirs from Moscow':'Russia',
-     "Mao's Secret":'China',
-     'Burma':'Myanmar',
-     'Shedding light on the rising Sun':'Japan'
+    'Omani':'Oman',
+    'Putin':'Russia',
+    'New memoirs from Moscow':'Russia',
+    "Mao's Secret":'China',
+    'Burma':'Myanmar',
+    'Shedding light on the rising Sun':'Japan',
+    'The nonuse of intelligence':'Israel',
+    'Moshe Dayan':'Israel',
+    'Scandinavia':'Norway',
+    'Scandinavia':'Sweden',
+    'Scandinavia':'Denmark',
+    'Scandinavia':'Finland'
     }
 
 df_continent = df_countries.copy()
