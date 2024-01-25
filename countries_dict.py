@@ -85,7 +85,8 @@ replacements = {
     'Cheka':'Russia',
     'Putin':'Russia',
     'New memoirs from Moscow':'Russia',
-    "Mao's Secret":'China'
+    "Mao's Secret":'China',
+    'Burma':'Myanmar'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -194,7 +195,8 @@ continent_replacements = {
      'Omani':'Oman',
      'Putin':'Russia',
      'New memoirs from Moscow':'Russia',
-     "Mao's Secret":'China'
+     "Mao's Secret":'China',
+     'Burma':'Myanmar'
     }
 
 df_continent = df_countries.copy()
