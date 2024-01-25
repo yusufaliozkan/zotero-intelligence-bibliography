@@ -524,6 +524,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 num_countries = col11.slider("Select the number of countries to display", min_value=1, max_value=len(df_countries_chart['Country']), value=10)
                 df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
                 country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
+                country_pub_counts
                 top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
                 top_10_df = pd.DataFrame({'Country': top_10_countries.index, 'Publications': top_10_countries.values})
                 fig = px.bar(top_10_df, x='Publications', y='Country', orientation='h')
