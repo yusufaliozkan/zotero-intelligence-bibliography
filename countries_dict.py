@@ -93,7 +93,7 @@ replacements['\\bOttoman\\b'] = 'Turkey'
 replacements['\\bRomania\\b'] = 'Romania'
 
 df_countries['Country'] = ''
-
+df_countries.loc[afghanistan_title_mask, 'Country'] = 'Canada'
 
 for country in country_names:
     if country.lower() == 'oman':
