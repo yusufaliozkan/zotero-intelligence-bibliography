@@ -30,7 +30,7 @@ country_names = [
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
     "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Arabizing the Omani intelligence services: Clash of cultures',
-    'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia'
+    'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia','Andropov'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -90,7 +90,8 @@ replacements = {
     'Shedding light on the rising Sun':'Japan',
     'The nonuse of intelligence':'Israel',
     'Moshe Dayan':'Israel',
-    'Scandinavia':'Norway|Sweden|Denmark|Finland'
+    'Scandinavia':'Norway|Sweden|Denmark|Finland',
+    'Andropov':'Russia'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -147,7 +148,7 @@ continent_country_names = [
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
     'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process",
     'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
-    'Moshe Dayan', 'Scandinavia' 
+    'Moshe Dayan', 'Scandinavia', 'Andropov'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -208,7 +209,8 @@ continent_replacements = {
     'Shedding light on the rising Sun':'Japan',
     'The nonuse of intelligence':'Israel',
     'Moshe Dayan':'Israel',
-    'Scandinavia':'Norway|Sweden|Denmark|Finland'
+    'Scandinavia':'Norway|Sweden|Denmark|Finland',
+    'Andropov':'Russia'
     }
 
 df_continent = df_countries.copy()
