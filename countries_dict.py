@@ -31,7 +31,7 @@ country_names = [
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
     "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Arabizing the Omani intelligence services: Clash of cultures',
     'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia','Andropov', 'Saddam', 'NKVD',
-    'Dezinformatsiya','Abwehr'
+    'Dezinformatsiya','Abwehr','Basque'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -96,7 +96,8 @@ replacements = {
     'Saddam':'Iraq',
     'NKVD':'Russia',
     'Dezinformatsiya':'Russia',
-    'Abwehr':'Germany'
+    'Abwehr':'Germany',
+    'Basque':'Spain'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -153,7 +154,7 @@ continent_country_names = [
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
     'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process",
     'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
-    'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr'
+    'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr','Basque'
 ]
 continent_replacements = { 
     'Belgian': 'Belgium', 
@@ -219,7 +220,8 @@ continent_replacements = {
     'Saddam':'Iraq',
     'NKVD':'Russia',
     'Dezinformatsiya':'Russia',
-    'Abwehr':'Germany'
+    'Abwehr':'Germany',
+    'Basque':'Spain'
     } 
 
 df_continent = df_countries.copy()
