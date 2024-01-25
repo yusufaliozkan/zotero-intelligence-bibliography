@@ -522,26 +522,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col11, col12 = st.columns([3,2])
             with col11:                
                 df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
-
-                # Count publications per country
                 country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
-
-                # Create a DataFrame with all countries
                 all_countries_df = pd.DataFrame({'Country': country_pub_counts.index, 'Publications': country_pub_counts.values})
-
-                # Slicer for selecting the number of countries to display
                 num_countries = st.slider("Select the number of countries to display", min_value=10, max_value=len(all_countries_df), value=10)
-
-                # Get the top countries based on the selected number
                 top_countries = all_countries_df.head(num_countries).sort_values(by='Publications', ascending=True)
-
-                # Create a bar chart using Plotly Express
                 fig = px.bar(top_countries, x='Publications', y='Country', orientation='h')
-
-                # Customize the layout
                 fig.update_layout(title=f'Top {num_countries} Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
-
-                # Display the chart using Streamlit (assuming col11 is a Streamlit column)
                 col11.plotly_chart(fig, use_container_width=True)
             with col12:
                 df_continent_chart = df_continent_chart[df_continent_chart['Continent'] != 'Unknown']
