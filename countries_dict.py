@@ -90,10 +90,7 @@ replacements = {
     'Shedding light on the rising Sun':'Japan',
     'The nonuse of intelligence':'Israel',
     'Moshe Dayan':'Israel',
-    'Scandinavia':'Norway',
-    'Scandinavia':'Sweden',
-    'Scandinavia':'Denmark',
-    'Scandinavia':'Finland'
+    'Scandinavia':'Norway|Sweden|Denmark|Finland'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
