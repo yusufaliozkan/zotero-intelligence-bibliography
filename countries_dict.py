@@ -93,8 +93,8 @@ replacements['\\bOttoman\\b'] = 'Turkey'
 replacements['\\bRomania\\b'] = 'Romania'
 
 df_countries['Country'] = ''
-# afghanistan_title_mask = df_countries['Title'].str.lower() == 'canadian military intelligence in afghanistan'
-# df_countries.loc[afghanistan_title_mask, 'Country'] = 'Canada'
+afghanistan_title_mask = df_countries['Title'].str.lower() == 'canadian military intelligence in afghanistan'
+df_countries.loc[afghanistan_title_mask, 'Country'] = 'Canada'
 afghanistan_title_mask_2 = df_countries['Title'].str.lower() == 'canadian Military Intelligence: Operations and Evolution from the October Crisis to the War in Afghanistan'
 df_countries.loc[afghanistan_title_mask_2, 'Country'] = 'Canada'
 
