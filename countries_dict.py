@@ -220,7 +220,7 @@ continent_replacements = {
     'NKVD':'Russia',
     'Dezinformatsiya':'Russia',
     'Abwehr':'Germany'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
