@@ -155,7 +155,7 @@ continent_country_names = [
     'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
     'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr'
 ]
-continent_replacements = {
+continent_replacements = { 
     'Belgian': 'Belgium', 
     'Turkish': 'Turkey',
     'Portuguese': 'Portugal',
