@@ -202,7 +202,7 @@ continent_replacements = {
      "Mao's Secret":'China',
      'Burma':'Myanmar',
      'Shedding light on the rising Sun':'Japan'
-    } 
+    }
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
