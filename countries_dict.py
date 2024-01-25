@@ -15,7 +15,7 @@ country_names = [
     "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia",
     "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
     "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia",
-    "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar (formerly Burma)", "Namibia",
+    "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Burma", "Namibia",
     "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Republic of the Niger", "Nigeria", "North Korea", "North Macedonia",
     "Norway", "Oman", "Pakistan", "Palau", "Palestine State", "Panama", "Papua New Guinea", "Paraguay", "Peru",
     "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
@@ -30,7 +30,7 @@ country_names = [
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish', 'Christofascism','Venice', 'Abdülhamid','Czechoslovakia', 'Third Reich', 'Kriegsmarine',
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
     "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Arabizing the Omani intelligence services: Clash of cultures',
-    'Putin', 'New memoirs from Moscow', "Mao's Secret"
+    'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -85,14 +85,19 @@ replacements = {
     'Cheka':'Russia',
     'Putin':'Russia',
     'New memoirs from Moscow':'Russia',
-    "Mao's Secret":'China'
+    "Mao's Secret":'China',
+    'Burma':'Myanmar',
+    'Shedding light on the rising Sun':'Japan'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
 replacements['\\bRomania\\b'] = 'Romania'
 
 df_countries['Country'] = ''
-
+afghanistan_title_mask = df_countries['Title'].str.lower() == 'canadian military intelligence in afghanistan'
+df_countries.loc[afghanistan_title_mask, 'Country'] = 'Canada'
+afghanistan_title_mask_2 = df_countries['Title'].str.lower() == 'canadian Military Intelligence: Operations and Evolution from the October Crisis to the War in Afghanistan'
+df_countries.loc[afghanistan_title_mask_2, 'Country'] = 'Canada'
 
 for country in country_names:
     if country.lower() == 'oman':
@@ -138,7 +143,7 @@ continent_country_names = [
     'Vichy Regime','Safavids','Hungarian','Austro','Swedish','Nasser','Jewish','Finnish','Africa','Asia','Arab','South America','Medina','Eastern Europe',
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
     'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process",
-    'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret"
+    'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -194,7 +199,9 @@ continent_replacements = {
      'Omani':'Oman',
      'Putin':'Russia',
      'New memoirs from Moscow':'Russia',
-     "Mao's Secret":'China'
+     "Mao's Secret":'China',
+     'Burma':'Myanmar',
+     'Shedding light on the rising Sun':'Japan'
     }
 
 df_continent = df_countries.copy()
@@ -335,7 +342,8 @@ continent_dict = {
     "Montenegro": "Europe",
     "Morocco": "Africa",
     "Mozambique": "Africa",
-    "Myanmar (formerly Burma)": "Asia",
+    "Myanmar": "Asia",
+    "Burma": "Asia",
     "Namibia": "Africa",
     "Nauru": "Oceania",
     "Nepal": "Asia",
