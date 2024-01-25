@@ -92,7 +92,7 @@ replacements = {
 
 replacements['\\bOttoman\\b'] = 'Turkey'
 replacements['\\bRomania\\b'] = 'Romania'
-
+ 
 df_countries['Country'] = ''
 afghanistan_title_mask = df_countries['Title'].str.lower() == 'canadian military intelligence in afghanistan'
 df_countries.loc[afghanistan_title_mask, 'Country'] = 'Canada'
