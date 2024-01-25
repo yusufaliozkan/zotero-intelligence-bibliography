@@ -208,10 +208,7 @@ continent_replacements = {
     'Shedding light on the rising Sun':'Japan',
     'The nonuse of intelligence':'Israel',
     'Moshe Dayan':'Israel',
-    'Scandinavia':'Norway',
-    'Scandinavia':'Sweden',
-    'Scandinavia':'Denmark',
-    'Scandinavia':'Finland'
+    'Scandinavia':'Norway|Sweden|Denmark|Finland'
     }
 
 df_continent = df_countries.copy()
