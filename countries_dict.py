@@ -112,16 +112,16 @@ df_countries.loc[afghanistan_title_mask, 'Country'] = 'Canada'
 afghanistan_title_mask_2 = df_countries['Title'].str.lower() == 'canadian Military Intelligence: Operations and Evolution from the October Crisis to the War in Afghanistan'
 df_countries.loc[afghanistan_title_mask_2, 'Country'] = 'Canada'
 
-for country in country_names:
-    if country.lower() == 'oman':
-        # Special handling for 'Oman' to avoid categorizing 'Ottoman' titles under 'Oman'
-        mask = df_countries['Title'].str.lower().str.contains(r'\bOman\b', regex=True)
-    elif country.lower() == 'omani':
-        mask = df_countries['Title'].str.lower().str.contains(r'\bOmani\b', regex=True)
-    else:
-        mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
+# for country in country_names:
+#     if country.lower() == 'oman':
+#         # Special handling for 'Oman' to avoid categorizing 'Ottoman' titles under 'Oman'
+#         mask = df_countries['Title'].str.lower().str.contains(r'\bOman\b', regex=True)
+#     elif country.lower() == 'omani':
+#         mask = df_countries['Title'].str.lower().str.contains(r'\bOmani\b', regex=True)
+#     else:
+#         mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
         
-    df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
+#     df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
 df_countries['Country'] = df_countries['Country'].str.rstrip('|').replace(replacements, regex=True)
 df_countries = df_countries.assign(Country=df_countries['Country'].str.split('|')).explode('Country')
