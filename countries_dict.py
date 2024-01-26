@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 df_countries = pd.read_csv('all_items_duplicated.csv') 
 df_countries = df_countries[df_countries['Collection_Name']=='14 Global intelligence']
