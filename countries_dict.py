@@ -119,7 +119,8 @@ for country in country_names:
     elif country.lower() == 'omani':
         mask = df_countries['Title'].str.lower().str.contains(r'\bOmani\b', regex=True)
     else:
-        mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
+        # Use word boundaries (\b) to ensure a whole word match
+        mask = df_countries['Title'].str.lower().str.contains(fr'\b{re.escape(country.lower())}\b', regex=True)
         
     df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
