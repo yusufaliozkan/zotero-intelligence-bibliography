@@ -31,7 +31,7 @@ country_names = [
     'Bundesnachrichtendienst','Vappala Balachandran', 'Andropov', 'Kosova', 'Yom Kippur', "The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East",
     "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Arabizing the Omani intelligence services: Clash of cultures',
     'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia','Andropov', 'Saddam', 'NKVD',
-    'Dezinformatsiya','Abwehr','Basque','Stasi'
+    'Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -98,7 +98,8 @@ replacements = {
     'Dezinformatsiya':'Russia',
     'Abwehr':'Germany',
     'Basque':'Spain',
-    'Stasi':'Germany'
+    'Stasi':'Germany',
+    'Republic of Korea':'South Korea'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -155,7 +156,7 @@ continent_country_names = [
     'Latin America','Venice', 'Christofascism','Abdülhamid','Czechoslovakia', 'Third Reich','Kriegsmarine','Bundesnachrichtendienst', 'Vappala Balachandran','Andropov',
     'Kosova', 'Yom Kippur', 'The Spy who Fell to Earth: My Relationship with the Secret Agent who Rocked the Middle East', "The Politics and Intelligence of the Oslo Peace Process",
     'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
-    'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr','Basque','Stasi'
+    'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea'
 ]
 continent_replacements = { 
     'Belgian': 'Belgium', 
@@ -223,7 +224,8 @@ continent_replacements = {
     'Dezinformatsiya':'Russia',
     'Abwehr':'Germany',
     'Basque':'Spain',
-    'Stasi':'Germany'
+    'Stasi':'Germany',
+    'Republic of Korea':'South Korea'
     }
 
 df_continent = df_countries.copy()
