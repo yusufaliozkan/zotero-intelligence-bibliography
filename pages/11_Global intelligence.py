@@ -185,6 +185,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_countries_chart = df_countries.copy()
             df_continent = df_continent.copy()
             df_continent_chart = df_continent.copy()
+            df_countries_chart
+
+            num_items_collections = len(df_collections)
+            st.write(f"**{num_items_collections}** sources found for ")
 
             df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
