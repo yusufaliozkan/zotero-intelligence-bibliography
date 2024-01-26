@@ -224,7 +224,7 @@ continent_replacements = {
     'Abwehr':'Germany',
     'Basque':'Spain',
     'Stasi':'Germany'
-    } 
+    }
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
