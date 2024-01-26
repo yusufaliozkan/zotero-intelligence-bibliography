@@ -60,7 +60,7 @@ replacements = {
     'Teşkilat-ı Mahsusa':'Turkey',
     'Tsar':'Russia',
     'ACADEMIC INTELLIGENCE – A PLURIVALENT CONCEPT':'Romania',
-    'Vichy Regime':'France',
+    'Vichy Regime':'France', 
     'Safavids':'Iran',
     'Hungarian':'Hungary',
     'Austro':'Austria',
