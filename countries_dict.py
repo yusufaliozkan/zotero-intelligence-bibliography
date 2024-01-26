@@ -1,5 +1,4 @@
 import pandas as pd
-import re
 
 df_countries = pd.read_csv('all_items_duplicated.csv') 
 df_countries = df_countries[df_countries['Collection_Name']=='14 Global intelligence']
@@ -8,7 +7,7 @@ country_names = [
     "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
     "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
     "Côte d'Ivoire", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China",
-    "Colombia", "Comoros", "Congo (Congo-Brazzaville)", "Costa Rica", "Croatia", "Cuba", "Cyprus",
+    "Colombia", "Comoros", "Congo (Congo-Brazzaville)", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czechia",
     "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt",
     "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon",
     "Gambia", "Georgia", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
@@ -120,8 +119,7 @@ for country in country_names:
     elif country.lower() == 'omani':
         mask = df_countries['Title'].str.lower().str.contains(r'\bOmani\b', regex=True)
     else:
-        # Use word boundaries (\b) to ensure a whole word match
-        mask = df_countries['Title'].str.lower().str.contains(fr'\b{re.escape(country.lower())}\b', regex=True)
+        mask = df_countries['Title'].str.lower().str.contains(country.lower(), regex=False)
         
     df_countries.loc[mask, 'Country'] += country + '|' if not df_countries.loc[mask, 'Country'].empty else ''
 
