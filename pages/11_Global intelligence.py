@@ -184,7 +184,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #                 st.caption(row['Abstract'])
             df_countries_chart = df_countries.copy()
             df_continent = df_continent.copy()
-            df_continent_chart = df_continent.copy()
+            df_continent_chart = df_continent.copy() 
 
             unique_items_count = df_countries_chart['Country'].nunique()
             num_items_collections = len(df_collections)
