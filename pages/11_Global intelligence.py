@@ -559,16 +559,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_columns = ['Date year'] + selected_countries
                 cumulative_selected_countries = collection_counts[selected_columns]
 
-                # Sort the columns based on the total number of publications
-                cumulative_selected_countries = cumulative_selected_countries.reindex(
-                    cumulative_selected_countries.sum().sort_values(ascending=False).index, axis=1
-                )
+                # Create a new DataFrame with selected countries and their total publications
+                selected_countries_df = pd.DataFrame({'Country': selected_countries})
+                selected_countries_df['Total Publications'] = cumulative_selected_countries[selected_countries].sum()
+
+                # Sort the DataFrame based on the total number of publications
+                selected_countries_df = selected_countries_df.sort_values(by='Total Publications', ascending=False)
+
+                # Rearrange columns in the cumulative_selected_countries DataFrame based on the sorted order
+                cumulative_selected_countries = cumulative_selected_countries.reindex(['Date year'] + selected_countries_df['Country'].tolist(), axis=1)
 
                 # Display the cumulative sum of publications per country
-                fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=selected_countries,
+                fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=selected_countries_df['Country'],
                                                     markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                                                     title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
                 return fig_cumulative_countries
+
 
             # Display the cumulative line graph based on the selected number of countries
             fig_cumulative_countries = compute_cumulative_graph(df_countries_chart, num_countries)
