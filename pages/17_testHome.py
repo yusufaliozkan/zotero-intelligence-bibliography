@@ -28,6 +28,7 @@ import json
 from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
 from sidebar_content import sidebar_content
+from plotly import graph_objs as go 
 
 # Connecting Zotero with API 
 library_id = '2514686'
