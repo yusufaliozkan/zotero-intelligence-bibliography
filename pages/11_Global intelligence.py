@@ -565,7 +565,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
 
                 # Display the cumulative sum of publications per country
-                fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=cumulative_selected_countries.columns[1:],
+                fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=selected_countries,
                                                     markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                                                     title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
                 return fig_cumulative_countries
