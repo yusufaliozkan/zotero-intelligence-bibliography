@@ -1667,6 +1667,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.markdown(f'#### Intelligence studies bibliography dashboard (publications between {years[0]} and {years[1]})')
 
                 df_collections_21 = df_collections_2.copy()
+                df_collections_21
                 df_collections_21 = df_collections_21['Collection_Name'].value_counts().reset_index()
                 df_collections_21
                 df_collections_21.columns = ['Collection_Name', 'Number_of_Items']
