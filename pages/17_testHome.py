@@ -1681,6 +1681,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.plotly_chart(fig, use_container_width = True)
 
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
+                collection_counts = collection_counts.reset_index()
+
                 fig = px.line(collection_counts, x='Date year', y=collection_counts.columns[1:], 
                             markers=True, line_shape='linear', labels={'value': 'Count'},
                             title='Changes in Collection_Name Over Years')
