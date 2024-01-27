@@ -1689,7 +1689,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 plt.legend(title='Collection_Name', bbox_to_anchor=(1.05, 1), loc='upper left')
                 plt.grid(True)
                 plt.tight_layout()
-                plt.show()
+                st.show()
 
 
                 # PUBLICATION TYPES
