@@ -1668,6 +1668,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_collections_21 = df_collections_2.copy()
                 df_collections_21 = df_collections_21['Collection_Name'].value_counts().reset_index()
+                df_collections_21
                 df_collections_21.columns = ['Collection_Name', 'Number_of_Items']
                 number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
                 plot= df_collections_21.head(number0+1)
