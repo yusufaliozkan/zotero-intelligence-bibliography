@@ -1687,10 +1687,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Streamlit app
                 st.title('Cumulative Changes in Collection_Name Over Years')
 
-                # Plotting the line graph using Plotly Express
+                # Plotting the line graph using Plotly Express with data labels
                 fig = px.line(collection_counts, x='Date year', y=collection_counts.columns[1:], 
                             markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                             title='Cumulative Changes in Collection_Name Over Years')
+
+                # Add data labels
+                for col in collection_counts.columns[1:]:
+                    fig.add_trace(go.Scatter(x=collection_counts['Date year'], y=collection_counts[col],
+                                            mode='markers+text',
+                                            marker=dict(size=8),
+                                            text=collection_counts[col].astype(int),
+                                            textposition='top center',
+                                            name=col))
 
                 # Display the plot in the Streamlit app
                 st.plotly_chart(fig, use_container_width = True)
