@@ -555,7 +555,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             fig_cumulative_countries = px.line(collection_counts, x='Date year', y=collection_counts.columns[1:], 
                                             markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                                             title='Cumulative Publications per Country Over Years')
-            st_plotly_chart(fig_cumulative_countries, use_container_width=True)
+            st.plotly_chart(fig_cumulative_countries, use_container_width=True)
 
 #UNTIL HERE
         with col2:
