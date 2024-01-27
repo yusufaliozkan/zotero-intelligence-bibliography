@@ -1011,7 +1011,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                     y=publications_by_year.columns,
                                                     labels={'x': 'Publication Year', 'y': 'Cumulative Publications'},
                                                     title='Cumulative Publications Over Years for selected journal(s)')
-                            st.plotly_chart(fig_cumsum_line)
+                            st.plotly_chart(fig_cumsum_line, use_container_width = True)
 
                             collection_author_df = type_df.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
