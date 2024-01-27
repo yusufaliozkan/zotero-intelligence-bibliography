@@ -556,7 +556,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Select only the top countries based on the slider value
                 selected_countries = top_countries['Country'].tolist()
-                selected_columns = ['Date year'] + selected_countries
+                selected_columns_sorted = ['Date year'] + selected_countries
                 selected_columns_sorted.sort(key=lambda col: cumulative_selected_countries[col].sum(), reverse=True)
                 cumulative_selected_countries = collection_counts[selected_columns_sorted]
 
