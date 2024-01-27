@@ -549,7 +549,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
             )      
             df_countries_chart['Date year'] = df_countries_chart['Date published'].dt.strftime('%Y')      
-            df_countries_chart
+            num_countries
+            collection_counts = df_countries_chart.groupby(['Date year', 'Country']).size().unstack().fillna(0)
+            collection_counts = collection_counts.reset_index()
+            collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
 
 #UNTIL HERE
         with col2:
