@@ -1618,8 +1618,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
             df_csv['Date year'] = df_csv['Date year'].fillna('No date')
-            fff = df_csv[df_csv['Title']=='Intelligence failures: Plus Ça change ...']
-            fff
+
             df = df_csv.copy()
             df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
@@ -1698,8 +1697,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.plotly_chart(fig, use_container_width = True)
 
                 df_collections_22 = df_collections_2.copy()
-                fff = df_collections_22[df_collections_22['Title']=='Intelligence failures: Plus Ça change ...']
-                fff
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
                 collection_counts = collection_counts.reset_index()
                 collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
@@ -1713,7 +1710,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
                 collection_counts_filtered['Date year'] = pd.to_numeric(collection_counts_filtered['Date year'], errors='coerce')
                 collection_counts_filtered = collection_counts_filtered.sort_values(by=['Date year'] + selected_collections, ascending=True)
-                collection_counts_filtered
 
                 # Plotting the line graph using Plotly Express
                 fig = px.line(collection_counts_filtered, x='Date year', y=selected_collections, 
