@@ -1004,6 +1004,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 title=f'Publications by Year for selected journal(s)')
                             st.plotly_chart(fig_year_bar)
 
+                            collection_counts = collection_df.groupby(['Year']).size().cumsum().reset_index()
+                            collection_counts.columns = ['Year', 'Cumulative Publications']
+                            fig_cumsum_line = px.line(collection_counts, x='Year', y='Cumulative Publications',
+                                                    labels={'x': 'Publication Year', 'y': 'Cumulative Publications'},
+                                                    title='Cumulative Publications Over Years')
+                            st.plotly_chart(fig_cumsum_line)
+
                             collection_author_df = type_df.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                             collection_author_df = collection_author_df.explode('Author_name')
