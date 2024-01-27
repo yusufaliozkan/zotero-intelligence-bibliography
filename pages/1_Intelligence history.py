@@ -20,7 +20,7 @@ from gsheetsdb import connect
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
-from sidebar_content import sidebar_content
+from sidebar_content import sidebar_content 
 
 
 st.set_page_config(layout = "wide", 
