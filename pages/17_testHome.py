@@ -1703,6 +1703,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
                 collection_counts_filtered['Date year'] = pd.to_numeric(collection_counts_filtered['Date year'], errors='coerce')
                 collection_counts_filtered = collection_counts_filtered.sort_values(by=['Date year'] + selected_collections, ascending=True)
+                collection_counts_filtered
 
                 # Plotting the line graph using Plotly Express
                 fig = px.line(collection_counts_filtered, x='Date year', y=selected_collections, 
