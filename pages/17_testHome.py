@@ -1004,6 +1004,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 title=f'Publications by Year for selected journal(s)')
                             st.plotly_chart(fig_year_bar)
 
+                            publications_by_year = collection_df.groupby(['Year', 'Journal']).size().unstack().fillna(0)
+                            publications_by_year = publications_by_year.cumsum(axis=0)
+
                             fig_cumsum_line = px.line(publications_by_year, x=publications_by_year.index,
                                                     y=publications_by_year.columns,
                                                     labels={'x': 'Publication Year', 'y': 'Cumulative Publications'},
