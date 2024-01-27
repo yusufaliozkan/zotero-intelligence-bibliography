@@ -556,20 +556,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Select only the top countries based on the slider value
                 selected_countries = top_countries['Country'].tolist()
-                selected_columns = ['Date year'] + selected_countries
-                cumulative_selected_countries = collection_counts[selected_columns]
+                selected_countries = [country for country in selected_countries if country in collection_counts.columns]
 
-                # Display the cumulative sum of publications per country
-                fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=cumulative_selected_countries.columns[1:],
-                                                    markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
-                                                    title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
+                # Check if there are still countries to display
+                if not selected_countries:
+                    st.warning("No data available for the selected countries.")
+                else:
+                    selected_columns = ['Date year'] + selected_countries
+                    cumulative_selected_countries = collection_counts[selected_columns]
+
+                    # Display the cumulative sum of publications per country
+                    fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=cumulative_selected_countries.columns[1:],
+                                                        markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
+                                                        title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
+
+                    # Reverse the legend order
                 fig_cumulative_countries.update_layout(legend_traceorder='reversed')
 
-                return fig_cumulative_countries
-
-            # Display the cumulative line graph based on the selected number of countries
-            fig_cumulative_countries = compute_cumulative_graph(df_countries_chart, num_countries)
-            st.plotly_chart(fig_cumulative_countries, use_container_width=True)
+                # Display the cumulative line graph based on the selected number of countries
+                st.plotly_chart(fig_cumulative_countries, use_container_width=True)
 
 #UNTIL HERE
         with col2:
