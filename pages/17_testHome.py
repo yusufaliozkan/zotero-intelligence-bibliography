@@ -1693,7 +1693,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
                 collection_counts = collection_counts.reset_index()
                 collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
-                collection_counts
 
                 selected_collections = df_collections_21.head(number0 + 1)['Collection_Name'].tolist()
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
@@ -1703,6 +1702,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
                 collection_counts_filtered = collection_counts_filtered.sort_values(by='Date year', ascending=True)
+                collection_counts_filtered
 
                 # Plotting the line graph using Plotly Express
                 fig = px.line(collection_counts_filtered, x='Date year', y=collection_counts_filtered.columns[1:], 
