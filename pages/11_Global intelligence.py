@@ -542,6 +542,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 fig = px.pie(top_10_df, values='Publications', names='Continent', title='Number of Publications by Continent')
                 fig.update_layout(title='Number of Publications by continent', xaxis_title='Number of Publications', yaxis_title='Continent')
                 col12.plotly_chart(fig, use_container_width = True)
+
+            df_countries_chart['Date published'] = (
+                df_countries_chart['Date published']
+                .str.strip()
+                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+            )      
+            df_countries_chart['Date year'] = df_countries_chart['Date published'].dt.strftime('%Y')      
             df_countries_chart
 
 #UNTIL HERE
