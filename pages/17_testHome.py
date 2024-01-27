@@ -1622,6 +1622,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
             df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
+            df_collections_22 = df_collections_2.copy()
  
             with st.expander('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
@@ -1679,8 +1680,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
                 st.plotly_chart(fig, use_container_width = True)
 
-                collection_counts = df_collections_2.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
-                df_collections_2
+                collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
+                collection_counts
 
 
                 # PUBLICATION TYPES
