@@ -558,7 +558,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_countries = top_countries['Country'].tolist()
                 selected_columns = ['Date year'] + selected_countries
                 selected_columns_sorted.sort(key=lambda col: cumulative_selected_countries[col].sum(), reverse=True)
-                cumulative_selected_countries = collection_counts[selected_columns]
+                cumulative_selected_countries = collection_counts[selected_columns_sorted]
 
                 # Display the cumulative sum of publications per country
                 fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=cumulative_selected_countries.columns[1:],
