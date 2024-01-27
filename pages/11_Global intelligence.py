@@ -556,7 +556,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Select only the top countries based on the slider value
                 selected_countries = top_countries['Country'].tolist()
-                selected_countries = [country for country in selected_countries if country in collection_counts.columns]
+                selected_countries = [country for country in selected_countries if country in collection_counts.columns] 
 
                 # Check if there are still countries to display
                 if not selected_countries:
