@@ -1622,7 +1622,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
             df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
-            df_collections_22 = df_collections_2.copy()
  
             with st.expander('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
@@ -1667,10 +1666,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 ## COLLECTIONS IN THE LIBRARY
                 st.markdown(f'#### Intelligence studies bibliography dashboard (publications between {years[0]} and {years[1]})')
 
-                df_collections_2 = df_collections_2['Collection_Name'].value_counts().reset_index()
-                df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
+                df_collections_21 = df_collections_2.copy()
+                df_collections_21 = df_collections_21['Collection_Name'].value_counts().reset_index()
+                df_collections_21.columns = ['Collection_Name', 'Number_of_Items']
                 number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
-                plot= df_collections_2.head(number0+1)
+                plot= df_collections_21.head(number0+1)
                 plot = plot[plot['Collection_Name']!='01 Intelligence history']
                 fig = px.bar(plot, x='Collection_Name', y='Number_of_Items', color='Collection_Name')
                 fig.update_layout(
@@ -1680,6 +1680,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
                 st.plotly_chart(fig, use_container_width = True)
 
+                df_collections_22 = df_collections_2.copy()
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
                 collection_counts = collection_counts.reset_index()
                 collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
