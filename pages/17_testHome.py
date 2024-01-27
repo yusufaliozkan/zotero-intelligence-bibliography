@@ -1685,7 +1685,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
                 collection_counts = collection_counts.reset_index()
                 collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
-
+ 
                 # Streamlit app
                 st.markdown(f'#### Cumulative Changes in Collection_Name Over Years')
 
