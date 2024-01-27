@@ -1696,12 +1696,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 selected_collections = df_collections_21.head(number0 + 1)['Collection_Name'].tolist()
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
-                 
+
                 # Streamlit app
                 st.markdown(f'#### Cumulative changes in collection over years')
 
                 # Plotting the line graph using Plotly Express
-                fig = px.line(collection_counts_filtered, x='Date year', y=collection_counts_filtered.columns[1:], 
+                fig = px.line(collection_counts, x='Date year', y=collection_counts.columns[1:], 
                             markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                             title='Cumulative Changes in Collection_Name Over Years')
 
