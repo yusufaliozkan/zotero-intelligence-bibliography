@@ -1618,6 +1618,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
             df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+            fff = df_csv[df_csv['Title']=='Intelligence failures: Plus Ça change ...']
+            fff
             df = df_csv.copy()
             df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
