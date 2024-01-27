@@ -1690,6 +1690,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.plotly_chart(fig, use_container_width = True)
 
                 df_collections_22 = df_collections_2.copy()
+                df_collections_22
                 df_collections_22 = df_collections_22[df_collections_22['Collection_Name']!='01 Intelligence history']
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
                 collection_counts = collection_counts.reset_index()
