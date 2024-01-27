@@ -543,15 +543,31 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 fig.update_layout(title='Number of Publications by continent', xaxis_title='Number of Publications', yaxis_title='Continent')
                 col12.plotly_chart(fig, use_container_width = True)
 
-            df_countries_chart['Date published'] = (
-                df_countries_chart['Date published']
-                .str.strip()
-                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-            )      
-            df_countries_chart['Date year'] = df_countries_chart['Date published'].dt.strftime('%Y')      
-            collection_counts = df_countries_chart.groupby(['Date year', 'Country']).size().unstack().fillna(0)
-            collection_counts = collection_counts.reset_index()
-            collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
+            def compute_cumulative_graph(df, num_countries):
+                df['Date published'] = (
+                    df['Date published']
+                    .str.strip()
+                    .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                )
+                df['Date year'] = df['Date published'].dt.strftime('%Y')
+                collection_counts = df.groupby(['Date year', 'Country']).size().unstack().fillna(0)
+                collection_counts = collection_counts.reset_index()
+                collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
+
+                # Select only the top countries based on the slider value
+                selected_countries = top_countries['Country'].tolist()
+                selected_columns = ['Date year'] + selected_countries
+                cumulative_selected_countries = collection_counts[selected_columns]
+
+                # Display the cumulative sum of publications per country
+                fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=cumulative_selected_countries.columns[1:],
+                                                markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
+                                                title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
+                return fig_cumulative_countries
+
+            # Display the cumulative line graph based on the selected number of countries
+            fig_cumulative_countries = compute_cumulative_graph(df_countries_chart, num_countries)
+            st.plotly_chart(fig_cumulative_countries, use_container_width=True)
 
             # Display the cumulative sum of publications per country
             fig_cumulative_countries = px.line(collection_counts, x='Date year', y=collection_counts.columns[1:], 
