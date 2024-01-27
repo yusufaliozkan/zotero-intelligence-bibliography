@@ -1696,7 +1696,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 collection_counts = collection_counts.reset_index()
                 collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
 
-                selected_collections = df_collections_21.head(number0 + 1)['Collection_Name'].tolist()
+                selected_collections = df_collections_22.head(number0 + 1)['Collection_Name'].tolist()
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
  
                 # Streamlit app
