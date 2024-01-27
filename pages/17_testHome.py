@@ -1681,7 +1681,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.plotly_chart(fig, use_container_width = True)
 
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
-                collection_counts
+                plt.figure(figsize=(12, 8))
+                collection_counts.plot(kind='line', marker='o', linewidth=2)
+                plt.title('Changes in Collection_Name Over Years')
+                plt.xlabel('Year')
+                plt.ylabel('Count')
+                plt.legend(title='Collection_Name', bbox_to_anchor=(1.05, 1), loc='upper left')
+                plt.grid(True)
+                plt.tight_layout()
+                plt.show()
 
 
                 # PUBLICATION TYPES
