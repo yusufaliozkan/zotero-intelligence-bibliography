@@ -1630,7 +1630,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             max_y = int(df_year['Publication year'].max())
             min_y = int(df_year['Publication year'].min())
 
-            df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_collections_2['Date published'] = (
+                df_collections_2['Date published']
+                .str.strip()
+                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+            )
+            
+            # df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
             df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
  
