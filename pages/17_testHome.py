@@ -1693,7 +1693,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             title='Cumulative Changes in Collection_Name Over Years')
 
                 # Display the plot in the Streamlit app
-                st.plotly_chart(fig)
+                st.plotly_chart(fig, use_container_width = True)
 
                 # PUBLICATION TYPES
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
