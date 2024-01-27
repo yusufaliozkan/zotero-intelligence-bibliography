@@ -1004,6 +1004,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 title=f'Publications by Year for selected journal(s)')
                             st.plotly_chart(fig_year_bar)
 
+                            publications_by_year = collection_df.groupby(['Year', 'Journal']).size().unstack().fillna(0)
+                            publications_by_year = publications_by_year.cumsum(axis=0)
+
+                            fig_cumsum_line = px.line(publications_by_year, x=publications_by_year.index,
+                                                    y=publications_by_year.columns,
+                                                    labels={'x': 'Publication Year', 'y': 'Cumulative Publications'},
+                                                    title='Cumulative Publications Over Years for selected journal(s)')
+                            st.plotly_chart(fig_cumsum_line, use_container_width = True)
+
                             collection_author_df = type_df.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                             collection_author_df = collection_author_df.explode('Author_name')
@@ -1609,6 +1618,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_csv['Date year'] = df_csv['Date published'].dt.strftime('%Y')
             df_csv['Date year'] = df_csv['Date year'].fillna('No date')
+
             df = df_csv.copy()
             df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
@@ -1619,7 +1629,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             max_y = int(df_year['Publication year'].max())
             min_y = int(df_year['Publication year'].min())
 
-            df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_collections_2['Date published'] = (
+                df_collections_2['Date published']
+                .str.strip()
+                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+            )
+            
+            # df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
             df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
  
@@ -1666,10 +1682,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 ## COLLECTIONS IN THE LIBRARY
                 st.markdown(f'#### Intelligence studies bibliography dashboard (publications between {years[0]} and {years[1]})')
 
-                df_collections_2 = df_collections_2['Collection_Name'].value_counts().reset_index()
-                df_collections_2.columns = ['Collection_Name', 'Number_of_Items']
+                df_collections_21 = df_collections_2.copy()
+                df_collections_21 = df_collections_21['Collection_Name'].value_counts().reset_index()
+                df_collections_21.columns = ['Collection_Name', 'Number_of_Items']
                 number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
-                plot= df_collections_2.head(number0+1)
+                plot= df_collections_21.head(number0+1)
                 plot = plot[plot['Collection_Name']!='01 Intelligence history']
                 fig = px.bar(plot, x='Collection_Name', y='Number_of_Items', color='Collection_Name')
                 fig.update_layout(
@@ -1679,6 +1696,31 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
                 st.plotly_chart(fig, use_container_width = True)
 
+                df_collections_22 = df_collections_2.copy()
+                collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
+                collection_counts = collection_counts.reset_index()
+                collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
+
+                selected_collections = df_collections_21.head(number0 + 1)['Collection_Name'].tolist()
+                collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
+                column_to_exclude = '01 Intelligence history'
+                if column_to_exclude in selected_collections:
+                    selected_collections.remove(column_to_exclude)
+
+                # Streamlit app
+                st.markdown(f'#### Cumulative changes in collection over years')
+
+                collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
+                collection_counts_filtered['Date year'] = pd.to_numeric(collection_counts_filtered['Date year'], errors='coerce')
+                collection_counts_filtered = collection_counts_filtered.sort_values(by=['Date year'] + selected_collections, ascending=True)
+
+                # Plotting the line graph using Plotly Express
+                fig = px.line(collection_counts_filtered, x='Date year', y=selected_collections, 
+                            markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
+                            title='Cumulative changes in collection over years')
+
+                # Display the plot in the Streamlit app
+                st.plotly_chart(fig, use_container_width=True)
 
                 # PUBLICATION TYPES
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
