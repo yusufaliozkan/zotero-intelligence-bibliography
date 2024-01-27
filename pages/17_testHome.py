@@ -1697,7 +1697,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 selected_collections = df_collections_21.head(number0 + 1)['Collection_Name'].tolist()
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
-                collection_counts_filtered
  
                 # Streamlit app
                 st.markdown(f'#### Cumulative changes in collection over years')
