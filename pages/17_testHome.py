@@ -1680,8 +1680,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
                 st.plotly_chart(fig, use_container_width = True)
 
-                df_collections_22 = df_collections_22['Collection_Name'].value_counts().reset_index()
-                # df_collections_22 = df_collections_22.head(number0+1)
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
                 collection_counts = collection_counts.reset_index()
                 collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
