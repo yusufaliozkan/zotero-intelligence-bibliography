@@ -571,9 +571,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                         title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
 
                     # Reverse the legend order
-            fig_cumulative_countries.update_layout(legend_traceorder='reversed')
+                    fig_cumulative_countries.update_layout(legend_traceorder='reversed')
+
+                return fig_cumulative_countries
 
             # Display the cumulative line graph based on the selected number of countries
+            fig_cumulative_countries = compute_cumulative_graph(df_countries_chart, num_countries)
             st.plotly_chart(fig_cumulative_countries, use_container_width=True)
 
 #UNTIL HERE
