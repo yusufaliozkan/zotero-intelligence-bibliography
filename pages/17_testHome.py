@@ -1701,7 +1701,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.markdown(f'#### Cumulative changes in collection over years')
 
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
-                collection_counts_filtered = collection_counts_filtered.sort_values(by='Date year', ascending=False)
+                collection_counts_filtered = collection_counts_filtered.sort_values(by='Date year', ascending=True)
                 collection_counts_filtered
 
                 # Plotting the line graph using Plotly Express
