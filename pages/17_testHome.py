@@ -1681,13 +1681,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.plotly_chart(fig, use_container_width = True)
 
                 collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
-                fig, ax = plt.subplots(figsize=(12, 8))
-                collection_counts.plot(kind='line', marker='o', linewidth=2, ax=ax)
-                plt.xlabel('Year')
-                plt.ylabel('Count')
-                plt.legend(title='Collection_Name', bbox_to_anchor=(1.05, 1), loc='upper left')
-                plt.grid(True)
-                st.pyplot(fig)
+                fig = px.line(collection_counts, x='Date year', y=collection_counts.columns[1:], 
+                            markers=True, line_shape='linear', labels={'value': 'Count'},
+                            title='Changes in Collection_Name Over Years')
+
+                # Display the plot in the Streamlit app
+                st.plotly_chart(fig)
 
                 # PUBLICATION TYPES
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
