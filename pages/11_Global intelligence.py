@@ -552,6 +552,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_counts = df_countries_chart.groupby(['Date year', 'Country']).size().unstack().fillna(0)
             collection_counts = collection_counts.reset_index()
             collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
+
+            # Display the cumulative sum of publications per country
             fig_cumulative_countries = px.line(collection_counts, x='Date year', y=collection_counts.columns[1:], 
                                             markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                                             title='Cumulative Publications per Country Over Years')
