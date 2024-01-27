@@ -1701,11 +1701,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.markdown(f'#### Cumulative changes in collection over years')
 
                 collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
-                collection_counts_filtered = collection_counts_filtered.sort_values(by='Date year', ascending=True)
-                collection_counts_filtered
+                collection_counts_filtered['Date year'] = pd.to_numeric(collection_counts_filtered['Date year'], errors='coerce')
+                collection_counts_filtered = collection_counts_filtered.sort_values(by=['Date year'] + selected_collections, ascending=True)
 
                 # Plotting the line graph using Plotly Express
-                fig = px.line(collection_counts_filtered, x='Date year', y=collection_counts_filtered.columns[1:], 
+                fig = px.line(collection_counts_filtered, x='Date year', y=selected_collections, 
                             markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                             title='Cumulative Changes in Collection_Name Over Years')
 
