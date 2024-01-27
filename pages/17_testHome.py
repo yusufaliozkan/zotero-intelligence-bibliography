@@ -1689,7 +1689,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 plt.grid(True)
                 st.pyplot(fig)
 
-
                 # PUBLICATION TYPES
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
                 df_types = df_types.sort_values(['Publication type'], ascending=[False])
