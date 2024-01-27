@@ -561,14 +561,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Display the cumulative sum of publications per country
                 fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=cumulative_selected_countries.columns[1:],
-                                                markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
-                                                title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
+                                                    markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
+                                                    title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
+                fig_cumulative_countries.update_layout(legend_traceorder='reversed')
+
                 return fig_cumulative_countries
 
             # Display the cumulative line graph based on the selected number of countries
             fig_cumulative_countries = compute_cumulative_graph(df_countries_chart, num_countries)
             st.plotly_chart(fig_cumulative_countries, use_container_width=True)
-
 
 #UNTIL HERE
         with col2:
