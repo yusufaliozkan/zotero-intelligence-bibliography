@@ -534,6 +534,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 fig = px.bar(top_countries, x='Publications', y='Country', orientation='h')
                 fig.update_layout(title=f'Top {num_countries} Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
                 col11.plotly_chart(fig, use_container_width=True)
+                df_countries_chart
             with col12:
                 df_continent_chart = df_continent_chart[df_continent_chart['Continent'] != 'Unknown']
                 country_pub_counts = df_continent_chart['Continent'].value_counts().sort_values(ascending=False)
