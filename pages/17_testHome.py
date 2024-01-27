@@ -1701,13 +1701,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Streamlit app
                 st.markdown(f'#### Cumulative changes in collection over years')
 
+                collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
+                collection_counts_filtered = collection_counts_filtered.sort_values(by='Date year', ascending=True)
+
                 # Plotting the line graph using Plotly Express
                 fig = px.line(collection_counts_filtered, x='Date year', y=collection_counts_filtered.columns[1:], 
                             markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                             title='Cumulative Changes in Collection_Name Over Years')
 
                 # Display the plot in the Streamlit app
-                st.plotly_chart(fig, use_container_width = True)
+                st.plotly_chart(fig, use_container_width=True)
 
                 # PUBLICATION TYPES
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
