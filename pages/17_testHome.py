@@ -1685,7 +1685,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
  
                 # Streamlit app
-                st.markdown(f'#### Cumulative Changes in Collection_Name Over Years')
+                st.markdown(f'#### Cumulative changes in collection over years')
 
                 # Plotting the line graph using Plotly Express
                 fig = px.line(collection_counts, x='Date year', y=collection_counts.columns[1:], 
