@@ -970,7 +970,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     selected_journal_df = df_csv[df_csv['Journal'].isin(journals)]
 
-                    selected_journal_df['Date published2'] = (
+                    selected_journal_df['Date published'] = (
                         selected_journal_df['Date published']
                         .str.strip()
                         .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
