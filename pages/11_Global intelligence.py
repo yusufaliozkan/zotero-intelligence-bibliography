@@ -53,7 +53,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
     #     df_collections = pd.DataFrame(data2, columns=columns2)
     #     return df_collections
     # df_collections = zotero_collections(library_id, library_type)
-
+    col1, col2 = st.columns([1,3])
+    with col1:
+        container_metric = st.container()
+    with col2: 
+        container_info = st.container()
     @st.cache_data(ttl=100)
     def load_data():
         df_collections = pd.read_csv('all_items_duplicated.csv')
@@ -64,18 +68,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections = df_collections[df_collections['Collection_Name'].str.contains("14.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-    container = st.container()
+    
+    # container = st.container()
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            unique_collections = list(df_collections['Collection_Name'].unique()) 
-            radio = container.radio('Select a collection', unique_collections)
-            # collection_name = st.selectbox('Select a collection:', clist)
-            df_collections=df_collections.reset_index(drop=True)
-            collection_name = radio
-            df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            # unique_collections = list(df_collections['Collection_Name'].unique()) 
+            # radio = container.radio('Select a collection', unique_collections)
+            # # collection_name = st.selectbox('Select a collection:', clist)
+            # df_collections=df_collections.reset_index(drop=True)
+            # collection_name = radio
+            # df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            collection_name = df_collections['Collection_Name'].iloc[0]
             pd.set_option('display.max_colwidth', None)
 
             df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
@@ -90,105 +96,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0] 
 
             st.markdown('#### Collection theme: ' + collection_name)
-            st.info(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
-            st.write('This collection lists academic sources that are **non-UK/US** on intelligence.')
+            st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
+            container_info = container_info.info('This collection lists academic sources that are **non-UK/US** on intelligence.')
 
-            # with st.expander('All items (click to expand)', expanded=False):
-            #     def format_entry(row):
-            #         publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-            #         title = str(row['Title']) if pd.notnull(row['Title']) else ''
-            #         authors = str(row['FirstName2'])
-            #         date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-            #         link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-            #         zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-            #         published_by_or_in = ''
-            #         published_source = ''
-
-            #         if publication_type == 'Journal article':
-            #             published_by_or_in = 'Published in'
-            #             published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-            #         elif publication_type == 'Book':
-            #             published_by_or_in = 'Published by'
-            #             published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-            #         else:
-            #             # For other types, leave the fields empty
-            #             published_by_or_in = ''
-            #             published_source = ''
-
-            #         return (
-            #             '**' + publication_type + '**' + ': ' +
-            #             title + ' ' +
-            #             '(by ' + '*' + authors + '*' + ') ' +
-            #             '(Publication date: ' + str(date_published) + ') ' +
-            #             ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-            #             '[[Publication link]](' + link_to_publication + ') ' +
-            #             '[[Zotero link]](' + zotero_link + ')'
-            #         )
-
-            #     articles_list = []  # Store articles in a list
-            #     for index, row in df_collections.iterrows():
-            #         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-            #         articles_list.append(formatted_entry)        
-                
-            #     for index, row in df_collections.iterrows():
-            #         publication_type = row['Publication type']
-            #         title = row['Title']
-            #         authors = row['FirstName2']
-            #         date_published = row['Date published']
-            #         link_to_publication = row['Link to publication']
-            #         zotero_link = row['Zotero link']
-
-            #         if publication_type == 'Journal article':
-            #             published_by_or_in = 'Published in'
-            #             published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-            #         elif publication_type == 'Book':
-            #             published_by_or_in = 'Published by'
-            #             published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-            #         else:
-            #             published_by_or_in = ''
-            #             published_source = ''
-
-            #         formatted_entry = (
-            #             '**' + str(publication_type) + '**' + ': ' +
-            #             str(title) + ' ' +
-            #             '(by ' + '*' + str(authors) + '*' + ') ' +
-            #             '(Publication date: ' + str(date_published) + ') ' +
-            #             ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-            #             '[[Publication link]](' + str(link_to_publication) + ') ' +
-            #             '[[Zotero link]](' + str(zotero_link) + ')'
-            #         )
-            #     sort_by_type = st.checkbox('Sort by publication type', key='type')
-            #     display2 = st.checkbox('Display abstracts')
-
-            #     if sort_by_type:
-            #         df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
-            #         current_type = None
-            #         count_by_type = {}
-            #         for index, row in df_collections.iterrows():
-            #             if row['Publication type'] != current_type:
-            #                 current_type = row['Publication type']
-            #                 st.subheader(current_type)
-            #                 count_by_type[current_type] = 1
-            #             formatted_entry = format_entry(row)
-            #             st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-            #             count_by_type[current_type] += 1
-            #             if display2:
-            #                 st.caption(row['Abstract'])
-            #     else:
-            #         count = 1
-            #         for index, row in df_collections.iterrows():
-            #             formatted_entry = format_entry(row)
-            #             st.write(f"{count}) {formatted_entry}")
-            #             count += 1
-            #             if display2:
-            #                 st.caption(row['Abstract'])
             df_countries_chart = df_countries.copy()
             df_continent = df_continent.copy()
             df_continent_chart = df_continent.copy() 
 
             unique_items_count = df_countries_chart['Country'].nunique()
             num_items_collections = len(df_collections)
-            st.write(f"**{num_items_collections}** sources found for **{unique_items_count-1}** countries.")
+            # st.write(f"**{num_items_collections}** sources found for **{unique_items_count-1}** countries.")
+            container_metric = container_metric.metric(label='Number of items in this collection', value=num_items_collections, help=f'sources found for **{unique_items_count-1}** countries.')
 
             df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
