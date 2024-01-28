@@ -53,7 +53,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     #     df_collections = pd.DataFrame(data2, columns=columns2)
     #     return df_collections
     # df_collections = zotero_collections(library_id, library_type)
-
+    container_metric = st.container()
     @st.cache_data(ttl=100)
     def load_data():
         df_collections = pd.read_csv('all_items_duplicated.csv')
@@ -64,7 +64,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections = df_collections[df_collections['Collection_Name'].str.contains("14.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-    container_metric = st.container()
+    
     container = st.container()
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
