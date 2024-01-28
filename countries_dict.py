@@ -243,7 +243,7 @@ continent_replacements = {
     'Bundeswehr':'Germany',
     'Sino':'China',
     'Malayan':'Malaysia'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
