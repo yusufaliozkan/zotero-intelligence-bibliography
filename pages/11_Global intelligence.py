@@ -53,7 +53,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
     #     df_collections = pd.DataFrame(data2, columns=columns2)
     #     return df_collections
     # df_collections = zotero_collections(library_id, library_type)
-    container_metric = st.container()
+    col1, col2 = st.columns(2)
+    with col1:
+        container_metric = st.container()
+    with col2: 
+        st.info(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
     @st.cache_data(ttl=100)
     def load_data():
         df_collections = pd.read_csv('all_items_duplicated.csv')
