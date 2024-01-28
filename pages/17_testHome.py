@@ -1915,10 +1915,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with col1:
                     df_countries = pd.read_csv('countries.csv')
                     fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='Count', 
-                                        title='Country mentions in titles', color_continuous_scale='YlOrRd',
-                                        width=900, height=700)  # Adjust the size of the map here
+                                title='Country mentions in titles', color_continuous_scale='Viridis',
+                                width=900, height=700) # Adjust the size of the map here
                     # Display the map
-                    col1.plotly_chart(fig, use_container_width=True)
+                    fig.show()
+                    col1.plotly_chart(fig, use_container_width=True) 
                 with col2:
                     st.markdown('##### Top 15 country names mentioned in titles')
                     fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=600)
