@@ -58,7 +58,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         container_metric = st.container()
     with col2: 
         container_info = st.container()
-        container_info2 = st.container()
     @st.cache_data(ttl=100)
     def load_data():
         df_collections = pd.read_csv('all_items_duplicated.csv')
@@ -97,8 +96,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0] 
 
             st.markdown('#### Collection theme: ' + collection_name)
-            container_info = container_info.info(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
-            container_info2 = container_info2.write('This collection lists academic sources that are **non-UK/US** on intelligence.')
+            st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
+            container_info = container_info.info('This collection lists academic sources that are **non-UK/US** on intelligence.')
 
             df_countries_chart = df_countries.copy()
             df_continent = df_continent.copy()
