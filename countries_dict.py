@@ -237,7 +237,7 @@ continent_replacements = {
     'Brussels':'Belgium',
     'Deuxième Bureau':'France',
     'Franco':'France'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
