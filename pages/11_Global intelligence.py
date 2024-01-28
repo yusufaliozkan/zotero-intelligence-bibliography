@@ -53,7 +53,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     #     df_collections = pd.DataFrame(data2, columns=columns2)
     #     return df_collections
     # df_collections = zotero_collections(library_id, library_type)
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1,3])
     with col1:
         container_metric = st.container()
     with col2: 
