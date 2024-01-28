@@ -191,7 +191,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.year == current_date.year) & 
             (df_intro['Date added'].dt.month == current_date.month)
         ]
-        st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
+        # st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
+        st.metric(label='Number of items in the library', value=item_count, delta=len(items_added_this_month),label_visibility='visible', help=f' **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
 
     sidebar_content()
@@ -521,7 +522,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
 
-                    with st.expander('Click to expand', expanded=True):
+                    with st.expander('Click to expand', expanded=True): 
                         st.markdown('#### Publications by ' + selected_author)
                         st.write('*Please note that this database **may not show** all research outputs of the author.*')
                         types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
@@ -970,12 +971,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     selected_journal_df = df_csv[df_csv['Journal'].isin(journals)]
 
-                    selected_journal_df['Date published'] = (
-                        selected_journal_df['Date published']
-                        .str.strip()
-                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                    ) 
-                    # selected_journal_df['Date published'] = pd.to_datetime(selected_journal_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    selected_journal_df['Date published'] = pd.to_datetime(selected_journal_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     selected_journal_df['Date published'] = selected_journal_df['Date published'].dt.strftime('%Y-%m-%d')
                     selected_journal_df['Date published'] = selected_journal_df['Date published'].fillna('')
                     selected_journal_df['No date flag'] = selected_journal_df['Date published'].isnull().astype(np.uint8)
@@ -1156,7 +1152,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_all['Date published']
                         .str.strip()
                         .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                    ) 
+                    )
                     # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     # df_all
                     df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
