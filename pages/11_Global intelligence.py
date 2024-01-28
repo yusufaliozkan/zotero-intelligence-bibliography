@@ -77,6 +77,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # df_collections=df_collections.reset_index(drop=True)
             # collection_name = radio
             # df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            collection_name = df_collections['Collection_Name'].iloc[0]
             pd.set_option('display.max_colwidth', None)
 
             df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
