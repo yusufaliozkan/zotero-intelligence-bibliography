@@ -1,16 +1,16 @@
 ,ORG,count
-0,CIA,368
+0,CIA,382
 1,KGB,102
-2,Allied,61
-3,FBI,49
-4,SIS,43
-5,British Intelligence,37
-6,SOE,36
-7,Congress,35
-8,NATO,34
-9,the Intelligence Community,32
+2,Allied,66
+3,SIS,52
+4,FBI,51
+5,SOE,41
+6,British Intelligence,38
+7,Congress,37
+8,NATO,35
+9,the Intelligence Community,33
 10,Joint Intelligence Committee,28
-11,Hamas,25
-12,OSS,24
-13,NSA,24
+11,OSS,26
+12,NSA,26
+13,Hamas,25
 14,Foreign Office,24
