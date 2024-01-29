@@ -1,20 +1,20 @@
 Country,Count
-United States,457
+United States,464
 UK,385
-Israel,123
+Israel,124
 Russia,104
 Ukraine,98
 Japan,93
+Australia,59
 Germany,57
-Australia,57
-Canada,53
+Canada,54
 Oman,49
-Iraq,48
+Iraq,49
 India,41
 China,39
 France,37
 Cuba,28
-Ireland,27
+Ireland,28
 Brazil,25
 Egypt,22
 Romania,19
@@ -24,65 +24,64 @@ New Zealand,13
 Turkey,13
 Spain,11
 Afghanistan,10
-Italy,10
 Pakistan,10
-Netherlands,9
+Italy,10
 Poland,9
 Sweden,9
+Netherlands,9
+Slovakia,8
 Colombia,8
 Albania,8
-Cyprus,8
-Slovakia,8
 Austria,8
+Cyprus,8
+Greece,7
 Lebanon,7
 Mali,7
-Greece,7
-Norway,6
 Belgium,6
 Indonesia,6
+Norway,6
 Chile,6
-Jordan,5
 Argentina,5
-Singapore,5
-Denmark,5
 Finland,5
+Jordan,5
+Denmark,5
 Yemen,5
-Peru,4
-Serbia,4
-Algeria,4
-Switzerland,4
+Singapore,5
 Libya,4
-Sudan,3
-Ghana,3
-Morocco,3
-Gibraltar,3
+Algeria,4
+Serbia,4
+Peru,4
+Switzerland,4
+Saudi Arabia,3
+Malaysia,3
 Congo,3
 Portugal,3
-South Sudan,3
-Malaysia,3
-Saudi Arabia,3
+Morocco,3
+Gibraltar,3
+Ghana,3
 Mexico,3
-Niger,3
 Bulgaria,3
-Nigeria,3
 Tunisia,3
-Uganda,2
-Ecuador,2
-Hungary,2
+Sudan,3
+South Sudan,3
+Niger,3
+Nigeria,3
 Philippines,2
-Guatemala,2
 Georgia,2
 Guinea,2
+Uganda,2
 Dominica,2
+Hungary,2
+Guatemala,2
+Ecuador,2
+Bosnia and Herzegovina,2
 Bangladesh,2
 Thailand,2
-Bosnia and Herzegovina,2
+Myanmar,2
+Sri Lanka,2
 Hong Kong,2
 Latvia,2
-Sri Lanka,2
-Myanmar,2
-Ethiopia,1
-Kenya,1
+Tajikistan,1
 Uruguay,1
 United Arab Emirates,1
 Kuwait,1
@@ -90,16 +89,17 @@ Somalia,1
 Dominican Republic,1
 North Macedonia,1
 Angola,1
-Tajikistan,1
-Antarctica,1
-Namibia,1
 Kazakhstan,1
+Antarctica,1
+Kenya,1
+Ethiopia,1
 Rwanda,1
 Mozambique,1
+Cambodia,1
+Namibia,1
 Mongolia,1
 Slovenia,1
 Lithuania,1
 Nicaragua,1
-Cambodia,1
 Zimbabwe,1
 Nepal,1
