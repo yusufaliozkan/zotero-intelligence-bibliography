@@ -263,7 +263,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.write(f"{count}) {formatted_entry}")
                             count += 1
                             if display2:
-                                st.caption(row['Abstract'])
+                                st.caption(row['Abstract']) 
             
             else:
                 with st.expander('Click to expand', expanded=True):
