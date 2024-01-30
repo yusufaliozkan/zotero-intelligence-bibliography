@@ -108,7 +108,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # st.write(f"**{num_items_collections}** sources found for **{unique_items_count-1}** countries.")
             container_metric = container_metric.metric(label='Number of items in this collection', value=num_items_collections, help=f'sources found for **{unique_items_count-1}** countries.')
 
-            df_countries['Date published'] = (
+            df_countries['Date published'] = ( 
                 df_countries['Date published']
                 .str.strip()
                 .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
