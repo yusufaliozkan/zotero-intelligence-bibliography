@@ -112,7 +112,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_countries['Date published']
                 .str.strip()
                 .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-            )    
+            )
             # df_countries['Date published'] = pd.to_datetime(df_countries['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_countries['Date published'] = df_countries['Date published'].dt.strftime('%Y-%m-%d')
             df_countries['Date published'] = df_countries['Date published'].fillna('')
