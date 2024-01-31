@@ -37,7 +37,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # library_type = 'group'
     # api_key = '' # api_key is only needed for private groups and libraries
 
-    sidebar_content()
+    sidebar_content() 
 
     # zot = zotero.Zotero(library_id, library_type)
 
