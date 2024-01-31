@@ -256,7 +256,7 @@ continent_replacements = {
     'R&AW':'India',
     'Crypto AG':'Germany',
     'R.N. Kao: Gentleman Spymaster':'India'
-    } 
+    }
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
