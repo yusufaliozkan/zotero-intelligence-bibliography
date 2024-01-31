@@ -1,18 +1,18 @@
 Country,Count
-United States,500
-UK,399
-Israel,126
-Russia,104
+United States,504
+UK,400
+Israel,127
+Russia,103
 Ukraine,98
 Japan,94
-Australia,59
-Germany,58
+Australia,60
+Germany,59
 Iraq,56
 Canada,55
 Oman,52
 India,44
+France,40
 China,39
-France,39
 Cuba,28
 Ireland,28
 Brazil,25
@@ -22,75 +22,75 @@ South Africa,20
 United Kingdom,14
 Turkey,13
 New Zealand,13
+Afghanistan,11
 Italy,11
 Pakistan,11
 Spain,11
-Afghanistan,11
 Netherlands,10
-Poland,9
 Sweden,9
 Cyprus,9
+Poland,9
 Colombia,8
-Austria,8
 Slovakia,8
-Mali,8
 Albania,8
-Lebanon,7
+Austria,8
+Mali,8
 Greece,7
+Lebanon,7
 Indonesia,6
-Norway,6
+Singapore,6
 Chile,6
 Algeria,6
-Singapore,6
+Norway,6
 Belgium,6
-Yemen,5
 Finland,5
-Denmark,5
+Yemen,5
 Argentina,5
+Denmark,5
 Jordan,5
-Serbia,4
 Peru,4
+Serbia,4
 Sudan,4
-Switzerland,4
 Libya,4
-Bosnia and Herzegovina,3
-Congo,3
+Mexico,4
+Switzerland,4
 Portugal,3
+Congo,3
 Niger,3
 Nigeria,3
-Gibraltar,3
 South Sudan,3
 Morocco,3
+Gibraltar,3
 Ghana,3
-Mexico,3
-Bulgaria,3
-Tunisia,3
-Malaysia,3
 Saudi Arabia,3
+Bulgaria,3
+Malaysia,3
+Tunisia,3
+Bosnia and Herzegovina,3
+Latvia,2
+Guinea,2
 Thailand,2
-Philippines,2
+Ecuador,2
+Uganda,2
 Hong Kong,2
 Georgia,2
-Guinea,2
-Latvia,2
-Dominica,2
-Ecuador,2
 Guatemala,2
 Hungary,2
-Uganda,2
+Philippines,2
 Myanmar,2
 Sri Lanka,2
 Bangladesh,2
-Somalia,1
-Rwanda,1
+Dominica,2
+Uruguay,1
+Kuwait,1
 United Arab Emirates,1
+Rwanda,1
+Somalia,1
 Angola,1
 North Macedonia,1
 Dominican Republic,1
-Kuwait,1
-Uruguay,1
 Antarctica,1
-Tajikistan,1
+Kenya,1
 Mozambique,1
 Ethiopia,1
 Nicaragua,1
@@ -99,7 +99,7 @@ Slovenia,1
 Mongolia,1
 Namibia,1
 Kazakhstan,1
-Kenya,1
+Tajikistan,1
 Cambodia,1
 Zimbabwe,1
 Haiti,1
