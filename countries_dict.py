@@ -175,7 +175,7 @@ continent_country_names = [
     'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Czech','Napoleon','Brussels','Deuxième Bureau',
     'Franco', 'Bundeswehr','Sino','Malayan','Irish','Hitler','Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems'
 ]
-continent_replacements = { 
+continent_replacements = {
     'Belgian': 'Belgium', 
     'Turkish': 'Turkey',
     'Portuguese': 'Portugal',
