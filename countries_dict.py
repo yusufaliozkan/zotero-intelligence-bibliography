@@ -261,7 +261,7 @@ continent_replacements = {
     'R.N. Kao: Gentleman Spymaster':'India',
     'Understanding the complexity of intelligence problems':'India',
     'RAW and the ISI':'India'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
