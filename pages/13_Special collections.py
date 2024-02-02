@@ -120,12 +120,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     published_by_or_in = ''
                     published_source = ''
 
-                    if publication_type == 'Journal article' or 'Newspaper article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
+                    if publication_type == 'Book':
                         published_by_or_in = 'Published by'
                         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                    elif publication_type == 'Journal article':
+                        published_by_or_in = 'Published in'
+                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
                     else:
                         # For other types, leave the fields empty
                         published_by_or_in = ''
