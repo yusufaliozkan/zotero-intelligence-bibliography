@@ -106,7 +106,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
             st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
             a = f'{collection_name}_{today}'
-            st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+            st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4') 
 
             with st.expander('Click to expand', expanded=True):
                 def format_entry(row):
@@ -119,16 +119,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     published_by_or_in = ''
                     published_source = ''
 
-                    if publication_type == 'Journal article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
-                        published_by_or_in = 'Published by'
+                    published_by_or_in_dict = {
+                        'Journal article': 'Published in',
+                        'Magazine article': 'Published in',
+                        'Newspaper article': 'Published in',
+                        'Book': 'Published by',
+                    }
+
+                    publication_type = row['Publication type']
+
+                    published_by_or_in = published_by_or_in_dict.get(publication_type, '')
+                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                    if publication_type == 'Book':
                         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                    else:
-                        # For other types, leave the fields empty
-                        published_by_or_in = ''
-                        published_source = ''
 
                     return (
                         '**' + publication_type + '**' + ': ' +
