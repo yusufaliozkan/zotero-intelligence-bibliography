@@ -126,7 +126,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'Book': 'Published by',
                     }
 
-                    publication_type = row['Publication Type']
+                    publication_type = row['Publication type']
 
                     published_by_or_in = published_by_or_in_dict.get(publication_type, '')
                     published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
