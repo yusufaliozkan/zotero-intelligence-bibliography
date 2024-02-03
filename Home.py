@@ -214,16 +214,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 published_by_or_in = ''
                 published_source = ''
 
-                if publication_type == 'Journal article':
-                    published_by_or_in = 'Published in'
-                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                elif publication_type == 'Book':
-                    published_by_or_in = 'Published by'
+                published_by_or_in_dict = {
+                    'Journal article': 'Published in',
+                    'Magazine article': 'Published in',
+                    'Newspaper article': 'Published in',
+                    'Book': 'Published by',
+                }
+
+                publication_type = row['Publication type']
+
+                published_by_or_in = published_by_or_in_dict.get(publication_type, '')
+                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                if publication_type == 'Book':
                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                else:
-                    # For other types, leave the fields empty
-                    published_by_or_in = ''
-                    published_source = ''
 
                 return (
                     '**' + publication_type + '**' + ': ' +
@@ -613,15 +616,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     link_to_publication = row['Link to publication']
                                     zotero_link = row['Zotero link']
 
-                                    if publication_type == 'Journal article':
-                                        published_by_or_in = 'Published in'
-                                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                                    elif publication_type == 'Book':
-                                        published_by_or_in = 'Published by'
+                                    published_by_or_in_dict = {
+                                        'Journal article': 'Published in',
+                                        'Magazine article': 'Published in',
+                                        'Newspaper article': 'Published in',
+                                        'Book': 'Published by',
+                                    }
+
+                                    publication_type = row['Publication type']
+
+                                    published_by_or_in = published_by_or_in_dict.get(publication_type, '')
+                                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                    if publication_type == 'Book':
                                         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                                    else:
-                                        published_by_or_in = ''
-                                        published_source = ''
 
                                     formatted_entry = (
                                         '**' + str(publication_type) + '**' + ': ' +
@@ -936,15 +943,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 link_to_publication = row['Link to publication']
                                 zotero_link = row['Zotero link']
 
-                                if publication_type == 'Journal article':
-                                    published_by_or_in = 'Published in'
-                                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                                elif publication_type == 'Book':
-                                    published_by_or_in = 'Published by'
+                                published_by_or_in_dict = {
+                                    'Journal article': 'Published in',
+                                    'Magazine article': 'Published in',
+                                    'Newspaper article': 'Published in',
+                                    'Book': 'Published by',
+                                }
+
+                                publication_type = row['Publication type']
+
+                                published_by_or_in = published_by_or_in_dict.get(publication_type, '')
+                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                if publication_type == 'Book':
                                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                                else:
-                                    published_by_or_in = ''
-                                    published_source = ''
 
                                 formatted_entry = (
                                     '**' + str(publication_type) + '**' + ': ' +
@@ -971,7 +982,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     selected_journal_df = df_csv[df_csv['Journal'].isin(journals)]
 
-                    selected_journal_df['Date published'] = pd.to_datetime(selected_journal_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    selected_journal_df['Date published'] = (
+                        selected_journal_df['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
+                    # selected_journal_df['Date published'] = pd.to_datetime(selected_journal_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     selected_journal_df['Date published'] = selected_journal_df['Date published'].dt.strftime('%Y-%m-%d')
                     selected_journal_df['Date published'] = selected_journal_df['Date published'].fillna('')
                     selected_journal_df['No date flag'] = selected_journal_df['Date published'].isnull().astype(np.uint8)
@@ -1126,16 +1142,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     published_by_or_in = ''
                     published_source = ''
 
-                    if publication_type == 'Journal article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
-                        published_by_or_in = 'Published by'
+                    published_by_or_in_dict = {
+                        'Journal article': 'Published in',
+                        'Magazine article': 'Published in',
+                        'Newspaper article': 'Published in',
+                        'Book': 'Published by',
+                    }
+
+                    publication_type = row['Publication type']
+
+                    published_by_or_in = published_by_or_in_dict.get(publication_type, '')
+                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                    if publication_type == 'Book':
                         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                    else:
-                        # For other types, leave the fields empty
-                        published_by_or_in = ''
-                        published_source = ''
 
                     return ( 
                         '**' + publication_type + '**' + ': ' +

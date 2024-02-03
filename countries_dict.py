@@ -32,7 +32,7 @@ country_names = [
     "The Politics and Intelligence of the Oslo Peace Process", 'Shin bet','Sixteenth-Century Istanbul', 'Cheka','Arabizing the Omani intelligence services: Clash of cultures',
     'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia','Andropov', 'Saddam', 'NKVD',
     'Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Napoleon','Brussels','Deuxième Bureau','Franco','Bundeswehr','Sino','Malayan','Irish','Hitler',
-    'Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems','RAW and the ISI'
+    'Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems','RAW and the ISI','ASIO and the Cold War'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -116,7 +116,8 @@ replacements = {
     'Crypto AG':'Germany',
     'R.N. Kao: Gentleman Spymaster':'India',
     'Understanding the complexity of intelligence problems':'Netherlands',
-    'RAW and the ISI':'India'
+    'RAW and the ISI':'India',
+    'ASIO and the Cold War':'Australia'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -175,7 +176,7 @@ continent_country_names = [
     'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
     'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Czech','Napoleon','Brussels','Deuxième Bureau',
     'Franco', 'Bundeswehr','Sino','Malayan','Irish','Hitler','Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems',
-    'RAW and the ISI'
+    'RAW and the ISI','ASIO and the Cold War'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -260,7 +261,8 @@ continent_replacements = {
     'Crypto AG':'Germany',
     'R.N. Kao: Gentleman Spymaster':'India',
     'Understanding the complexity of intelligence problems':'India',
-    'RAW and the ISI':'India'
+    'RAW and the ISI':'India',
+    'ASIO and the Cold War':'Australia'
     } 
 
 df_continent = df_countries.copy()
