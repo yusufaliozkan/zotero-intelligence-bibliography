@@ -263,7 +263,7 @@ continent_replacements = {
     'Understanding the complexity of intelligence problems':'India',
     'RAW and the ISI':'India',
     'ASIO and the Cold War':'Australia'
-    } 
+    }
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
