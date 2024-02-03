@@ -501,6 +501,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.subheader('Search author') 
 
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
+                unique_authors
 
                 author_publications = df_authors['Author_name'].value_counts().to_dict()
                 sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
