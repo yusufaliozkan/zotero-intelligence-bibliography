@@ -268,7 +268,7 @@ continent_replacements = {
     'ASIO and the Cold War':'Australia',
     'SS-Intelligence':'Germany',
     'Reich Main Security Office':'Germany'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
