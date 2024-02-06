@@ -33,7 +33,7 @@ country_names = [
     'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia','Andropov', 'Saddam', 'NKVD',
     'Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Napoleon','Brussels','Deuxième Bureau','Franco','Bundeswehr','Sino','Malayan','Irish','Hitler',
     'Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems','RAW and the ISI','ASIO and the Cold War', 'SS-Intelligence',
-    'Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl'
+    'Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -123,7 +123,8 @@ replacements = {
     'Reich Main Security Office':'Germany',
     'Kautilyan':'India',
     'Gehlen':'Germany',
-    'Lydia Stahl':'Russia'
+    'Lydia Stahl':'Russia',
+    'Apartheid':'South Africa'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -182,7 +183,7 @@ continent_country_names = [
     'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
     'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Czech','Napoleon','Brussels','Deuxième Bureau',
     'Franco', 'Bundeswehr','Sino','Malayan','Irish','Hitler','Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems',
-    'RAW and the ISI','ASIO and the Cold War','SS-Intelligence','Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl'
+    'RAW and the ISI','ASIO and the Cold War','SS-Intelligence','Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -273,7 +274,8 @@ continent_replacements = {
     'Reich Main Security Office':'Germany',
     'Kautilyan':'India',
     'Gehlen':'Grmany',
-    'Lydia Stahl':'Russia'
+    'Lydia Stahl':'Russia',
+    'Apartheid':'South Africa'
     }
 
 df_continent = df_countries.copy()
