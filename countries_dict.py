@@ -33,7 +33,7 @@ country_names = [
     'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia','Andropov', 'Saddam', 'NKVD',
     'Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Napoleon','Brussels','Deuxième Bureau','Franco','Bundeswehr','Sino','Malayan','Irish','Hitler',
     'Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems','RAW and the ISI','ASIO and the Cold War', 'SS-Intelligence',
-    'Reich Main Security Office'
+    'Reich Main Security Office','Kautilyan'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -120,7 +120,8 @@ replacements = {
     'RAW and the ISI':'India',
     'ASIO and the Cold War':'Australia',
     'SS-Intelligence':'Germany',
-    'Reich Main Security Office':'Germany'
+    'Reich Main Security Office':'Germany',
+    'Kautilyan':'India'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -179,7 +180,7 @@ continent_country_names = [
     'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
     'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Czech','Napoleon','Brussels','Deuxième Bureau',
     'Franco', 'Bundeswehr','Sino','Malayan','Irish','Hitler','Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems',
-    'RAW and the ISI','ASIO and the Cold War','SS-Intelligence','Reich Main Security Office'
+    'RAW and the ISI','ASIO and the Cold War','SS-Intelligence','Reich Main Security Office','Kautilyan'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -267,8 +268,9 @@ continent_replacements = {
     'RAW and the ISI':'India',
     'ASIO and the Cold War':'Australia',
     'SS-Intelligence':'Germany',
-    'Reich Main Security Office':'Germany'
-    }
+    'Reich Main Security Office':'Germany',
+    'Kautilyan':'India'
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
