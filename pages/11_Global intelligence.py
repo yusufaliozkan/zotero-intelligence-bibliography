@@ -377,7 +377,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 def stream_data():
                     for word in text.split():
                         yield word + " "
-                        time.sleep(0.02)
+                        time.sleep(0.5)
                 st.write_stream(stream_data)
             
             else:
