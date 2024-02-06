@@ -22,6 +22,7 @@ import random
 from authors_dict import df_authors, name_replacements
 from countries_dict import country_names, replacements, df_countries, df_continent
 from sidebar_content import sidebar_content
+import time
 
 
 st.set_page_config(layout = "wide", 
