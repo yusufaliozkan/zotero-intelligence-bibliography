@@ -249,7 +249,7 @@ with col2:
             st.switch_page('pages/2_Intelligence studies.py')
         if st.button('Intelligence analysis'):
             st.switch_page('pages/3_Intelligence analysis.py')
-        if st.button('Intelligence history'):
+        if st.button('Intelligence organisations'):
             st.switch_page('pages/4_Intelligence organisations.py')
         if st.button('Intelligence failures'):
             st.switch_page('pages/5_Intelligence failures.py')
