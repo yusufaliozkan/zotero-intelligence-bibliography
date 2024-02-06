@@ -270,7 +270,7 @@ continent_replacements = {
     'SS-Intelligence':'Germany',
     'Reich Main Security Office':'Germany',
     'Kautilyan':'India'
-    } 
+    }
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
