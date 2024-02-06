@@ -22,6 +22,7 @@ import random
 from authors_dict import df_authors, name_replacements
 from countries_dict import country_names, replacements, df_countries, df_continent
 from sidebar_content import sidebar_content
+import time
 
 
 st.set_page_config(layout = "wide", 
@@ -372,7 +373,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_continent[df_continent['Continent'] == selected_continent]  
 
             if not selected_continent or selected_continent=="":
-                st.write('Please select a continent')
+                st.write = ('Please select a continent')
             
             else:
                 with st.expander('Click to expand', expanded=True):
