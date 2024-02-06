@@ -125,7 +125,7 @@ replacements = {
     'Gehlen':'Germany',
     'Lydia Stahl':'Russia',
     'Apartheid':'South Africa',
-    'secret police file':'Romania'
+    'My Life as a Spy: Investigations in a Secret Police File':'Romania'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -277,7 +277,7 @@ continent_replacements = {
     'Gehlen':'Grmany',
     'Lydia Stahl':'Russia',
     'Apartheid':'South Africa',
-    'secret police file':'Romania'
+    'My Life as a Spy: Investigations in a Secret Police File':'Romania'
     }
 
 df_continent = df_countries.copy()
