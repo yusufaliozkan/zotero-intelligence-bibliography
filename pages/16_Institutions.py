@@ -245,14 +245,14 @@ with col2:
     with st.expander('Collections', expanded=True):
         if st.button('Intelligence history'):
             st.switch_page('pages/1_Intelligence history.py')
+        if st.button('Intelligence studies'):
+            st.switch_page('pages/2_Intelligence studies.py')
+        if st.button('Intelligence analysis'):
+            st.switch_page('pages/3_Intelligence analysis.py')
         if st.button('Intelligence history'):
-            st.switch_page('pages/1_Intelligence history.py')
-        if st.button('Intelligence history'):
-            st.switch_page('pages/1_Intelligence history.py')
-        if st.button('Intelligence history'):
-            st.switch_page('pages/1_Intelligence history.py')
-        if st.button('Intelligence history'):
-            st.switch_page('pages/1_Intelligence history.py')
+            st.switch_page('pages/4_Intelligence organisations.py')
+        if st.button('Intelligence failures'):
+            st.switch_page('pages/5_Intelligence failures.py')
         st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
         st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
         st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
