@@ -33,7 +33,7 @@ country_names = [
     'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia','Andropov', 'Saddam', 'NKVD',
     'Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Napoleon','Brussels','Deuxième Bureau','Franco','Bundeswehr','Sino','Malayan','Irish','Hitler',
     'Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems','RAW and the ISI','ASIO and the Cold War', 'SS-Intelligence',
-    'Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','secret police file'
+    'Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','My Life as a Spy: Investigations in a Secret Police File'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
