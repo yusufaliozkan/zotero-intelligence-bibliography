@@ -372,7 +372,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_continent[df_continent['Continent'] == selected_continent]  
 
             if not selected_continent or selected_continent=="":
-                st.write_stream('Please select a continent')
+                text = ('Please select a continent')
+                def stream_data():
+                    for word in text.split():
+                        yield word + " "
+                        time.sleep(0.02)
+                st.write_stream(stream_data)
             
             else:
                 with st.expander('Click to expand', expanded=True):
