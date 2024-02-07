@@ -85,13 +85,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_name = df_collections['Collection_Name'].iloc[0]
             pd.set_option('display.max_colwidth', None)
 
-#             df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-#             df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
-#             df_collections['Date published'] = df_collections['Date published'].fillna('')
-#             df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
-#             df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-#             df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
-#             df_collections = df_collections.reset_index(drop=True)
+            df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
+            df_collections['Date published'] = df_collections['Date published'].fillna('')
+            df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
+            df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+            df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
+            df_collections = df_collections.reset_index(drop=True)
 
 #             publications_by_type = df_collections['Publication type'].value_counts()
 #             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0] 
