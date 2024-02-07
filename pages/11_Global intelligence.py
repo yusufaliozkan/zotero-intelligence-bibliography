@@ -458,8 +458,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
                 country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
                 all_countries_df = pd.DataFrame({'Country': country_pub_counts.index, 'Publications': country_pub_counts.values})
-                # num_countries = st.slider("Select the number of countries to display", min_value=1, max_value=len(all_countries_df), value=10)
-                num_countries = 10
+                num_countries = st.slider("Select the number of countries to display", min_value=1, max_value=len(all_countries_df), value=10)
                 top_countries = all_countries_df.head(num_countries).sort_values(by='Publications', ascending=True)
                 fig = px.bar(top_countries, x='Publications', y='Country', orientation='h')
                 fig.update_layout(title=f'Top {num_countries} Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
