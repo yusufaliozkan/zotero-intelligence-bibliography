@@ -73,10 +73,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # container = st.container()
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
-#     with tab1:
-#         col1, col2 = st.columns([5,1.6])
-#         with col1:
-#             # unique_collections = list(df_collections['Collection_Name'].unique()) 
+    with tab1:
+        col1, col2 = st.columns([5,1.6])
+        with col1:
+            # unique_collections = list(df_collections['Collection_Name'].unique()) 
 #             # radio = container.radio('Select a collection', unique_collections)
 #             # # collection_name = st.selectbox('Select a collection:', clist)
 #             # df_collections=df_collections.reset_index(drop=True)
