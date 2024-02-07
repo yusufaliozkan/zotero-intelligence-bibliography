@@ -100,9 +100,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
             container_info = container_info.info('This collection lists academic sources that are **non-UK/US** on intelligence.')
 
-#             df_countries_chart = df_countries.copy()
-#             df_continent = df_continent.copy()
-#             df_continent_chart = df_continent.copy() 
+            df_countries_chart = df_countries.copy()
+            df_continent = df_continent.copy()
+            df_continent_chart = df_continent.copy() 
 
 #             unique_items_count = df_countries_chart['Country'].nunique()
 #             num_items_collections = len(df_collections)
