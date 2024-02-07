@@ -32,14 +32,14 @@ st.set_page_config(layout = "wide",
 
 st.title("Global intelligence")
 
-# with st.spinner('Retrieving data & updating dashboard...'):
+with st.spinner('Retrieving data & updating dashboard...'):
 
-#     # # Connecting Zotero with API
-#     # library_id = '2514686' # intel 2514686
-#     # library_type = 'group'
-#     # api_key = '' # api_key is only needed for private groups and libraries
+    # # Connecting Zotero with API
+    # library_id = '2514686' # intel 2514686
+    # library_type = 'group'
+    # api_key = '' # api_key is only needed for private groups and libraries
 
-#     sidebar_content()
+    sidebar_content()
 
 #     # zot = zotero.Zotero(library_id, library_type)
 
