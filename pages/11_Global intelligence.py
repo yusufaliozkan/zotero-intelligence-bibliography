@@ -123,7 +123,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
             df_countries = df_countries.reset_index(drop=True)
             unique_countries = sorted(df_countries['Country'].unique())
-#             unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
+            unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
 #             selected_country = st.selectbox('Select a Country', unique_countries)
 #             number_of_pub = df_countries[df_countries['Country'] == selected_country]
 #             publications_count = len(number_of_pub)
