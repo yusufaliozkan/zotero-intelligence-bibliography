@@ -67,7 +67,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections = load_data()
     df_collections = df_collections[df_collections['Collection_Name'].str.contains("14.")]
-    df_collections
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
     
