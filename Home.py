@@ -239,7 +239,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
             st.header('Search in database', anchor=None)
-            st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+            # st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types", "Search journal", "Publication year"))
 
             # df_authors = pd.read_csv('all_items.csv')
