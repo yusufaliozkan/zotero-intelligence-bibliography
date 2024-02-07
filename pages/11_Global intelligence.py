@@ -370,7 +370,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             number_of_pub_con = df_continent[df_continent['Continent'] == selected_continent]
             publications_count_con = len(number_of_pub_con)
 
-            # df_continent = df_continent[df_continent['Continent'] == selected_continent]  
+            df_continent = df_continent[df_continent['Continent'] == selected_continent]  
 
             # if not selected_continent or selected_continent=="":
             #     st.write = ('Please select a continent')
