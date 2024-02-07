@@ -239,7 +239,7 @@ with col1:
         yaxis_title='Country',
         yaxis={'categoryorder': 'array', 'categoryarray': sorted_countries_reverse}  # Set the reversed order
     )
-    st.plotly_chart(fig)
+    st.plotly_chart(fig) 
 
 with col2:
     with st.expander('Collections', expanded=True):
