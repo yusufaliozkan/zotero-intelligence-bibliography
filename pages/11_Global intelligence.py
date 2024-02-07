@@ -356,7 +356,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if display2:
                                 st.caption(row['Abstract'])
 
-            # df_continent['Date published'] = pd.to_datetime(df_continent['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_continent['Date published'] = pd.to_datetime(df_continent['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             # df_continent['Date published'] = df_continent['Date published'].dt.strftime('%Y-%m-%d')
             # df_continent['Date published'] = df_continent['Date published'].fillna('')
             # df_continent['No date flag'] = df_continent['Date published'].isnull().astype(np.uint8)
