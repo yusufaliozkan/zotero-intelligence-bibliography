@@ -93,8 +93,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
             df_collections = df_collections.reset_index(drop=True)
 
-#             publications_by_type = df_collections['Publication type'].value_counts()
-#             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0] 
+            publications_by_type = df_collections['Publication type'].value_counts()
+            collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0] 
 
 #             st.markdown('#### Collection theme: ' + collection_name)
 #             st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
