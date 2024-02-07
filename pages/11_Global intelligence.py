@@ -587,9 +587,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write('No upcoming event!')
                 df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
                 row_nu = len(df_gs.index)
-                for i in range(row_nu):
-                    st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
-                st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
+                # for i in range(row_nu):
+                #     st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+                # st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
     with tab2:
         st.write('Dashboard will be available soon!')
