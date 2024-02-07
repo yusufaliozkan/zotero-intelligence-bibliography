@@ -373,7 +373,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_continent[df_continent['Continent'] == selected_continent]  
 
             if not selected_continent or selected_continent=="":
-                st.write = ('Please select a continent')
+                st.write('Please select a continent')
             
             # else:
             #     with st.expander('Click to expand', expanded=True):
