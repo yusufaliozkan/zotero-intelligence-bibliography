@@ -358,7 +358,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_continent['Date published'] = pd.to_datetime(df_continent['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_continent['Date published'] = df_continent['Date published'].dt.strftime('%Y-%m-%d')
-            # df_continent['Date published'] = df_continent['Date published'].fillna('')
+            df_continent['Date published'] = df_continent['Date published'].fillna('')
             # df_continent['No date flag'] = df_continent['Date published'].isnull().astype(np.uint8)
             # df_continent = df_continent.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             # df_continent = df_continent.sort_values(by=['Date published'], ascending=False)
