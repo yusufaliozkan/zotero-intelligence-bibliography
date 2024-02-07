@@ -259,7 +259,7 @@ with col2:
 
     with st.expander('Events & conferences', expanded=True):
         st.markdown('##### Next event')
-        conn = connect()
+        conn = connect() 
 
         # Perform SQL query on the Google Sheet.
         # Uses st.cache to only rerun when the query changes or after 10 min.
