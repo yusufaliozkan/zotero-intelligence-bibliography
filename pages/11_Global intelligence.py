@@ -29,7 +29,7 @@ st.set_page_config(layout = "wide",
                     page_title='Intelligence studies network',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
-
+st.warning('This page is under maintenance! Therefore, the content may intermittently disappear.')
 st.title("Global intelligence")
 
 with st.spinner('Retrieving data & updating dashboard...'):
@@ -106,7 +106,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             unique_items_count = df_countries_chart['Country'].nunique()
             num_items_collections = len(df_collections)
-            # st.write(f"**{num_items_collections}** sources found for **{unique_items_count-1}** countries.")
+            st.write(f"**{num_items_collections}** sources found for **{unique_items_count-1}** countries.")
             container_metric = container_metric.metric(label='Number of items in this collection', value=num_items_collections, help=f'sources found for **{unique_items_count-1}** countries.')
 
             df_countries['Date published'] = ( 
@@ -129,7 +129,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             publications_count = len(number_of_pub)
 
             # Filter the DataFrame based on the selected country
-            df_countries = df_countries[df_countries['Country'] == selected_country]          
+            df_countries = df_countries[df_countries['Country'] == selected_country]
 
             # Display the filtered DataFrame
             def format_entry(row):
@@ -373,7 +373,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent = df_continent[df_continent['Continent'] == selected_continent]  
 
             if not selected_continent or selected_continent=="":
-                st.write = ('Please select a continent')
+                st.write('Please select a continent') 
             
             else:
                 with st.expander('Click to expand', expanded=True):

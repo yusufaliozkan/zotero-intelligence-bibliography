@@ -69,7 +69,7 @@ def zotero_data(library_id, library_type):
     df = pd.DataFrame(data, columns=columns)
     return df
 
-df = zotero_data(library_id, library_type) 
+df = zotero_data(library_id, library_type)
 
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
 df['Abstract'] = df['Abstract'].fillna('No abstract')
@@ -190,8 +190,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         items_added_this_month = df_intro[
             (df_intro['Date added'].dt.year == current_date.year) & 
             (df_intro['Date added'].dt.month == current_date.month)
-        ]
-        # st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
+        ]        # st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.metric(label='Number of items in the library', value=item_count, delta=len(items_added_this_month),label_visibility='visible', help=f' **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}')
         st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**') 
 
