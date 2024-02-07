@@ -128,8 +128,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             number_of_pub = df_countries[df_countries['Country'] == selected_country]
             publications_count = len(number_of_pub)
 
-#             # Filter the DataFrame based on the selected country
-#             df_countries = df_countries[df_countries['Country'] == selected_country]          
+            # Filter the DataFrame based on the selected country
+            df_countries = df_countries[df_countries['Country'] == selected_country]          
 
 #             # Display the filtered DataFrame
 #             def format_entry(row):
