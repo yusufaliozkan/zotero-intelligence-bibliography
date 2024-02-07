@@ -125,8 +125,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_countries = sorted(df_countries['Country'].unique())
             unique_countries =  [''] + ['All Countries'] + list(unique_countries)  # Added 'All Countries' option
             selected_country = st.selectbox('Select a Country', unique_countries)
-#             number_of_pub = df_countries[df_countries['Country'] == selected_country]
-#             publications_count = len(number_of_pub)
+            number_of_pub = df_countries[df_countries['Country'] == selected_country]
+            publications_count = len(number_of_pub)
 
 #             # Filter the DataFrame based on the selected country
 #             df_countries = df_countries[df_countries['Country'] == selected_country]          
