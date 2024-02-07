@@ -33,7 +33,7 @@ country_names = [
     'Putin', 'New memoirs from Moscow', "Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence', 'Moshe Dayan','Scandinavia','Andropov', 'Saddam', 'NKVD',
     'Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Napoleon','Brussels','Deuxième Bureau','Franco','Bundeswehr','Sino','Malayan','Irish','Hitler',
     'Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems','RAW and the ISI','ASIO and the Cold War', 'SS-Intelligence',
-    'Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','My Life as a Spy: Investigations in a Secret Police File'
+    'Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','My Life as a Spy: Investigations in a Secret Police File','Bingchang'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -125,7 +125,8 @@ replacements = {
     'Gehlen':'Germany',
     'Lydia Stahl':'Russia',
     'Apartheid':'South Africa',
-    'My Life as a Spy: Investigations in a Secret Police File':'Romania'
+    'My Life as a Spy: Investigations in a Secret Police File':'Romania',
+    'Bingchang':'China'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -184,7 +185,7 @@ continent_country_names = [
     'Shin bet','Sixteenth-Century Istanbul','Cheka', 'Omani','Putin','New memoirs from Moscow',"Mao's Secret", 'Shedding light on the rising Sun','The nonuse of intelligence',
     'Moshe Dayan', 'Scandinavia', 'Andropov', 'Saddam', 'NKVD','Dezinformatsiya','Abwehr','Basque','Stasi','Republic of Korea','Czech','Napoleon','Brussels','Deuxième Bureau',
     'Franco', 'Bundeswehr','Sino','Malayan','Irish','Hitler','Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems',
-    'RAW and the ISI','ASIO and the Cold War','SS-Intelligence','Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','secret police file'
+    'RAW and the ISI','ASIO and the Cold War','SS-Intelligence','Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','secret police file','Bingchang'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -277,7 +278,8 @@ continent_replacements = {
     'Gehlen':'Grmany',
     'Lydia Stahl':'Russia',
     'Apartheid':'South Africa',
-    'My Life as a Spy: Investigations in a Secret Police File':'Romania'
+    'My Life as a Spy: Investigations in a Secret Police File':'Romania',
+    'Bingchang':'China'
     }
 
 df_continent = df_countries.copy()
