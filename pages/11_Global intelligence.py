@@ -362,9 +362,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_continent['No date flag'] = df_continent['Date published'].isnull().astype(np.uint8)
             df_continent = df_continent.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
             df_continent = df_continent.sort_values(by=['Date published'], ascending=False)
-            # df_continent = df_continent.drop_duplicates(subset=['Continent', 'Zotero link'])
-            # df_continent = df_continent.reset_index(drop=True)
-            # unique_continents = sorted(df_continent['Continent'].unique())
+            df_continent = df_continent.drop_duplicates(subset=['Continent', 'Zotero link'])
+            df_continent = df_continent.reset_index(drop=True)
+            unique_continents = sorted(df_continent['Continent'].unique())
             # unique_continents =  [''] + list(unique_continents)  # Added 'All Countries' option
             # selected_continent = st.selectbox('Select a Continent', unique_continents)
             # number_of_pub_con = df_continent[df_continent['Continent'] == selected_continent]
