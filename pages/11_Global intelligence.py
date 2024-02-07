@@ -70,9 +70,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
     
-#     # container = st.container()
+    # container = st.container()
 
-#     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
+    tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
 #     with tab1:
 #         col1, col2 = st.columns([5,1.6])
 #         with col1:
