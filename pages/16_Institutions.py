@@ -258,7 +258,7 @@ with col2:
         st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
     with st.expander('Events & conferences', expanded=True):
-        st.markdown('##### Next event')
+        st.markdown('##### Next event') 
         conn = connect() 
 
         # Perform SQL query on the Google Sheet.
