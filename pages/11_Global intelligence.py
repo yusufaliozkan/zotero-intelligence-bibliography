@@ -119,7 +119,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_countries['Date published'] = df_countries['Date published'].fillna('')
             df_countries['No date flag'] = df_countries['Date published'].isnull().astype(np.uint8)
             df_countries = df_countries.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-#             df_countries = df_countries.sort_values(by=['Date published'], ascending=False)
+            df_countries = df_countries.sort_values(by=['Date published'], ascending=False)
 #             df_countries = df_countries.drop_duplicates(subset=['Country', 'Zotero link'])
 #             df_countries = df_countries.reset_index(drop=True)
 #             unique_countries = sorted(df_countries['Country'].unique())
