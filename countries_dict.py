@@ -280,7 +280,7 @@ continent_replacements = {
     'Apartheid':'South Africa',
     'My Life as a Spy: Investigations in a Secret Police File':'Romania',
     'Bingchang':'China'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
