@@ -29,7 +29,6 @@ st.set_page_config(layout = "wide",
                     page_title='Intelligence studies network',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
-st.warning('This page is under maintenance! Therefore, the content may intermittently disappear.')
 st.title("Global intelligence")
 
 with st.spinner('Retrieving data & updating dashboard...'):
