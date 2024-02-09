@@ -19,6 +19,8 @@ name_replacements = {
     'Philip H.J. Davies':'Philip H. J. Davies',
     'Philip Davies':'Philip H. J. Davies',
     'Dan Lomas':'Daniel W. B. Lomas',
+    'Daniel W B Lomas':'Daniel W. B. Lomas',
+    'Daniel W.B. Lomas':'Daniel W. B. Lomas',
     'Richard Aldrich':'Richard J. Aldrich',
     'Richard J Aldrich':'Richard J. Aldrich',
     'Steven Wagner':'Steven B. Wagner',
