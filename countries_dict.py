@@ -35,7 +35,7 @@ country_names = [
     'Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems','RAW and the ISI','ASIO and the Cold War', 'SS-Intelligence',
     'Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','My Life as a Spy: Investigations in a Secret Police File','Bingchang'
 ]
-replacements = {
+replacements = { 
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
     'Belgian': 'Belgium',
     'Turkish': 'Turkey',
