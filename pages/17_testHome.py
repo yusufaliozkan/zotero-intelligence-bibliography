@@ -735,15 +735,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             author_citation_df = filtered_collection_df.copy()
                             author_citation_df['Author_name'] = author_citation_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                             author_citation_df = author_citation_df.explode('Author_name')
-
-                            # Mapping author names
                             name_replacements = {}  # Assuming name_replacements is defined elsewhere in your code
                             author_citation_df['Author_name'] = author_citation_df['Author_name'].map(name_replacements).fillna(author_citation_df['Author_name'])
-
-                            # Grouping by authors and summing citations
                             author_citations = author_citation_df.groupby('Author_name')['Citation'].sum().reset_index()
-
-                            # Plotting with Plotly
+                            author_citations
                             fig = px.bar(author_citations.head(10), x='Author_name', y='Citation',
                                         title=f'Top 10 Authors by Citation Count ({selected_collection})',
                                         labels={'Citation': 'Number of Citations', 'Author_name': 'Author'})
