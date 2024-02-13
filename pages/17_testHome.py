@@ -1029,10 +1029,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Journal: ' + str(journals))
-                        def convert_df(selected_journal_df):
-                            return selected_journal_df.to_csv(index=False).encode('utf-8-sig')
 
-                        csv = convert_df(selected_journal_df)
+                        download_journal = selected_journal_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                        download_journal['Abstract'] = download_journal['Abstract'].str.replace('\n', ' ')
+                        download_journal = download_journal.reset_index(drop=True)
+                        def convert_df(download_journal):
+                            return download_journal.to_csv(index=False).encode('utf-8-sig')
+
+                        csv = convert_df(download_journal)
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(selected_journal_df)
                         citation_count = selected_journal_df['Citation'].sum()
