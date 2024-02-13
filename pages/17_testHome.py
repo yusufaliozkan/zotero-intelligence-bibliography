@@ -203,7 +203,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH KEYWORD OR AUTHOR NAMES
 
-            def format_entry(row):
+            def format_entry(row, include_citation=True):
                 publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                 title = str(row['Title']) if pd.notnull(row['Title']) else ''
                 authors = str(row['FirstName2'])
@@ -231,6 +231,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if publication_type == 'Book':
                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
+                citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
+                     else 'Cited by ' + str(citation))
+
                 return (
                     '**' + publication_type + '**' + ': ' +
                     title + ' ' +
@@ -239,7 +242,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
                     '[[Publication link]](' + link_to_publication + ') ' +
                     '[[Zotero link]](' + zotero_link + '), ' + 
-                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else 'Cited by ' + str(citation))
+                    (citation_text if include_citation else '')
                 )
 
             # Title input from the user
