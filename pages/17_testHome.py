@@ -1492,7 +1492,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
                 df_intro = df_intro.reset_index(drop=True)
                 df_intro = df_intro.head(5)
-                articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
+                # articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
                 articles_list = [format_entry(row, include_citation=False) for _, row in df_intro.iterrows()]
                 for index, formatted_entry in enumerate(articles_list):
                     st.write(f"{index + 1}) {formatted_entry}")
