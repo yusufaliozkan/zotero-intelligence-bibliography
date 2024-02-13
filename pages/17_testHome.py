@@ -700,6 +700,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
+                        citation_count = filtered_collection_df['Citation'].sum()
+                        st.write(f'**Number of citations:** {int(citation_count)}')
+
                         a = f'{selected_collection}_{today}'
                         st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
