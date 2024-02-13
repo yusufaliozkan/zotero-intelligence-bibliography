@@ -1549,9 +1549,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_all_items = pd.read_csv('all_items.csv')
                 df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
 
-                def convert_df(df_all_items):
-                    return df_all_items.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv = convert_df(df_all_items)
+                download_all = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                download_all['Abstract'] = download_all['Abstract'].str.replace('\n', ' ')
+                download_all = download_all.reset_index(drop=True)
+                def convert_df(download_all):
+                    return download_all.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                csv = convert_df(download_all)
                 # csv = df_download
                 # # st.caption(collection_name)
                 today = datetime.date.today().isoformat()
