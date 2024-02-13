@@ -1137,6 +1137,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 date_published = row['Date published'] 
                                 link_to_publication = row['Link to publication']
                                 zotero_link = row['Zotero link']
+                                citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                                citation = int(float(citation))
                                 citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
                                 citation_link = citation_link.replace('api.', '')
 
