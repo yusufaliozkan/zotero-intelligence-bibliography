@@ -1499,7 +1499,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.caption(df_intro.iloc[index]['Abstract'])
             with tab13:
                 df_top = pd.read_csv('all_items.csv')
-                df_top['Date published'] = pd.to_datetime(df_top['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                df_top['Date published'] = (
+                    df_top['Date published']
+                    .str.strip()
+                    .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                )
                 df_top['Date published'] = df_top['Date published'].dt.strftime('%Y-%m-%d')
                 df_top['Date published'] = df_top['Date published'].fillna('')
                 df_top['No date flag'] = df_top['Date published'].isnull().astype(np.uint8)
