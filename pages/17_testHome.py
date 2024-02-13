@@ -1429,33 +1429,31 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 display = st.checkbox('Display theme and abstract')
 
-                df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                            ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                            ' (Published on: ' + df['Date published']+') ' +
-                            '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                            )
-                
-                row_nu_1 = len(df_last.index)
-                for i in range(row_nu_1):
-                    publication_type = df['Publication type'].iloc[i]
+                for i, row in df.iterrows():
+                    publication_type = row['Publication type']
                     if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                    ' (Published on: ' + df['Date published']+') ' +
-                                    " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
-                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                    )
-                        st.write(f"{i+1}) " + df_last.iloc[i])
+                        if row['Authors']:  # Check if Authors column is not empty
+                            author_section = ' (by *' + row['Authors'] + '*)'
+                        else:
+                            author_section = ''
+                        publication_info = (
+                            '**' + publication_type + '**' + ': ' + row['Title'] +
+                            author_section +
+                            ' (Published on: ' + row['Date published'] + ') ' +
+                            " (Published in: " + "*" + row['Pub_venue'] + "*" + ') ' +
+                            '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
+                            "[[Zotero link]]" + '(' + row['Zotero link'] + ')'
+                        )
+                        st.write(f"{i+1}) " + publication_info)
                     else:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                    ' (Published on: ' + df['Date published']+') ' +
-                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                    )
-                        st.write(f"{i+1}) " + df_last.iloc[i])
+                        publication_info = (
+                            '**' + publication_type + '**' + ': ' + row['Title'] +
+                            ' (by *' + row['Authors'] + '*) ' +
+                            ' (Published on: ' + row['Date published'] + ') ' +
+                            '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
+                            "[[Zotero link]]" + '(' + row['Zotero link'] + ')'
+                        )
+                        st.write(f"{i+1}) " + publication_info)
                     
                     if display:
                         a=''
