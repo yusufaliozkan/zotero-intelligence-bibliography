@@ -640,7 +640,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         '(Publication date: ' + str(date_published) + ') ' +
                                         ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                         '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                        '[[Zotero link]](' + str(zotero_link) + ')'
+                                        '[[Zotero link]](' + str(zotero_link) + ')' + 'Cited by ' +  str(citation)
                                     )
                                     st.write(f"{index + 1}) {formatted_entry}")
 
