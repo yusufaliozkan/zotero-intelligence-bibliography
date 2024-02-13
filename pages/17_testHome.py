@@ -654,7 +654,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write("No publication type selected.")
 
             # SEARCH IN COLLECTIONS
-            elif search_option == "Search collections":
+            elif search_option == "Search collections": 
                 st.subheader('Search collections')
 
                 df_csv_collections = pd.read_csv('all_items_duplicated.csv')
@@ -793,7 +793,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 for index, row in filtered_collection_df.iterrows():
                                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
                                     articles_list.append(formatted_entry)    
-                                    formatted_entry                 
                                 
                                 for index, row in filtered_collection_df.iterrows():
                                     publication_type = row['Publication type']
