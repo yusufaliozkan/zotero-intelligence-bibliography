@@ -1036,7 +1036,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(selected_journal_df)
                         citation_count = selected_journal_df['Citation'].sum()
-                        st.write(f"**{num_items_collections}** sources found, **Number of citations:** {int(citation_count)}")
+                        st.write(f"Sources found: **{num_items_collections}**, Number of citations: **{int(citation_count)}**")
                         journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
                         if len(journal_citations) >1:
                             journal_citations
