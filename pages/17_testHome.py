@@ -730,7 +730,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 yaxis_title='Number of Publications',
                                 xaxis_tickangle=-45,
                             )
-                            st.plotly_chart(fig)
+                            st.plotly_chart(fig) 
 
                             author_citation_df = filtered_collection_df.copy()
                             author_citation_df['Author_name'] = author_citation_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
