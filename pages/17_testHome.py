@@ -231,9 +231,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if publication_type == 'Book':
                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
-                citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
-                                else 'Cited by ' + str(citation))
-
                 return (
                     '**' + publication_type + '**' + ': ' +
                     title + ' ' +
@@ -242,7 +239,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
                     '[[Publication link]](' + link_to_publication + ') ' +
                     '[[Zotero link]](' + zotero_link + '), ' + 
-                    (citation_text if include_citation else '')
+                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else 'Cited by ' + str(citation))
                 )
 
             # Title input from the user
