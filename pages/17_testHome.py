@@ -732,6 +732,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.plotly_chart(fig)
 
+                            author_citation_df = filtered_collection_df.copy()
+                            author_citation_df['Author_name'] = author_citation_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                            author_citation_df = author_citation_df.explode('Author_name')
+                            author_citation_df.reset_index(drop=True, inplace=True)
+                            author_citation_df['Author_name'] = author_citation_df['Author_name'].map(name_replacements).fillna(author_citation_df['Author_name'])
+                            author_citation_df
+                            collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
+                            fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
+                            fig.update_layout(
+                                title=f'Top 10 Authors by Publication Count ({selected_collection})',
+                                xaxis_title='Author',
+                                yaxis_title='Number of Publications',
+                                xaxis_tickangle=-45,
+                            )
+                            st.plotly_chart(fig)
+
                             author_df = filtered_collection_df.copy()
                             def clean_text (text):
                                 text = text.lower() # lowercasing
