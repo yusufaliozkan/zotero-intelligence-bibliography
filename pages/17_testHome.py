@@ -1038,6 +1038,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         citation_count = selected_journal_df['Citation'].sum()
                         st.write(f'**Number of citations:** {int(citation_count)}')
+                        journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
+                        journal_citations
 
                         a = f'selected_journal_{today}'
                         st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
