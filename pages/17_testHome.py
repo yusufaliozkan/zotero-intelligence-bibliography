@@ -1547,7 +1547,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
                 df_all_items = pd.read_csv('all_items.csv')
-                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
 
                 download_all = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                 download_all['Abstract'] = download_all['Abstract'].str.replace('\n', ' ')
