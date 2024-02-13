@@ -1265,6 +1265,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     df_all_download = df_all.copy()
                     df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published']]
+                    df_all_download['Abstract'] = df_all_download['Abstract'].str.replace('\n', ' ')
                     df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
                     def convert_df(df_all_download):
                         return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
