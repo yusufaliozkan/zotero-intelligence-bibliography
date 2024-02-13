@@ -857,10 +857,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.markdown('#### Publication type: ' + str(selected_type))
                         if selected_type == 'Thesis':
                             st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).')
-                        def convert_df(filtered_type_df):
-                            return filtered_type_df.to_csv(index=False).encode('utf-8-sig')
+                        
+                        download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                        download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
+                        download_types = download_types.reset_index(drop=True)
 
-                        csv = convert_df(filtered_type_df)
+                        def convert_df(download_types):
+                            return download_types.to_csv(index=False).encode('utf-8-sig')
+
+                        csv = convert_df(download_types)
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(filtered_type_df)
                         st.write(f"**{num_items_collections}** sources found")
