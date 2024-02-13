@@ -1412,6 +1412,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             tab11, tab12, tab13 = st.tabs(['Recently added items', 'Recently published items', 'Top cited items'])
             with tab11:
                 st.markdown('#### Recently added or updated items')
+                df
                 df['Abstract'] = df['Abstract'].str.strip()
                 df['Abstract'] = df['Abstract'].fillna('No abstract')
                 
