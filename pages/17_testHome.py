@@ -792,7 +792,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 articles_list = []  # Store articles in a list
                                 for index, row in filtered_collection_df.iterrows():
                                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                                    articles_list.append(formatted_entry)                     
+                                    articles_list.append(formatted_entry)    
+                                    formatted_entry                 
                                 
                                 for index, row in filtered_collection_df.iterrows():
                                     publication_type = row['Publication type']
@@ -957,7 +958,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 zotero_link = row['Zotero link']
                                 citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
                                 citation = int(float(citation))
-                                
+
                                 published_by_or_in_dict = {
                                     'Journal article': 'Published in',
                                     'Magazine article': 'Published in',
