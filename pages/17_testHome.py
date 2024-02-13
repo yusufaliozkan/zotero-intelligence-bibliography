@@ -680,9 +680,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
                         filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                         publications_by_type = filtered_collection_df['Publication type'].value_counts()
+                        publications_by_type['Abstract'] = publications_by_type['Abstract'].str.replace('\n', ' ')
                         def convert_df(filtered_collection_df):
                             return filtered_collection_df.to_csv(index=False).encode('utf-8-sig')
-                        convert_df['Abstract'] = convert_df['Abstract'].str.replace('\n', ' ')
                         csv = convert_df(filtered_collection_df)
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(filtered_collection_df)
