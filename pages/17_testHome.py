@@ -539,7 +539,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
-                        filtered_collection_df_authors
                         citation_count = filtered_collection_df_authors['Citation'].value_counts()
                         citation_count
 
