@@ -845,8 +845,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_type_df['Date published'] = filtered_type_df['Date published'].fillna('')
                     filtered_type_df['No date flag'] = filtered_type_df['Date published'].isnull().astype(np.uint8)
                     filtered_type_df = filtered_type_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
-                    filtered_type_df = filtered_type_df.reset_index(drop=True)
 
                     # publications_by_type = filtered_collection_df['Publication type'].value_counts()
                     
@@ -937,6 +935,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
 
                         else:
+                            sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
+                            if sort_by == 'Publication date' or filtered_type_df['Citation'].sum() == 0:
+                                filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
+                                filtered_type_df = filtered_type_df.reset_index(drop=True)
+                            else:
+                                filtered_type_df = filtered_type_df.sort_values(by=['Citation'], ascending=False)
+                                filtered_type_df = filtered_type_df.reset_index(drop=True)
                             if num_items_collections > 25:
                                 show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
                                 if show_first_25:
