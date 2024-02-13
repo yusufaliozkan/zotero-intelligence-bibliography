@@ -526,8 +526,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].fillna('')
                     filtered_collection_df_authors['No date flag'] = filtered_collection_df_authors['Date published'].isnull().astype(np.uint8)
                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
-                    filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
 
                     publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
 
@@ -618,6 +616,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
                         else:
                             if not on:  # If the toggle is off, display the publications
+                                sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
+                                if sort_by == 'Publication date':
+                                    filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
+                                    filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
+                                else:
+                                    filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
+                                    filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)                                   
                                 for index, row in filtered_collection_df_authors.iterrows():
                                     publication_type = row['Publication type']
                                     title = row['Title']
