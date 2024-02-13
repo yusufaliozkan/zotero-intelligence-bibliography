@@ -953,6 +953,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 date_published = row['Date published'] 
                                 link_to_publication = row['Link to publication']
                                 zotero_link = row['Zotero link']
+                                citation = row['Citation']
 
                                 published_by_or_in_dict = {
                                     'Journal article': 'Published in',
