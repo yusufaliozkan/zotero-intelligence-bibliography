@@ -735,17 +735,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             author_citation_df = filtered_collection_df.copy()
                             author_citation_df['Author_name'] = author_citation_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                             author_citation_df = author_citation_df.explode('Author_name')
-                            author_citation_df.reset_index(drop=True, inplace=True)
+
+                            # Mapping author names
+                            name_replacements = {}  # Assuming name_replacements is defined elsewhere in your code
                             author_citation_df['Author_name'] = author_citation_df['Author_name'].map(name_replacements).fillna(author_citation_df['Author_name'])
+
+                            # Grouping by authors and summing citations
                             author_citations = author_citation_df.groupby('Author_name')['Citation'].sum().reset_index()
-                            author_citations
-                            fig = px.bar(author_citations, x=author_citations.index, y=author_citations.values)
-                            fig.update_layout(
-                                title=f'Top 10 Authors by Publication Count ({selected_collection})',
-                                xaxis_title='Author',
-                                yaxis_title='Number of Publications',
-                                xaxis_tickangle=-45,
-                            )
+
+                            # Plotting with Plotly
+                            fig = px.bar(author_citations.head(10), x='Author_name', y='Citation',
+                                        title=f'Top 10 Authors by Citation Count ({selected_collection})',
+                                        labels={'Citation': 'Number of Citations', 'Author_name': 'Author'})
+                            fig.update_layout(xaxis_tickangle=-45)
                             st.plotly_chart(fig)
 
                             author_df = filtered_collection_df.copy()
