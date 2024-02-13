@@ -540,7 +540,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
                         citation_count = filtered_collection_df_authors['Citation'].sum()
-                        st.write(f'**Number of citations:' {citation_count})
+                        st.write(f'**Number of citations:' ({citation_count}))
 
                         def convert_df(filtered_collection_df_authors):
                             return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
