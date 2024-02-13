@@ -1067,7 +1067,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 fig = px.bar(journal_citations, x='Journal', y='Citation', title='Citations per Journal')
                                 st.plotly_chart(fig, use_container_width = True)
                             
-                            article_citations = selected_journal_df.groupby('Article')['Citation'].sum()
+                            article_citations = selected_journal_df.groupby('Title')['Citation'].sum()
                             article_citations
 
                             fig_cumsum_line = px.line(publications_by_year, x=publications_by_year.index,
