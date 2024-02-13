@@ -1500,12 +1500,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with tab13:
                 df_top = pd.read_csv('all_items.csv')
                 df_top['Date published'] = pd.to_datetime(df_top['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
-                df_top = df_top[df_top['Date published'] <= current_date]
                 df_top['Date published'] = df_top['Date published'].dt.strftime('%Y-%m-%d')
                 df_top['Date published'] = df_top['Date published'].fillna('')
                 df_top['No date flag'] = df_top['Date published'].isnull().astype(np.uint8)
-                df_top = df_top.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 df_top = df_top.sort_values(by=['Citation'], ascending=False)
                 df_top = df_top.reset_index(drop=True)
                 df_top = df_top.head(5)
