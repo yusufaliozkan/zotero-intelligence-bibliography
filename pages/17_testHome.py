@@ -213,6 +213,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 published_by_or_in = ''
                 published_source = ''
                 citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                citation = int(float(citation))
 
                 published_by_or_in_dict = {
                     'Journal article': 'Published in',
