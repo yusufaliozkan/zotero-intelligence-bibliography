@@ -274,7 +274,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
-                df_citation = pd.read_csv('all_items_with_citation.csv')
+                df_citation = pd.read_csv('all_items.csv')
                 df_citation
                 cols, cola = st.columns([2,6])
                 with cols:
