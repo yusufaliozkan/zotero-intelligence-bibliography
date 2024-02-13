@@ -335,7 +335,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df['Date published'] = filtered_df['Date published'].fillna('')
                         filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
                         filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                        filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         types2 = st.multiselect('Publication types', types, types, key='original2')
@@ -438,6 +437,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.pyplot()
 
                             else:
+                                sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
+                                if sort_by == 'Publication date' or filtered_df['Citation'].sum() == 0:
+                                    filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
+                                    filtered_df = filtered_df.reset_index(drop=True)
+                                else:
+                                    filtered_df = filtered_df.sort_values(by=['Citation'], ascending=False)
+                                    filtered_df = filtered_df.reset_index(drop=True)
                                 if num_items > 25:
                                     show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
                                     if show_first_25:
