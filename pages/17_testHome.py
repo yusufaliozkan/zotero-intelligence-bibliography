@@ -1063,7 +1063,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if len(journal_citations) >1:
                                 journal_citations = journal_citations.reset_index()
                                 fig = px.bar(journal_citations, x='Journal', y='Citation', title='Citations per Journal')
-                                st.plotly_chart(fig)
+                                st.plotly_chart(fig, use_container_width = True)
 
                             fig_cumsum_line = px.line(publications_by_year, x=publications_by_year.index,
                                                     y=publications_by_year.columns,
