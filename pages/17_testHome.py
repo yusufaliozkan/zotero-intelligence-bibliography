@@ -1035,6 +1035,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(selected_journal_df)
                         st.write(f"**{num_items_collections}** sources found")
+
+                        citation_count = selected_journal_df['Citation'].sum()
+                        st.write(f'**Number of citations:** {int(citation_count)}')
+
                         a = f'selected_journal_{today}'
                         st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
