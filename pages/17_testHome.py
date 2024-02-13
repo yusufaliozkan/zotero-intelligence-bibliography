@@ -737,7 +737,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             author_citation_df = author_citation_df.explode('Author_name')
                             author_citation_df.reset_index(drop=True, inplace=True)
                             author_citation_df['Author_name'] = author_citation_df['Author_name'].map(name_replacements).fillna(author_citation_df['Author_name'])
-                            author_citation_df
+                            author_citations = author_citation_df.groupby('Author_name')['Citation'].sum().reset_index()
+                            author_citations
                             collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
                             fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
                             fig.update_layout(
