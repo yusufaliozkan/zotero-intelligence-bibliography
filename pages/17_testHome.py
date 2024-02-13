@@ -1060,6 +1060,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             publications_by_year = collection_df.groupby(['Year', 'Journal']).size().unstack().fillna(0)
                             publications_by_year = publications_by_year.cumsum(axis=0)
 
+                            journal_citations
                             fig = px.bar(journal_citations, x='Journal', y='Citation', title='Citations per Journal')
                             st.plotly_chart(fig)
 
