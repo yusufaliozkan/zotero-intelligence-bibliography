@@ -1136,7 +1136,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                            if sort_by == 'Publication date':
+                            if sort_by == 'Publication date' or selected_journal_df['Citation'].sum() == 0:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
                                 selected_journal_df = selected_journal_df.reset_index(drop=True)
                             else:
