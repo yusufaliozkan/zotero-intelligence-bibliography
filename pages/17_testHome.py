@@ -1407,8 +1407,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Display the article with highlighted search terms
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
-            # RECENTLY ADDED ITEMS
-            st.header('Quick overview', anchor=None)
+            # OVERVIEW
+            st.header('Overview', anchor=None)
             tab11, tab12, tab13 = st.tabs(['Recently added items', 'Recently published items', 'Top cited items'])
             with tab11:
                 st.markdown('#### Recently added or updated items')
