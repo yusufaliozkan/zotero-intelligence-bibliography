@@ -1395,6 +1395,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
                     else:
+                        sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
+                        if sort_by == 'Publication date' or df_all['Citation'].sum() == 0:
+                            df_all = df_all.sort_values(by=['Date published'], ascending=False)
+                            df_all = df_all.reset_index(drop=True)
+                        else:
+                            df_all = df_all.sort_values(by=['Citation'], ascending=False)
+                            df_all = df_all.reset_index(drop=True)
                         if number_of_items > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
                             if show_first_25:
