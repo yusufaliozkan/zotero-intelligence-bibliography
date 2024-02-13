@@ -1510,7 +1510,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_top = df_top.sort_values(by=['Citation'], ascending=False)
                 df_top = df_top.reset_index(drop=True)
                 articles_list = [format_entry(row) for _, row in df_top.iterrows()]
-                articles_list = [format_entry(row, include_citation=False) for _, row in df_top.iterrows()]
+                articles_list = [format_entry(row, include_citation=True) for _, row in df_top.iterrows()]
                 for index, formatted_entry in enumerate(articles_list):
                     st.write(f"{index + 1}) {formatted_entry}")
                     if display2:
