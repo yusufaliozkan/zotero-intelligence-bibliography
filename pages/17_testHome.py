@@ -1408,8 +1408,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
             # RECENTLY ADDED ITEMS
-            st.header('Recent items', anchor=None)
-            tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
+            st.header('Quick overview', anchor=None)
+            tab11, tab12, tab13 = st.tabs(['Recently added items', 'Recently published items', 'Top cited items'])
             with tab11:
                 st.markdown('#### Recently added or updated items')
                 df['Abstract'] = df['Abstract'].str.strip()
@@ -1497,6 +1497,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write(f"{index + 1}) {formatted_entry}")
                     if display2:
                         st.caption(df_intro.iloc[index]['Abstract'])
+            with tab13:
+                df_top = pd.read_csv('all_items.csv')
+                df_top['Date published'] = pd.to_datetime(df_top['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
+                df_top = df_top[df_top['Date published'] <= current_date]
+                df_top['Date published'] = df_top['Date published'].dt.strftime('%Y-%m-%d')
+                df_top['Date published'] = df_top['Date published'].fillna('')
+                df_top['No date flag'] = df_top['Date published'].isnull().astype(np.uint8)
+                df_top = df_top.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                df_top = df_top.head(5)
+                df_top = df_top.sort_values(by=['Citation'], ascending=False)
+                df_top = df_top.reset_index(drop=True)
+                articles_list = [format_entry(row) for _, row in df_top.iterrows()]
+                articles_list = [format_entry(row, include_citation=False) for _, row in df_top.iterrows()]
+                for index, formatted_entry in enumerate(articles_list):
+                    st.write(f"{index + 1}) {formatted_entry}")
+                    if display2:
+                        st.caption(df_top.iloc[index]['Abstract'])
 
             st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
