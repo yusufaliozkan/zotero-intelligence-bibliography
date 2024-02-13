@@ -1062,6 +1062,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             if len(journal_citations) >1:
                                 journal_citations = journal_citations.reset_index()
+                                journal_citations = journal_citations[journal_citations['Citation'] > 0]
                                 journal_citations = journal_citations.sort_values(by='Citation', ascending=False)
                                 fig = px.bar(journal_citations, x='Journal', y='Citation', title='Citations per Journal')
                                 st.plotly_chart(fig, use_container_width = True)
