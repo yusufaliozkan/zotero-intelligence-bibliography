@@ -538,6 +538,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         num_items_collections = len(filtered_collection_df_authors)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+
+                        citation_count = publications_by_type['Citation'].value_counts()
+                        citation_count
+
                         def convert_df(filtered_collection_df_authors):
                             return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
                         download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
@@ -695,10 +699,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         num_items_collections = len(filtered_collection_df)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-
-                        publications_by_type
-                        citation_count = publications_by_type['Citation'].value_counts()
-                        citation_count
 
                         a = f'{selected_collection}_{today}'
                         st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
