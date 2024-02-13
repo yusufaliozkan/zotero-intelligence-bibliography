@@ -617,7 +617,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             if not on:  # If the toggle is off, display the publications
                                 sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                                if sort_by == 'Publication date':
+                                if sort_by == 'Publication date' or filtered_collection_df_authors['Citation'].sum() == 0:
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                                     filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
                                 else:
