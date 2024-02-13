@@ -1130,17 +1130,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
 
                         else:
-                            if num_items_collections > 25:
-                                show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
-                                if show_first_25:
-                                    selected_journal_df = selected_journal_df.head(25)                            
-                            sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                            if sort_by == 'Publication date':
+                           if sort_by == 'Publication date':
                                 selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
                                 selected_journal_df = selected_journal_df.reset_index(drop=True)
                             else:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
                                 selected_journal_df = selected_journal_df.reset_index(drop=True)
+                            if num_items_collections > 25:
+                                show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
+                                if show_first_25:
+                                    selected_journal_df = selected_journal_df.head(25)                            
+                            sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
 
                             articles_list = []  # Store articles in a list
                             for index, row in selected_journal_df.iterrows():
