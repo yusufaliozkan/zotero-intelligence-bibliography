@@ -1506,9 +1506,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_top['Date published'] = df_top['Date published'].fillna('')
                 df_top['No date flag'] = df_top['Date published'].isnull().astype(np.uint8)
                 df_top = df_top.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                df_top = df_top.head(5)
                 df_top = df_top.sort_values(by=['Citation'], ascending=False)
                 df_top = df_top.reset_index(drop=True)
+                df_top = df_top.head(5)
                 articles_list = [format_entry(row) for _, row in df_top.iterrows()]
                 articles_list = [format_entry(row, include_citation=True) for _, row in df_top.iterrows()]
                 for index, formatted_entry in enumerate(articles_list):
