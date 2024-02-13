@@ -654,7 +654,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write("No publication type selected.")
 
             # SEARCH IN COLLECTIONS
-            elif search_option == "Search collections":
+            elif search_option == "Search collections": 
                 st.subheader('Search collections')
 
                 df_csv_collections = pd.read_csv('all_items_duplicated.csv')
@@ -699,6 +699,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         num_items_collections = len(filtered_collection_df)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+
+                        citation_count = filtered_collection_df['Citation'].sum()
+                        st.write(f'**Number of citations:** {int(citation_count)}')
 
                         a = f'{selected_collection}_{today}'
                         st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
@@ -793,7 +796,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 for index, row in filtered_collection_df.iterrows():
                                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
                                     articles_list.append(formatted_entry)    
-                                    formatted_entry                 
                                 
                                 for index, row in filtered_collection_df.iterrows():
                                     publication_type = row['Publication type']
