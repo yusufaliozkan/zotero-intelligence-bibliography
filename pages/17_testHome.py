@@ -968,6 +968,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 zotero_link = row['Zotero link']
                                 citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
                                 citation = int(float(citation))
+                                citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
+                                citation_link = citation_link.replace('api.', '')
 
                                 published_by_or_in_dict = {
                                     'Journal article': 'Published in',
@@ -990,7 +992,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     '(Publication date: ' + str(date_published) + ') ' +
                                     ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                     '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                    '[[Zotero link]](' + str(zotero_link) + '), ' +  'Cited by ' + str(citation)
+                                    '[[Zotero link]](' + str(zotero_link) + '), ' + 
+                                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else 'Cited by ' + str(citation))
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
 
