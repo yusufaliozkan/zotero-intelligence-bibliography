@@ -1021,7 +1021,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     selected_journal_df['Date published'] = selected_journal_df['Date published'].fillna('')
                     selected_journal_df['No date flag'] = selected_journal_df['Date published'].isnull().astype(np.uint8)
                     selected_journal_df = selected_journal_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    # selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
+                    selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
                     selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
                     selected_journal_df = selected_journal_df.reset_index(drop=True)
 
@@ -1035,10 +1035,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         csv = convert_df(selected_journal_df)
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(selected_journal_df)
-                        st.write(f"**{num_items_collections}** sources found")
-
                         citation_count = selected_journal_df['Citation'].sum()
-                        st.write(f'**Number of citations:** {int(citation_count)}')
+                        st.write(f"**{num_items_collections}** sources found, **Number of citations:** {int(citation_count)}")
                         journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
                         if len(journal_citations) >1:
                             journal_citations
