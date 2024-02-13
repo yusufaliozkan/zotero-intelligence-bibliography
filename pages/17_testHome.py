@@ -523,7 +523,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         def convert_df(filtered_collection_df_authors):
                             return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
-                        download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
+                        download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                        download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
                         csv = convert_df(download_filtered)
             
                         today = datetime.date.today().isoformat()
