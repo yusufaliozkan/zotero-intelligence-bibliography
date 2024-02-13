@@ -1498,6 +1498,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if display2:
                         st.caption(df_intro.iloc[index]['Abstract'])
             with tab13:
+                display3 = st.checkbox('Display abstracts', key='top_cited')
                 df_top = pd.read_csv('all_items.csv')
                 df_top['Date published'] = (
                     df_top['Date published']
@@ -1514,7 +1515,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 articles_list = [format_entry(row, include_citation=True) for _, row in df_top.iterrows()]
                 for index, formatted_entry in enumerate(articles_list):
                     st.write(f"{index + 1}) {formatted_entry}")
-                    if display2:
+                    if display3:
                         st.caption(df_top.iloc[index]['Abstract'])
 
             st.header('All items in database', anchor=False)
