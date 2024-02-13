@@ -1021,7 +1021,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     selected_journal_df['Date published'] = selected_journal_df['Date published'].fillna('')
                     selected_journal_df['No date flag'] = selected_journal_df['Date published'].isnull().astype(np.uint8)
                     selected_journal_df = selected_journal_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    selected_journal_df = selected_journal_df.reset_index(drop=True)
 
                     # publications_by_type = filtered_collection_df['Publication type'].value_counts()
                     
@@ -1138,8 +1137,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
                             if sort_by == 'Publication date':
                                 selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
+                                selected_journal_df = selected_journal_df.reset_index(drop=True)
                             else:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
+                                selected_journal_df = selected_journal_df.reset_index(drop=True)
 
                             articles_list = []  # Store articles in a list
                             for index, row in selected_journal_df.iterrows():
