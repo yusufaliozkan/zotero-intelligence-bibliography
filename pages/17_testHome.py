@@ -248,7 +248,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Title input from the user
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collections", "Publication types", "Search journal", "Publication year"))
+            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year"))
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
@@ -642,8 +642,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write("No publication type selected.")
 
             # SEARCH IN COLLECTIONS
-            elif search_option == "Search collections": 
-                st.subheader('Search collections')
+            elif search_option == "Search collection": 
+                st.subheader('Search collection')
 
                 df_csv_collections = pd.read_csv('all_items_duplicated.csv')
                 excluded_collections = ['97 KCL intelligence']
