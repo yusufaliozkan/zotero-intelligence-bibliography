@@ -1039,7 +1039,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         citation_count = selected_journal_df['Citation'].sum()
                         st.write(f'**Number of citations:** {int(citation_count)}')
                         journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
-                        st.write(journal_citations)
+                        output_text = f"**Number of citations:** {int(citation_count)}\n\n"
+                        output_text += "**Citations per Journal:**\n"
+                        output_text += journal_citations.to_string()
+                        st.write(output_text)
 
 
                         a = f'selected_journal_{today}'
