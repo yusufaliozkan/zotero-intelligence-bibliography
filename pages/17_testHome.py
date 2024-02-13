@@ -1524,6 +1524,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if display2:
                         st.caption(df_intro.iloc[index]['Abstract'])
             with tab13:
+                st.markdown('#### Top 10 cited items')
                 display3 = st.checkbox('Display abstracts', key='top_cited')
                 df_top = pd.read_csv('all_items.csv')
                 df_top['Date published'] = (
