@@ -739,8 +739,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             author_citation_df['Author_name'] = author_citation_df['Author_name'].map(name_replacements).fillna(author_citation_df['Author_name'])
                             author_citations = author_citation_df.groupby('Author_name')['Citation'].sum().reset_index()
                             author_citations
-                            collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                            fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
+                            fig = px.bar(author_citations, x=author_citations.index, y=author_citations.values)
                             fig.update_layout(
                                 title=f'Top 10 Authors by Publication Count ({selected_collection})',
                                 xaxis_title='Author',
