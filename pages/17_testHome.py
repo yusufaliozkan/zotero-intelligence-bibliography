@@ -1412,7 +1412,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             tab11, tab12, tab13 = st.tabs(['Recently added items', 'Recently published items', 'Top cited items'])
             with tab11:
                 st.markdown('#### Recently added or updated items')
-                df
                 df['Abstract'] = df['Abstract'].str.strip()
                 df['Abstract'] = df['Abstract'].fillna('No abstract')
                 
@@ -1428,6 +1427,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
                 
                 display = st.checkbox('Display theme and abstract')
+
 
                 df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                             ' (by ' + '*' + df['Authors'] + '*' + ') ' +
