@@ -739,7 +739,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             author_citation_df['Author_name'] = author_citation_df['Author_name'].map(name_replacements).fillna(author_citation_df['Author_name'])
                             author_citations = author_citation_df.groupby('Author_name')['Citation'].sum().reset_index()
                             author_citations = author_citations.sort_values(by='Citation', ascending=False)
-                            filtered_collection_df
                             fig = px.bar(author_citations.head(10), x='Author_name', y='Citation',
                                         title=f'Top 10 Authors by Citation Count ({selected_collection})',
                                         labels={'Citation': 'Number of Citations', 'Author_name': 'Author'})
