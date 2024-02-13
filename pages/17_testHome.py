@@ -212,6 +212,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
                 published_by_or_in = ''
                 published_source = ''
+                citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                citation = int(float(citation))
 
                 published_by_or_in_dict = {
                     'Journal article': 'Published in',
@@ -234,7 +236,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     '(Publication date: ' + str(date_published) + ') ' +
                     ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
                     '[[Publication link]](' + link_to_publication + ') ' +
-                    '[[Zotero link]](' + zotero_link + ')'
+                    '[[Zotero link]](' + zotero_link + '), ' + 'Cited by ' +  str(citation)
                 )
 
             # Title input from the user
@@ -275,7 +277,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
                 df_citation = pd.read_csv('all_items.csv')
-                df_citation 
+                df_citation
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
@@ -536,6 +538,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         num_items_collections = len(filtered_collection_df_authors)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+
+                        citation_count = filtered_collection_df_authors['Citation'].sum()
+                        st.write(f'**Number of citations:** {int(citation_count)}')
+
                         def convert_df(filtered_collection_df_authors):
                             return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
                         download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link']]
@@ -616,6 +622,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     date_published = row['Date published']
                                     link_to_publication = row['Link to publication']
                                     zotero_link = row['Zotero link']
+                                    citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                                    citation = int(float(citation))
 
                                     published_by_or_in_dict = {
                                         'Journal article': 'Published in',
@@ -638,7 +646,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         '(Publication date: ' + str(date_published) + ') ' +
                                         ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                         '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                        '[[Zotero link]](' + str(zotero_link) + ')'
+                                        '[[Zotero link]](' + str(zotero_link) + '), ' + 'Cited by ' +  str(citation)
                                     )
                                     st.write(f"{index + 1}) {formatted_entry}")
 
@@ -691,6 +699,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         num_items_collections = len(filtered_collection_df)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+
                         a = f'{selected_collection}_{today}'
                         st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
@@ -783,7 +792,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 articles_list = []  # Store articles in a list
                                 for index, row in filtered_collection_df.iterrows():
                                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                                    articles_list.append(formatted_entry)                     
+                                    articles_list.append(formatted_entry)    
+                                    formatted_entry                 
                                 
                                 for index, row in filtered_collection_df.iterrows():
                                     publication_type = row['Publication type']
@@ -792,6 +802,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     date_published = row['Date published']
                                     link_to_publication = row['Link to publication']
                                     zotero_link = row['Zotero link']
+                                    citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                                    citation = int(float(citation))
 
                                     if publication_type == 'Journal article':
                                         published_by_or_in = 'Published in'
@@ -810,7 +822,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         '(Publication date: ' + str(date_published) + ') ' +
                                         ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                         '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                        '[[Zotero link]](' + str(zotero_link) + ')'
+                                        '[[Zotero link]](' + str(zotero_link) + '), ' +
+                                        'Cited by ' + str(citation)
                                     )
                                     st.write(f"{index + 1}) {formatted_entry}")
                             else:  # If toggle is on but no publications are available
@@ -943,6 +956,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 date_published = row['Date published'] 
                                 link_to_publication = row['Link to publication']
                                 zotero_link = row['Zotero link']
+                                citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                                citation = int(float(citation))
 
                                 published_by_or_in_dict = {
                                     'Journal article': 'Published in',
@@ -965,7 +980,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     '(Publication date: ' + str(date_published) + ') ' +
                                     ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                     '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                    '[[Zotero link]](' + str(zotero_link) + ')'
+                                    '[[Zotero link]](' + str(zotero_link) + '), ' +  'Cited by ' + str(citation)
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
 
@@ -1142,6 +1157,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
                     published_by_or_in = ''
                     published_source = ''
+                    citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                    citation = int(float(citation))
 
                     published_by_or_in_dict = {
                         'Journal article': 'Published in',
@@ -1164,7 +1181,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '(Publication date: ' + str(date_published) + ') ' +
                         ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
                         '[[Publication link]](' + link_to_publication + ') ' +
-                        '[[Zotero link]](' + zotero_link + ')'
+                        '[[Zotero link]](' + zotero_link + '), ' + 'Cited by ' +  str(citation)
                     )
                 with st.expander('Click to expand', expanded=True):                    
                     df_all = pd.read_csv('all_items.csv') 
