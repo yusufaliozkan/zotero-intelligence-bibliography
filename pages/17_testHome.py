@@ -1492,6 +1492,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with st.expander('Click to expand', expanded=True):                    
                     df_cited = pd.read_csv('all_items.csv') 
                     df_cited = df_cited.dropna(subset=['Citation'])
+                    df_cited
                     df_cited = df_cited.reset_index(drop=True)
                     df_cited['Date published2'] = (
                         df_cited['Date published']
