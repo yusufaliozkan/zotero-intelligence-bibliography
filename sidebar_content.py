@@ -33,8 +33,7 @@ def sidebar_content():
             ''')
         with st.expander('Issues'):
             st.warning('''
-            This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
-            The list is created based on the creator's subjective views.
+            Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).
             ''')
         with st.expander('Contact us'):
             st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
