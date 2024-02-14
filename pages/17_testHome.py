@@ -1446,8 +1446,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Display the article with highlighted search terms
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
-            elif search_option == "Publication year":                
-                st.subheader('Items by publication year')
+            elif search_option == "Cited papers":                
+                st.subheader('Cited items in the library')
                 def format_entry(row, include_citation=True):
                     publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                     title = str(row['Title']) if pd.notnull(row['Title']) else ''
