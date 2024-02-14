@@ -1528,7 +1528,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     csv_selected = convert_df(df_cited_download)
                     # csv = df_download
                     # # st.caption(collection_name)
-                    a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
+                    a = 'cited-items-'
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_cited)
 
