@@ -182,7 +182,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     col1, col2 = st.columns([3,5])
     with col2:
-        with st.expander('Intro'):
+        with st.expander('Introduction'):
             st.info(into)
     with col1:
         df_intro = pd.read_csv('all_items.csv')
