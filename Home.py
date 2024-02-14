@@ -2139,5 +2139,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
         1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by David Schaefer
         2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic
         ''')
+        st.write('''
+        Contributions with comments and sources
+        1. Daniela Richterove
+        ''')
 
     display_custom_license()
