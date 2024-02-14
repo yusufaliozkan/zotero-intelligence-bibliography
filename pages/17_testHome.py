@@ -1566,6 +1566,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.plotly_chart(fig)
 
+                            collection_df = df_cited.copy()
                             collection_df['Author_name'] = collection_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                             collection_df = collection_df.explode('Author_name')
                             name_replacements = {}  # Assuming name_replacements is defined elsewhere in your code
