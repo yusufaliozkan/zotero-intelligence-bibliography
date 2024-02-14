@@ -169,9 +169,7 @@ Welcome to **Intelligence studies bibliography**.
 This website lists hundreds of sources, events, conferences, and call for papers on intelligence history and intelligence studies. Finding sources on intelligence
 can sometimes be challening. This bibliography will be your helpful research assistant in finding and saving sources.
 
-Check out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction over the website.
-
-This library shows citations to journal articles in this library. Citation data comes from [OpenAlex](https://openalex.org/).
+Check out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction about the website.
 '''
 
 with st.spinner('Retrieving data & updating dashboard...'): 
