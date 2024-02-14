@@ -1536,7 +1536,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.write(f"**{number_of_items}** sources received **{int(citation_count)}** citations (total items measures for citation: int{non_nan_id})")
+                    st.write(f"**{number_of_items}** sources received **{int(citation_count)}** citations (total items measures for citation: {non_nan_id})")
                     st.write(f'Average citation: **{int((citation_count)/(number_of_items))}**')         
 
                     st.warning('Items without a citation are not listed here!')
