@@ -1573,8 +1573,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collection_df['Author_name'] = collection_df['Author_name'].map(name_replacements).fillna(collection_df['Author_name'])
                             author_citations = collection_df.groupby('Author_name')['Citation'].sum().reset_index()
                             author_citations = author_citations.sort_values(by='Citation', ascending=False)
-                            fig = px.bar(author_citations.head(10), x='Author_name', y='Citation',
-                                        title=f'Top 10 Authors by Citation Count',
+                            fig = px.bar(author_citations.head(20), x='Author_name', y='Citation',
+                                        title=f'Top 20 Authors by Citation Count',
                                         labels={'Citation': 'Number of Citations', 'Author_name': 'Author'})
                             fig.update_layout(xaxis_tickangle=-45)
                             st.plotly_chart(fig)
