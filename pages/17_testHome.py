@@ -1541,32 +1541,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
-                        if dashboard_all and len(df_all) > 0: 
-                            if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                st.info(f'Dashboard for items published between {int(years[0])} and {int(years[1])}')
-                            else:
-                                st.info(f'Dashboard for items published in {int(years[0])}')
-                            collection_df = df_all.copy()
-                            
-                            publications_by_type = collection_df['Publication type'].value_counts()
-                            if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
-                            else:
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type in {int(years[0])}')
-                            st.plotly_chart(fig)
+                        if dashboard_all and len(df_cited) > 0: 
+                            st.info(f'Dashboard for cited items in the library')                    
 
-                            if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                collection_df = df_all.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                                publications_by_year = collection_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
-                                st.plotly_chart(fig_year_bar)
+                            collection_df = df_cited.copy()
+                            collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                            publications_by_year = collection_df['Year'].value_counts().sort_index()
+                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
+                            st.plotly_chart(fig_year_bar)
                             else:
                                 collection_df = df_all.copy()
                                 collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
