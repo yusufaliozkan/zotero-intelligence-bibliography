@@ -1539,7 +1539,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write(f"**{number_of_items}** sources received **{int(citation_count)}** citations (total items measured for citation: {non_nan_id})")
                     st.write(f'''
                     Average citation (citation 1 or above): **{int((citation_count)/(number_of_items))}** | 
-                    Average citation (all measured items): **{int((citation_count)/(non_nan_id))}**
+                    Average citation (all measured items): **{round((citation_count)/(non_nan_id))}**
                     ''')         
 
                     st.warning('Items without a citation are not listed here!')
