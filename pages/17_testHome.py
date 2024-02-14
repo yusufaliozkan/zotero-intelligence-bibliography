@@ -1552,35 +1552,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 title=f'Publications over time')
                             st.plotly_chart(fig_year_bar)
 
-                            collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
-                            publications_by_year = collection_df['Month'].value_counts().sort_index()
-                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                labels={'x': 'Publication Month', 'y': 'Number of Publications'},
-                                                title=f'Publications by Month in {int(years[0])}')
-                            st.plotly_chart(fig_year_bar)
-
-                            collection_author_df = df_all.copy()
-                            collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                            collection_author_df = collection_author_df.explode('Author_name')
-                            collection_author_df.reset_index(drop=True, inplace=True)
-                            collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
-                            collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                            fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                            if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count between {int(years[0])} and {int(years[1])}',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
-                                )
-                            else:
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count in {int(years[0])}',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
-                                )
-                            st.plotly_chart(fig)
+                            collection_df['Author_name'] = collection_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                            collection_df = collection_df.explode('Author_name')
+                            collection_df.reset_index(drop=True, inplace=True)
+                            collection_df['Author_name'] = collection_df['Author_name'].map(name_replacements).fillna(collection_df['Author_name'])
+                            collection_df = collection_df['Author_name'].value_counts().head(10)
+                            fig = px.bar(collection_df, x=collection_df.index, y=collection_df.values)
+                            fig.update_layout(
+                                title=f'Top 10 Authors by Publication Count',
+                                xaxis_title='Author',
+                                yaxis_title='Number of Publications',
+                                xaxis_tickangle=-45,
+                            )
+       
 
                             author_df = df_all.copy()
                             def clean_text (text):
