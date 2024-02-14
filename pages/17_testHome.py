@@ -1564,6 +1564,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 yaxis_title='Number of Publications',
                                 xaxis_tickangle=-45,
                             )
+                            st.plotly_chart(fig)
        
 
                             author_df = df_all.copy()
