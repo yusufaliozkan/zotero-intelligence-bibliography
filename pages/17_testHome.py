@@ -1534,8 +1534,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-
-                    st.write(f"**{number_of_items}** sources found published")              
+                    st.write(f"**{number_of_items}** sources found published {breakdown_string}")              
 
                     st.warning('Items without a citation are not listed here!')
 
