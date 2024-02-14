@@ -1532,9 +1532,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_cited)
 
+                    citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.write(f"**{number_of_items}** sources found published {breakdown_string}")              
+                    st.write(f"**{number_of_items}** sources received {citation_count} citations ({breakdown_string})")              
 
                     st.warning('Items without a citation are not listed here!')
 
