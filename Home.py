@@ -2140,7 +2140,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic
         ''')
         st.write('''
-        Contributions with comments and sources
+        Contributors with comments and sources:
         1. Daniela Richterove
         ''')
 
