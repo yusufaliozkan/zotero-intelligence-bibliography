@@ -165,11 +165,11 @@ st.header('Intelligence studies bibliography', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 into = '''
-Welcome to **Intelligence studies bibliography** 
+Welcome to **Intelligence studies bibliography**.
 This website lists different sources, events, conferences, and call for papers on intelligence history and intelligence studies.
 Check out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction over the website.
 
-You can see citations to journal articles in this library. Citation data comes from [OpenAlex](https://openalex.org/).
+This library shows citations to journal articles in this library. Citation data comes from [OpenAlex](https://openalex.org/).
 '''
 
 with st.spinner('Retrieving data & updating dashboard...'): 
