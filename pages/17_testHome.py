@@ -2253,6 +2253,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.write('''
         Contributors with comments and sources:
         1. Daniela Richterove
+        2. Steven Wagner
         ''')
 
     display_custom_license()
