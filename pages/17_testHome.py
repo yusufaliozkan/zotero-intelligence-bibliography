@@ -166,7 +166,7 @@ st.header('Intelligence studies bibliography', anchor=False)
 
 into = '''
 Welcome to **Intelligence studies bibliography**.
-This website lists hundreds of sources, events, conferences, and call for papers on intelligence history and intelligence studies. Finding sources on intelligence
+This website lists **hundreds of sources, events, conferences, and call for papers** on intelligence history and intelligence studies. Finding sources on intelligence
 can sometimes be challening. This bibliography will be your helpful research assistant in finding and saving sources.
 
 Check out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction about the website.
