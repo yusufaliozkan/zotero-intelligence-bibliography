@@ -1551,14 +1551,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                 title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
                             st.plotly_chart(fig_year_bar)
-                            else:
-                                collection_df = df_all.copy()
-                                collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
-                                publications_by_year = collection_df['Month'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Month', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Month in {int(years[0])}')
-                                st.plotly_chart(fig_year_bar)
+
+                            collection_df = df_all.copy()
+                            collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
+                            publications_by_year = collection_df['Month'].value_counts().sort_index()
+                            fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                labels={'x': 'Publication Month', 'y': 'Number of Publications'},
+                                                title=f'Publications by Month in {int(years[0])}')
+                            st.plotly_chart(fig_year_bar)
 
                             collection_author_df = df_all.copy()
                             collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
