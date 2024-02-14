@@ -1648,19 +1648,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
                     else:
                         sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                        if sort_by == 'Publication date' or df_all['Citation'].sum() == 0:
-                            df_all = df_all.sort_values(by=['Date published'], ascending=False)
-                            df_all = df_all.reset_index(drop=True)
+                        if sort_by == 'Publication date' or df_cited['Citation'].sum() == 0:
+                            df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
+                            df_cited = df_cited.reset_index(drop=True)
                         else:
-                            df_all = df_all.sort_values(by=['Citation'], ascending=False)
-                            df_all = df_all.reset_index(drop=True)
+                            df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
+                            df_cited = df_cited.reset_index(drop=True)
                         if number_of_items > 25:
                             show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
                             if show_first_25:
-                                df_all = df_all.head(25)
+                                df_cited = df_cited.head(25)
                         articles_list = []  # Store articles in a list
                         abstracts_list = [] #Store abstracts in a list
-                        for index, row in df_all.iterrows():
+                        for index, row in df_cited.iterrows():
                             formatted_entry = format_entry(row)
                             articles_list.append(formatted_entry)  # Append formatted entry to the list
                             abstract = row['Abstract']
