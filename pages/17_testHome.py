@@ -1549,7 +1549,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             publications_by_year = collection_df['Year'].value_counts().sort_index()
                             fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                 labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
+                                                title=f'Publications over time')
                             st.plotly_chart(fig_year_bar)
 
                             collection_df = df_all.copy()
