@@ -172,7 +172,9 @@ The current page shows the recently added or updated items.
 The website has also a dynamic [digest](https://intelligence.streamlit.app/Digest) that you can tract latest publications & events.
 Check it out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction.
 
-Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/). 
+Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).
+
+You can see citations to journal articles in this library. Citation data comes from [OpenAlex](https://openalex.org/).
 '''
 
 with st.spinner('Retrieving data & updating dashboard...'): 
