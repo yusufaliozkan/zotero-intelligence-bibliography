@@ -31,6 +31,11 @@ def sidebar_content():
             This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
             The list is created based on the creator's subjective views.
             ''')
+        with st.expander('Issues'):
+            st.warning('''
+            This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
+            The list is created based on the creator's subjective views.
+            ''')
         with st.expander('Contact us'):
             st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
