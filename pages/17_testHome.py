@@ -2245,9 +2245,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
     st.write('---')
     with st.expander('Acknowledgements'):
         st.subheader('Acknowledgements')
-        st.write('The following sources are used to collate some of the items and events in this website:')
-        st.write("1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by David Schaefer")
-        st.write("2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic")
-        st.write("3. [North American Society for Intelligence History (NASIH)](https://www.intelligencehistory.org/brownbags)")
+        st.write('''
+        The following sources are used to collate some of the items and events in this website:
+        1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by David Schaefer
+        2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic
+        ''')
+        st.write('''
+        Contributors with comments and sources:
+        1. Daniela Richterove
+        ''')
 
     display_custom_license()
