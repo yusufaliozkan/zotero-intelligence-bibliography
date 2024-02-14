@@ -170,6 +170,9 @@ This website lists **hundreds of sources, events, conferences, and call for pape
 can sometimes be challening. This bibliography will be your helpful research assistant in finding and saving sources.
 
 Check out the [short guide](https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353) for a quick intoduction about the website.
+Ozkan, Yusuf Ali. ‘Enhancing the “Intelligence Studies Network” Website’. Medium (blog), 20 January 2024. https://medium.com/@yaliozkan/enhancing-the-intelligence-studies-network-website-13aa0c80f7f4.
+———. ‘Introduction to “Intelligence Studies Bibliography”’. Medium (blog), 26 December 2023. https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353.
+
 '''
 
 with st.spinner('Retrieving data & updating dashboard...'): 
