@@ -1537,7 +1537,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                     st.write(f"**{number_of_items}** sources received **{int(citation_count)}** citations (total items measured for citation: {non_nan_id})")
-                    st.write(f'Average citation: **{int((citation_count)/(number_of_items))}**')         
+                    st.write(f'''
+                    Average citation (citation 1 or above): **{int((citation_count)/(number_of_items))}**
+                    Average citation (all measured items): **{int((non_nan_id)/(number_of_items))}**
+                    ''')         
 
                     st.warning('Items without a citation are not listed here!')
 
