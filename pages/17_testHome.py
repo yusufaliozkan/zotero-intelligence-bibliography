@@ -1580,7 +1580,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.plotly_chart(fig)
        
 
-                            author_df = df_all.copy()
+                            author_df = df_cited.copy()
                             def clean_text (text):
                                 text = text.lower() # lowercasing
                                 text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
