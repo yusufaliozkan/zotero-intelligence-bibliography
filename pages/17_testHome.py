@@ -1493,75 +1493,51 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = pd.read_csv('all_items.csv') 
                     df_cited = df_cited.dropna(subset=['Citation'])
                     df_cited = df_cited.reset_index(drop=True)
-                    df_cited
-                    df_all['Date published2'] = (
-                        df_all['Date published']
+                    df_cited['Date published2'] = (
+                        df_cited['Date published']
                         .str.strip()
                         .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
                     )
-                    # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    # df_all
-                    df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
-                    df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
-                    numeric_years = df_all['Date year'].dropna()
-                    current_year = date.today().year
-                    min_y = numeric_years.min()
-                    max_y = numeric_years.max()
+                    df_cited['Date year'] = df_cited['Date published2'].dt.strftime('%Y')
+                    df_cited['Date year'] = pd.to_numeric(df_cited['Date year'], errors='coerce', downcast='integer')
 
-                    df_all['Date published'] = (
-                        df_all['Date published']
+                    df_cited['Date published'] = (
+                        df_cited['Date published']
                         .str.strip()
                         .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
                     )
-                    # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                    df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
-                    df_all['Date published'] = df_all['Date published'].fillna('')
-                    df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
-                    df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                    df_all = df_all.sort_values(by=['Date published'], ascending=False)
+                    df_cited['Date published'] = df_cited['Date published'].dt.strftime('%Y-%m-%d')
+                    df_cited['Date published'] = df_cited['Date published'].fillna('')
+                    df_cited['No date flag'] = df_cited['Date published'].isnull().astype(np.uint8)
+                    df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                    df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
 
-                    current_year = date.today().year 
-                    years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
-
-                    filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
-                    df_all = df_all.loc[filter]
-
-                    pub_types = df_all['Publication type'].unique()
+                    pub_types = df_cited['Publication type'].unique()
                     selected_type = st.multiselect("Filter by publication type:", pub_types)
                     if selected_type:
-                        df_all = df_all[df_all['Publication type'].isin(selected_type)]
+                        df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
                     
-                    df_all = df_all.reset_index(drop=True)
+                    df_cited = df_cited.reset_index(drop=True)
 
-                    # if years[0] == years[1] or years[0]==current_year:
-                    #     st.markdown(f'#### Items published in **{int(years[0])}**')
-                    # else:
-                    #     st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
-
-                    df_all_download = df_all.copy()
-                    df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
-                    df_all_download['Abstract'] = df_all_download['Abstract'].str.replace('\n', ' ')
-                    df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
-                    def convert_df(df_all_download):
-                        return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                    csv_selected = convert_df(df_all_download)
+                    df_cited_download = df_cited.copy()
+                    df_cited_download = df_cited_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
+                    df_cited_download['Abstract'] = df_cited_download['Abstract'].str.replace('\n', ' ')
+                    df_cited_download = df_cited_download.rename(columns={'FirstName2':'Author(s)'})
+                    def convert_df(df_cited_download):
+                        return df_cited_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                    csv_selected = convert_df(df_cited_download)
                     # csv = df_download
                     # # st.caption(collection_name)
                     a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
-                    number_of_items = len(df_all)
+                    number_of_items = len(df_cited)
 
-                    publications_by_type = df_all['Publication type'].value_counts()
+                    publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
-                    if years[0] == years[1] or years[0]==current_year:
-                        st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
-                        st.write(f'({breakdown_string})')       
-                    else:
-                        st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
-                        st.write(f'({breakdown_string})')                        
+                    st.write(f"**{number_of_items}** sources found published")              
 
-                    st.warning('Items without a publication date are not listed here!')
+                    st.warning('Items without a citation are not listed here!')
 
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
