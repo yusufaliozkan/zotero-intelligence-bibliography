@@ -1500,7 +1500,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     selected_range = st.slider('Select a range:', min_value, max_value, (min_value, max_value), key='')
                     filter = (df_cited['Citation'] >= selected_range[0]) & (df_cited['Citation'] <= selected_range[1])
                     df_cited = df_cited.loc[filter]
-                    
+
                     df_cited['Date published2'] = (
                         df_cited['Date published']
                         .str.strip()
@@ -1560,6 +1560,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if dashboard_all:
                         if dashboard_all and len(df_cited) > 0: 
                             st.info(f'Dashboard for cited items in the library')                    
+
+                            citation_counts = df_cited.groupby('Title')['Citation'].sum()
+                            citation_counts
 
                             collection_df = df_cited.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
