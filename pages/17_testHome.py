@@ -1681,7 +1681,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # OVERVIEW
             st.header('Overview', anchor=None)
-            tab11, tab12, tab13 = st.tabs(['Recently added items', 'Recently published items', 'Top cited items'])
+            tab11, tab12 = st.tabs(['Recently added items', 'Recently published items'])
             with tab11:
                 st.markdown('#### Recently added or updated items')
                 df['Abstract'] = df['Abstract'].str.strip()
@@ -1770,34 +1770,34 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write(f"{index + 1}) {formatted_entry}")
                     if display2:
                         st.caption(df_intro.iloc[index]['Abstract'])
-            with tab13:
-                @st.cache_resource(ttl=5000)  # Cache the resource for 5000 seconds
-                def load_data():
-                    df_top = df_dedup.copy()
-                    df_top['Date published'] = (
-                        df_top['Date published']
-                        .str.strip()
-                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                    )
-                    df_top['Date published'] = df_top['Date published'].dt.strftime('%Y-%m-%d')
-                    df_top['Date published'] = df_top['Date published'].fillna('')
-                    df_top['No date flag'] = df_top['Date published'].isnull().astype(np.uint8)
-                    df_top = df_top.sort_values(by=['Citation'], ascending=False)
-                    df_top = df_top.reset_index(drop=True)
-                    return df_top
+            # with tab13:
+            #     @st.cache_resource(ttl=5000)  # Cache the resource for 5000 seconds
+            #     def load_data():
+            #         df_top = df_dedup.copy()
+            #         df_top['Date published'] = (
+            #             df_top['Date published']
+            #             .str.strip()
+            #             .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+            #         )
+            #         df_top['Date published'] = df_top['Date published'].dt.strftime('%Y-%m-%d')
+            #         df_top['Date published'] = df_top['Date published'].fillna('')
+            #         df_top['No date flag'] = df_top['Date published'].isnull().astype(np.uint8)
+            #         df_top = df_top.sort_values(by=['Citation'], ascending=False)
+            #         df_top = df_top.reset_index(drop=True)
+            #         return df_top
 
-                df_top = load_data()
+            #     df_top = load_data()
 
-                st.markdown('#### Top 10 cited items')
-                display3 = st.checkbox('Display abstracts', key='top_cited')
+                # st.markdown('#### Top 10 cited items')
+                # display3 = st.checkbox('Display abstracts', key='top_cited')
 
-                df_top_display = df_top.head(5)  # Take top 5 items for display
-                articles_list = [format_entry(row) for _, row in df_top_display.iterrows()]
+                # df_top_display = df_top.head(5)  # Take top 5 items for display
+                # articles_list = [format_entry(row) for _, row in df_top_display.iterrows()]
 
-                for index, formatted_entry in enumerate(articles_list):
-                    st.write(f"{index + 1}) {formatted_entry}")
-                    if display3:
-                        st.caption(df_top_display.iloc[index]['Abstract'])
+                # for index, formatted_entry in enumerate(articles_list):
+                #     st.write(f"{index + 1}) {formatted_entry}")
+                #     if display3:
+                #         st.caption(df_top_display.iloc[index]['Abstract'])
 
             st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
