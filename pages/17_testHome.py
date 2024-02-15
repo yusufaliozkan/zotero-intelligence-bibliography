@@ -1562,7 +1562,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.info(f'Dashboard for cited items in the library')                    
 
                             citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
-                            citation_distribution
                             citation_distribution.columns = ['Number of Citations', 'Number of Articles']
                             fig = px.bar(citation_distribution, x='Number of Citations', y='Number of Articles', 
                                         title='Distribution of Citations Across Articles', labels={'Number of Citations': 'Number of Citations', 'Number of Articles': 'Number of Articles'})
