@@ -1773,7 +1773,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with tab13:
                 @st.cache_resource(ttl=5000)  # Cache the resource for 5000 seconds
                 def load_data():
-                    df_top = pd.read_csv('all_items.csv')
+                    df_top = df_dedup.copy()
                     df_top['Date published'] = (
                         df_top['Date published']
                         .str.strip()
