@@ -1977,10 +1977,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             # st.plotly_chart(fig, use_container_width = True)
 
-            df_csv = pd.read_csv('all_items_duplicated.csv')
+            df_csv = df_duplicated.copy()
             df_collections_2 =df_csv.copy()
 
-            df_csv = pd.read_csv('all_items.csv')
+            df_csv = df_dedup.copy()
             df_csv = df_csv.reset_index(drop=True)
 
             df_csv['Date published'] = (
