@@ -1561,8 +1561,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if dashboard_all and len(df_cited) > 0: 
                             st.info(f'Dashboard for cited items in the library')                    
 
-                            citation_counts = df_cited.groupby('Title')['Citation'].sum()
-                            citation_counts
+                            citation_distribution = df_cited['Citation'].value_counts().sort_index()
+                            citation_distribution
 
                             collection_df = df_cited.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
