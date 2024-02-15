@@ -1554,8 +1554,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
                         ''')
                     with col3:
-                        mean_citation = df_cited['Citation'].mean()
-                        st.metric(label=f"Citation mean", value=round(mean_citation), label_visibility='visible', 
+                        mean_citation = df_cited['Citation'].median()
+                        st.metric(label=f"Median citation", value=round(mean_citation), label_visibility='visible', 
                         help=f'''This is for items at least with 1 citation.
                         Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
                         ''')
