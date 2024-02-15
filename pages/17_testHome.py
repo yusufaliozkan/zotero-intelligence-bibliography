@@ -1753,7 +1753,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with tab12:
                 st.markdown('#### Recently published items')
                 display2 = st.checkbox('Display abstracts', key='recently_published')
-                df_intro = pd.read_csv('all_items.csv')
+                df_intro = df_dedup.copy()
                 df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
                 df_intro = df_intro[df_intro['Date published'] <= current_date]
