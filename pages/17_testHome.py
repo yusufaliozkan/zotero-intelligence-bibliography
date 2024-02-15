@@ -852,7 +852,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             elif search_option == "Publication types":
                 st.subheader('Publication types')
 
-                df_csv_types = pd.read_csv('all_items.csv')
+                df_csv_types = df_dedup.copy()
                 unique_types = [''] + list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option
                 selected_type = st.multiselect('Select a publication type', unique_types)
 
