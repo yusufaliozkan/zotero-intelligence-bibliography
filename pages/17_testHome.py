@@ -1490,11 +1490,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         (citation_text if include_citation else '')
                     )
                 
-                # with st.expander('Click to expand', expanded=True):                    
-                #     df_cited = pd.read_csv('all_items.csv')
-                #     non_nan_id = df_cited['ID'].count()
-                #     df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
-                #     df_cited = df_cited.reset_index(drop=True)
+                with st.expander('Click to expand', expanded=True):                    
+                    df_cited = pd.read_csv('all_items.csv')
+                    non_nan_id = df_cited['ID'].count()
+                    df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
+                    df_cited = df_cited.reset_index(drop=True)
 
                 #     max_value = int(df_cited['Citation'].max())
                 #     min_value = 1
