@@ -1549,6 +1549,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     st.warning('Items without a citation are not listed here!')
 
+                    max_value = df_cited['Citation'].max()
+                    min_value = 1
+                    selected_range = st.slider('Select a range:', min_value, max_value, (min_value, max_value))
+
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
                         if dashboard_all and len(df_cited) > 0: 
