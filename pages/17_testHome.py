@@ -1542,10 +1542,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         help=f'''Out of the {non_nan_id} items measured for citations, {number_of_items} received at least 1 citation.
                         ''')
                     with col2:
-                        st.write(f'''
-                        Average citation (for items at least with 1 citation): **{round((citation_count)/(number_of_items))}** | 
+                        st.metric(label=f"Average citation", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
+                        help=f'''This is for items at least with 1 citation.
                         Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
                         ''')
+
                     st.warning('Items without a citation are not listed here!')
 
                     dashboard_all = st.toggle('Generate dashboard')
