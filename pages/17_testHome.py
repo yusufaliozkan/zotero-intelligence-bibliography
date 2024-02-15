@@ -1502,24 +1502,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filter = (df_cited['Citation'] >= selected_range[0]) & (df_cited['Citation'] <= selected_range[1])
                     df_cited = df_cited.loc[filter]
 
-                #     df_cited['Date published2'] = (
-                #         df_cited['Date published']
-                #         .str.strip()
-                #         .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                #     )
-                #     df_cited['Date year'] = df_cited['Date published2'].dt.strftime('%Y')
-                #     df_cited['Date year'] = pd.to_numeric(df_cited['Date year'], errors='coerce', downcast='integer')
+                    df_cited['Date published2'] = (
+                        df_cited['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
+                    df_cited['Date year'] = df_cited['Date published2'].dt.strftime('%Y')
+                    df_cited['Date year'] = pd.to_numeric(df_cited['Date year'], errors='coerce', downcast='integer')
 
-                #     df_cited['Date published'] = (
-                #         df_cited['Date published']
-                #         .str.strip()
-                #         .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                #     )
-                #     df_cited['Date published'] = df_cited['Date published'].dt.strftime('%Y-%m-%d')
-                #     df_cited['Date published'] = df_cited['Date published'].fillna('')
-                #     df_cited['No date flag'] = df_cited['Date published'].isnull().astype(np.uint8)
-                #     df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                #     df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
+                    df_cited['Date published'] = (
+                        df_cited['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
+                    df_cited['Date published'] = df_cited['Date published'].dt.strftime('%Y-%m-%d')
+                    df_cited['Date published'] = df_cited['Date published'].fillna('')
+                    df_cited['No date flag'] = df_cited['Date published'].isnull().astype(np.uint8)
+                    df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                    df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
 
                 #     pub_types = df_cited['Publication type'].unique()
                 #     selected_type = st.multiselect("Filter by publication type:", pub_types)
