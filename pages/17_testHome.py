@@ -1554,8 +1554,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     st.warning('Items without a citation are not listed here!')
 
-                    selected_range
-
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
                         if dashboard_all and len(df_cited) > 0: 
