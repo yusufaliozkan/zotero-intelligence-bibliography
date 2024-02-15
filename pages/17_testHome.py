@@ -1561,8 +1561,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if dashboard_all and len(df_cited) > 0: 
                             st.info(f'Dashboard for cited items in the library')                    
 
-                            citation_distribution = df_cited['Citation'].value_counts().sort_index()
-                            citation_distribution
+                            citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
+                            citation_distribution.columns = ['Number of Citations', 'Number of Articles']
+                            fig = px.bar(citation_distribution, x='Number of Citations', y='Number of Articles', 
+                                        title='Distribution of Citations Across Articles', labels={'Number of Citations': 'Number of Citations', 'Number of Articles': 'Number of Articles'})
+                            st.plotly_chart(fig)
 
                             collection_df = df_cited.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
