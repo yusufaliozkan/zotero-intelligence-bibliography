@@ -1494,7 +1494,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 
                 with st.expander('Click to expand', expanded=True):                    
-                    df_cited = pd.read_csv('all_items.csv')
+                    df_cited = df_dedup.copy()
                     non_nan_id = df_cited['ID'].count()
                     df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
                     df_cited = df_cited.reset_index(drop=True)
