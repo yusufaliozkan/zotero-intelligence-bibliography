@@ -1559,7 +1559,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         help=f'''This is for items at least with 1 citation.
                         ''')
 
-                    st.warning('Items without a citation are not listed here!')
+                    st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
 
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
