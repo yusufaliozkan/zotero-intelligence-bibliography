@@ -651,7 +651,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             elif search_option == "Search collection": 
                 st.subheader('Search collection')
 
-                df_csv_collections = pd.read_csv('all_items_duplicated.csv')
+                df_csv_collections = df_duplicated.copy()
                 excluded_collections = ['97 KCL intelligence']
                 numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
                 all_unique_collections = df_csv_collections['Collection_Name'].unique()
