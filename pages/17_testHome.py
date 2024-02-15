@@ -1553,7 +1553,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         help=f'''This is for items at least with 1 citation.
                         Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
                         ''')
-                        mean_citation = df_cited['Citation'].mean()
+                        mean_citation = df_cited['Citation'].median()
                         mean_citation
 
                     st.warning('Items without a citation are not listed here!')
