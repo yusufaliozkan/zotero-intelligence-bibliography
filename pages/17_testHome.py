@@ -419,10 +419,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 else:
                                     filtered_df = filtered_df.sort_values(by=['Citation'], ascending=False)
                                     filtered_df = filtered_df.reset_index(drop=True)
-                                if num_items > 25:
-                                    show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
-                                    if show_first_25:
-                                        filtered_df = filtered_df.head(25)
+                                if num_items > 20:
+                                    show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+                                    if show_first_20:
+                                        filtered_df = filtered_df.head(20)
 
                                 articles_list = []  # Store articles in a list
                                 abstracts_list = [] #Store abstracts in a list
@@ -800,10 +800,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 else:
                                     filtered_collection_df = filtered_collection_df.sort_values(by=['Citation'], ascending=False)
                                     filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-                                if num_items_collections > 25:
-                                    show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
-                                    if show_first_25:
-                                        filtered_collection_df = filtered_collection_df.head(25)
+                                if num_items_collections > 20:
+                                    show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+                                    if show_first_20:
+                                        filtered_collection_df = filtered_collection_df.head(20)
 
                                 articles_list = []  # Store articles in a list
                                 for index, row in filtered_collection_df.iterrows():
@@ -966,10 +966,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             else:
                                 filtered_type_df = filtered_type_df.sort_values(by=['Citation'], ascending=False)
                                 filtered_type_df = filtered_type_df.reset_index(drop=True)
-                            if num_items_collections > 25:
-                                show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
-                                if show_first_25:
-                                    filtered_type_df = filtered_type_df.head(25)                            
+                            if num_items_collections > 20:
+                                show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+                                if show_first_20:
+                                    filtered_type_df = filtered_type_df.head(20)                            
 
                             articles_list = []  # Store articles in a list
                             for index, row in filtered_type_df.iterrows():
@@ -1158,10 +1158,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             else:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
                                 selected_journal_df = selected_journal_df.reset_index(drop=True)
-                            if num_items_collections > 25:
-                                show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True)
-                                if show_first_25:
-                                    selected_journal_df = selected_journal_df.head(25)                            
+                            if num_items_collections > 20:
+                                show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+                                if show_first_20:
+                                    selected_journal_df = selected_journal_df.head(20)                            
 
                             articles_list = []  # Store articles in a list
                             for index, row in selected_journal_df.iterrows():
@@ -1431,10 +1431,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             df_all = df_all.sort_values(by=['Citation'], ascending=False)
                             df_all = df_all.reset_index(drop=True)
-                        if number_of_items > 25:
-                            show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
-                            if show_first_25:
-                                df_all = df_all.head(25)
+                        if number_of_items > 20:
+                            show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True, key='all_items')
+                            if show_first_20:
+                                df_all = df_all.head(20)
                         articles_list = []  # Store articles in a list
                         abstracts_list = [] #Store abstracts in a list
                         for index, row in df_all.iterrows():
@@ -1660,10 +1660,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
                             df_cited = df_cited.reset_index(drop=True)
-                        if number_of_items > 25:
-                            show_first_25 = st.checkbox("Show only first 25 items (untick to see all)", value=True, key='all_items')
-                            if show_first_25:
-                                df_cited = df_cited.head(25)
+                        if number_of_items > 20:
+                            show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True, key='all_items')
+                            if show_first_20:
+                                df_cited = df_cited.head(20)
                         articles_list = []  # Store articles in a list
                         abstracts_list = [] #Store abstracts in a list
                         for index, row in df_cited.iterrows():
