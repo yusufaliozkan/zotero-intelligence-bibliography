@@ -1496,7 +1496,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited.reset_index(drop=True)
                     max_value = int(df_cited['Citation'].max())
                     min_value = 1
-                    selected_range = container.slider('Select a range:', min_value, max_value, (min_value, max_value), key='')
+                    selected_range = st.slider('Select a range:', min_value, max_value, (min_value, max_value), key='')
                     filter = (df_cited['Citation'] >= selected_range[0]) & (df_cited['Citation'] <= selected_range[1])
                     df_cited = df_cited.loc[filter]
                     df_cited['Date published2'] = (
