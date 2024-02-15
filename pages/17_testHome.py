@@ -268,7 +268,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
                         keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
 
-                        df_csv = pd.read_csv('all_items.csv')
+                        df_csv = df_dedup.copy()
 
                         # include_abstracts = st.checkbox('Search keywords in abstracts too')
                         display_abstracts = st.checkbox('Display abstracts')
