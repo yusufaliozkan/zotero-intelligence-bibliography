@@ -1249,7 +1249,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         (citation_text if include_citation else '')
                     )
                 with st.expander('Click to expand', expanded=True):                    
-                    df_all = pd.read_csv('all_items.csv') 
+                    df_all = df_dedup.copy()
                     df_all['Date published2'] = (
                         df_all['Date published']
                         .str.strip()
