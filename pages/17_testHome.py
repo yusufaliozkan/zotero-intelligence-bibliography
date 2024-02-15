@@ -1554,6 +1554,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     selected_range = st.slider('Select a range:', min_value, max_value, (min_value, max_value), key='')
                     filter = (df_cited['Citation'] >= min_value) & (df_cited['Citation'] <= max_value)
                     df_cited = df_cited.loc[filter]
+                    df_cited
 
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
