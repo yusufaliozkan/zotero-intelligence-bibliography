@@ -1536,13 +1536,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count), label_visibility='visible', 
-                    help=f'''Out of the {non_nan_id} items measured for citations, {number_of_items} received at least 1 citation.
-                    ''')     
-                    st.write(f'''
-                    Average citation (for items at least with 1 citation): **{round((citation_count)/(number_of_items))}** | 
-                    Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
-                    ''')
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count), label_visibility='visible', 
+                        help=f'''Out of the {non_nan_id} items measured for citations, {number_of_items} received at least 1 citation.
+                        ''')
+                    with col2:
+                        st.write(f'''
+                        Average citation (for items at least with 1 citation): **{round((citation_count)/(number_of_items))}** | 
+                        Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                        ''')
                     st.warning('Items without a citation are not listed here!')
 
                     dashboard_all = st.toggle('Generate dashboard')
