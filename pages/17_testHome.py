@@ -2016,7 +2016,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
 
-                df_journals = pd.read_csv('all_items.csv')
+                df_journals = df_dedup.copy()
                 df_journals = df_journals[df_journals['Publication type'] == 'Journal article']
                 journal_counts = df_journals['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
