@@ -1537,7 +1537,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                     st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count), label_visibility='visible', 
-                    help=f'''{non_nan_id}
+                    help=f'''{number_of_items} out of {non_nan_id} items that are measured for citations received at least 1 citation.
                     ''')     
                     st.write(f'''
                     Average citation (for items at least with 1 citation): **{round((citation_count)/(number_of_items))}** | 
