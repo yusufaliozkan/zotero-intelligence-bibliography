@@ -1543,7 +1543,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    col1, col2 = st.columns(2)
+                    col1, col2, col3 = st.columns(3)
                     with col1:
                         st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count), label_visibility='visible', 
                         help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
@@ -1553,8 +1553,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         help=f'''This is for items at least with 1 citation.
                         Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
                         ''')
+                    with col3:
                         mean_citation = df_cited['Citation'].mean()
-                        mean_citation
+                        st.metric(label=f"Citation mean", value=round(mean_citation), label_visibility='visible', 
+                        help=f'''This is for items at least with 1 citation.
+                        Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                        ''')
 
                     st.warning('Items without a citation are not listed here!')
 
