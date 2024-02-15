@@ -1539,7 +1539,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     col1, col2 = st.columns(2)
                     with col1:
                         st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count), label_visibility='visible', 
-                        help=f'''Out of the {non_nan_id} items measured for citations, {number_of_items} received at least 1 citation.
+                        help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
                         ''')
                     with col2:
                         st.metric(label=f"Average citation", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
