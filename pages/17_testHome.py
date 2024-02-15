@@ -1541,7 +1541,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     Average citation (for items at least with 1 citation): **{round((citation_count)/(number_of_items))}** | 
                     Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
                     ''')
-                    st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count))     
+                    st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count), label_visibility='visible', help=f'''
+                    Average citation (for items at least with 1 citation): **{round((citation_count)/(number_of_items))}** | 
+                    Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                    ''')     
 
                     st.warning('Items without a citation are not listed here!')
 
