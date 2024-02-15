@@ -180,7 +180,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     item_count = zot.num_items()
 
-    df = pd.read_csv('all_items.csv')
+    df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
     col1, col2 = st.columns([3,5])
@@ -188,7 +188,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with st.expander('Introduction'):
             st.info(into)
     with col1:
-        df_intro = df.copy()
+        df_intro = df_dedup.copy()
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
         items_added_this_month = df_intro[
