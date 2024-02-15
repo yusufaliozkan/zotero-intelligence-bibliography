@@ -1521,25 +1521,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                     df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
 
-                #     pub_types = df_cited['Publication type'].unique()
-                #     selected_type = st.multiselect("Filter by publication type:", pub_types)
-                #     if selected_type:
-                #         df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
+                    pub_types = df_cited['Publication type'].unique()
+                    selected_type = st.multiselect("Filter by publication type:", pub_types)
+                    if selected_type:
+                        df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
                     
-                #     df_cited = df_cited.reset_index(drop=True)
+                    df_cited = df_cited.reset_index(drop=True)
 
-                #     df_cited_download = df_cited.copy()
-                #     df_cited_download = df_cited_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
-                #     df_cited_download['Abstract'] = df_cited_download['Abstract'].str.replace('\n', ' ')
-                #     df_cited_download = df_cited_download.rename(columns={'FirstName2':'Author(s)'})
-                #     def convert_df(df_cited_download):
-                #         return df_cited_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                #     csv_selected = convert_df(df_cited_download)
-                #     # csv = df_download
-                #     # # st.caption(collection_name)
-                #     a = 'cited-items-'
-                #     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
-                #     number_of_items = len(df_cited)
+                    df_cited_download = df_cited.copy()
+                    df_cited_download = df_cited_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
+                    df_cited_download['Abstract'] = df_cited_download['Abstract'].str.replace('\n', ' ')
+                    df_cited_download = df_cited_download.rename(columns={'FirstName2':'Author(s)'})
+                    def convert_df(df_cited_download):
+                        return df_cited_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                    csv_selected = convert_df(df_cited_download)
+                    # csv = df_download
+                    # # st.caption(collection_name)
+                    a = 'cited-items-'
+                    st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                    number_of_items = len(df_cited)
 
                 #     citation_count = df_cited['Citation'].sum()
                 #     publications_by_type = df_cited['Publication type'].value_counts()
