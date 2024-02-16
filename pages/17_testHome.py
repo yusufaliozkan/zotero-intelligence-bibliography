@@ -1579,10 +1579,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             # Optional: You can customize scatter plot appearance using various parameters
                             # For example:
-                            # fig.update_traces(marker=dict(color='red', size=10, opacity=0.5), selector=dict(mode='markers'))
+                            fig.update_traces(marker=dict(color='red', size=10, opacity=0.5), selector=dict(mode='markers'))
 
                             st.plotly_chart(fig)
-                            
+
                             collection_df = df_cited.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                             publications_by_year = collection_df['Year'].value_counts().sort_index()
