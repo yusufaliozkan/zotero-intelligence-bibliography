@@ -1238,7 +1238,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
                         else '')
 
-                    return ( 
+                    return (
                         '**' + publication_type + '**' + ': ' +
                         title + ' ' +
                         '(by ' + '*' + authors + '*' + ') ' +
