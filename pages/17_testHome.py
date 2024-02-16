@@ -1572,10 +1572,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
                             citation_distribution.columns = ['Number of Citations', 'Number of Articles']
-                            fig = px.bar(citation_distribution, x='Number of Citations', y='Number of Articles', 
-                                        title='Distribution of Citations Across Articles', labels={'Number of Citations': 'Number of Citations', 'Number of Articles': 'Number of Articles'})
-                            st.plotly_chart(fig)
 
+                            fig = px.scatter(citation_distribution, x='Number of Citations', y='Number of Articles', 
+                                            title='Distribution of Citations Across Articles', 
+                                            labels={'Number of Citations': 'Number of Citations', 'Number of Articles': 'Number of Articles'})
+
+                            # Optional: You can customize scatter plot appearance using various parameters
+                            # For example:
+                            # fig.update_traces(marker=dict(color='red', size=10, opacity=0.5), selector=dict(mode='markers'))
+
+                            st.plotly_chart(fig)
+                            
                             collection_df = df_cited.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                             publications_by_year = collection_df['Year'].value_counts().sort_index()
