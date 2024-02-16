@@ -180,12 +180,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     item_count = zot.num_items()
 
+    df_dedup = pd.read_csv('all_items.csv')
+    df_duplicated = pd.read_csv('all_items_duplicated.csv')
+
     col1, col2 = st.columns([3,5])
     with col2:
         with st.expander('Introduction'):
             st.info(into)
     with col1:
-        df_intro = pd.read_csv('all_items.csv')
+        df_intro = df_dedup.copy()
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
         items_added_this_month = df_intro[
@@ -233,7 +236,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
                 citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
-                     else 'Cited by ' + str(citation))
+                     else '')
 
                 return (
                     '**' + publication_type + '**' + ': ' +
@@ -265,7 +268,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
                         keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
 
-                        df_csv = pd.read_csv('all_items.csv')
+                        df_csv = df_dedup.copy()
 
                         # include_abstracts = st.checkbox('Search keywords in abstracts too')
                         display_abstracts = st.checkbox('Display abstracts')
@@ -636,8 +639,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         '(Publication date: ' + str(date_published) + ') ' +
                                         ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                         '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                        '[[Zotero link]](' + str(zotero_link) + '), ' +
-                                        ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else 'Cited by ' + str(citation))
+                                        '[[Zotero link]](' + str(zotero_link) + ') ' +
+                                        ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
                                     )
                                     st.write(f"{index + 1}) {formatted_entry}")
 
@@ -648,7 +651,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             elif search_option == "Search collection": 
                 st.subheader('Search collection')
 
-                df_csv_collections = pd.read_csv('all_items_duplicated.csv')
+                df_csv_collections = df_duplicated.copy()
                 excluded_collections = ['97 KCL intelligence']
                 numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
                 all_unique_collections = df_csv_collections['Collection_Name'].unique()
@@ -839,8 +842,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         '(Publication date: ' + str(date_published) + ') ' +
                                         ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                         '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                        '[[Zotero link]](' + str(zotero_link) + '), ' +
-                                        ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else 'Cited by ' + str(citation))
+                                        '[[Zotero link]](' + str(zotero_link) + ') ' +
+                                        ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
                                     )
                                     st.write(f"{index + 1}) {formatted_entry}")
                             else:  # If toggle is on but no publications are available
@@ -849,7 +852,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             elif search_option == "Publication types":
                 st.subheader('Publication types')
 
-                df_csv_types = pd.read_csv('all_items.csv')
+                df_csv_types = df_dedup.copy()
                 unique_types = [''] + list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option
                 selected_type = st.multiselect('Select a publication type', unique_types)
 
@@ -1009,15 +1012,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     '(Publication date: ' + str(date_published) + ') ' +
                                     ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                     '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                    '[[Zotero link]](' + str(zotero_link) + '), ' + 
-                                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else 'Cited by ' + str(citation))
+                                    '[[Zotero link]](' + str(zotero_link) + ') ' + 
+                                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
 
             elif search_option == "Search journal":
                 st.subheader('Search journal')
 
-                df_csv = pd.read_csv('all_items.csv')
+                df_csv = df_dedup.copy()
                 df_csv = df_csv[df_csv['Publication type']=='Journal article']
                 journal_counts = df_csv['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
@@ -1197,8 +1200,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     '(Publication date: ' + str(date_published) + ') ' +
                                     ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                                     '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                    '[[Zotero link]](' + str(zotero_link) + '), '+
-                                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else 'Cited by ' + str(citation))
+                                    '[[Zotero link]](' + str(zotero_link) + ') '+
+                                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
                                 )
                                 st.write(f"{index + 1}) {formatted_entry}")
 
@@ -1233,7 +1236,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
                     citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
-                        else 'Cited by ' + str(citation))
+                        else '')
 
                     return ( 
                         '**' + publication_type + '**' + ': ' +
@@ -1242,11 +1245,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '(Publication date: ' + str(date_published) + ') ' +
                         ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
                         '[[Publication link]](' + link_to_publication + ') ' +
-                        '[[Zotero link]](' + zotero_link + '), ' +
+                        '[[Zotero link]](' + zotero_link + ') ' +
                         (citation_text if include_citation else '')
                     )
                 with st.expander('Click to expand', expanded=True):                    
-                    df_all = pd.read_csv('all_items.csv') 
+                    df_all = df_dedup.copy()
                     df_all['Date published2'] = (
                         df_all['Date published']
                         .str.strip()
@@ -1477,7 +1480,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
                     citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
-                        else 'Cited by ' + str(citation))
+                        else '')
 
                     return ( 
                         '**' + publication_type + '**' + ': ' +
@@ -1491,14 +1494,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                 
                 with st.expander('Click to expand', expanded=True):                    
-                    df_cited = pd.read_csv('all_items.csv')
+                    df_cited = df_dedup.copy()
                     non_nan_id = df_cited['ID'].count()
                     df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
                     df_cited = df_cited.reset_index(drop=True)
 
                     max_value = int(df_cited['Citation'].max())
                     min_value = 1
-                    selected_range = st.slider('Select a range:', min_value, max_value, (min_value, max_value), key='')
+                    selected_range = st.slider('Select a citation range:', min_value, max_value, (min_value, max_value), key='')
                     filter = (df_cited['Citation'] >= selected_range[0]) & (df_cited['Citation'] <= selected_range[1])
                     df_cited = df_cited.loc[filter]
 
@@ -1674,7 +1677,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
                         for i, article in enumerate(articles_list, start=1):
                             # Display the article with highlighted search terms
-                            st.markdown(f"{i}. {article}", unsafe_allow_html=True)
+                            st.markdown(f"{i}. {article}", unsafe_allow_html=True) 
 
             # OVERVIEW
             st.header('Overview', anchor=None)
@@ -1750,7 +1753,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with tab12:
                 st.markdown('#### Recently published items')
                 display2 = st.checkbox('Display abstracts', key='recently_published')
-                df_intro = pd.read_csv('all_items.csv')
+                df_intro = df_dedup.copy()
                 df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                 current_date = datetime.datetime.now(datetime.timezone.utc).astimezone(datetime.timezone(datetime.timedelta(hours=1)))  # Current date in London timezone
                 df_intro = df_intro[df_intro['Date published'] <= current_date]
@@ -1768,30 +1771,37 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if display2:
                         st.caption(df_intro.iloc[index]['Abstract'])
             with tab13:
+                @st.cache_resource(ttl=5000)  # Cache the resource for 5000 seconds
+                def load_data():
+                    df_top = df_dedup.copy()
+                    df_top['Date published'] = (
+                        df_top['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
+                    df_top['Date published'] = df_top['Date published'].dt.strftime('%Y-%m-%d')
+                    df_top['Date published'] = df_top['Date published'].fillna('')
+                    df_top['No date flag'] = df_top['Date published'].isnull().astype(np.uint8)
+                    df_top = df_top.sort_values(by=['Citation'], ascending=False)
+                    df_top = df_top.reset_index(drop=True)
+                    return df_top
+
+                df_top = load_data()
+
                 st.markdown('#### Top 10 cited items')
                 display3 = st.checkbox('Display abstracts', key='top_cited')
-                df_top = pd.read_csv('all_items.csv')
-                df_top['Date published'] = (
-                    df_top['Date published']
-                    .str.strip()
-                    .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                )
-                df_top['Date published'] = df_top['Date published'].dt.strftime('%Y-%m-%d')
-                df_top['Date published'] = df_top['Date published'].fillna('')
-                df_top['No date flag'] = df_top['Date published'].isnull().astype(np.uint8)
-                df_top = df_top.sort_values(by=['Citation'], ascending=False)
-                df_top = df_top.reset_index(drop=True)
-                df_top = df_top.head(5)
-                articles_list = [format_entry(row) for _, row in df_top.iterrows()]
-                articles_list = [format_entry(row, include_citation=True) for _, row in df_top.iterrows()]
+
+                df_top_display = df_top.head(5)  # Take top 5 items for display
+                articles_list = [format_entry(row) for _, row in df_top_display.iterrows()]
+
                 for index, formatted_entry in enumerate(articles_list):
                     st.write(f"{index + 1}) {formatted_entry}")
                     if display3:
-                        st.caption(df_top.iloc[index]['Abstract'])
+                        st.caption(df_top_display.iloc[index]['Abstract'])
 
             st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
-                df_all_items = pd.read_csv('all_items.csv')
+                df_all_items = df_dedup.copy()
                 df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
 
                 download_all = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
@@ -1807,7 +1817,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
                 df_all_items
 
-                df_added = pd.read_csv('all_items.csv')
+                df_added = df_dedup.copy()
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
                 monthly_counts = df_added.groupby('YearMonth').size()
@@ -1967,10 +1977,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             # st.plotly_chart(fig, use_container_width = True)
 
-            df_csv = pd.read_csv('all_items_duplicated.csv')
+            df_csv = df_duplicated.copy()
             df_collections_2 =df_csv.copy()
 
-            df_csv = pd.read_csv('all_items.csv')
+            df_csv = df_dedup.copy()
             df_csv = df_csv.reset_index(drop=True)
 
             df_csv['Date published'] = (
@@ -2006,7 +2016,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
 
-                df_journals = pd.read_csv('all_items.csv')
+                df_journals = df_dedup.copy()
                 df_journals = df_journals[df_journals['Publication type'] == 'Journal article']
                 journal_counts = df_journals['Journal'].value_counts()
                 unique_journals_sorted = journal_counts.index.tolist()
@@ -2398,7 +2408,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
 
             st.header('Item inclusion history', anchor=False)
-            df_added = pd.read_csv('all_items.csv')
+            df_added = df_dedup.copy()
             time_interval = st.selectbox('Select time interval:', ['Monthly', 'Yearly'])
             col11, col12 = st.columns(2)
             with col11:
@@ -2457,7 +2467,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with tab3: 
             st.header('Suggest random sources', anchor=False)
-            df_intro = pd.read_csv('all_items.csv')
+            df_intro = df_dedup.copy()
             df_intro['Date published'] = pd.to_datetime(df_intro['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_intro['Date published'] = df_intro['Date published'].dt.strftime('%Y-%m-%d')
             df_intro['Date published'] = df_intro['Date published'].fillna('')
