@@ -1568,7 +1568,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
                         if dashboard_all and len(df_cited) > 0: 
-                            st.info(f'Dashboard for cited items in the library')                    
+                            st.info(f'Dashboard for cited items in the library')
+                            df_cited          
 
                             citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
                             citation_distribution.columns = ['Number of Citations', 'Number of Articles']
