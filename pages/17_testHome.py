@@ -1579,7 +1579,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             # Optional: You can customize scatter plot appearance using various parameters
                             # For example:
-                            fig.update_traces(marker=dict(color='red', size=10, opacity=0.5), selector=dict(mode='markers'))
+                            fig.update_traces(marker=dict(color='red', size=5, opacity=0.5), selector=dict(mode='markers'))
 
                             st.plotly_chart(fig)
 
