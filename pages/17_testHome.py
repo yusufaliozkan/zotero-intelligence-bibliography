@@ -1548,26 +1548,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    colcite1, colcite2, colcite3, colcite4 = st.columns(4)
-                    with colcite1:
-                        st.metric(label=f"The number of citations", value=int(citation_count), label_visibility='visible', 
-                        help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
-                        ''')
-                    with colcite2:
-                        st.metric(label=f"Citation average", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
-                        help=f'''This is for items at least with 1 citation.
-                        Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
-                        ''')
-                    with colcite3:
-                        mean_citation = df_cited['Citation'].median()
-                        st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
-                        help=f'''This is for items at least with 1 citation.
-                        ''')
-                    with colcite4:
-                        mean_first_citaion = df_cited['Year_difference'].mean()
-                        st.metric(label=f"First citation occurence (in year)", value=round(mean_first_citaion), label_visibility='visible', 
-                        help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
-                        ''')
+                    st.metric(label=f"The number of citations", value=int(citation_count), label_visibility='visible', 
+                    help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
+                    ''')
 
                     st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
 
@@ -1575,6 +1558,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if dashboard_all:
                         if dashboard_all and len(df_cited) > 0: 
                             st.info(f'Dashboard for cited items in the library')
+
+                            colcite1, colcite2, colcite3, colcite4 = st.columns(4)
+
+                            with colcite1:
+                                st.metric(label=f"Citation average", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
+                                help=f'''This is for items at least with 1 citation.
+                                Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                                ''')
+                            with colcite2:
+                                mean_citation = df_cited['Citation'].median()
+                                st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
+                                help=f'''This is for items at least with 1 citation.
+                                ''')
+                            with colcite3:
+                                mean_first_citaion = df_cited['Year_difference'].mean()
+                                st.metric(label=f"First citation occurence (in year)", value=round(mean_first_citaion), label_visibility='visible', 
+                                help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
+                                ''')
 
                             citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
                             citation_distribution.columns = ['Number of Citations', 'Number of Articles']
