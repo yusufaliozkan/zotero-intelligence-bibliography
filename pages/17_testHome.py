@@ -1590,7 +1590,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             df_cited
 
                             fig = px.scatter(df_cited, y='Year_difference', title='Year Difference Between Publication and Citation')
-                            fig.show()
+                            st.plotly_chart(fig)
 
                             collection_df = df_cited.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
