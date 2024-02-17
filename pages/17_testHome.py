@@ -863,7 +863,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_type_df = df_csv_types[df_csv_types['Publication type'].isin(selected_type)]
                     # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
-                    filtered_type_df['Date published'] = pd.to_datetime(filtered_type_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    # filtered_type_df['Date published'] = pd.to_datetime(filtered_type_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    filtered_type_df['Date published'] = (
+                        filtered_type_df['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
                     filtered_type_df['Date published'] = filtered_type_df['Date published'].dt.strftime('%Y-%m-%d')
                     filtered_type_df['Date published'] = filtered_type_df['Date published'].fillna('')
                     filtered_type_df['No date flag'] = filtered_type_df['Date published'].isnull().astype(np.uint8)
