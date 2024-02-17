@@ -1587,7 +1587,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
                             st.plotly_chart(fig)
 
-                            plt.scatter(df_cited['year_difference'], [0] * len(df_cited['year_difference']))  # Setting y-values as 0
+                            plt.scatter(df_cited['Year_difference'], [0] * len(df_cited['Year_difference']))  # Setting y-values as 0
                             plt.xlabel('Year Difference')
                             plt.ylabel('')  # Empty y-axis label
                             plt.title('Year Difference Scatter Plot')
