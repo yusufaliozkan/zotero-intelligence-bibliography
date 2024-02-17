@@ -1573,10 +1573,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 ''')
                             with colcite3:
                                 mean_first_citaion = df_cited['Year_difference'].mean()
-                                st.metric(label=f"First citation occurence (in year)", value=round(mean_first_citaion), label_visibility='visible', 
+                                st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
                                 help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
                                 ''')
-
+                            with colcite3:
+                                median_first_citaion = df_cited['Year_difference'].median()
+                                st.metric(label=f"First citation occurence (median in year)", value=round(median_first_citaion), label_visibility='visible', 
+                                help=f'''First citation usually occurs **{round(median_first_citaion)}** years after publication.
+                                ''')
                             citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
                             citation_distribution.columns = ['Number of Citations', 'Number of Articles']
 
