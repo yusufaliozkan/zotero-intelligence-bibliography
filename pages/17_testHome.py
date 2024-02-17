@@ -28,6 +28,7 @@ import json
 from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
 from sidebar_content import sidebar_content
+import plotly.graph_objs as go
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -1586,12 +1587,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # For example:
                             fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
                             st.plotly_chart(fig)
-
-                            plt.scatter(df_cited['Year_difference'], [0] * len(df_cited['Year_difference']))  # Setting y-values as 0
-                            plt.xlabel('Year Difference')
-                            plt.ylabel('')  # Empty y-axis label
-                            plt.title('Year Difference Scatter Plot')
-                            plt.show()
 
                             fig = go.Figure(data=go.Scatter(x=df['Year_difference'], y=[0] * len(df['Year_difference']), mode='markers'))
                             # Customize layout
