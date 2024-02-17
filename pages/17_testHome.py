@@ -1587,8 +1587,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
                             st.plotly_chart(fig)
 
-                            df_cited
-
                             fig = px.scatter(df_cited, y='Year_difference', title='Year Difference Between Publication and Citation')
                             st.plotly_chart(fig)
 
