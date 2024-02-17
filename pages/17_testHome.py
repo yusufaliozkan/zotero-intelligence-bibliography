@@ -1530,7 +1530,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
                     
                     df_cited = df_cited.reset_index(drop=True)
-                    df_cited
 
                     df_cited_download = df_cited.copy()
                     df_cited_download = df_cited_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
