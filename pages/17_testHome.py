@@ -1589,7 +1589,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             df_cited
 
-                            fig = px.scatter(df_cited, x='Index_Column', y='Year_difference', title='Year Difference Between Publication and Citation')
+                            fig = px.scatter(df_cited, y='Year_difference', title='Year Difference Between Publication and Citation')
                             fig.show()
 
                             collection_df = df_cited.copy()
