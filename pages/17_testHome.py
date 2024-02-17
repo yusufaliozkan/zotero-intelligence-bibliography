@@ -1585,8 +1585,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Optional: You can customize scatter plot appearance using various parameters
                             # For example:
                             fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
-
                             st.plotly_chart(fig)
+
+                            year_difference = df_cited['Year_difference'].value_counts()sort_index().reset_index()
+                            citation_distribution
+                            fig = px.scatter(df, x='Index_Column', y='Year_difference', title='Year Difference Between Publication and Citation')
+                            fig.show()
 
                             collection_df = df_cited.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
