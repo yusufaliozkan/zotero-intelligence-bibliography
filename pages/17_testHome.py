@@ -1560,7 +1560,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         ''')
                     with colcite3:
                         mean_citation = df_cited['Citation'].median()
-                        st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
+                        st.metric(label=f"Citation median", value=round(mean_citation) / round(mean_citation), label_visibility='visible', 
                         help=f'''This is for items at least with 1 citation.
                         ''')
                     with colcite4:
