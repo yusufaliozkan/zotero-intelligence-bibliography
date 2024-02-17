@@ -1587,7 +1587,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
                             st.plotly_chart(fig)
 
-                            fig = px.scatter(df_cited, y='Year_difference', title='Year Difference Between Publication and Citation')
+                            mean_difference = df_cited['Year_difference'].mean()
+                            summary_df = pd.DataFrame({'Mean/median_difference': [mean_difference]})
+
+                            fig = px.scatter(summary_df, y='Mean/median_difference', title='Mean/Median Year Difference Between Publication and Citation')
                             st.plotly_chart(fig)
 
                             collection_df = df_cited.copy()
