@@ -1550,7 +1550,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                     colcite1, colcite2, colcite3, colcite4 = st.columns(4)
                     with colcite1:
-                        st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count), label_visibility='visible', 
+                        st.metric(label=f"The number of citations", value=int(citation_count), label_visibility='visible', 
                         help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
                         ''')
                     with colcite2:
