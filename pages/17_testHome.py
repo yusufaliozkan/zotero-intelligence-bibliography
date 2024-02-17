@@ -1238,7 +1238,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
                         else '')
 
-                    return ( 
+                    return (
                         '**' + publication_type + '**' + ': ' +
                         title + ' ' +
                         '(by ' + '*' + authors + '*' + ') ' +
@@ -1530,6 +1530,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
                     
                     df_cited = df_cited.reset_index(drop=True)
+                    df_cited
 
                     df_cited_download = df_cited.copy()
                     df_cited_download = df_cited_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
@@ -1568,12 +1569,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     dashboard_all = st.toggle('Generate dashboard')
                     if dashboard_all:
                         if dashboard_all and len(df_cited) > 0: 
-                            st.info(f'Dashboard for cited items in the library')                    
+                            st.info(f'Dashboard for cited items in the library')
 
                             citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
                             citation_distribution.columns = ['Number of Citations', 'Number of Articles']
-                            fig = px.bar(citation_distribution, x='Number of Citations', y='Number of Articles', 
-                                        title='Distribution of Citations Across Articles', labels={'Number of Citations': 'Number of Citations', 'Number of Articles': 'Number of Articles'})
+
+                            fig = px.scatter(citation_distribution, x='Number of Citations', y='Number of Articles', 
+                                            title='Distribution of Citations Across Articles', 
+                                            labels={'Number of Citations': 'Number of Citations', 'Number of Articles': 'Number of Articles'})
+
+                            # Optional: You can customize scatter plot appearance using various parameters
+                            # For example:
+                            fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
+
                             st.plotly_chart(fig)
 
                             collection_df = df_cited.copy()
