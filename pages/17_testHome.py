@@ -1588,7 +1588,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
                             st.plotly_chart(fig)
 
-                            fig = go.Figure(data=go.Scatter(x=df['Year_difference'], y=[0] * len(df['Year_difference']), mode='markers'))
+                            fig = go.Figure(data=go.Scatter(x=df_cited['Year_difference'], y=[0] * len(df_cited['Year_difference']), mode='markers'))
                             # Customize layout
                             fig.update_layout(
                                 title='Year Difference Scatter Plot',
