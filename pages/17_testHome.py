@@ -1681,6 +1681,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
                     else:
                         sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                        if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
+                            df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
+                            df_cited = df_cited.reset_index(drop=True)
                         if sort_by == 'Publication date' or df_cited['Citation'].sum() == 0:
                             df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
                             df_cited = df_cited.reset_index(drop=True)
