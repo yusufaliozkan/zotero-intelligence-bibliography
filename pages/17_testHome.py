@@ -1564,7 +1564,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         help=f'''This is for items at least with 1 citation.
                         ''')
                     with colcite4:
-                        mean_first_citaion = df_cited['Year_difference'].mean()
+                        mean_first_citaion = df_cited['Year_difference'].median()
                         st.metric(label=f"First citation occurence", value=round(mean_first_citaion), label_visibility='visible', 
                         help=f'''First citation usually occurs {round(mean_first_citaion)} years after publication.
                         ''')
