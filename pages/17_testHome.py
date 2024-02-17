@@ -1593,6 +1593,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.title('Year Difference Scatter Plot')
                             plt.show()
 
+                            fig = go.Figure(data=go.Scatter(x=df['Year_difference'], y=[0] * len(df['Year_difference']), mode='markers'))
+                            # Customize layout
+                            fig.update_layout(
+                                title='Year Difference Scatter Plot',
+                                xaxis_title='Year Difference',
+                                yaxis_title='',                            )
+
+                            # Display the Plotly chart using Streamlit
+                            st.plotly_chart(fig)
+
                             collection_df = df_cited.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
                             publications_by_year = collection_df['Year'].value_counts().sort_index()
