@@ -1592,7 +1592,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Customize layout
                             fig.update_layout(
                                 title='Year Difference Scatter Plot',
-                                xaxis_title='Year Difference',
+                                xaxis_title='First citation occurence (first citation occurs after years)',
                                 yaxis_title='',                            )
 
                             # Display the Plotly chart using Streamlit
