@@ -963,9 +963,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
 
                         else:
-                            sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                            if sort_by == 'Publication date' or filtered_type_df['Citation'].sum() == 0:
+                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                            if sort_by == 'Publication date :arrow_down:' or filtered_type_df['Citation'].sum() == 0:
                                 filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
+                                filtered_type_df = filtered_type_df.reset_index(drop=True)
+                            elif sort_by == 'Publication date :arrow_up:' or filtered_type_df['Citation'].sum() == 0:
+                                filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=True)
                                 filtered_type_df = filtered_type_df.reset_index(drop=True)
                             else:
                                 filtered_type_df = filtered_type_df.sort_values(by=['Citation'], ascending=False)
