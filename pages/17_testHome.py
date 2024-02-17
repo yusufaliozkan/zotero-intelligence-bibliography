@@ -417,7 +417,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                             else:
                                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
-                                if sort_by == 'Publication date :arrow_down:' or filtered_df['Citation'].sum() == 0:
+                                if sort_by == 'Publication date :arrow_down:':
                                     filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
                                     filtered_df = filtered_df.reset_index(drop=True)
                                 elif sort_by == 'Publication date :arrow_up:' or filtered_df['Citation'].sum() == 0:
