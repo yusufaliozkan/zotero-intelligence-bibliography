@@ -1588,7 +1588,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.plotly_chart(fig)
 
                             year_difference = df_cited['Year_difference'].value_counts().sort_index().reset_index()
-                            citation_distribution
+                            year_difference
                             fig = px.scatter(df, x='Index_Column', y='Year_difference', title='Year Difference Between Publication and Citation')
                             fig.show()
 
