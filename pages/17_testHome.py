@@ -1559,7 +1559,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if dashboard_all and len(df_cited) > 0: 
                             st.info(f'Dashboard for cited items in the library')
 
-                            colcite1, colcite2, colcite3, colcite4 = st.columns(4)
+                            colcite1, colcite2, colcite3 = st.columns(3)
 
                             with colcite1:
                                 st.metric(label=f"Citation average", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
@@ -1576,11 +1576,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
                                 help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
                                 ''')
-                            with colcite4:
-                                median_first_citaion = df_cited['Year_difference'].median()
-                                st.metric(label=f"First citation occurence (median in year)", value=round(median_first_citaion), label_visibility='visible', 
-                                help=f'''First citation usually occurs **{round(median_first_citaion)}** years after publication.
-                                ''')
+
                             citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
                             citation_distribution.columns = ['Number of Citations', 'Number of Articles']
 
