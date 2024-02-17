@@ -1155,9 +1155,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
 
                         else:
-                            sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                            if sort_by == 'Publication date' or selected_journal_df['Citation'].sum() == 0:
+                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                            if sort_by == 'Publication date :arrow_down:' or selected_journal_df['Citation'].sum() == 0:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
+                                selected_journal_df = selected_journal_df.reset_index(drop=True)
+                            elif sort_by == 'Publication date :arrow_up:' or selected_journal_df['Citation'].sum() == 0:
+                                selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=True)
                                 selected_journal_df = selected_journal_df.reset_index(drop=True)
                             else:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
