@@ -975,7 +975,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-
+                        filtered_type_df
                         else:
                             sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
                             if sort_by == 'Publication date :arrow_down:':
