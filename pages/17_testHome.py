@@ -1505,7 +1505,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited.reset_index(drop=True)
 
                     citation_type = st.radio('Select:', ('All citations', 'Trends'))
-                    if citation_type=='All_citations':
+                    if citation_type=='All citations':
                         df_cited = df_cited.reset_index(drop=True)
                     else:
                         current_year = datetime.datetime.now().year
