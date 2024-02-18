@@ -1561,7 +1561,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.metric(label=f"The number of citations", value=int(citation_count), label_visibility='visible', 
+                    st.metric(label=f"The number of citations for **{number_of_items}** items", value=int(citation_count), label_visibility='visible', 
                     help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
                     ''')
 
