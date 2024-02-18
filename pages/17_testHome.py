@@ -1432,12 +1432,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
                     else:
-                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                         if sort_by == 'Publication date :arrow_down:' or df_all['Citation'].sum() == 0:
                             df_all = df_all.sort_values(by=['Date published'], ascending=False)
-                            df_all = df_all.reset_index(drop=True)
-                        elif sort_by == 'Publication date :arrow_up:' or df_all['Citation'].sum() == 0:
-                            df_all = df_all.sort_values(by=['Date published'], ascending=True)
                             df_all = df_all.reset_index(drop=True)
                         else:
                             df_all = df_all.sort_values(by=['Citation'], ascending=False)
