@@ -1504,9 +1504,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
                     df_cited = df_cited.reset_index(drop=True)
 
-                            # current_year = datetime.datetime.now().year
-                            # df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
-                            # df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
+                    sort_by = st.radio('Select:', ('All citations', 'Trends'))
+                    if 'All_citations':
+                        df_cited = df_cited.reset_index(drop=True)
+                    else:
+                        current_year = datetime.datetime.now().year
+                        df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
+                        df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
 
                     max_value = int(df_cited['Citation'].max())
                     min_value = 1
