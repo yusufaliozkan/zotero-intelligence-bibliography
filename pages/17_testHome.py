@@ -1512,7 +1512,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
                         df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
                         current_year
-                        note = st.info('''
+                        note = st.info(f'''
                         The trends section shows the citations occured in the last two years to the papers published in the same period. 
                         
                         Citations occured in {current_year} {current_year - 1}
