@@ -28,6 +28,7 @@ import json
 from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
 from sidebar_content import sidebar_content
+import plotly.graph_objs as go
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -415,9 +416,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.pyplot()
 
                             else:
-                                sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                                if sort_by == 'Publication date' or filtered_df['Citation'].sum() == 0:
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                                if sort_by == 'Publication date :arrow_down:':
                                     filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
+                                    filtered_df = filtered_df.reset_index(drop=True)
+                                elif sort_by == 'Publication date :arrow_up:' or filtered_df['Citation'].sum() == 0:
+                                    filtered_df = filtered_df.sort_values(by=['Date published'], ascending=True)
                                     filtered_df = filtered_df.reset_index(drop=True)
                                 else:
                                     filtered_df = filtered_df.sort_values(by=['Citation'], ascending=False)
@@ -599,9 +603,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
                         else:
                             if not on:  # If the toggle is off, display the publications
-                                sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                                if sort_by == 'Publication date' or filtered_collection_df_authors['Citation'].sum() == 0:
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                                if sort_by == 'Publication date :arrow_down:':
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
+                                    filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
+                                elif sort_by == 'Publication date :arrow_up:' or filtered_collection_df_authors['Citation'].sum() == 0:
+                                    filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=True)
                                     filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
                                 else:
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
@@ -796,9 +803,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             if not on:
-                                sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                                if sort_by == 'Publication date' or filtered_collection_df['Citation'].sum() == 0:
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                                if sort_by == 'Publication date :arrow_down:':
                                     filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
+                                    filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                                elif sort_by == 'Publication date :arrow_up:' or filtered_collection_df['Citation'].sum() == 0:
+                                    filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=True)
                                     filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                                 else:
                                     filtered_collection_df = filtered_collection_df.sort_values(by=['Citation'], ascending=False)
@@ -862,7 +872,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_type_df = df_csv_types[df_csv_types['Publication type'].isin(selected_type)]
                     # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
 
-                    filtered_type_df['Date published'] = pd.to_datetime(filtered_type_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    # filtered_type_df['Date published'] = pd.to_datetime(filtered_type_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    filtered_type_df['Date published'] = (
+                        filtered_type_df['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
                     filtered_type_df['Date published'] = filtered_type_df['Date published'].dt.strftime('%Y-%m-%d')
                     filtered_type_df['Date published'] = filtered_type_df['Date published'].fillna('')
                     filtered_type_df['No date flag'] = filtered_type_df['Date published'].isnull().astype(np.uint8)
@@ -960,11 +975,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-
                         else:
-                            sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                            if sort_by == 'Publication date' or filtered_type_df['Citation'].sum() == 0:
+                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                            if sort_by == 'Publication date :arrow_down:':
                                 filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
+                                filtered_type_df = filtered_type_df.reset_index(drop=True)
+                            elif sort_by == 'Publication date :arrow_up:' or filtered_type_df['Citation'].sum() == 0:
+                                filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=True)
                                 filtered_type_df = filtered_type_df.reset_index(drop=True)
                             else:
                                 filtered_type_df = filtered_type_df.sort_values(by=['Citation'], ascending=False)
@@ -1154,9 +1171,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
 
                         else:
-                            sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                            if sort_by == 'Publication date' or selected_journal_df['Citation'].sum() == 0:
+                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                            if sort_by == 'Publication date :arrow_down:' or selected_journal_df['Citation'].sum() == 0:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
+                                selected_journal_df = selected_journal_df.reset_index(drop=True)
+                            elif sort_by == 'Publication date :arrow_up:' or selected_journal_df['Citation'].sum() == 0:
+                                selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=True)
                                 selected_journal_df = selected_journal_df.reset_index(drop=True)
                             else:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
@@ -1427,9 +1447,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
                     else:
-                        sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                        if sort_by == 'Publication date' or df_all['Citation'].sum() == 0:
+                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                        if sort_by == 'Publication date :arrow_down:' or df_all['Citation'].sum() == 0:
                             df_all = df_all.sort_values(by=['Date published'], ascending=False)
+                            df_all = df_all.reset_index(drop=True)
+                        elif sort_by == 'Publication date :arrow_up:' or df_all['Citation'].sum() == 0:
+                            df_all = df_all.sort_values(by=['Date published'], ascending=True)
                             df_all = df_all.reset_index(drop=True)
                         else:
                             df_all = df_all.sort_values(by=['Citation'], ascending=False)
@@ -1530,7 +1553,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
                     
                     df_cited = df_cited.reset_index(drop=True)
-                    df_cited
 
                     df_cited_download = df_cited.copy()
                     df_cited_download = df_cited_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
@@ -1548,21 +1570,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    colcite1, colcite2, colcite3 = st.columns(3)
-                    with colcite1:
-                        st.metric(label=f"The number of citations for **{number_of_items}** sources", value=int(citation_count), label_visibility='visible', 
-                        help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
-                        ''')
-                    with colcite2:
-                        st.metric(label=f"Citation average", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
-                        help=f'''This is for items at least with 1 citation.
-                        Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
-                        ''')
-                    with colcite3:
-                        mean_citation = df_cited['Citation'].median()
-                        st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
-                        help=f'''This is for items at least with 1 citation.
-                        ''')
+                    st.metric(label=f"The number of citations", value=int(citation_count), label_visibility='visible', 
+                    help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
+                    ''')
 
                     st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
 
@@ -1570,6 +1580,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if dashboard_all:
                         if dashboard_all and len(df_cited) > 0: 
                             st.info(f'Dashboard for cited items in the library')
+
+                            colcite1, colcite2, colcite3 = st.columns(3)
+
+                            with colcite1:
+                                st.metric(label=f"Citation average", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
+                                help=f'''This is for items at least with 1 citation.
+                                Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                                ''')
+                            with colcite2:
+                                mean_citation = df_cited['Citation'].median()
+                                st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
+                                help=f'''This is for items at least with 1 citation.
+                                ''')
+                            with colcite3:
+                                mean_first_citaion = df_cited['Year_difference'].mean()
+                                st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
+                                help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
+                                ''')
 
                             citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
                             citation_distribution.columns = ['Number of Citations', 'Number of Articles']
@@ -1581,7 +1609,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Optional: You can customize scatter plot appearance using various parameters
                             # For example:
                             fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
+                            st.plotly_chart(fig)
 
+                            fig = go.Figure(data=go.Scatter(x=df_cited['Year_difference'], y=[0] * len(df_cited['Year_difference']), mode='markers'))
+                            # Customize layout
+                            fig.update_layout(
+                                title='First citation occurence (first citation occurs after years)',
+                                xaxis_title='Year Difference',
+                                yaxis_title='',                            )
+
+                            # Display the Plotly chart using Streamlit
                             st.plotly_chart(fig)
 
                             collection_df = df_cited.copy()
@@ -1665,9 +1702,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
                     else:
-                        sort_by = st.radio('Sort by:', ('Publication date', 'Citation'))
-                        if sort_by == 'Publication date' or df_cited['Citation'].sum() == 0:
+                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                        if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                             df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
+                            df_cited = df_cited.reset_index(drop=True)
+                        elif sort_by == 'Publication date :arrow_up:' or df_cited['Citation'].sum() == 0:
+                            df_cited = df_cited.sort_values(by=['Date published'], ascending=True)
                             df_cited = df_cited.reset_index(drop=True)
                         else:
                             df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
