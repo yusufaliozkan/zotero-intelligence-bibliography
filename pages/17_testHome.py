@@ -1688,7 +1688,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                             df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
                             df_cited = df_cited.reset_index(drop=True)
-                        elif:
+                        elif sort_by == 'Citation':
                             df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
                             df_cited = df_cited.reset_index(drop=True)
                         else:
