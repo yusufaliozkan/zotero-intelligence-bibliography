@@ -1504,6 +1504,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
                     df_cited = df_cited.reset_index(drop=True)
 
+                            # current_year = datetime.datetime.now().year
+                            # df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
+                            # df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
+
                     max_value = int(df_cited['Citation'].max())
                     min_value = 1
                     selected_range = st.slider('Select a citation range:', min_value, max_value, (min_value, max_value), key='')
@@ -1529,10 +1533,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                     df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
 
-                    pub_types = df_cited['Publication type'].unique()
-                    selected_type = st.multiselect("Filter by publication type:", pub_types)
-                    if selected_type:
-                        df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
+                    # pub_types = df_cited['Publication type'].unique()
+                    # selected_type = st.multiselect("Filter by publication type:", pub_types)
+                    # if selected_type:
+                    #     df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
                     
                     df_cited = df_cited.reset_index(drop=True)
 
