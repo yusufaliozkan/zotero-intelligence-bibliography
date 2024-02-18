@@ -1693,7 +1693,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             df_cited = df_cited.reset_index(drop=True)
                         else:
                             current_year = datetime.datetime.now().year
-                            current_year
+                            df_cited = df_cited[df_cited['Last_citation_year'] == current_year]
+                            df_cited
                         if number_of_items > 20:
                             show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True, key='all_items')
                             if show_first_20:
