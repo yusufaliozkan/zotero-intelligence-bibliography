@@ -797,12 +797,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             if not on:
-                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                                 if sort_by == 'Publication date :arrow_down:':
                                     filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
-                                    filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-                                elif sort_by == 'Publication date :arrow_up:' or filtered_collection_df['Citation'].sum() == 0:
-                                    filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=True)
                                     filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                                 else:
                                     filtered_collection_df = filtered_collection_df.sort_values(by=['Citation'], ascending=False)
