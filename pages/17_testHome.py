@@ -416,12 +416,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.pyplot()
 
                             else:
-                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
-                                if sort_by == 'Publication date :arrow_down:':
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                                if sort_by == 'Publication date :arrow_down:' or filtered_df['Citation'].sum() == 0:
                                     filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
-                                    filtered_df = filtered_df.reset_index(drop=True)
-                                elif sort_by == 'Publication date :arrow_up:' or filtered_df['Citation'].sum() == 0:
-                                    filtered_df = filtered_df.sort_values(by=['Date published'], ascending=True)
                                     filtered_df = filtered_df.reset_index(drop=True)
                                 else:
                                     filtered_df = filtered_df.sort_values(by=['Citation'], ascending=False)
@@ -603,12 +600,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
                         else:
                             if not on:  # If the toggle is off, display the publications
-                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
-                                if sort_by == 'Publication date :arrow_down:':
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                                if sort_by == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
-                                    filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
-                                elif sort_by == 'Publication date :arrow_up:' or filtered_collection_df_authors['Citation'].sum() == 0:
-                                    filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=True)
                                     filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
                                 else:
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
@@ -803,12 +797,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         else:
                             if not on:
-                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
-                                if sort_by == 'Publication date :arrow_down:':
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                                if sort_by == 'Publication date :arrow_down:' or filtered_collection_df['Citation'].sum() == 0:
                                     filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
-                                    filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-                                elif sort_by == 'Publication date :arrow_up:' or filtered_collection_df['Citation'].sum() == 0:
-                                    filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=True)
                                     filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                                 else:
                                     filtered_collection_df = filtered_collection_df.sort_values(by=['Citation'], ascending=False)
@@ -975,13 +966,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-                        else:
-                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
-                            if sort_by == 'Publication date :arrow_down:':
+                        else: 
+                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                            if sort_by == 'Publication date :arrow_down:' or filtered_type_df['Citation'].sum() == 0:
                                 filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
-                                filtered_type_df = filtered_type_df.reset_index(drop=True)
-                            elif sort_by == 'Publication date :arrow_up:' or filtered_type_df['Citation'].sum() == 0:
-                                filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=True)
                                 filtered_type_df = filtered_type_df.reset_index(drop=True)
                             else:
                                 filtered_type_df = filtered_type_df.sort_values(by=['Citation'], ascending=False)
@@ -1171,12 +1159,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.pyplot()
 
                         else:
-                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                             if sort_by == 'Publication date :arrow_down:' or selected_journal_df['Citation'].sum() == 0:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
-                                selected_journal_df = selected_journal_df.reset_index(drop=True)
-                            elif sort_by == 'Publication date :arrow_up:' or selected_journal_df['Citation'].sum() == 0:
-                                selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=True)
                                 selected_journal_df = selected_journal_df.reset_index(drop=True)
                             else:
                                 selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
@@ -1447,12 +1432,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
                     else:
-                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                         if sort_by == 'Publication date :arrow_down:' or df_all['Citation'].sum() == 0:
                             df_all = df_all.sort_values(by=['Date published'], ascending=False)
-                            df_all = df_all.reset_index(drop=True)
-                        elif sort_by == 'Publication date :arrow_up:' or df_all['Citation'].sum() == 0:
-                            df_all = df_all.sort_values(by=['Date published'], ascending=True)
                             df_all = df_all.reset_index(drop=True)
                         else:
                             df_all = df_all.sort_values(by=['Citation'], ascending=False)
@@ -1702,12 +1684,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
                     else:
-                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication date :arrow_up:', 'Citation'))
+                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                         if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                             df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
-                            df_cited = df_cited.reset_index(drop=True)
-                        elif sort_by == 'Publication date :arrow_up:' or df_cited['Citation'].sum() == 0:
-                            df_cited = df_cited.sort_values(by=['Date published'], ascending=True)
                             df_cited = df_cited.reset_index(drop=True)
                         else:
                             df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
