@@ -1512,7 +1512,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
                         df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
 
-                    df_cited
                     max_value = int(df_cited['Citation'].max())
                     min_value = 1
                     selected_range = st.slider('Select a citation range:', min_value, max_value, (min_value, max_value), key='')
