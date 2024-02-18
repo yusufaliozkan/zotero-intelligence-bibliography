@@ -1683,7 +1683,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             plt.show()
                             st.set_option('deprecation.showPyplotGlobalUse', False)
                             st.pyplot()
-                    else:
+                    else: 
                         sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                         if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                             df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
