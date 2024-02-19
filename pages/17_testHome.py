@@ -1052,6 +1052,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Journal: ' + str(journals))
 
+                        non_nan_id = selected_journal_df['ID'].count()
+
                         download_journal = selected_journal_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                         download_journal['Abstract'] = download_journal['Abstract'].str.replace('\n', ' ')
                         download_journal = download_journal.reset_index(drop=True)
