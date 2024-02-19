@@ -95,7 +95,8 @@ type_map = {
     'forumPost': 'Forum post',
     'conferencePaper' : 'Conference paper',
     'audioRecording' : 'Podcast',
-    'preprint':'Preprint'
+    'preprint':'Preprint',
+    'document':'Document'
 }
 df['Publication type'] = df['Publication type'].replace(type_map)
 
@@ -1052,6 +1053,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Journal: ' + str(journals))
 
+                        non_nan_id = selected_journal_df['ID'].count()
+
                         download_journal = selected_journal_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                         download_journal['Abstract'] = download_journal['Abstract'].str.replace('\n', ' ')
                         download_journal = download_journal.reset_index(drop=True)
@@ -1073,6 +1076,29 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
                         if on and len (selected_journal_df) > 0:
                             st.info(f'Dashboard for {journals}')
+                            
+                            if non_nan_id !=0:
+
+                                colcite1, colcite2, colcite3 = st.columns(3)
+
+                                with colcite1:
+                                    st.metric(label=f"Citation average", value=round((citation_count)/(num_items_collections)), label_visibility='visible', 
+                                    help=f'''This is for items at least with 1 citation.
+                                    Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                                    ''')
+                                with colcite2:
+                                    mean_citation = selected_journal_df['Citation'].median()
+                                    st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
+                                    help=f'''This is for items at least with 1 citation.
+                                    ''')
+                                with colcite3:
+                                    mean_first_citaion = selected_journal_df['Year_difference'].mean()
+                                    st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
+                                    help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
+                                    ''')
+                            else:
+                                st.write('No citation found for selected journal(s)!')
+
                             type_df = selected_journal_df.copy()
                             collection_df = type_df.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
@@ -1504,6 +1530,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
                     df_cited = df_cited.reset_index(drop=True)
 
+                    citation_type = st.radio('Select:', ('All citations', 'Trends'))
+                    if citation_type=='All citations':
+                        df_cited = df_cited.reset_index(drop=True)
+                    else:
+                        current_year = datetime.datetime.now().year
+                        df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
+                        df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
+                        note = st.info(f'''
+                        The trends section shows the citations occured in the last two years ({current_year - 1}-{current_year}) to the papers published in the same period. 
+                        ''')
+
                     max_value = int(df_cited['Citation'].max())
                     min_value = 1
                     selected_range = st.slider('Select a citation range:', min_value, max_value, (min_value, max_value), key='')
@@ -1529,10 +1566,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                     df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
 
-                    pub_types = df_cited['Publication type'].unique()
-                    selected_type = st.multiselect("Filter by publication type:", pub_types)
-                    if selected_type:
-                        df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
+                    # pub_types = df_cited['Publication type'].unique()
+                    # selected_type = st.multiselect("Filter by publication type:", pub_types)
+                    # if selected_type:
+                    #     df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
                     
                     df_cited = df_cited.reset_index(drop=True)
 
@@ -1552,7 +1589,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.metric(label=f"The number of citations", value=int(citation_count), label_visibility='visible', 
+                    st.metric(label=f"The number of citations for **{number_of_items}** items", value=int(citation_count), label_visibility='visible', 
                     help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
                     ''')
 
@@ -1688,7 +1725,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                             df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
                             df_cited = df_cited.reset_index(drop=True)
-                        else:
+                        else:  
                             df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
                             df_cited = df_cited.reset_index(drop=True)
                         if number_of_items > 20:
