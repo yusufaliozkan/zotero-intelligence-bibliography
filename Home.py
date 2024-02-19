@@ -1504,6 +1504,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
                     df_cited = df_cited.reset_index(drop=True)
 
+                    citation_type = st.radio('Select:', ('All citations', 'Trends'))
+                    if citation_type=='All citations':
+                        df_cited = df_cited.reset_index(drop=True)
+                    else:
+                        current_year = datetime.datetime.now().year
+                        df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
+                        df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
+                        current_year
+                        note = st.info(f'''
+                        The trends section shows the citations occured in the last two years ({current_year - 1}-{current_year}) to the papers published in the same period. 
+                        ''')
+
                     max_value = int(df_cited['Citation'].max())
                     min_value = 1
                     selected_range = st.slider('Select a citation range:', min_value, max_value, (min_value, max_value), key='')
@@ -1529,10 +1541,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                     df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
 
-                    pub_types = df_cited['Publication type'].unique()
-                    selected_type = st.multiselect("Filter by publication type:", pub_types)
-                    if selected_type:
-                        df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
+                    # pub_types = df_cited['Publication type'].unique()
+                    # selected_type = st.multiselect("Filter by publication type:", pub_types)
+                    # if selected_type:
+                    #     df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
                     
                     df_cited = df_cited.reset_index(drop=True)
 
@@ -1552,7 +1564,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     citation_count = df_cited['Citation'].sum()
                     publications_by_type = df_cited['Publication type'].value_counts()
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.metric(label=f"The number of citations", value=int(citation_count), label_visibility='visible', 
+                    st.metric(label=f"The number of citations for **{number_of_items}** items", value=int(citation_count), label_visibility='visible', 
                     help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
                     ''')
 
@@ -1688,7 +1700,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                             df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
                             df_cited = df_cited.reset_index(drop=True)
-                        else:
+                        else:  
                             df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
                             df_cited = df_cited.reset_index(drop=True)
                         if number_of_items > 20:
