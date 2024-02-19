@@ -1514,8 +1514,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         current_year
                         note = st.info(f'''
                         The trends section shows the citations occured in the last two years to the papers published in the same period. 
-                        
-                        Citations occured in {current_year}-{current_year - 1} to papers published in {current_year}-{current_year - 1}.
+                        {current_year}-{current_year - 1} citations to papers published in {current_year}-{current_year - 1}.
                         ''')
 
                     max_value = int(df_cited['Citation'].max())
