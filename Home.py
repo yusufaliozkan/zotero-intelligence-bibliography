@@ -1052,6 +1052,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Journal: ' + str(journals))
 
+                        non_nan_id = selected_journal_df['ID'].count()
+
                         download_journal = selected_journal_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                         download_journal['Abstract'] = download_journal['Abstract'].str.replace('\n', ' ')
                         download_journal = download_journal.reset_index(drop=True)
@@ -1073,6 +1075,29 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
                         if on and len (selected_journal_df) > 0:
                             st.info(f'Dashboard for {journals}')
+                            
+                            if non_nan_id !=0:
+
+                                colcite1, colcite2, colcite3 = st.columns(3)
+
+                                with colcite1:
+                                    st.metric(label=f"Citation average", value=round((citation_count)/(num_items_collections)), label_visibility='visible', 
+                                    help=f'''This is for items at least with 1 citation.
+                                    Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                                    ''')
+                                with colcite2:
+                                    mean_citation = selected_journal_df['Citation'].median()
+                                    st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
+                                    help=f'''This is for items at least with 1 citation.
+                                    ''')
+                                with colcite3:
+                                    mean_first_citaion = selected_journal_df['Year_difference'].mean()
+                                    st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
+                                    help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
+                                    ''')
+                            else:
+                                st.write('No citation found for selected journal(s)!')
+
                             type_df = selected_journal_df.copy()
                             collection_df = type_df.copy()
                             collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
