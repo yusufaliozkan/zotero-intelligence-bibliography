@@ -1075,6 +1075,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
                         if on and len (selected_journal_df) > 0:
                             st.info(f'Dashboard for {journals}')
+                            non_nan_id
 
                             colcite1, colcite2, colcite3 = st.columns(3)
 
