@@ -1075,25 +1075,28 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         on = st.toggle('Generate dashboard')
                         if on and len (selected_journal_df) > 0:
                             st.info(f'Dashboard for {journals}')
-                            non_nan_id
+                            
+                            if non_nan_id !=0:
 
-                            colcite1, colcite2, colcite3 = st.columns(3)
+                                colcite1, colcite2, colcite3 = st.columns(3)
 
-                            with colcite1:
-                                st.metric(label=f"Citation average", value=round((citation_count)/(num_items_collections)), label_visibility='visible', 
-                                help=f'''This is for items at least with 1 citation.
-                                Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
-                                ''')
-                            with colcite2:
-                                mean_citation = selected_journal_df['Citation'].median()
-                                st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
-                                help=f'''This is for items at least with 1 citation.
-                                ''')
-                            with colcite3:
-                                mean_first_citaion = selected_journal_df['Year_difference'].mean()
-                                st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
-                                help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
-                                ''')
+                                with colcite1:
+                                    st.metric(label=f"Citation average", value=round((citation_count)/(num_items_collections)), label_visibility='visible', 
+                                    help=f'''This is for items at least with 1 citation.
+                                    Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                                    ''')
+                                with colcite2:
+                                    mean_citation = selected_journal_df['Citation'].median()
+                                    st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
+                                    help=f'''This is for items at least with 1 citation.
+                                    ''')
+                                with colcite3:
+                                    mean_first_citaion = selected_journal_df['Year_difference'].mean()
+                                    st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
+                                    help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
+                                    ''')
+                            else:
+                                st.write('No citation found!')
 
                             type_df = selected_journal_df.copy()
                             collection_df = type_df.copy()
