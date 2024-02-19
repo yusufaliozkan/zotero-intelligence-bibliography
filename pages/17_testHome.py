@@ -1096,7 +1096,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
                                     ''')
                             else:
-                                st.write('No citation found!')
+                                st.write('No citation found for selected journal(s)!')
 
                             type_df = selected_journal_df.copy()
                             collection_df = type_df.copy()
