@@ -44,7 +44,8 @@ st.set_page_config(layout = "wide",
 pd.set_option('display.max_colwidth', None)
 
 zot = zotero.Zotero(library_id, library_type)
-
+items = zot.top(limit=5)
+items
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
     items = zot.top(limit=5)
@@ -71,7 +72,7 @@ def zotero_data(library_id, library_type):
     return df
 
 df = zotero_data(library_id, library_type)
-item
+
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
 df['Abstract'] = df['Abstract'].fillna('No abstract')
 
