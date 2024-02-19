@@ -1077,7 +1077,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             colcite1, colcite2, colcite3 = st.columns(3)
 
                             with colcite1:
-                                st.metric(label=f"Citation average", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
+                                st.metric(label=f"Citation average", value=round((citation_count)/(num_items_collections)), label_visibility='visible', 
                                 help=f'''This is for items at least with 1 citation.
                                 Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
                                 ''')
