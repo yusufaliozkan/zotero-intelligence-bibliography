@@ -168,7 +168,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     '(Publication date: ' + str(date_published) + ') ' +
                     ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
                     '[[Publication link]](' + link_to_publication + ') ' +
-                    '[[Zotero link]](' + zotero_link + ')' +
+                    '[[Zotero link]](' + zotero_link + ') ' +
                     (citation_text if include_citation else '')
                 )
             if not selected_country or selected_country=="":
