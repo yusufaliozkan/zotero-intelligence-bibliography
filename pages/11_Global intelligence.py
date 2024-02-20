@@ -265,10 +265,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             '[[Zotero link]](' + str(zotero_link) + ')'
                         )
                     sort_by_type = st.checkbox('Sort by publication type', key='type_count')
+                    sort_by_citation = st.checkbox('Sort by citation', key='citation')
                     display2 = st.checkbox('Display abstracts', key='type_count2')
 
                     if sort_by_type:
                         df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                        current_type = None
+                        count_by_type = {}
+                        for index, row in df_collections.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
+                            if display2:
+                                st.caption(row['Abstract'])
+                    if sort_by_citation:
+                        df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
                         current_type = None
                         count_by_type = {}
                         for index, row in df_collections.iterrows():
