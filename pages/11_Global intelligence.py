@@ -265,7 +265,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             '[[Zotero link]](' + str(zotero_link) + ')'
                         )                    
 
-                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type' 'Citation'))
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
                     display2 = st.checkbox('Display abstracts', key='type_count2')
                     if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                         count = 1
