@@ -158,6 +158,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
                 if publication_type == 'Book':
                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
+                    else '')
 
                 return (
                     '**' + publication_type + '**' + ': ' +
