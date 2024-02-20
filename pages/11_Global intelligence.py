@@ -131,7 +131,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_countries = df_countries[df_countries['Country'] == selected_country]
 
             # Display the filtered DataFrame
-            def format_entry(row):
+            def format_entry(row, include_citation=True):
                 publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
                 title = str(row['Title']) if pd.notnull(row['Title']) else ''
                 authors = str(row['FirstName2'])
