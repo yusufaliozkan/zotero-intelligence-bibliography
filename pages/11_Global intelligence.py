@@ -263,12 +263,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                             '[[Publication link]](' + str(link_to_publication) + ') ' +
                             '[[Zotero link]](' + str(zotero_link) + ')'
-                        )
-                    sort_by_type = st.checkbox('Sort by publication type', key='type_count')
-                    sort_by_citation = st.checkbox('Sort by citation', key='citation')
-                    display2 = st.checkbox('Display abstracts', key='type_count2')
+                        )                    
 
-                    if sort_by_type:
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type' 'Citation'))
+                    display2 = st.checkbox('Display abstracts', key='type_count2')
+                    if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
+                        count = 1
+                        for index, row in df_collections.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract']) 
+                    elif sort_by == 'Publication type' or df_cited['Citation'].sum() == 0:
                         df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
                         current_type = None
                         count_by_type = {}
@@ -282,8 +289,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count_by_type[current_type] += 1
                             if display2:
                                 st.caption(row['Abstract'])
-                    if sort_by_citation:
-                        df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
+                    else:
+                        df_collections = df_collections.sort_values(by=['Citation'], ascending=True)
                         current_type = None
                         count_by_type = {}
                         for index, row in df_collections.iterrows():
@@ -296,14 +303,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count_by_type[current_type] += 1
                             if display2:
                                 st.caption(row['Abstract'])
-                    else:
-                        count = 1
-                        for index, row in df_collections.iterrows():
-                            formatted_entry = format_entry(row)
-                            st.write(f"{count}) {formatted_entry}")
-                            count += 1
-                            if display2:
-                                st.caption(row['Abstract']) 
             
             else:
                 with st.expander('Click to expand', expanded=True):
