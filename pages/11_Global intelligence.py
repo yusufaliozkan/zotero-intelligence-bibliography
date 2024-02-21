@@ -251,7 +251,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     articles_list = []  # Store articles in a list
                     st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-                    citation_count = df_collections['Citation'].sum()
+                    citation_count = df_countries['Citation'].sum()
                     st.write(f'**Number of citations:** {int(citation_count)}')
                 
                     for index, row in df_countries.iterrows():
