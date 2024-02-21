@@ -174,19 +174,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.caption(row['Abstract'])
                 else:
                     df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
-                    current_type = None
-                    count_by_type = {}
+                    count = 1
                     for index, row in df_collections.iterrows():
-                        if row['Publication type'] != current_type:
-                            current_type = row['Publication type']
-                            st.subheader(current_type)
-                            count_by_type[current_type] = 1
                         formatted_entry = format_entry(row)
-                        st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                        count_by_type[current_type] += 1
+                        st.write(f"{count}) {formatted_entry}")
+                        count += 1
                         if display2:
-                            st.caption(row['Abstract'])
-
+                            st.caption(row['Abstract']) 
 #UNTIL HERE
         with col2:
             with st.expander('Collections', expanded=True):
