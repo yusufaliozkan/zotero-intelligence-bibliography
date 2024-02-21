@@ -106,6 +106,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_items_count = df_countries_chart['Country'].nunique()
             num_items_collections = len(df_collections)
             st.write(f"**{num_items_collections}** sources found for **{unique_items_count-1}** countries.")
+            citation_count = df_collections['Citation'].sum()
+            st.write(f'**Number of citations:** {int(citation_count)}')
             container_metric = container_metric.metric(label='Number of items in this collection', value=num_items_collections, help=f'sources found for **{unique_items_count-1}** countries.')
 
             df_countries['Date published'] = ( 
