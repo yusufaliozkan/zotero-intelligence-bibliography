@@ -89,7 +89,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
             st.markdown('#### Collection theme: ' + collection_name)
-            st.write(f"See the collection in [Zotero]({collection_link})")
+
+            col112, col113 = st.columns([1,4])
+            with col112:
+                st.write(f"See the collection in [Zotero]({collection_link})")
+            with col113:
+                only_citation = st.checkbox('Show cited items only')
+                if only_citation:
+                    df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
             df_collections = df_collections.reset_index(drop=True)
@@ -104,14 +112,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
             st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
-            col112, col113 = st.columns([1,4])
-            with col112:
-                citation_count = df_collections['Citation'].sum()
-                st.write(f'**Number of citations:** {int(citation_count)}')
-            with col113:
-                only_citation = st.checkbox('Show cited items only')
-                if only_citation:
-                    df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+
+            citation_count = df_collections['Citation'].sum()
+            st.write(f'**Number of citations:** {int(citation_count)}')
+
 
             a = f'{collection_name}_{today}'
             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
