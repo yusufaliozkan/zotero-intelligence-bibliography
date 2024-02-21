@@ -102,8 +102,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
             st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
-            citation_count = df_collections['Citation'].sum()
-            st.write(f'**Number of citations:** {int(citation_count)}')
+            col112, col113 = st.columns([1,4])
+            with col112:
+                citation_count = df_collections['Citation'].sum()
+                st.write(f'**Number of citations:** {int(citation_count)}')
+            with col113:
+                only_citation = st.checkbox('Show cited items only')
+                if only_citation:
+                    df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
             
             a = f'{collection_name}_{today}'
             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
