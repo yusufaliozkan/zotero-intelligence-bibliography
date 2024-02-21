@@ -105,7 +105,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             citation_count = df_collections['Citation'].sum()
             st.write(f'**Number of citations:** {int(citation_count)}')
-            
+
             a = f'{collection_name}_{today}'
             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
@@ -177,7 +177,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count_by_type[current_type] = 1
                         formatted_entry = format_entry(row)
                         st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                        count_by_type[current_type] += 1
+                        # count_by_type[current_type] += 1
                         if display2:
                             st.caption(row['Abstract'])
 
