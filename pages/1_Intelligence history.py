@@ -62,13 +62,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+    with st.container():
+        only_citation = container2.checkbox('Show only cited items')
 
-    only_citation = container2.checkbox('Show only cited items')
+        if only_citation:
+            df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
 
-    if only_citation:
-        df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
-
-    container = st.container()
+        container = st.container()
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
