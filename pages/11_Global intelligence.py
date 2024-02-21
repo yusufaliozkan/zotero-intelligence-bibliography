@@ -153,7 +153,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                     a = f'{collection_name}_{today}'
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
-                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+                    st.write(f"**{num_items_collections}** sources found ({breakdown_string}) **Number of citations:** {int(citation_count)}")
                     citation_count = df_collections['Citation'].sum()
                     st.write(f'**Number of citations:** {int(citation_count)}')
                     # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
