@@ -103,6 +103,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 only_citation = st.checkbox('Show cited items only')
                 if only_citation:
                     df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+                    df_countries = df_countries[(df_countries['Citation'].notna()) & (df_countries['Citation'] != 0)]
             
             container_info = container_info.info('This collection lists academic sources that are **non-UK/US** on intelligence.')
 
