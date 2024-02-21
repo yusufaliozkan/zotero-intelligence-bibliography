@@ -61,6 +61,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
 
+    container = st.container()
+    only_citation = container.checkbox('Show only cited items')
+
+    if only_citation:
+        df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
     container = st.container()
