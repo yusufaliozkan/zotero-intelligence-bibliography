@@ -21,7 +21,7 @@ import datetime as dt
 import random
 from authors_dict import df_authors, name_replacements
 from sidebar_content import sidebar_content
-
+from format_entry import format_entry
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
@@ -83,7 +83,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
             st.markdown('#### Collection theme: ' + collection_name)
-            st.write(f"See the collection in [Zotero]({collection_link})")
+            col112, col113 = st.columns([1,4])
+            with col112:
+                st.write(f"See the collection in [Zotero]({collection_link})")
+            with col113:
+                only_citation = st.checkbox('Show cited items only')
+                if only_citation:
+                    df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
             df_collections = df_collections.reset_index(drop=True)
@@ -101,40 +107,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
             with st.expander('Click to expand', expanded=True):
-                def format_entry(row):
-                    publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                    title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                    authors = str(row['FirstName2'])
-                    date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                    link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                    zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-                    published_by_or_in = ''
-                    published_source = ''
-
-                    published_by_or_in_dict = {
-                        'Journal article': 'Published in',
-                        'Magazine article': 'Published in',
-                        'Newspaper article': 'Published in',
-                        'Book': 'Published by',
-                    }
-
-                    publication_type = row['Publication type']
-
-                    published_by_or_in = published_by_or_in_dict.get(publication_type, '')
-                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    if publication_type == 'Book':
-                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-
-                    return (
-                        '**' + publication_type + '**' + ': ' +
-                        title + ' ' +
-                        '(by ' + '*' + authors + '*' + ') ' +
-                        '(Publication date: ' + str(date_published) + ') ' +
-                        ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                        '[[Publication link]](' + link_to_publication + ') ' +
-                        '[[Zotero link]](' + zotero_link + ')'
-                    )
-
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
@@ -167,10 +139,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + str(link_to_publication) + ') ' +
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
-                sort_by_type = st.checkbox('Sort by publication type', key='type')
+                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
                 display2 = st.checkbox('Display abstracts')
-
-                if sort_by_type:
+                if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
+                    count = 1
+                    for index, row in df_collections.iterrows():
+                        formatted_entry = format_entry(row)
+                        st.write(f"{count}) {formatted_entry}")
+                        count += 1
+                        if display2:
+                            st.caption(row['Abstract']) 
+                elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
                     df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
                     current_type = None
                     count_by_type = {}
@@ -185,13 +164,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if display2:
                             st.caption(row['Abstract'])
                 else:
+                    df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
                     count = 1
                     for index, row in df_collections.iterrows():
                         formatted_entry = format_entry(row)
                         st.write(f"{count}) {formatted_entry}")
                         count += 1
                         if display2:
-                            st.caption(row['Abstract'])
+                            st.caption(row['Abstract']) 
 
 #UNTIL HERE
         with col2:
