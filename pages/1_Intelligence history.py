@@ -63,6 +63,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
     with st.container():
+        container2 = st.container()
         only_citation = container2.checkbox('Show only cited items')
 
         if only_citation:
