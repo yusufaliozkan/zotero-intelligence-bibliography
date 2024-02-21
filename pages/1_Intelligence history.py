@@ -23,7 +23,6 @@ from authors_dict import df_authors, name_replacements
 from sidebar_content import sidebar_content 
 from format_entry import format_entry
 
-
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
