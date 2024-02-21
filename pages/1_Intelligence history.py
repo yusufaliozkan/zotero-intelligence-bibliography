@@ -104,7 +104,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
             st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
-            col112, col113 = st.columns([1,3])
+            col112, col113 = st.columns([1,4])
             with col112:
                 citation_count = df_collections['Citation'].sum()
                 st.write(f'**Number of citations:** {int(citation_count)}')
