@@ -398,7 +398,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             '[[Publication link]](' + str(link_to_publication) + ') ' +
                             '[[Zotero link]](' + str(zotero_link) + ')'
                         )
-                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'), key='continent')
                     display2 = st.checkbox('Display abstracts', key='type_country_999')
                     if sort_by == 'Publication date :arrow_down:' or df_continent['Citation'].sum() == 0:
                         count = 1
