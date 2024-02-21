@@ -101,10 +101,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             num_items_collections = len(df_collections)
             breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
             st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-
-            citation_count = df_collections['Citation'].sum()
-            st.write(f'**Number of citations:** {int(citation_count)}')
-            
             a = f'{collection_name}_{today}'
             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
@@ -142,44 +138,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + str(link_to_publication) + ') ' +
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+                sort_by_type = st.checkbox('Sort by publication type', key='type')
                 display2 = st.checkbox('Display abstracts')
-                if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
-                    count = 1
-                    for index, row in df_collections.iterrows():
-                        formatted_entry = format_entry(row)
-                        st.write(f"{count}) {formatted_entry}")
-                        count += 1
-                        if display2:
-                            st.caption(row['Abstract']) 
-                elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
-                    df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
-                    current_type = None
-                    count_by_type = {}
-                    for index, row in df_collections.iterrows():
-                        if row['Publication type'] != current_type:
-                            current_type = row['Publication type']
-                            st.subheader(current_type)
-                            count_by_type[current_type] = 1
-                        formatted_entry = format_entry(row)
-                        st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                        count_by_type[current_type] += 1
-                        if display2:
-                            st.caption(row['Abstract'])
-                else:
-                    df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
-                    current_type = None
-                    count_by_type = {}
-                    for index, row in df_collections.iterrows():
-                        if row['Publication type'] != current_type:
-                            current_type = row['Publication type']
-                            st.subheader(current_type)
-                            count_by_type[current_type] = 1
-                        formatted_entry = format_entry(row)
-                        st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                        count_by_type[current_type] += 1
-                        if display2:
-                            st.caption(row['Abstract'])
 
                 if sort_by_type:
                     df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
