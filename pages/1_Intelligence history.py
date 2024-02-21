@@ -109,7 +109,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 citation_count = df_collections['Citation'].sum()
                 st.write(f'**Number of citations:** {int(citation_count)}')
             with col113:
-                only_citation = st.checkbox('Show only cited items')
+                only_citation = st.checkbox('Show cited items only')
                 if only_citation:
                     df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
 
