@@ -23,7 +23,7 @@ from authors_dict import df_authors, name_replacements
 from countries_dict import country_names, replacements, df_countries, df_continent
 from sidebar_content import sidebar_content
 import time
-
+from format_entry import format_entry
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
@@ -131,39 +131,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_countries = df_countries[df_countries['Country'] == selected_country]
 
             # Display the filtered DataFrame
-            def format_entry(row):
-                publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                authors = str(row['FirstName2'])
-                date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-                published_by_or_in = ''
-                published_source = ''
-
-                published_by_or_in_dict = {
-                    'Journal article': 'Published in',
-                    'Magazine article': 'Published in',
-                    'Newspaper article': 'Published in',
-                    'Book': 'Published by',
-                }
-
-                publication_type = row['Publication type']
-
-                published_by_or_in = published_by_or_in_dict.get(publication_type, '')
-                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                if publication_type == 'Book':
-                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-
-                return (
-                    '**' + publication_type + '**' + ': ' +
-                    title + ' ' +
-                    '(by ' + '*' + authors + '*' + ') ' +
-                    '(Publication date: ' + str(date_published) + ') ' +
-                    ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                    '[[Publication link]](' + link_to_publication + ') ' +
-                    '[[Zotero link]](' + zotero_link + ')'
-                )
+            # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
             if not selected_country or selected_country=="":
                 st.write('Please select a country')
             
@@ -184,39 +152,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     a = f'{collection_name}_{today}'
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
                     st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-                    def format_entry(row):
-                        publication_type = str(row['Publication type']) if pd.notnull(row['Publication type']) else ''
-                        title = str(row['Title']) if pd.notnull(row['Title']) else ''
-                        authors = str(row['FirstName2'])
-                        date_published = str(row['Date published']) if pd.notnull(row['Date published']) else ''
-                        link_to_publication = str(row['Link to publication']) if pd.notnull(row['Link to publication']) else ''
-                        zotero_link = str(row['Zotero link']) if pd.notnull(row['Zotero link']) else ''
-                        published_by_or_in = ''
-                        published_source = ''
-
-                        published_by_or_in_dict = {
-                            'Journal article': 'Published in',
-                            'Magazine article': 'Published in',
-                            'Newspaper article': 'Published in',
-                            'Book': 'Published by',
-                        }
-
-                        publication_type = row['Publication type']
-
-                        published_by_or_in = published_by_or_in_dict.get(publication_type, '')
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                        if publication_type == 'Book':
-                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-
-                        return (
-                            '**' + publication_type + '**' + ': ' +
-                            title + ' ' +
-                            '(by ' + '*' + authors + '*' + ') ' +
-                            '(Publication date: ' + str(date_published) + ') ' +
-                            ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-                            '[[Publication link]](' + link_to_publication + ') ' +
-                            '[[Zotero link]](' + zotero_link + ')'
-                        )
+                    # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
 
                     articles_list = []  # Store articles in a list
                     for index, row in df_collections.iterrows():
@@ -249,11 +185,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
                             '[[Publication link]](' + str(link_to_publication) + ') ' +
                             '[[Zotero link]](' + str(zotero_link) + ')'
-                        )
-                    sort_by_type = st.checkbox('Sort by publication type', key='type_count')
-                    display2 = st.checkbox('Display abstracts', key='type_count2')
+                        )                    
 
-                    if sort_by_type:
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+                    display2 = st.checkbox('Display abstracts', key='type_count2')
+                    if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
+                        count = 1
+                        for index, row in df_collections.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract']) 
+                    elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
                         df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
                         current_type = None
                         count_by_type = {}
@@ -268,13 +212,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if display2:
                                 st.caption(row['Abstract'])
                     else:
-                        count = 1
+                        df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
+                        current_type = None
+                        count_by_type = {}
                         for index, row in df_collections.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
                             formatted_entry = format_entry(row)
-                            st.write(f"{count}) {formatted_entry}")
-                            count += 1
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
                             if display2:
-                                st.caption(row['Abstract']) 
+                                st.caption(row['Abstract'])
             
             else:
                 with st.expander('Click to expand', expanded=True):
@@ -329,14 +279,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             '[[Publication link]](' + str(link_to_publication) + ') ' +
                             '[[Zotero link]](' + str(zotero_link) + ')'
                         )
-                    sort_by_type = st.checkbox('Sort by publication type', key='type_country')
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
                     display2 = st.checkbox('Display abstracts', key='type_country_2')
-
-                    if sort_by_type:
-                        df_countries = df_countries.sort_values(by=['Publication type'], ascending=True)
+                    if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
+                        count = 1
+                        for index, row in df_collections.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract']) 
+                    elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
+                        df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
                         current_type = None
                         count_by_type = {}
-                        for index, row in df_countries.iterrows():
+                        for index, row in df_collections.iterrows():
                             if row['Publication type'] != current_type:
                                 current_type = row['Publication type']
                                 st.subheader(current_type)
@@ -347,11 +304,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if display2:
                                 st.caption(row['Abstract'])
                     else:
-                        count = 1
-                        for index, row in df_countries.iterrows():
+                        df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
+                        current_type = None
+                        count_by_type = {}
+                        for index, row in df_collections.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
                             formatted_entry = format_entry(row)
-                            st.write(f"{count}) {formatted_entry}")
-                            count += 1
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
                             if display2:
                                 st.caption(row['Abstract'])
 
@@ -427,10 +390,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             '[[Publication link]](' + str(link_to_publication) + ') ' +
                             '[[Zotero link]](' + str(zotero_link) + ')'
                         )
-                    sort_by_type = st.checkbox('Sort by publication type', key='type_country_3')
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
                     display2 = st.checkbox('Display abstracts', key='type_country_999')
-
-                    if sort_by_type:
+                    if sort_by == 'Publication date :arrow_down:' or df_continent['Citation'].sum() == 0:
+                        count = 1
+                        for index, row in df_continent.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract']) 
+                    elif sort_by == 'Publication type' or df_continent['Citation'].sum() == 0:
                         df_continent = df_continent.sort_values(by=['Publication type'], ascending=True)
                         current_type = None
                         count_by_type = {}
@@ -445,13 +415,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if display2:
                                 st.caption(row['Abstract'])
                     else:
-                        count = 1
+                        df_continent = df_continent.sort_values(by=['Citation'], ascending=False)
+                        current_type = None
+                        count_by_type = {}
                         for index, row in df_continent.iterrows():
+                            if row['Publication type'] != current_type:
+                                current_type = row['Publication type']
+                                st.subheader(current_type)
+                                count_by_type[current_type] = 1
                             formatted_entry = format_entry(row)
-                            st.write(f"{count}) {formatted_entry}")
-                            count += 1
+                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
+                            count_by_type[current_type] += 1
                             if display2:
                                 st.caption(row['Abstract'])
+
             col11, col12 = st.columns([3,2])
             with col11:                
                 df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
