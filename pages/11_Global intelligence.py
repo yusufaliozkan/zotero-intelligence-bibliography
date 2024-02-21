@@ -96,7 +96,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0] 
 
             st.markdown('#### Collection theme: ' + collection_name)
-            st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
+            col112, col113 = st.columns(2)
+            with col112:
+                st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
+            with col113:
+                only_citation = st.checkbox('Show cited items only')
+                if only_citation:
+                    df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+                    df_countries = df_countries[(df_countries['Citation'].notna()) & (df_countries['Citation'] != 0)]
+                    df_continent = df_continent[(df_continent['Citation'].notna()) & (df_continent['Citation'] != 0)]
+            
             container_info = container_info.info('This collection lists academic sources that are **non-UK/US** on intelligence.')
 
             df_countries_chart = df_countries.copy()
@@ -106,6 +115,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_items_count = df_countries_chart['Country'].nunique()
             num_items_collections = len(df_collections)
             st.write(f"**{num_items_collections}** sources found for **{unique_items_count-1}** countries.")
+            citation_count = df_collections['Citation'].sum()
+            st.write(f'**Number of citations:** {int(citation_count)}')
             container_metric = container_metric.metric(label='Number of items in this collection', value=num_items_collections, help=f'sources found for **{unique_items_count-1}** countries.')
 
             df_countries['Date published'] = ( 
@@ -152,6 +163,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     a = f'{collection_name}_{today}'
                     st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
                     st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+                    citation_count = df_collections['Citation'].sum()
+                    st.write(f'**Number of citations:** {int(citation_count)}')
                     # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
 
                     articles_list = []  # Store articles in a list
@@ -213,18 +226,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.caption(row['Abstract'])
                     else:
                         df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
-                        current_type = None
-                        count_by_type = {}
+                        count = 1
                         for index, row in df_collections.iterrows():
-                            if row['Publication type'] != current_type:
-                                current_type = row['Publication type']
-                                st.subheader(current_type)
-                                count_by_type[current_type] = 1
                             formatted_entry = format_entry(row)
-                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                            count_by_type[current_type] += 1
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
                             if display2:
-                                st.caption(row['Abstract'])
+                                st.caption(row['Abstract']) 
             
             else:
                 with st.expander('Click to expand', expanded=True):
@@ -247,6 +255,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     articles_list = []  # Store articles in a list
                     st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+                    citation_count = df_countries['Citation'].sum()
+                    st.write(f'**Number of citations:** {int(citation_count)}')
                 
                     for index, row in df_countries.iterrows():
                         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
@@ -281,19 +291,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         )
                     sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
                     display2 = st.checkbox('Display abstracts', key='type_country_2')
-                    if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
+                    if sort_by == 'Publication date :arrow_down:' or df_countries['Citation'].sum() == 0:
                         count = 1
-                        for index, row in df_collections.iterrows():
+                        for index, row in df_countries.iterrows():
                             formatted_entry = format_entry(row)
                             st.write(f"{count}) {formatted_entry}")
                             count += 1
                             if display2:
                                 st.caption(row['Abstract']) 
-                    elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
-                        df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                    elif sort_by == 'Publication type' or df_countries['Citation'].sum() == 0:
+                        df_countries = df_countries.sort_values(by=['Publication type'], ascending=True)
                         current_type = None
                         count_by_type = {}
-                        for index, row in df_collections.iterrows():
+                        for index, row in df_countries.iterrows():
                             if row['Publication type'] != current_type:
                                 current_type = row['Publication type']
                                 st.subheader(current_type)
@@ -304,19 +314,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if display2:
                                 st.caption(row['Abstract'])
                     else:
-                        df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
-                        current_type = None
-                        count_by_type = {}
-                        for index, row in df_collections.iterrows():
-                            if row['Publication type'] != current_type:
-                                current_type = row['Publication type']
-                                st.subheader(current_type)
-                                count_by_type[current_type] = 1
+                        df_countries = df_countries.sort_values(by=['Citation'], ascending=False)
+                        count = 1
+                        for index, row in df_countries.iterrows():
                             formatted_entry = format_entry(row)
-                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                            count_by_type[current_type] += 1
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
                             if display2:
-                                st.caption(row['Abstract'])
+                                st.caption(row['Abstract']) 
 
             df_continent['Date published'] = pd.to_datetime(df_continent['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_continent['Date published'] = df_continent['Date published'].dt.strftime('%Y-%m-%d')
@@ -358,6 +363,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     articles_list = []  # Store articles in a list
                     st.write(f"**{num_items_collections_continent}** sources found ({breakdown_string_continent})")
+                    citation_count = df_continent['Citation'].sum()
+                    st.write(f'**Number of citations:** {int(citation_count)}')
                 
                     for index, row in df_continent.iterrows():
                         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
@@ -390,7 +397,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             '[[Publication link]](' + str(link_to_publication) + ') ' +
                             '[[Zotero link]](' + str(zotero_link) + ')'
                         )
-                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'), key='continent')
                     display2 = st.checkbox('Display abstracts', key='type_country_999')
                     if sort_by == 'Publication date :arrow_down:' or df_continent['Citation'].sum() == 0:
                         count = 1
@@ -416,18 +423,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.caption(row['Abstract'])
                     else:
                         df_continent = df_continent.sort_values(by=['Citation'], ascending=False)
-                        current_type = None
-                        count_by_type = {}
+                        count = 1
                         for index, row in df_continent.iterrows():
-                            if row['Publication type'] != current_type:
-                                current_type = row['Publication type']
-                                st.subheader(current_type)
-                                count_by_type[current_type] = 1
                             formatted_entry = format_entry(row)
-                            st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                            count_by_type[current_type] += 1
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
                             if display2:
-                                st.caption(row['Abstract'])
+                                st.caption(row['Abstract']) 
 
             col11, col12 = st.columns([3,2])
             with col11:                
