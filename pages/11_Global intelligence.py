@@ -96,7 +96,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0] 
 
             st.markdown('#### Collection theme: ' + collection_name)
-            col112, col113 = st.columns([1,3])
+            col112, col113 = st.columns(2)
             with col112:
                 st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
             with col113:
