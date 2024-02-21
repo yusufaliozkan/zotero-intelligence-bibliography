@@ -282,19 +282,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         )
                     sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
                     display2 = st.checkbox('Display abstracts', key='type_country_2')
-                    if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
+                    if sort_by == 'Publication date :arrow_down:' or df_countries['Citation'].sum() == 0:
                         count = 1
-                        for index, row in df_collections.iterrows():
+                        for index, row in df_countries.iterrows():
                             formatted_entry = format_entry(row)
                             st.write(f"{count}) {formatted_entry}")
                             count += 1
                             if display2:
                                 st.caption(row['Abstract']) 
-                    elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
-                        df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                    elif sort_by == 'Publication type' or df_countries['Citation'].sum() == 0:
+                        df_countries = df_countries.sort_values(by=['Publication type'], ascending=True)
                         current_type = None
                         count_by_type = {}
-                        for index, row in df_collections.iterrows():
+                        for index, row in df_countries.iterrows():
                             if row['Publication type'] != current_type:
                                 current_type = row['Publication type']
                                 st.subheader(current_type)
@@ -305,9 +305,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if display2:
                                 st.caption(row['Abstract'])
                     else:
-                        df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
+                        df_countries = df_countries.sort_values(by=['Citation'], ascending=False)
                         count = 1
-                        for index, row in df_collections.iterrows():
+                        for index, row in df_countries.iterrows():
                             formatted_entry = format_entry(row)
                             st.write(f"{count}) {formatted_entry}")
                             count += 1
