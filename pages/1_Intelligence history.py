@@ -62,14 +62,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-    with st.container():
-        container2 = st.container()
-        only_citation = container2.checkbox('Show only cited items')
 
-        if only_citation:
-            df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
 
-        container = st.container()
+    container = st.container()
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
@@ -114,10 +109,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 citation_count = df_collections['Citation'].sum()
                 st.write(f'**Number of citations:** {int(citation_count)}')
             with col113:
-                container2 = st.container()
-                # only_citation = st.checkbox('Show only cited items')
-                # if only_citation:
-                #     df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+                only_citation = st.checkbox('Show only cited items')
+                if only_citation:
+                    df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
 
             a = f'{collection_name}_{today}'
             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
