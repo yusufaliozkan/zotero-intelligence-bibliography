@@ -96,7 +96,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0] 
 
             st.markdown('#### Collection theme: ' + collection_name)
-            st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
+            col112, col113 = st.columns([1,4])
+            with col112:
+                st.write(f"See the collection in [Zotero]({collection_link}) from which you can easily generate citations.")
+            with col113:
+                only_citation = st.checkbox('Show cited items only')
+                if only_citation:
+                    df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+            
             container_info = container_info.info('This collection lists academic sources that are **non-UK/US** on intelligence.')
 
             df_countries_chart = df_countries.copy()
