@@ -289,7 +289,6 @@ with st.spinner('Preparing digest...'):
             current_year = datetime.datetime.now().year
             df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year)]
             df_cited = df_cited.reset_index(drop=True)
-            df_cited
             articles_list = []  # Store articles in a list
             for index, row in df_cited.iterrows():
                 formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
