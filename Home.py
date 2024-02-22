@@ -1965,9 +1965,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         combined_items.extend(processed_items)
                     # Sort combined items by publication date in descending order
                     combined_items.sort(key=lambda x: x['Publication Date'], reverse=True)
+                    df1 = pd.DataFrame(combined_items)
+                    df1 = df1.sort_values(by='Publication Date', ascending=False)
+                    df1.reset_index(drop=True, inplace=True)
+                    df1
                     # Display each item with the desired formatting
-                    for idx, item in enumerate(combined_items, start=1):
-                        st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
+                    # for idx, item in enumerate(combined_items, start=1):
+                    #     st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
 
                     feed_urls = [
                         "https://www.tandfonline.com/feed/rss/rpic20",
@@ -2020,14 +2024,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     # Sort all items by publication date
                     all_items.sort(key=lambda x: x['Publication Date'], reverse=True)
-                    df = pd.DataFrame(all_items)
-                    df = df.sort_values(by='Publication Date', ascending=False)
-                    df.reset_index(drop=True, inplace=True)
-                    df
+                    df2 = pd.DataFrame(all_items)
+                    df2 = df2.sort_values(by='Publication Date', ascending=False)
+                    df2.reset_index(drop=True, inplace=True)
+                    df2
 
-                    # Display items with desired formatting
-                    for idx, item in enumerate(all_items, start=1):
-                        st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
+                    # # Display items with desired formatting
+                    # for idx, item in enumerate(all_items, start=1):
+                    #     st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
 
 
         with col2:
