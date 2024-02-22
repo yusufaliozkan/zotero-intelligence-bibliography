@@ -1933,7 +1933,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         today = datetime.datetime.now()
 
                         for entry in feed.entries:
-                            publication_date = datetime.datetime.strptime(entry.updated, '%Y-%m-%d')
+                            publication_date = datetime.datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
                             days_difference = (today - publication_date).days
                             if days_difference <= 30 and 'Correction' not in entry.title:
                                 title = entry.title
