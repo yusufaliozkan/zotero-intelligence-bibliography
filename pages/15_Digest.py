@@ -62,7 +62,7 @@ with st.spinner('Preparing digest...'):
 
     with st.expander('Publications:', expanded=ex):
         st.header('Publications')
-        tab1, tab2 = st.tabs(['Recent publications', 'Cited publications'])
+        tab1, tab2 = st.tabs(['Recent publications', 'Recently cited publications'])
         with tab1:
             previous_10 = today - dt.timedelta(days=10)
             previous_30 = today - dt.timedelta(days=30)
