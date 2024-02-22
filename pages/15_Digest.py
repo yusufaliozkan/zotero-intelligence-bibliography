@@ -287,6 +287,7 @@ with st.spinner('Preparing digest...'):
             df_cited = df_cited.reset_index(drop=True)
             current_year = datetime.datetime.now().year
             df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year)]
+            df_cited = df_cited.reset_index(drop=True)
             df_cited
         st.caption('[Go to top](#intelligence-studies-network-digest)')
 
