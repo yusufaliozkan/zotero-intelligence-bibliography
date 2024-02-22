@@ -29,6 +29,7 @@ from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
 from sidebar_content import sidebar_content
 import plotly.graph_objs as go
+import feedparser
 from format_entry import format_entry
 
 # Connecting Zotero with API 
