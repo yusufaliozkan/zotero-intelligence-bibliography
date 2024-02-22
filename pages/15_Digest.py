@@ -322,7 +322,7 @@ with st.spinner('Preparing digest...'):
                     '[[Publication link]](' + str(link_to_publication) + ') ' +
                     '[[Zotero link]](' + str(zotero_link) + ')'
                 )
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'), key='citation2')
+                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'), key='citation')
                 display2 = st.checkbox('Display abstracts')
                 if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                     count = 1
@@ -332,20 +332,6 @@ with st.spinner('Preparing digest...'):
                         count += 1
                         if display2:
                             st.caption(row['Abstract']) 
-                elif sort_by == 'Publication type' or df_cited['Citation'].sum() == 0:
-                    df_cited = df_cited.sort_values(by=['Publication type'], ascending=True)
-                    current_type = None
-                    count_by_type = {}
-                    for index, row in df_cited.iterrows():
-                        if row['Publication type'] != current_type:
-                            current_type = row['Publication type']
-                            st.subheader(current_type)
-                            count_by_type[current_type] = 1
-                        formatted_entry = format_entry(row)
-                        st.write(f"{count_by_type[current_type]}) {formatted_entry}")
-                        count_by_type[current_type] += 1
-                        if display2:
-                            st.caption(row['Abstract'])
                 else:
                     df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
                     count = 1
