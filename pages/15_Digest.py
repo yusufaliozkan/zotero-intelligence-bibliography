@@ -330,8 +330,8 @@ with st.spinner('Preparing digest...'):
                     formatted_entry = format_entry(row)
                     st.write(f"{count}) {formatted_entry}")
                     count += 1
-                    if display2:
-                        st.caption(row['Abstract']) 
+                    # if display2:
+                    #     st.caption(row['Abstract']) 
                 # else:
                 #     df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
                 #     count = 1
