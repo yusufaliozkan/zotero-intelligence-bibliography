@@ -21,6 +21,7 @@ import datetime as dt
 from fpdf import FPDF
 import base64
 from sidebar_content import sidebar_content
+from format_entry import format_entry
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence studies network',
@@ -289,6 +290,38 @@ with st.spinner('Preparing digest...'):
             df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year)]
             df_cited = df_cited.reset_index(drop=True)
             df_cited
+            articles_list = []  # Store articles in a list
+            for index, row in df_cited.iterrows():
+                formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                articles_list.append(formatted_entry)        
+            
+            for index, row in df_cited.iterrows():
+                publication_type = row['Publication type']
+                title = row['Title']
+                authors = row['FirstName2']
+                date_published = row['Date published']
+                link_to_publication = row['Link to publication']
+                zotero_link = row['Zotero link']
+
+                if publication_type == 'Journal article':
+                    published_by_or_in = 'Published in'
+                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                elif publication_type == 'Book':
+                    published_by_or_in = 'Published by'
+                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                else:
+                    published_by_or_in = ''
+                    published_source = ''
+
+                formatted_entry = (
+                    '**' + str(publication_type) + '**' + ': ' +
+                    str(title) + ' ' +
+                    '(by ' + '*' + str(authors) + '*' + ') ' +
+                    '(Publication date: ' + str(date_published) + ') ' +
+                    ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                    '[[Publication link]](' + str(link_to_publication) + ') ' +
+                    '[[Zotero link]](' + str(zotero_link) + ')'
+                )
         st.caption('[Go to top](#intelligence-studies-network-digest)')
 
     with st.expander('Events:', expanded=ex):
