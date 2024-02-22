@@ -1970,7 +1970,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     # Display each item with the desired formatting
                     for idx, item in enumerate(combined_items, start=1):
-                        st.write(f"{idx}. ({item['Journal']}) [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
+                        st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
 
 
         with col2:
