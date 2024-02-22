@@ -287,7 +287,7 @@ with st.spinner('Preparing digest...'):
             current_year = datetime.datetime.now().year
             st.write(f'Papers cited in {current_year}')
             # df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
-            df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
+            df_cited = df_cited[(df_cited['Citation'] == 20000)]
             df_cited = df_cited.reset_index(drop=True)
             df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year)]
             df_cited = df_cited.reset_index(drop=True)
