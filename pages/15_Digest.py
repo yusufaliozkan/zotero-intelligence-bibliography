@@ -136,7 +136,7 @@ with st.spinner('Preparing digest...'):
                     "[" + df_csva['Title'] + "](" + df_csva['Link to publication'] + ')' +
                     ' (Author(s): ' + '*' + df_csva['FirstName2'].astype(str) + '*' + ')' +
                     ' (Published on: ' + df_csva['Date published new'].astype(str) + ')' +
-                    ", [Publication link](" + df_csva['Link to publication'] + ')'
+                    # ", [Publication link](" + df_csva['Link to publication'] + ')'
                 )
                 # df_lasta=df_lasta.dropna().reset_index(drop=True)
                 row_nu = len(df_csva.index)
@@ -148,7 +148,7 @@ with st.spinner('Preparing digest...'):
                                "[" + df_csv['Title'] + "](" + df_csv['Link to publication'] + ')' +
                                 ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*'+ ') ' +
                                 ' (Published on: ' + df_csv['Date published new'] + ')' +
-                                ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
+                                # ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                                 )
             df_last = df_last.dropna().reset_index(drop=True)
             row_nu = len(df_csv.index)
@@ -159,14 +159,14 @@ with st.spinner('Preparing digest...'):
                         ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*' +') ' +
                         ' (Published in: ' + '*' + df_csv['Journal'] + '*' + ')' +
                         ' (Published on: ' + df_csv['Date published new'] + ')' +
-                        ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
+                        # ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                         )
                 else:
                     df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
-                        df_csv['Title'] +  "',"  +
+                        "[" + df_csv['Title'] + "](" + df_csv['Link to publication'] + ')'   +
                         ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*'+') ' +
                         ' (Published on: ' + df_csv['Date published new'] + ')' +
-                        ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
+                        # ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
                         )
                 st.write(''+str(i+1)+') ' +df_last.iloc[i])
 
