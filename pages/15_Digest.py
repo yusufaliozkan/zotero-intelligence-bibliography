@@ -60,11 +60,11 @@ with st.spinner('Preparing digest...'):
 
     with st.expander('Publications:', expanded=ex):
         st.header('Publications')
+        previous_10 = today - dt.timedelta(days=10)
         previous_30 = today - dt.timedelta(days=30)
-        previous_90 = today - dt.timedelta(days=90)
         previous_180 = today - dt.timedelta(days=180)
         previous_360 = today - dt.timedelta(days=365)
-        rg = previous_30
+        rg = previous_10
         a='30 days'
         st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -74,7 +74,7 @@ with st.spinner('Preparing digest...'):
             rg = previous_10
             a='10 days'
         if range_day == '30 days':
-            rg = previous_90
+            rg = previous_30
             a = '30 days'
         if range_day == '3 months':
             rg = previous_180
