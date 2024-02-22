@@ -286,12 +286,13 @@ with st.spinner('Preparing digest...'):
         with tab2:
             current_year = datetime.datetime.now().year
             st.write(f'Papers cited in {current_year}')
+            # df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
             df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
             df_cited = df_cited.reset_index(drop=True)
             df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year)]
             df_cited = df_cited.reset_index(drop=True)
-            if df_cited['Citation'].any() in ("", [], None, 0, False):
-                st.write('No upcoming event in the next '+ str(a))
+            if len(df_cited) == 0: 
+                st.write(f'No citation yet in {current_year}')
             articles_list = []  # Store articles in a list
             for index, row in df_cited.iterrows():
                 formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
