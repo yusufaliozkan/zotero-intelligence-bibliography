@@ -1923,6 +1923,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
                 st.subheader('Growth of the library')
                 st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
+                item_monitoring = st.button("Item monitoring")
+                if item_monitoring:
+                    st.write('Monitor')
+
 
         with col2:
             with st.expander('Collections', expanded=True):
