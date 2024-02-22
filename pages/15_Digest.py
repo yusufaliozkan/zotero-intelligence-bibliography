@@ -321,7 +321,7 @@ with st.spinner('Preparing digest...'):
                     '[[Publication link]](' + str(link_to_publication) + ') ' +
                     '[[Zotero link]](' + str(zotero_link) + ')'
                 )
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'), key='citation')
+                # sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'), key='citation')
                 display2 = st.checkbox('Display abstracts')
                 if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                     count = 1
