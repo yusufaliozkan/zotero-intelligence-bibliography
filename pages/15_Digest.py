@@ -71,7 +71,7 @@ with st.spinner('Preparing digest...'):
 
         range_day = st.radio('Show sources published in the last:', ('10 days','30 days', '3 months', 'Custom (days)', 'Custom (select date)'))
         if range_day == '10 days':
-            rg = previous_
+            rg = previous_10
             a='10 days'
         if range_day == '30 days':
             rg = previous_90
