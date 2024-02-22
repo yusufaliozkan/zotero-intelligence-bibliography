@@ -2000,7 +2000,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 title = entry.title  # Remove .lower() conversion
                                 link = entry.link
                                 # Format publication date
-                                formatted_pub_date = publication_date.strftime("%Y-%m-%d")
+                                publication_date_str = publication_date.strftime('%Y-%m-%d')
                                 doi = entry.get('prism_doi', '') if 'tandfonline' in feed_url else entry.get('dc_identifier', '')
                                 journal = entry.get('prism_publicationname', '') if 'tandfonline' in feed_url else entry.get('dc_source', '')
                                 
