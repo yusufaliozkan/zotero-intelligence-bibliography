@@ -1952,24 +1952,82 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 })
 
                         return processed_items if processed_items else [] 
-
                     # Parse and process both RSS feeds
                     feed_urls = [
                         "https://www.tandfonline.com/feed/rss/fint20",
                         "https://www.tandfonline.com/feed/rss/ujic20",
                         'https://www.tandfonline.com/feed/rss/rjih20'
                     ]
-
                     combined_items = []
                     for url in feed_urls:
                         processed_items = process_feed(url)
                         combined_items.extend(processed_items)
-
                     # Sort combined items by publication date in descending order
                     combined_items.sort(key=lambda x: x['Publication Date'], reverse=True)
-
                     # Display each item with the desired formatting
                     for idx, item in enumerate(combined_items, start=1):
+                        st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
+
+                    feed_urls = [
+                        "https://www.tandfonline.com/feed/rss/rpic20",
+                        "https://www.tandfonline.com/feed/rss/fcwh20",
+                        'https://www.tandfonline.com/feed/rss/rusi20',
+                        'https://www.tandfonline.com/feed/rss/fjss20',
+                        "https://journals.sagepub.com/action/showFeed?ui=0&mi=ehikzz&ai=2b4&jc=wiha&type=etoc&feed=rss",
+                        'https://www.tandfonline.com/feed/rss/rinh20',
+                        'https://journals.sagepub.com/action/showFeed?ui=0&mi=ehikzz&ai=2b4&jc=jcha&type=axatoc&feed=rss',
+                        'https://www.tandfonline.com/feed/rss/fmes20',
+                        'https://www.tandfonline.com/feed/rss/fdps20',
+                        'https://www.tandfonline.com/feed/rss/usip20',
+                        'https://www.tandfonline.com/feed/rss/ucry20',
+                        'https://www.tandfonline.com/feed/rss/fslv20'
+                    ]
+
+                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
+
+                    # Initialize an empty list to store items from all feeds
+                    all_items = []
+
+                    # Parse each RSS feed
+                    for feed_url in feed_urls:
+                        feed = feedparser.parse(feed_url)
+                        today = datetime.now()
+                        items = []
+                        for entry in feed.entries:
+                            publication_date = datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
+                            days_difference = (today - publication_date).days
+                            if days_difference <= 60 and 'Correction' not in entry.title:
+                                title = entry.title  # Remove .lower() conversion
+                                link = entry.link
+                                # Format publication date
+                                formatted_pub_date = publication_date.strftime("%Y-%m-%d")
+                                doi = entry.get('prism_doi', '') if 'tandfonline' in feed_url else entry.get('dc_identifier', '')
+                                journal = entry.get('prism_publicationname', '') if 'tandfonline' in feed_url else entry.get('dc_source', '')
+                                
+                                # Check if any keyword is present in the title
+                                if any(keyword.lower() in title.lower() for keyword in keywords):  # Convert both title and keyword to lowercase
+                                    items.append({
+                                        'Title': entry.title,
+                                        'Link': link,
+                                        'Publication Date': formatted_pub_date,
+                                        'DOI': doi,
+                                        'Journal': journal
+                                    })
+                        
+                        # Extend the list of items from the current feed to the list of all items
+                        all_items.extend(items)
+
+                    # Create DataFrame from all items
+                    df = pd.DataFrame(all_items)
+
+                    # Convert 'Publication Date' column to datetime
+                    df['Publication Date'] = pd.to_datetime(df['Publication Date'])
+
+                    # Sort DataFrame by 'Publication Date' in descending order
+                    df = df.sort_values(by='Publication Date', ascending=False).reset_index(drop=True)
+
+                    # Display items with desired formatting
+                    for idx, item in enumerate(all_items, start=1):
                         st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
 
 
