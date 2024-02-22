@@ -2020,6 +2020,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     # Sort all items by publication date
                     all_items.sort(key=lambda x: x['Publication Date'], reverse=True)
+                    df = pd.DataFrame(all_items)
+                    df = df.sort_values(by='Publication Date', ascending=False)
+                    df.reset_index(drop=True, inplace=True)
+                    df
 
                     # Display items with desired formatting
                     for idx, item in enumerate(all_items, start=1):
