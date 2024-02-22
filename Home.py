@@ -1994,7 +1994,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         today = datetime.datetime.now()
                         items = []
                         for entry in feed.entries:
-                            publication_date = datetime.datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
+                            publication_date = datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
                             days_difference = (today - publication_date).days
                             if days_difference <= 60 and 'Correction' not in entry.title:
                                 title = entry.title  # Remove .lower() conversion
@@ -2009,7 +2009,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     items.append({
                                         'Title': entry.title,
                                         'Link': link,
-                                        'Publication Date': formatted_pub_date,
+                                        'Publication Date': publication_date,  # Store datetime object
                                         'DOI': doi,
                                         'Journal': journal
                                     })
@@ -2017,14 +2017,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         # Extend the list of items from the current feed to the list of all items
                         all_items.extend(items)
 
-                    # Create DataFrame from all items
-                    df = pd.DataFrame(all_items)
-
-                    # Convert 'Publication Date' column to datetime
-                    df['Publication Date'] = pd.to_datetime(df['Publication Date'])
-
-                    # Sort DataFrame by 'Publication Date' in descending order
-                    df = df.sort_values(by='Publication Date', ascending=False).reset_index(drop=True)
+                    # Sort all items by publication date
+                    all_items.sort(key=lambda x: x['Publication Date'], reverse=True)
 
                     # Display items with desired formatting
                     for idx, item in enumerate(all_items, start=1):
