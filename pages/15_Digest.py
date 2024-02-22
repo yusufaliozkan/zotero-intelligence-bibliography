@@ -145,7 +145,7 @@ with st.spinner('Preparing digest...'):
                     st.write(''+str(i+1)+') ' +df_lasta.iloc[i])
         else:
             df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
-                                df_csv['Title'] +  "',"  +
+                               "[" + df_csv['Title'] + "](" + df_csv['Link to publication'] + ')' +
                                 ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*'+ ') ' +
                                 ' (Published on: ' + df_csv['Date published new'] + ')' +
                                 ", [Publication link]"+ '('+ df_csv['Link to publication'] + ')'
