@@ -290,6 +290,8 @@ with st.spinner('Preparing digest...'):
             df_cited = df_cited.reset_index(drop=True)
             df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year)]
             df_cited = df_cited.reset_index(drop=True)
+            if df_cited['Citation'].any() in ("", [], None, 0, False):
+                st.write('No upcoming event in the next '+ str(a))
             articles_list = []  # Store articles in a list
             for index, row in df_cited.iterrows():
                 formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
