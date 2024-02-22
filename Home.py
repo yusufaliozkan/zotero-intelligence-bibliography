@@ -2033,6 +2033,36 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # for idx, item in enumerate(all_items, start=1):
                     #     st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
 
+                    rss_url = "https://www.cambridge.org/core/rss/product/id/15E98E1D30D09470213F11031D82A83C"
+                    feed = feedparser.parse(rss_url)
+
+                    # Initialize lists to store data
+                    titles = []
+                    links = []
+                    publication_dates = []
+                    dois = []
+                    journals = []
+
+                    # Iterate over each item in the feed
+                    for entry in feed.entries:
+                        titles.append(entry.title)
+                        links.append(entry.link)
+                        publication_dates.append(entry.prism_publicationdate)
+                        dois.append(entry.id.split('?')[0])
+                        journals.append(feed.feed.title)
+
+                    # Create DataFrame
+                    df = pd.DataFrame({
+                        "Title": titles,
+                        "Link": links,
+                        "Publication Date": publication_dates,
+                        "DOI": dois,
+                        "Journal": journals
+                    })
+
+                    # Filter DataFrame by titles containing specified keywords
+                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
+                    df3 = df[df['Title'].str.contains('|'.join(keywords), case=False)]
 
         with col2:
             with st.expander('Collections', expanded=True):
