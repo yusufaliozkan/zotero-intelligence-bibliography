@@ -41,6 +41,7 @@ with st.spinner('Preparing digest...'):
     df_csv['FirstName2'] =df_csv['FirstName2'].fillna('')
 
     df_csv = df_csv.drop(['Unnamed: 0'], axis=1)
+    df_cited = df_csv.copy()
 
     today = dt.date.today()
     today2 = dt.date.today().strftime('%d/%m/%Y')
@@ -281,6 +282,15 @@ with st.spinner('Preparing digest...'):
                     plt.show()
                     st.set_option('deprecation.showPyplotGlobalUse', False)
                     st.pyplot() 
+        with tab2:
+            df_cited['Date published'] = pd.to_datetime(df_cited['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_cited['Date published new'] = df_cited['Date published'].dt.strftime('%d/%m/%Y')
+            df_cited['Date months'] = df_cited['Date published'].dt.strftime('%Y-%m')
+            df_cited['Date published'] = df_cited['Date published'].fillna('No date')
+            df_cited.sort_values(by='Date published', ascending = False, inplace=True)
+            df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
+            df_cited = df_cited.reset_index(drop=True)
+            df_cited
         st.caption('[Go to top](#intelligence-studies-network-digest)')
 
     with st.expander('Events:', expanded=ex):
