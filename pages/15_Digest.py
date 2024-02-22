@@ -283,11 +283,6 @@ with st.spinner('Preparing digest...'):
                     st.set_option('deprecation.showPyplotGlobalUse', False)
                     st.pyplot() 
         with tab2:
-            df_cited['Date published'] = pd.to_datetime(df_cited['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-            df_cited['Date published new'] = df_cited['Date published'].dt.strftime('%d/%m/%Y')
-            df_cited['Date months'] = df_cited['Date published'].dt.strftime('%Y-%m')
-            df_cited['Date published'] = df_cited['Date published'].fillna('No date')
-            df_cited.sort_values(by='Date published', ascending = False, inplace=True)
             df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
             df_cited = df_cited.reset_index(drop=True)
             df_cited
