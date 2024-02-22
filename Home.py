@@ -1938,7 +1938,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if days_difference <= 30 and 'Correction' not in entry.title:
                                 title = entry.title
                                 link = entry.link
-                                publication_date = entry.updated
+                                publication_date_str = publication_date.strftime('%Y-%m-%d')
                                 doi = entry.prism_doi
                                 journal = entry.prism_publicationname
                                 
