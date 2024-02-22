@@ -1971,7 +1971,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # Sort DataFrame by 'Publication Date' in descending order
                     df = df.sort_values(by='Publication Date', ascending=False)
                     df = df.reset_index(drop=True)
-                    for idx, item in enumerate(df, start=1):
+                    combined_items.sort(key=lambda x: x['Publication Date'], reverse=True)
+                    for idx, item in enumerate(combined_items, start=1):
                         st.write(f"{idx}. [{item['Title']}]({item['Link']}) {item['Publication Date']} ({item['Journal']})")
 
 
