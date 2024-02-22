@@ -284,7 +284,7 @@ continent_replacements = {
     'My Life as a Spy: Investigations in a Secret Police File':'Romania',
     'Bingchang':'China',
     '2011 independent review of the intelligence community':'Australia'
-    } 
+    }
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
