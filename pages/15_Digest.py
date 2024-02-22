@@ -322,7 +322,7 @@ with st.spinner('Preparing digest...'):
                     '[[Zotero link]](' + str(zotero_link) + ')'
                 )
                 # sort_by = st.toggle('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                display2 = st.checkbox('Display abstracts', key=123)
+                # display2 = st.checkbox('Display abstracts', key=123)
                 # if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                 count = 1
                 df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
