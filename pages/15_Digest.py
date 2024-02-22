@@ -69,19 +69,16 @@ with st.spinner('Preparing digest...'):
         st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-        range_day = st.radio('Show sources published in the last:', ('30 days','3 months', '6 months', '1 year', 'Custom (days)', 'Custom (select date)'))
+        range_day = st.radio('Show sources published in the last:', ('10 days','30 days', '3 months', 'Custom (days)', 'Custom (select date)'))
+        if range_day == '10 days':
+            rg = previous_
+            a='10 days'
         if range_day == '30 days':
-            rg = previous_30
-            a='30 days'
-        if range_day == '3 months':
             rg = previous_90
-            a = '3 months'
-        if range_day == '6 months':
+            a = '30 days'
+        if range_day == '3 months':
             rg = previous_180
-            a ='6 months'
-        if range_day == '1 year':
-            rg = previous_360
-            a='1 year'
+            a ='3 months'
         if range_day == 'Custom (days)':
             number = st.number_input('How many days do you want to go back:', min_value=10, max_value=11000, value=365, step=30)
             a = str(int(number)) + ' days'
