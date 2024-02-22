@@ -1932,30 +1932,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         processed_items = []
                         today = datetime.datetime.now()
 
-                        def process_feed(feed_url):
-                            feed = feedparser.parse(feed_url)
-                            processed_items = []
-                            today = datetime.datetime.now()
+                        for entry in feed.entries:
+                            publication_date = datetime.datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
+                            days_difference = (today - publication_date).days
+                            if days_difference <= 30 and 'Correction' not in entry.title:
+                                title = entry.title
+                                link = entry.link
+                                publication_date = entry.updated
+                                doi = entry.prism_doi
+                                journal = entry.prism_publicationname
+                                
+                                processed_items.append({
+                                    'Title': title,
+                                    'Link': link,
+                                    'Publication Date': publication_date,
+                                    'DOI': doi,
+                                    'Journal': journal
+                                })
 
-                            for entry in feed.entries:
-                                publication_date = datetime.datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
-                                days_difference = (today - publication_date).days
-                                if days_difference <= 30 and 'Correction' not in entry.title:
-                                    title = entry.title
-                                    link = entry.link
-                                    publication_date = entry.updated
-                                    doi = entry.prism_doi
-                                    journal = entry.prism_publicationname
-                                    
-                                    processed_items.append({
-                                        'Title': title,
-                                        'Link': link,
-                                        'Publication Date': publication_date,
-                                        'DOI': doi,
-                                        'Journal': journal
-                                    })
-
-                            return processed_items
+                        return processed_items if processed_items else [] 
                     # Parse and process both RSS feeds
                     feed_urls = [
                         "https://www.tandfonline.com/feed/rss/fint20",
