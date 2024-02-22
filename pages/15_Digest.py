@@ -285,6 +285,7 @@ with st.spinner('Preparing digest...'):
         with tab2:
             df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
             df_cited = df_cited.reset_index(drop=True)
+            current_year = datetime.datetime.now().year
             df_cited
         st.caption('[Go to top](#intelligence-studies-network-digest)')
 
