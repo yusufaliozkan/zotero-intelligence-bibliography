@@ -133,7 +133,7 @@ with st.spinner('Preparing digest...'):
                     publication_info = ' (Published in: ' + '*' + df_csva['Journal'] + '*' +')'
                 df_lasta = (
                     '**' + df_csva['Publication type'] + '**' + ": '" +
-                    "[" +df_csva['Title'] + "]"+(" + df_csva['Link to publication'] + ')' "'," +
+                    "[" +df_csva['Title'] + "]"+(" + df_csva['Link to publication'] + ')' " +
                     ' (Author(s): ' + '*' + df_csva['FirstName2'].astype(str) + '*' + ')' +
                     # Concatenate 'publication_info' if it's required here
                     # publication_info +
