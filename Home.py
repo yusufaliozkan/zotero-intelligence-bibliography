@@ -1930,8 +1930,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     def process_feed(feed_url):
                         feed = feedparser.parse(feed_url)
                         processed_items = []
-                        today = datetime.now()
-
+                        today = datetime.datetime.now()
                         for entry in feed.entries:
                             publication_date = dt.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
                             days_difference = (today - publication_date).days
