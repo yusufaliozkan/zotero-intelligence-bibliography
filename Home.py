@@ -1927,6 +1927,52 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 item_monitoring = st.button("Item monitoring")
                 if item_monitoring:
                     st.write('Monitor')
+                    def process_feed(feed_url):
+                        feed = feedparser.parse(feed_url)
+                        processed_items = []
+                        today = datetime.now()
+
+                        for entry in feed.entries:
+                            publication_date = datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
+                            days_difference = (today - publication_date).days
+                            if days_difference <= 30 and 'Correction' not in entry.title:
+                                title = entry.title
+                                link = entry.link
+                                publication_date = entry.updated
+                                doi = entry.prism_doi
+                                journal = entry.prism_publicationname
+                                
+                                processed_items.append({
+                                    'Title': title,
+                                    'Link': link,
+                                    'Publication Date': publication_date,
+                                    'DOI': doi,
+                                    'Journal':journal
+                                })
+
+                        return processed_items
+
+                    # Parse and process both RSS feeds
+                    feed_urls = [
+                        "https://www.tandfonline.com/feed/rss/fint20",
+                        "https://www.tandfonline.com/feed/rss/ujic20",
+                        'https://www.tandfonline.com/feed/rss/rjih20'
+                    ]
+
+                    combined_items = []
+                    for url in feed_urls:
+                        processed_items = process_feed(url)
+                        combined_items.extend(processed_items)
+
+                    # Create DataFrame from combined items
+                    df = pd.DataFrame(combined_items)
+
+                    # Convert 'Publication Date' column to datetime
+                    df['Publication Date'] = pd.to_datetime(df['Publication Date'])
+                    # Sort DataFrame by 'Publication Date' in descending order
+                    df = df.sort_values(by='Publication Date', ascending=False)
+                    df = df.reset_index(drop=True)
+                    df
 
 
         with col2:
