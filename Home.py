@@ -1991,7 +1991,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     # Parse each RSS feed
                     for feed_url in feed_urls:
                         feed = feedparser.parse(feed_url)
-                        today = datetime.datetime.now()
+                        today = datetime.now()
                         items = []
                         for entry in feed.entries:
                             publication_date = datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
