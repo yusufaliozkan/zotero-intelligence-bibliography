@@ -136,6 +136,7 @@ with st.spinner('Preparing digest...'):
                     "[" + df_csva['Title'] + "](" + df_csva['Link to publication'] + ')' +
                     ' (Author(s): ' + '*' + df_csva['FirstName2'].astype(str) + '*' + ')' +
                     ' (Published on: ' + df_csva['Date published new'].astype(str) + ')' +
+                    # ", [Publication link](" + df_csva['Link to publication'] + ')'
                 )
                 # df_lasta=df_lasta.dropna().reset_index(drop=True)
                 row_nu = len(df_csva.index)
