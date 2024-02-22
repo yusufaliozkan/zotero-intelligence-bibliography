@@ -1927,6 +1927,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 item_monitoring = st.button("Item monitoring")
                 if item_monitoring:
                     st.write('Monitor')
+
                     def process_feed(feed_url):
                         feed = feedparser.parse(feed_url)
                         processed_items = []
@@ -1951,6 +1952,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 })
 
                         return processed_items if processed_items else [] 
+
                     # Parse and process both RSS feeds
                     feed_urls = [
                         "https://www.tandfonline.com/feed/rss/fint20",
@@ -1963,17 +1965,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         processed_items = process_feed(url)
                         combined_items.extend(processed_items)
 
-                    # Create DataFrame from combined items
-                    df = pd.DataFrame(combined_items)
-
-                    # Convert 'Publication Date' column to datetime
-                    df['Publication Date'] = pd.to_datetime(df['Publication Date'])
-                    # Sort DataFrame by 'Publication Date' in descending order
-                    df = df.sort_values(by='Publication Date', ascending=False)
-                    df = df.reset_index(drop=True)
+                    # Sort combined items by publication date in descending order
                     combined_items.sort(key=lambda x: x['Publication Date'], reverse=True)
+
+                    # Display each item with the desired formatting
                     for idx, item in enumerate(combined_items, start=1):
-                        st.write(f"{idx}. [{item['Title']}]({item['Link']}) {item['Publication Date']} ({item['Journal']})")
+                        st.write(f"{idx}. [{item['Title']}]({item['Link']}) {item['Publication Date'].strftime('%Y-%m-%d')} ({item['Journal']})")
 
 
         with col2:
