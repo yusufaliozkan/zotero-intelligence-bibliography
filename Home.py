@@ -2061,7 +2061,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     })
 
                     # Filter DataFrame by titles containing specified keywords
-                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
+                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage' ,'hispanic']
                     df3 = df[df['Title'].str.contains('|'.join(keywords), case=False)]
 
         with col2:
