@@ -326,7 +326,7 @@ with st.spinner('Preparing digest...'):
                 display2 = st.checkbox('Display abstracts')
                 if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                     count = 1
-                    df_cited = df_cited.sort_values(by=['Publication date'], ascending=False)
+                    df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
                     for index, row in df_cited.iterrows():
                         formatted_entry = format_entry(row)
                         st.write(f"{count}) {formatted_entry}")
