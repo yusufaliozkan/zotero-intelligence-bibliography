@@ -155,7 +155,7 @@ with st.spinner('Preparing digest...'):
             for i in range(row_nu):
                 if df_csv['Publication type'].iloc[i] in ['Journal article', 'Magazine article', 'Newspaper article']:
                     df_last = ('**'+ df_csv['Publication type']+ '**'+ ": '"  + 
-                        df_csv['Title'] +  "',"  +
+                        "[" + df_csv['Title'] + "](" + df_csv['Link to publication'] + ')'  +
                         ' (Author(s): ' + '*' + df_csv['FirstName2'] + '*' +') ' +
                         ' (Published in: ' + '*' + df_csv['Journal'] + '*' + ')' +
                         ' (Published on: ' + df_csv['Date published new'] + ')' +
