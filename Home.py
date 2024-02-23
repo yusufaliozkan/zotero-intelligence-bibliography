@@ -31,6 +31,7 @@ from copyright import display_custom_license
 from sidebar_content import sidebar_content
 import plotly.graph_objs as go
 import feedparser
+import requests
 from format_entry import format_entry
 
 # Connecting Zotero with API 
