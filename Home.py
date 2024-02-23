@@ -1986,7 +1986,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             journals = []
                             
                             # Get today's date
-                            today = datetime.today().date()
+                            today = datetime.datetime.today().date()
                             
                             # Extract data for each result
                             for result in results:
