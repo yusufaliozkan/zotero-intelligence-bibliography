@@ -1966,7 +1966,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'https://api.openalex.org/works?filter=primary_location.source.id:s106532728&sort=publication_year:desc&per_page=10', #Israel Affairs
                         'https://api.openalex.org/works?filter=primary_location.source.id:s67329160&sort=publication_year:desc&per_page=10', #Australian Journal of International Affairs
                         'https://api.openalex.org/works?filter=primary_location.source.id:s49917718&sort=publication_year:desc&per_page=10', #Contemporary British History
-                        ,'https://api.openalex.org/works?filter=primary_location.source.id:s8593340&sort=publication_year:desc&per_page=10',#The Historian
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s8593340&sort=publication_year:desc&per_page=10', #The Historian
 
 
                         # Add more API links here
