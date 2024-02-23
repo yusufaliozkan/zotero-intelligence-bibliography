@@ -2030,6 +2030,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_final_df = pd.concat([other_journals, historical_journal_filtered], ignore_index=True)
                     filtered_final_df
 
+                    df_dois = df_dedup.copy()
+                    df_dois
+
         with col2:
             with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
