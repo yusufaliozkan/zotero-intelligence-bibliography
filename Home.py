@@ -1966,6 +1966,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'https://api.openalex.org/works?filter=primary_location.source.id:s106532728&sort=publication_year:desc&per_page=10', #Israel Affairs
                         'https://api.openalex.org/works?filter=primary_location.source.id:s67329160&sort=publication_year:desc&per_page=10', #Australian Journal of International Affairs
                         'https://api.openalex.org/works?filter=primary_location.source.id:s49917718&sort=publication_year:desc&per_page=10', #Contemporary British History
+                        ,'https://api.openalex.org/works?filter=primary_location.source.id:s8593340&sort=publication_year:desc&per_page=10',#The Historian
+
 
                         # Add more API links here
                     ]
@@ -1979,11 +1981,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'Journal of intelligence, conflict and warfare', 'The Journal of Conflict Studies','Journal of Cold War Studies', 'Survival',
                         'Security and Defence Quarterly', 'The Journal of Imperial and Commonwealth History', 'Review of International Studies', 'Diplomatic History',
                         'Cambridge Review of International Affairs', 'Public Policy and Administration', 'Armed Forces & Society', 'Studies in Conflict & Terrorism',
-                        'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History'
+                        'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History',
+                        'The Historian'
                         ]
 
                     # Define keywords for filtering
-                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage', 'dysfunctional']
+                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
 
                     # Initialize an empty list to store DataFrame for each API link
                     dfs = []
