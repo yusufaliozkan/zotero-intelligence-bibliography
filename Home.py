@@ -1989,7 +1989,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror",
                         'Small Wars & Insurgencies', 'Journal of Cyber Policy'
                         ]
-
+ 
                     # Define keywords for filtering
                     keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
 
