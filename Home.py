@@ -1952,7 +1952,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'https://api.openalex.org/works?filter=primary_location.source.id:s4210201145&sort=publication_year:desc&per_page=10', #Journal of intelligence, conflict and warfare
                         'https://api.openalex.org/works?filter=primary_location.source.id:s2764954702&sort=publication_year:desc&per_page=10', #The Journal of Conflict Studies
                         'https://api.openalex.org/works?filter=primary_location.source.id:s200077084&sort=publication_year:desc&per_page=10', #Journal of Cold War Studies
-                        'https://api.openalex.org/works?filter=primary_location.source.id:s27717133&sort=publication_year:desc&per_page=10' #Survival
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s27717133&sort=publication_year:desc&per_page=10', #Survival
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s4210214688&sort=publication_year:desc&per_page=10', #Security and Defence Quarterly
 
                         # Add more API links here
                     ]
@@ -1963,7 +1964,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'Journal of Strategic Studies', 'War in History', 'International History Review','Journal of Contemporary History', 
                         'Middle Eastern Studies', 'Diplomacy & Statecraft', 'The international journal of intelligence, security, and public affairs',
                         'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly',
-                        'Journal of intelligence, conflict and warfare', 'The Journal of Conflict Studies','Journal of Cold War Studies', 'Survival'
+                        'Journal of intelligence, conflict and warfare', 'The Journal of Conflict Studies','Journal of Cold War Studies', 'Survival',
+                        'Security and Defence Quarterly'
                         ]
 
                     # Define keywords for filtering
