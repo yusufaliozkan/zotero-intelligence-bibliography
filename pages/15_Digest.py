@@ -290,7 +290,7 @@ with st.spinner('Preparing digest...'):
             df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year)]
             df_cited = df_cited.reset_index(drop=True)
             if len(df_cited) == 0: 
-                st.warning(f'No citation yet in {current_year}')
+                st.warning(f'No citation yet in {current_year}') 
             else:
                 st.info(f'**Papers cited in {current_year}**')
                 articles_list = []  # Store articles in a list

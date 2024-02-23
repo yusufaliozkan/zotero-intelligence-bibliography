@@ -7,6 +7,7 @@ import numpy as np
 import altair as alt
 from pandas.io.json import json_normalize
 from datetime import date, timedelta  
+from datetime import datetime
 import datetime
 from streamlit_extras.switch_page_button import switch_page
 import plotly.express as px
@@ -29,6 +30,8 @@ from authors_dict import df_authors, name_replacements
 from copyright import display_custom_license
 from sidebar_content import sidebar_content
 import plotly.graph_objs as go
+import feedparser
+import requests
 from format_entry import format_entry
 
 # Connecting Zotero with API 
@@ -1923,6 +1926,125 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 )
                 st.subheader('Growth of the library')
                 st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
+                item_monitoring = st.button("Item monitoring")
+                if item_monitoring:
+                    st.subheader('Monitoring section')
+                    st.write('The following items are not in the library yet. Book reviews will not be included!')
+                    api_links = [
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s33269604&sort=publication_year:desc&per_page=10',
+                        "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10",
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s4210168073&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s2764506647&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s2764781490&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s93928036&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s962698607&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s199078552&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s145781505&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s120387555&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s161550498&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s164505828&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s99133842&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s4210219209&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s185196701&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s157188123&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s79519963&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s161027966&sort=publication_year:desc&per_page=10'
+                        # Add more API links here
+                    ]
+
+                    # Define journals to include filtered items
+                    journals_with_filtered_items = [
+                        'The Historical Journal', 'Journal of Policing, Intelligence and Counter Terrorism', 'Cold War History', 'RUSI Journal',
+                        'Journal of Strategic Studies', 'War in History', 'International History Review','Journal of Contemporary History', 
+                        'Middle Eastern Studies', 'Diplomacy & Statecraft', 'The international journal of intelligence, security, and public affairs',
+                        'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly'
+                        ]
+
+                    # Define keywords for filtering
+                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
+
+                    # Initialize an empty list to store DataFrame for each API link
+                    dfs = []
+
+                    # Loop through each API link
+                    for api_link in api_links:
+                        # Send a GET request to the API
+                        response = requests.get(api_link)
+
+                        # Check if the request was successful
+                        if response.status_code == 200:
+                            # Parse the JSON response
+                            data = response.json()
+                            
+                            # Extract the results
+                            results = data['results']
+                            
+                            # Initialize lists to store values for DataFrame
+                            titles = []
+                            dois = []
+                            publication_dates = []
+                            dois_without_https = []
+                            journals = []
+                            
+                            # Get today's date
+                            today = datetime.datetime.today().date()
+                            
+                            # Extract data for each result
+                            for result in results:
+                                # Convert publication date string to datetime object
+                                pub_date = datetime.datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
+                                
+                                # Check if the publication date is within the last 30 days
+                                if today - pub_date <= timedelta(days=90):
+                                    titles.append(result['title'])
+                                    dois.append(result['doi'])
+                                    publication_dates.append(result['publication_date'])
+                                    dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
+                                    journals.append(result['primary_location']['source']['display_name'])
+                            
+                            # Create DataFrame
+                            df = pd.DataFrame({
+                                'Title': titles,
+                                'Link': dois,
+                                'Publication Date': publication_dates,
+                                'DOI': dois_without_https,
+                                'Journal': journals
+                            })
+                            
+                            # Append DataFrame to the list
+                            dfs.append(df)
+                        
+                        else:
+                            print(f"Failed to fetch data from the API: {api_link}")
+
+                    # Concatenate DataFrames from all API links
+                    final_df = pd.concat(dfs, ignore_index=True)
+
+                    # Filter 'The Historical Journal' to only include titles containing keywords
+                    historical_journal_filtered = final_df[final_df['Journal'].isin(journals_with_filtered_items)]
+                    historical_journal_filtered = historical_journal_filtered[historical_journal_filtered['Title'].str.lower().str.contains('|'.join(keywords))]
+
+                    # Filter other journals to exclude 'The Historical Journal'
+                    other_journals = final_df[~final_df['Journal'].isin(journals_with_filtered_items)]
+
+                    # Concatenate the filtered DataFrames
+                    filtered_final_df = pd.concat([other_journals, historical_journal_filtered], ignore_index=True)
+
+                    df_dois = df_dedup.copy()
+                    df_dois.dropna(subset=['DOI'], inplace=True)
+                    column_to_keep = 'DOI'
+                    df_dois = df_dois[[column_to_keep]]
+                    df_dois = df_dois.reset_index(drop=True)
+
+                    merged_df = pd.merge(filtered_final_df, df_dois[['DOI']], on='DOI', how='left', indicator=True)
+                    items_not_in_df2 = merged_df[merged_df['_merge'] == 'left_only']
+                    items_not_in_df2.drop('_merge', axis=1, inplace=True)
+
+                    words_to_exclude = ['paperback', 'hardback'] 
+                    mask = ~items_not_in_df2['Title'].str.contains('|'.join(words_to_exclude), case=False)
+                    items_not_in_df2 = items_not_in_df2[mask]
+                    items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
+                    items_not_in_df2
 
         with col2:
             with st.expander('Collections', expanded=True):
