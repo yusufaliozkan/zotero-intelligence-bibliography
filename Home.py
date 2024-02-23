@@ -1985,7 +1985,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'Security and Defence Quarterly', 'The Journal of Imperial and Commonwealth History', 'Review of International Studies', 'Diplomatic History',
                         'Cambridge Review of International Affairs', 'Public Policy and Administration', 'Armed Forces & Society', 'Studies in Conflict & Terrorism',
                         'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History',
-                        'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', 'Mariner's Mirror'
+                        'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror"
                         ]
 
                     # Define keywords for filtering
