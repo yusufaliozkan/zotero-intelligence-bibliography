@@ -2031,6 +2031,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_final_df
 
                     df_dois = df_dedup.copy()
+                    df_dois.dropna(subset=['DOI'], inplace=True)
                     df_dois
 
         with col2:
