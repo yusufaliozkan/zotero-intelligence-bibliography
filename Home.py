@@ -1991,7 +1991,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Extract data for each result
                             for result in results:
                                 # Convert publication date string to datetime object
-                                pub_date = datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
+                                pub_date = datetime.datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
                                 
                                 # Check if the publication date is within the last 30 days
                                 if today - pub_date <= timedelta(days=360):
