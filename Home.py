@@ -1976,7 +1976,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         ]
 
                     # Define keywords for filtering
-                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage', 'role']
+                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
 
                     # Initialize an empty list to store DataFrame for each API link
                     dfs = []
