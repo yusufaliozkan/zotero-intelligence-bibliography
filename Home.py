@@ -1928,141 +1928,106 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 item_monitoring = st.button("Item monitoring")
                 if item_monitoring:
                     st.write('Monitor')
-
-                    def process_feed(feed_url):
-                        feed = feedparser.parse(feed_url)
-                        processed_items = []
-                        today = datetime.datetime.now()
-
-                        for entry in feed.entries:
-                            publication_date = datetime.datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
-                            days_difference = (today - publication_date).days
-                            if days_difference <= 30 and 'Correction' not in entry.title:
-                                title = entry.title
-                                link = entry.link
-                                publication_date_str = publication_date.strftime('%Y-%m-%d')
-                                doi = entry.prism_doi
-                                journal = entry.prism_publicationname
-                                
-                                processed_items.append({
-                                    'Title': title,
-                                    'Link': link,
-                                    'Publication Date': publication_date,
-                                    'DOI': doi,
-                                    'Journal': journal
-                                })
-
-                        return processed_items if processed_items else [] 
-                    # Parse and process both RSS feeds
-                    feed_urls = [
-                        "https://www.tandfonline.com/feed/rss/fint20",
-                        "https://www.tandfonline.com/feed/rss/ujic20",
-                        'https://www.tandfonline.com/feed/rss/rjih20'
-                    ]
-                    combined_items = []
-                    for url in feed_urls:
-                        processed_items = process_feed(url)
-                        combined_items.extend(processed_items)
-                    # Sort combined items by publication date in descending order
-                    combined_items.sort(key=lambda x: x['Publication Date'], reverse=True)
-                    df1 = pd.DataFrame(combined_items)
-                    df1 = df1.sort_values(by='Publication Date', ascending=False)
-                    df1.reset_index(drop=True, inplace=True)
-                    df1
-                    # Display each item with the desired formatting
-                    # for idx, item in enumerate(combined_items, start=1):
-                    #     st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
-
-                    feed_urls = [
-                        "https://www.tandfonline.com/feed/rss/rpic20",
-                        "https://www.tandfonline.com/feed/rss/fcwh20",
-                        'https://www.tandfonline.com/feed/rss/rusi20',
-                        'https://www.tandfonline.com/feed/rss/fjss20',
-                        "https://journals.sagepub.com/action/showFeed?ui=0&mi=ehikzz&ai=2b4&jc=wiha&type=etoc&feed=rss",
-                        'https://www.tandfonline.com/feed/rss/rinh20',
-                        'https://journals.sagepub.com/action/showFeed?ui=0&mi=ehikzz&ai=2b4&jc=jcha&type=axatoc&feed=rss',
-                        'https://www.tandfonline.com/feed/rss/fmes20',
-                        'https://www.tandfonline.com/feed/rss/fdps20',
-                        'https://www.tandfonline.com/feed/rss/usip20',
-                        'https://www.tandfonline.com/feed/rss/ucry20',
-                        'https://www.tandfonline.com/feed/rss/fslv20'
+                    api_links = [
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s33269604&sort=publication_year:desc&per_page=10',
+                        "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10",
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s4210168073&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s2764506647&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s2764781490&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s93928036&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s962698607&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s199078552&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s145781505&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s120387555&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s161550498&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s164505828&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s99133842&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s4210219209&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s185196701&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s157188123&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s79519963&sort=publication_year:desc&per_page=10',
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s161027966&sort=publication_year:desc&per_page=10'
+                        # Add more API links here
                     ]
 
+                    # Define journals to include filtered items
+                    journals_with_filtered_items = [
+                        'The Historical Journal', 'Journal of Policing, Intelligence and Counter Terrorism', 'Cold War History', 'RUSI Journal',
+                        'Journal of Strategic Studies', 'War in History', 'International History Review','Journal of Contemporary History', 
+                        'Middle Eastern Studies', 'Diplomacy & Statecraft', 'The international journal of intelligence, security, and public affairs',
+                        'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly'
+                        ]
+
+                    # Define keywords for filtering
                     keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
 
-                    # Initialize an empty list to store items from all feeds
-                    all_items = []
+                    # Initialize an empty list to store DataFrame for each API link
+                    dfs = []
 
-                    # Parse each RSS feed
-                    for feed_url in feed_urls:
-                        feed = feedparser.parse(feed_url)
-                        today = datetime.datetime.now()
-                        items = []
-                        for entry in feed.entries:
-                            publication_date = datetime.datetime.strptime(entry.updated, '%Y-%m-%dT%H:%M:%SZ')
-                            days_difference = (today - publication_date).days
-                            if days_difference <= 60 and 'Correction' not in entry.title:
-                                title = entry.title  # Remove .lower() conversion
-                                link = entry.link
-                                # Format publication date
-                                publication_date_str = publication_date.strftime('%Y-%m-%d')
-                                doi = entry.get('prism_doi', '') if 'tandfonline' in feed_url else entry.get('dc_identifier', '')
-                                journal = entry.get('prism_publicationname', '') if 'tandfonline' in feed_url else entry.get('dc_source', '')
+                    # Loop through each API link
+                    for api_link in api_links:
+                        # Send a GET request to the API
+                        response = requests.get(api_link)
+
+                        # Check if the request was successful
+                        if response.status_code == 200:
+                            # Parse the JSON response
+                            data = response.json()
+                            
+                            # Extract the results
+                            results = data['results']
+                            
+                            # Initialize lists to store values for DataFrame
+                            titles = []
+                            dois = []
+                            publication_dates = []
+                            dois_without_https = []
+                            journals = []
+                            
+                            # Get today's date
+                            today = datetime.today().date()
+                            
+                            # Extract data for each result
+                            for result in results:
+                                # Convert publication date string to datetime object
+                                pub_date = datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
                                 
-                                # Check if any keyword is present in the title
-                                if any(keyword.lower() in title.lower() for keyword in keywords):  # Convert both title and keyword to lowercase
-                                    items.append({
-                                        'Title': entry.title,
-                                        'Link': link,
-                                        'Publication Date': publication_date,  # Store datetime object
-                                        'DOI': doi,
-                                        'Journal': journal
-                                    })
+                                # Check if the publication date is within the last 30 days
+                                if today - pub_date <= timedelta(days=360):
+                                    titles.append(result['title'])
+                                    dois.append(result['doi'])
+                                    publication_dates.append(result['publication_date'])
+                                    dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
+                                    journals.append(result['primary_location']['source']['display_name'])
+                            
+                            # Create DataFrame
+                            df = pd.DataFrame({
+                                'Title': titles,
+                                'Link': dois,
+                                'Publication Date': publication_dates,
+                                'DOI': dois_without_https,
+                                'Journal': journals
+                            })
+                            
+                            # Append DataFrame to the list
+                            dfs.append(df)
                         
-                        # Extend the list of items from the current feed to the list of all items
-                        all_items.extend(items)
+                        else:
+                            print(f"Failed to fetch data from the API: {api_link}")
 
-                    # Sort all items by publication date
-                    all_items.sort(key=lambda x: x['Publication Date'], reverse=True)
-                    df2 = pd.DataFrame(all_items)
-                    df2 = df2.sort_values(by='Publication Date', ascending=False)
-                    df2.reset_index(drop=True, inplace=True)
-                    df2
+                    # Concatenate DataFrames from all API links
+                    final_df = pd.concat(dfs, ignore_index=True)
 
-                    # # Display items with desired formatting
-                    # for idx, item in enumerate(all_items, start=1):
-                    #     st.write(f"{idx}. **{item['Journal']}**: [{item['Title']}]({item['Link']}) ({item['Publication Date'].strftime('%Y-%m-%d')})")
+                    # Filter 'The Historical Journal' to only include titles containing keywords
+                    historical_journal_filtered = final_df[final_df['Journal'].isin(journals_with_filtered_items)]
+                    historical_journal_filtered = historical_journal_filtered[historical_journal_filtered['Title'].str.lower().str.contains('|'.join(keywords))]
 
-                    rss_url = "https://www.cambridge.org/core/rss/product/id/15E98E1D30D09470213F11031D82A83C"
-                    feed = feedparser.parse(rss_url)
+                    # Filter other journals to exclude 'The Historical Journal'
+                    other_journals = final_df[~final_df['Journal'].isin(journals_with_filtered_items)]
 
-                    # Initialize lists to store data
-                    titles = []
-                    links = []
-                    publication_dates = []
-                    dois = []
-                    journals = []
-
-                    # Iterate over each item in the feed
-                    for entry in feed.entries:
-                        titles.append(entry.title)
-                        links.append(entry.link)
-                        publication_dates.append(entry.prism_publicationdate)
-                        dois.append(entry.id.split('?')[0])
-                        journals.append(feed.feed.title)
-
-                    # Create DataFrame
-                    df = pd.DataFrame({
-                        "Title": titles,
-                        "Link": links,
-                        "Publication Date": publication_dates,
-                        "DOI": dois,
-                        "Journal": journals
-                    })
-
-                    # Filter DataFrame by titles containing specified keywords
-                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage' ,'hispanic']
-                    df3 = df[df['Title'].str.contains('|'.join(keywords), case=False)]
+                    # Concatenate the filtered DataFrames
+                    filtered_final_df = pd.concat([other_journals, historical_journal_filtered], ignore_index=True)
+                    filtered_final_df
 
         with col2:
             with st.expander('Collections', expanded=True):
