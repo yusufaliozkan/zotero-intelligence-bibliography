@@ -2043,7 +2043,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     items_not_in_df2 = merged_df[merged_df['_merge'] == 'left_only']
                     items_not_in_df2.drop('_merge', axis=1, inplace=True)
 
-                    words_to_exclude = ['paperback', 'hardback'] 
+                    # words_to_exclude = ['paperback', 'hardback'] 
+                    words_to_exclude = ['test'] 
+
                     mask = ~items_not_in_df2['Title'].str.contains('|'.join(words_to_exclude), case=False)
                     items_not_in_df2 = items_not_in_df2[mask]
                     items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
