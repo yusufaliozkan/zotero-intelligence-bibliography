@@ -2038,6 +2038,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     merged_df = pd.merge(filtered_final_df, df_dois[['DOI']], on='DOI', how='left', indicator=True)
                     items_not_in_df2 = merged_df[merged_df['_merge'] == 'left_only']
                     items_not_in_df2.drop('_merge', axis=1, inplace=True)
+                    items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
                     items_not_in_df2
 
         with col2:
