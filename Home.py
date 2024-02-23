@@ -1948,7 +1948,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'https://api.openalex.org/works?filter=primary_location.source.id:s185196701&sort=publication_year:desc&per_page=10',#Cryptologia
                         'https://api.openalex.org/works?filter=primary_location.source.id:s157188123&sort=publication_year:desc&per_page=10', #The Journal of Slavic Military Studies
                         'https://api.openalex.org/works?filter=primary_location.source.id:s79519963&sort=publication_year:desc&per_page=10',#International Affairs
-                        'https://api.openalex.org/works?filter=primary_location.source.id:s161027966&sort=publication_year:desc&per_page=10' #Political Science Quarterly
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s161027966&sort=publication_year:desc&per_page=10', #Political Science Quarterly
+                        'Intelligence Collection Priorities in an Age of Renewed Superpower Conflict: Toward a More Expansive Perspective' #Journal of intelligence, conflict and warfare
                         # Add more API links here
                     ]
 
@@ -1957,7 +1958,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'The Historical Journal', 'Journal of Policing, Intelligence and Counter Terrorism', 'Cold War History', 'RUSI Journal',
                         'Journal of Strategic Studies', 'War in History', 'International History Review','Journal of Contemporary History', 
                         'Middle Eastern Studies', 'Diplomacy & Statecraft', 'The international journal of intelligence, security, and public affairs',
-                        'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly'
+                        'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly',
+                        'Journal of intelligence, conflict and warfare'
                         ]
 
                     # Define keywords for filtering
