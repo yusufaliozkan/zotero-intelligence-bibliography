@@ -1932,12 +1932,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write('The following items are not in the library yet. Book reviews will not be included!')
                     api_links = [
                         'https://api.openalex.org/works?filter=primary_location.source.id:s33269604&sort=publication_year:desc&per_page=10', #IJIC
-                        "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10", #TheHistoricalJournal
+                        "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10", #The Historical Journal
                         'https://api.openalex.org/works?filter=primary_location.source.id:s4210168073&sort=publication_year:desc&per_page=10', #INS
-                        'https://api.openalex.org/works?filter=primary_location.source.id:s2764506647&sort=publication_year:desc&per_page=10', #JournalofIntelligenceHistory
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s2764506647&sort=publication_year:desc&per_page=10', #Journal of Intelligence History
                         'https://api.openalex.org/works?filter=primary_location.source.id:s2764781490&sort=publication_year:desc&per_page=10', #Journal of Policing, Intelligence and Counter Terrorism
-                        'https://api.openalex.org/works?filter=primary_location.source.id:s93928036&sort=publication_year:desc&per_page=10', #ColdWarHistory
-                        'https://api.openalex.org/works?filter=primary_location.source.id:s962698607&sort=publication_year:desc&per_page=10', #RUSIJournal
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s93928036&sort=publication_year:desc&per_page=10', #Cold War History
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s962698607&sort=publication_year:desc&per_page=10', #RUSI Journal
                         'https://api.openalex.org/works?filter=primary_location.source.id:s199078552&sort=publication_year:desc&per_page=10', #Journal of Strategic Studies
                         'https://api.openalex.org/works?filter=primary_location.source.id:s145781505&sort=publication_year:desc&per_page=10', #War in History
                         'https://api.openalex.org/works?filter=primary_location.source.id:s120387555&sort=publication_year:desc&per_page=10', #International History Review
@@ -1949,7 +1949,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'https://api.openalex.org/works?filter=primary_location.source.id:s157188123&sort=publication_year:desc&per_page=10', #The Journal of Slavic Military Studies
                         'https://api.openalex.org/works?filter=primary_location.source.id:s79519963&sort=publication_year:desc&per_page=10',#International Affairs
                         'https://api.openalex.org/works?filter=primary_location.source.id:s161027966&sort=publication_year:desc&per_page=10', #Political Science Quarterly
-                        'Intelligence Collection Priorities in an Age of Renewed Superpower Conflict: Toward a More Expansive Perspective' #Journal of intelligence, conflict and warfare
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s4210201145&sort=publication_year:desc&per_page=10', #Journal of intelligence, conflict and warfare
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s2764954702&sort=publication_year:desc&per_page=10', #The Journal of Conflict Studies
                         # Add more API links here
                     ]
 
@@ -1959,7 +1960,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'Journal of Strategic Studies', 'War in History', 'International History Review','Journal of Contemporary History', 
                         'Middle Eastern Studies', 'Diplomacy & Statecraft', 'The international journal of intelligence, security, and public affairs',
                         'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly',
-                        'Journal of intelligence, conflict and warfare'
+                        'Journal of intelligence, conflict and warfare', 'The Journal of Conflict Studies'
                         ]
 
                     # Define keywords for filtering
