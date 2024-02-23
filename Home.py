@@ -1968,6 +1968,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'https://api.openalex.org/works?filter=primary_location.source.id:s49917718&sort=publication_year:desc&per_page=10', #Contemporary British History
                         'https://api.openalex.org/works?filter=primary_location.source.id:s8593340&sort=publication_year:desc&per_page=10', #The Historian
                         'https://api.openalex.org/works?filter=primary_location.source.id:s161552967&sort=publication_year:desc&per_page=10', #The British Journal of Politics and International Relations
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s141724154&sort=publication_year:desc&per_page=10', #Terrorism and Political Violence
 
 
                         # Add more API links here
@@ -1983,7 +1984,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'Security and Defence Quarterly', 'The Journal of Imperial and Commonwealth History', 'Review of International Studies', 'Diplomatic History',
                         'Cambridge Review of International Affairs', 'Public Policy and Administration', 'Armed Forces & Society', 'Studies in Conflict & Terrorism',
                         'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History',
-                        'The Historian', 'The British Journal of Politics and International Relations'
+                        'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence'
                         ]
 
                     # Define keywords for filtering
