@@ -1956,7 +1956,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'https://api.openalex.org/works?filter=primary_location.source.id:s4210214688&sort=publication_year:desc&per_page=10', #Security and Defence Quarterly
                         'https://api.openalex.org/works?filter=primary_location.source.id:s112911512&sort=publication_year:desc&per_page=10', #The Journal of Imperial and Commonwealth History
                         'https://api.openalex.org/works?filter=primary_location.source.id:s131264395&sort=publication_year:desc&per_page=10', #Review of International Studies
-
+                        'https://api.openalex.org/works?filter=primary_location.source.id:s154084123&sort=publication_year:desc&per_page=10', #Diplomatic History
                         # Add more API links here
                     ]
 
@@ -1967,7 +1967,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'Middle Eastern Studies', 'Diplomacy & Statecraft', 'The international journal of intelligence, security, and public affairs',
                         'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly',
                         'Journal of intelligence, conflict and warfare', 'The Journal of Conflict Studies','Journal of Cold War Studies', 'Survival',
-                        'Security and Defence Quarterly', 'The Journal of Imperial and Commonwealth History', 'Review of International Studies'
+                        'Security and Defence Quarterly', 'The Journal of Imperial and Commonwealth History', 'Review of International Studies', 'Diplomatic History'
                         ]
 
                     # Define keywords for filtering
