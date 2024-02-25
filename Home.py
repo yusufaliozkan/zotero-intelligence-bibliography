@@ -1989,9 +1989,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror",
                         'Small Wars & Insurgencies', 'Journal of Cyber Policy'
                         ]
-
+ 
                     # Define keywords for filtering
-                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage']
+                    keywords = ['intelligence', 'spy', 'counterintelligence', 'espionage', 'covert', 'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis']
 
                     # Initialize an empty list to store DataFrame for each API link
                     dfs = []
