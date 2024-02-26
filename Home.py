@@ -1989,7 +1989,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History',
                         'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror",
                         'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies'
-                        ] 
+                        ]
  
                     # Define keywords for filtering
                     keywords = [
