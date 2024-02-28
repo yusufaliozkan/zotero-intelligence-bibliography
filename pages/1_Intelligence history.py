@@ -112,7 +112,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
             true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
-            total_count = len(df_collections['OA status'])
+            total_count = len(df_collections[df_collections['Publication type']=='Journal article'])
 
             if total_count == 0:
                 oa_ratio = 0.0
