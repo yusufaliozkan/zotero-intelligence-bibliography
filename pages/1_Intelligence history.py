@@ -118,7 +118,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 oa_ratio = 0.0
             else:
                 oa_ratio = true_count / total_count * 100
-            oa_ratio
 
             st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
