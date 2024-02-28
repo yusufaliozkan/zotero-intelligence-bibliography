@@ -120,7 +120,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 oa_ratio = true_count / total_count * 100
             oa_ratio
 
-            st.write(f"**{num_items_collections}** sources found ({breakdown_string}), Open access coverage: **{int(oa_ratio)}%**"")
+            st.write(f"**{num_items_collections}** sources found ({breakdown_string}), Open access coverage: **{int(oa_ratio)}%**")
 
             citation_count = df_collections['Citation'].sum()
             st.write(f'**Number of citations:** {int(citation_count)}')
