@@ -1543,7 +1543,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             oa_ratio = true_count / total_count * 100
 
-                        citation_count = df_cited['Citation'].sum()
+                        st.metric(label=f"Open access coverage", value={int(oa_ratio)}%, label_visibility='visible', 
+                        help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
+                        ''')
                         st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
 
                     st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
