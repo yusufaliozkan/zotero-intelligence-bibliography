@@ -1327,7 +1327,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.metric(label=f"The number of sources published in **{int(years[0])}**", value=f'{number_of_items}', label_visibility='visible', 
                         help=f'({breakdown_string})')    
                     else:
-                        st.metric(label=f"The number of sources found published between **{int(years[0])}** and **{int(years[1])}**", value=f'{number_of_items}', label_visibility='visible', 
+                        st.metric(label=f"The number of sources published between **{int(years[0])}** and **{int(years[1])}**", value=f'{number_of_items}', label_visibility='visible', 
                         help=f'({breakdown_string})')                      
 
                     st.warning('Items without a publication date are not listed here!')
