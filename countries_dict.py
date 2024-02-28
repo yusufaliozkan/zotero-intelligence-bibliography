@@ -287,7 +287,7 @@ continent_replacements = {
     'Bingchang':'China',
     '2011 independent review of the intelligence community':'Australia',
     'Nehruvian Era':'India',
-    'Wehrmacht':'Germany'
+    'Wehrmacht':'Germany' 
     }
 
 df_continent = df_countries.copy()
