@@ -30,7 +30,7 @@ def format_entry(row, include_citation=True):
     citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
         else '')
     
-    oa_url = str(row['OA URL']) if pd.notnull(row['OA URL']) else ''
+    oa_url = str(row['OA_link']) if pd.notnull(row['OA_link']) else ''
     oa_link_text = '[Open access version](' + oa_url + ')' if oa_url else ''
 
     return (
