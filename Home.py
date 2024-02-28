@@ -914,6 +914,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(filtered_type_df)
                         st.write(f"**{num_items_collections}** sources found")
+
+                        true_count = filtered_type_df[filtered_type_df['Publication type']=='Journal article']['OA status'].sum()
+                        total_count = len(filtered_type_df[filtered_type_df['Publication type']=='Journal article'])
+                        if total_count == 0:
+                            oa_ratio = 0.0
+                        else:
+                            oa_ratio = true_count / total_count * 100
+
+                        citation_count = filtered_type_df['Citation'].sum()
+                        st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+
                         a = f'{selected_type}_{today}'
                         st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
