@@ -111,7 +111,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             num_items_collections = len(df_collections)
             breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
-            true_count = df_collections['OA status'].sum()
+            true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
             total_count = len(df_collections['OA status'])
 
             if total_count == 0:
