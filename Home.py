@@ -191,6 +191,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     item_count = zot.num_items()
 
     df_dedup = pd.read_csv('all_items.csv')
+    df_dedup
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
     col1, col2 = st.columns([3,5])
