@@ -2610,7 +2610,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
             df_intro = df_intro.reset_index(drop=True)   
             articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
-            formatted_entry = format_entry(s)
+            formatted_entry = format_entry(row)
             if st.button("Refresh Random 5 Sources"):
                 # Shuffle the list and select the first 5 elements
                 random_sources = np.random.choice(articles_list, 5, replace=False)
