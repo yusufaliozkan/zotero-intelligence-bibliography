@@ -1324,13 +1324,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
                     if years[0] == years[1] or years[0]==current_year:
-                        st.write(f"**{number_of_items}** sources found published in **{int(years[0])}**")
-                        st.write(f'({breakdown_string})')
                         st.metric(label=f"The number of sources published in **{int(years[0])}**", value=f'{number_of_items}', label_visibility='visible', 
                         help=f'({breakdown_string})')    
                     else:
                         st.write(f"**{number_of_items}** sources found published between **{int(years[0])}** and **{int(years[1])}**")
-                        st.write(f'({breakdown_string})')                        
+                        st.write(f'({breakdown_string})')
+                        st.metric(label=f"The number of sources found published between **{int(years[0])}** and **{int(years[1])}**", value=f'{number_of_items}', label_visibility='visible', 
+                        help=f'({breakdown_string})')                      
 
                     st.warning('Items without a publication date are not listed here!')
 
