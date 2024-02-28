@@ -1018,16 +1018,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 if publication_type == 'Book':
                                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
-                                formatted_entry = (
-                                    '**' + str(publication_type) + '**' + ': ' +
-                                    str(title) + ' ' +
-                                    '(by ' + '*' + str(authors) + '*' + ') ' +
-                                    '(Publication date: ' + str(date_published) + ') ' +
-                                    ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                    '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                    '[[Zotero link]](' + str(zotero_link) + ') ' + 
-                                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
-                                )
+                                formatted_entry = format_entry(row)
                                 st.write(f"{index + 1}) {formatted_entry}")
 
             elif search_option == "Search journal":
