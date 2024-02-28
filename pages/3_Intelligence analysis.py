@@ -54,6 +54,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # df_collections = zotero_collections(library_id, library_type)
 
     df_collections = pd.read_csv('all_items_duplicated.csv')
+    df_t = pd.read_csv('all_items.csv')
+    df_t
     # df_collections = df_collections[~df_collections['Collection_Name'].str.contains('01.98')]
     # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
