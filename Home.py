@@ -1063,11 +1063,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         today = datetime.date.today().isoformat()
                         num_items_collections = len(selected_journal_df)
                         citation_count = selected_journal_df['Citation'].sum()
-                        st.write(f"Sources found: **{num_items_collections}**, Number of citations: **{int(citation_count)}**")
+                        oa_ratio = selected_journal_df['OA status'].mean()*100
+                        st.write(f"Sources found: **{num_items_collections}**, Number of citations: **{int(citation_count)}**, Open access coverage: **{int(oa_ratio)}")
                         journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
-
-                        oa_ratio = selected_journal_df['OA status'].mean()
-                        oa_ratio
 
                         if len(journal_citations) >1:
                             journal_citations
