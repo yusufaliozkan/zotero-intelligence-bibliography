@@ -1324,8 +1324,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
                     if years[0] == years[1] or years[0]==current_year:
-                        st.metric(label=f"The number of sources published in **{int(years[0])}**", value=f'{number_of_items}', label_visibility='visible', 
-                        help=f'({breakdown_string})')    
+                        colyear1, colyear2 = st.columns([1,3])
+                        with colyear1:
+                            st.metric(label=f"The number of sources published in **{int(years[0])}**", value=f'{number_of_items}', label_visibility='visible', 
+                            help=f'({breakdown_string})')
+                        with colyear2:
+                            true_count = df_all[df_all['Publication type']=='Journal article']['OA status'].sum()
+                            total_count = len(df_all[df_all['Publication type']=='Journal article'])
+                            if total_count == 0:
+                                oa_ratio = 0.0
+                            else:
+                                oa_ratio = true_count / total_count * 100
+
+                            st.metric(label=f"Open access coverage", value=f"{int(oa_ratio)}%", label_visibility='visible', 
+                            help=f'Journal articles only')                           
                     else:
                         st.metric(label=f"The number of sources published between **{int(years[0])}** and **{int(years[1])}**", value=f'{number_of_items}', label_visibility='visible', 
                         help=f'({breakdown_string})')                      
