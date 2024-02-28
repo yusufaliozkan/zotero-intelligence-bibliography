@@ -539,8 +539,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
+                        true_count = filtered_collection_df_authors[filtered_collection_df_authors['Publication type']=='Journal article']['OA status'].sum()
+                        total_count = len(filtered_collection_df_authors[filtered_collection_df_authors['Publication type']=='Journal article'])
+                        if total_count == 0:
+                            oa_ratio = 0.0
+                        else:
+                            oa_ratio = true_count / total_count * 100
+
                         citation_count = filtered_collection_df_authors['Citation'].sum()
-                        st.write(f'**Number of citations:** {int(citation_count)}')
+                        st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
 
                         def convert_df(filtered_collection_df_authors):
                             return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
