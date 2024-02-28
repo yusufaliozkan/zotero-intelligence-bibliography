@@ -1066,7 +1066,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write(f"Sources found: **{num_items_collections}**, Number of citations: **{int(citation_count)}**")
                         journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
 
-                        oa_ratio = selected_journal_df['OA status']
+                        oa_ratio = selected_journal_df['OA status'].mean()
                         oa_ratio
 
                         if len(journal_citations) >1:
