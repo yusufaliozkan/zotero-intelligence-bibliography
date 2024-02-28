@@ -31,7 +31,7 @@ def format_entry(row, include_citation=True):
         else '')
     
     oa_url = str(row['OA_link']) if pd.notnull(row['OA_link']) else ''
-    oa_link_text = '[Open access version](' + oa_url + ')' if oa_url else ''
+    oa_link_text = '[[Open access version](' + oa_url + ')]' if oa_url else ''
 
     return (
         '**' + publication_type + '**' + ': ' +
