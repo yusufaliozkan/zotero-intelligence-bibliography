@@ -1339,8 +1339,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.metric(label=f"Open access coverage", value=f"{int(oa_ratio)}%", label_visibility='visible', 
                             help=f'Journal articles only')                           
                     else:
-                        st.metric(label=f"The number of sources published between **{int(years[0])}** and **{int(years[1])}**", value=f'{number_of_items}', label_visibility='visible', 
-                        help=f'({breakdown_string})')                      
+                        colyear11, colyear22 = st.columns([2,3])
+                        with colyear11:
+                            st.metric(label=f"The number of sources published between **{int(years[0])}** and **{int(years[1])}**", value=f'{number_of_items}', label_visibility='visible', 
+                            help=f'({breakdown_string})')    
+                        with colyear22:
+                            true_count = df_all[df_all['Publication type']=='Journal article']['OA status'].sum()
+                            total_count = len(df_all[df_all['Publication type']=='Journal article'])
+                            if total_count == 0:
+                                oa_ratio = 0.0
+                            else:
+                                oa_ratio = true_count / total_count * 100                  
 
                     st.warning('Items without a publication date are not listed here!')
 
