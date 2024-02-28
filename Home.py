@@ -659,7 +659,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         '[[Zotero link]](' + str(zotero_link) + ') ' +
                                         ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
                                     )
-                                    formatted_entry = format_entry
+                                    formatted_entry = format_entry(row)
                                     st.write(f"{index + 1}) {formatted_entry}")
 
                             else:  # If toggle is on but no publications are available
