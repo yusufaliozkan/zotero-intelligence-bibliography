@@ -1350,7 +1350,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 oa_ratio = 0.0
                             else:
                                 oa_ratio = true_count / total_count * 100                  
-
+                            st.metric(label=f"Open access coverage", value=f"{int(oa_ratio)}%", label_visibility='visible', 
+                            help=f'Journal articles only')    
                     st.warning('Items without a publication date are not listed here!')
 
                     dashboard_all = st.toggle('Generate dashboard')
