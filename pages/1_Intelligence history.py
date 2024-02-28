@@ -110,8 +110,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
             today = datetime.date.today().isoformat()
             num_items_collections = len(df_collections)
             breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-            st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
+            true_count = df_collections['OA status'].sum()
+            total_count = len(df_collections['OA status'])
+
+            if total_count == 0:
+                oa_ratio = 0.0
+            else:
+                oa_ratio = true_count / total_count * 100
+            oa_ratio
+
+            st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
             citation_count = df_collections['Citation'].sum()
             st.write(f'**Number of citations:** {int(citation_count)}')

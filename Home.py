@@ -1070,7 +1070,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             oa_ratio = 0.0
                         else:
                             oa_ratio = true_count / total_count * 100
-
                         st.write(f"Sources found: **{num_items_collections}**, Number of citations: **{int(citation_count)}**, Open access coverage: **{int(oa_ratio)}%**")
                         journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
 
