@@ -1527,22 +1527,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_cited)
 
-                    citation_count = df_cited['Citation'].sum()
-                    publications_by_type = df_cited['Publication type'].value_counts()
-                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                    st.metric(label=f"The number of citations for **{number_of_items}** items", value=int(citation_count), label_visibility='visible', 
-                    help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
-                    ''')
+                    colcit1, colcit2 = st.columns([1,3])
+                    with colcit1:
+                        citation_count = df_cited['Citation'].sum()
+                        publications_by_type = df_cited['Publication type'].value_counts()
+                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                        st.metric(label=f"The number of citations for **{number_of_items}** items", value=int(citation_count), label_visibility='visible', 
+                        help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
+                        ''')
+                    with colcit2:
+                        true_count = df_cited[df_cited['Publication type']=='Journal article']['OA status'].sum()
+                        total_count = len(df_cited[df_cited['Publication type']=='Journal article'])
+                        if total_count == 0:
+                            oa_ratio = 0.0
+                        else:
+                            oa_ratio = true_count / total_count * 100
 
-                    true_count = df_cited[df_cited['Publication type']=='Journal article']['OA status'].sum()
-                    total_count = len(df_cited[df_cited['Publication type']=='Journal article'])
-                    if total_count == 0:
-                        oa_ratio = 0.0
-                    else:
-                        oa_ratio = true_count / total_count * 100
-
-                    citation_count = df_cited['Citation'].sum()
-                    st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+                        citation_count = df_cited['Citation'].sum()
+                        st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
 
                     st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
 
