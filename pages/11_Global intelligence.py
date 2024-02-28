@@ -386,8 +386,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     articles_list = []  # Store articles in a list
                     st.write(f"**{num_items_collections_continent}** sources found ({breakdown_string_continent})")
+                    true_count = df_continent[df_continent['Publication type']=='Journal article']['OA status'].sum()
+                    total_count = len(df_continent[df_continent['Publication type']=='Journal article'])
+                    if total_count == 0:
+                        oa_ratio = 0.0
+                    else:
+                        oa_ratio = true_count / total_count * 100
+
                     citation_count = df_continent['Citation'].sum()
-                    st.write(f'**Number of citations:** {int(citation_count)}')
+                    st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
                 
                     for index, row in df_continent.iterrows():
                         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
