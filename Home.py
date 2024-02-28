@@ -1324,7 +1324,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
                     if years[0] == years[1] or years[0]==current_year:
-                        colyear1, colyear2 = st.columns([1,3])
+                        colyear1, colyear2 = st.columns([3,1])
                         with colyear1:
                             st.metric(label=f"The number of sources published in **{int(years[0])}**", value=f'{number_of_items}', label_visibility='visible', 
                             help=f'({breakdown_string})')
