@@ -853,16 +853,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         published_by_or_in = ''
                                         published_source = ''
 
-                                    formatted_entry = (
-                                        '**' + str(publication_type) + '**' + ': ' +
-                                        str(title) + ' ' +
-                                        '(by ' + '*' + str(authors) + '*' + ') ' +
-                                        '(Publication date: ' + str(date_published) + ') ' +
-                                        ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                        '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                        '[[Zotero link]](' + str(zotero_link) + ') ' +
-                                        ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
-                                    )
+                                    formatted_entry = format_entry(row)
                                     st.write(f"{index + 1}) {formatted_entry}")
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
