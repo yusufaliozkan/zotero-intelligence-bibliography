@@ -115,8 +115,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
             unique_items_count = df_countries_chart['Country'].nunique()
             num_items_collections = len(df_collections)
             st.write(f"**{num_items_collections}** sources found for **{unique_items_count-1}** countries.")
+            true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
+            total_count = len(df_collections[df_collections['Publication type']=='Journal article'])
+            if total_count == 0:
+                oa_ratio = 0.0
+            else:
+                oa_ratio = true_count / total_count * 100
+
             citation_count = df_collections['Citation'].sum()
-            st.write(f'**Number of citations:** {int(citation_count)}')
+            st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
             container_metric = container_metric.metric(label='Number of items in this collection', value=num_items_collections, help=f'sources found for **{unique_items_count-1}** countries.')
 
             df_countries['Date published'] = ( 
