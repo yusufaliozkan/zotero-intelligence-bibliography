@@ -193,7 +193,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
-    df_dedup['OA_link'] = df_dedup['OA_link'].replace("http://www.stuart-hall.com/ftp/IJIC--Vol19No4--Marrin and Clemente--Modeling an IntellAnalysis Profession on Medicine.pdf", "https://www.stuart-hall.com/ftp/IJIC--Vol19No4--Marrin%20and%20Clemente--Modeling%20an%20IntellAnalysis%20Profession%20on%20Medicine.pdf")
+    df_dedup['OA_link'] = df_dedup['OA_link'].replace("http://www.stuart-hall.com/ftp/IJIC--Vol19No4--Marrin and Clemente--Modeling an IntellAnalysis Profession on Medicine.pdf", "https://www.stuart-hall.com/ftp/IJIC--Vol19No4--Marrin_and%20Clemente--Modeling_an%20IntellAnalysis%20Profession_on%20Medicine.pdf")
 
     col1, col2 = st.columns([3,5])
     with col2:
