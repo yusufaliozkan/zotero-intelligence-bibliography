@@ -193,6 +193,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
+    df_dedup['OA_link'] = df_dedup['OA_link'].apply(lambda x: x.replace(" ", "%20") if isinstance(x, str) else x)
+
     col1, col2 = st.columns([3,5])
     with col2:
         with st.expander('Introduction'):
