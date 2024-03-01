@@ -1566,7 +1566,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             oa_ratio = true_count / total_count * 100
 
                         st.metric(label=f"Open access coverage", value=f"{int(oa_ratio)}%", label_visibility='visible', 
-                        help=f'Journal articles only')
+                        help=f'Journal articles only') 
 
                     st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
 
