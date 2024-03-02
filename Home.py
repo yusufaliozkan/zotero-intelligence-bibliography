@@ -1888,9 +1888,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.altair_chart(cumulative_chart + data_labels, use_container_width=True)
                 item_monitoring = st.button("Item monitoring")
                 if item_monitoring:
+                    st.subheader('Monitoring section')
+                    st.write('The following items are not in the library yet. Book reviews will not be included!')
                     with st.spinner('Scanning journals to find sources...'): 
-                        st.subheader('Monitoring section')
-                        st.write('The following items are not in the library yet. Book reviews will not be included!')
                         api_links = [
                             'https://api.openalex.org/works?filter=primary_location.source.id:s33269604&sort=publication_year:desc&per_page=10', #IJIC
                             "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10", #The Historical Journal
