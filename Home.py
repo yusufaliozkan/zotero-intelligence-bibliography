@@ -2045,12 +2045,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df2
 
                         df_item_podcast = df_dedup.copy()
-                        df_item_podcast
                         df_item_podcast.dropna(subset=['Title'], inplace=True)
                         column_to_keep = 'Title'
                         df_item_podcast = df_item_podcast[[column_to_keep]]
                         df_podcast = pd.merge(df_podcast, df_item_podcast[['Title']], on='Title', how='left', indicator=True)
-                        df_podcast
+                        items_not_in_df_item_podcast = medf_podcastrged_df[df_podcast['_merge'] == 'left_only']
+                        items_not_in_df_item_podcast.drop('_merge', axis=1, inplace=True)
+                        items_not_in_df_item_podcast
 
         with col2:
             with st.expander('Collections', expanded=True):
