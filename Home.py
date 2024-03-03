@@ -1923,6 +1923,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df_item_podcast = items_not_in_df_item_podcast.reset_index(drop=True)
                         items_not_in_df_item_podcast
 
+                        df_maganizes
+
         with col2:
             with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
