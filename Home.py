@@ -2028,7 +2028,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_final_df = pd.concat([other_journals, historical_journal_filtered], ignore_index=True)
 
                         df_dois = df_dedup.copy()
-                        df_dois.dropna(subset=['DOI'], inplace=True)
+                        df_dois.dropna(subset=['DOI'], inplace=True) 
                         column_to_keep = 'DOI'
                         df_dois = df_dois[[column_to_keep]]
                         df_dois = df_dois.reset_index(drop=True) 
