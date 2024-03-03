@@ -68,7 +68,7 @@ journals_with_filtered_items = [
 # Define keywords for filtering
 keywords = [
     'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert', 'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis',
-    'spying', 'spies'
+    'spying', 'spies', 'tolerance'
     ] 
 
 # Initialize an empty list to store DataFrame for each API link
