@@ -80,5 +80,5 @@ keywords = [
 ]
 
 # Filter DataFrame based on keywords
-df_maganizes = df_maganizes[df_maganizes['title'].str.contains('|'.join(keywords), case=False)]
+df_maganizes = df_maganizes[df_maganizes['Title'].str.contains('|'.join(keywords), case=False)]
 # Display the DataFrame
