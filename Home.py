@@ -2043,6 +2043,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df2 = items_not_in_df2[mask]
                         items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
                         items_not_in_df2
+
+                        df_item_podcast = df_dedup.copy()
+                        df_item_podcast.dropna(subset=['Title'], inplace=True)
+                        column_to_keep = 'Title'
+                        df_item_podcast = df_item_podcast[[column_to_keep]]
                         df_podcast
 
         with col2:

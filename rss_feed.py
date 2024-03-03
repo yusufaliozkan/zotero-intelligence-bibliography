@@ -33,7 +33,7 @@ filtered_links = [link for link, date in zip(links, pubDates) if date >= cutoff_
 
 # Create DataFrame
 df_podcast = pd.DataFrame({
-    'title': filtered_titles,
-    'pubDate': filtered_pubDates,
-    'link': filtered_links
+    'Title': filtered_titles,
+    'PubDate': filtered_pubDates,
+    'Link': filtered_links
 })
