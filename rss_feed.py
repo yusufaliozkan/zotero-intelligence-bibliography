@@ -82,7 +82,7 @@ df_magazines = pd.DataFrame({
 # Keywords to filter
 keywords = [
     'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert',
-    'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis', 'spying', 'spies', 'cia', 'gaza'
+    'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis', 'spying', 'spies', 'cia', 'mi6'
 ]
 
 # Filter DataFrame based on keywords
