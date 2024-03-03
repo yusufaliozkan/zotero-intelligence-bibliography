@@ -2048,6 +2048,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_item_podcast.dropna(subset=['Title'], inplace=True)
                         column_to_keep = 'Title'
                         df_item_podcast = df_item_podcast[[column_to_keep]]
+                        df_podcast = pd.merge(df_podcast, df_item_podcast[['Title']], on='Title', how='left', indicator=True)
                         df_podcast
 
         with col2:
