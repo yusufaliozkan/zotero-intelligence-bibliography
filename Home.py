@@ -2042,6 +2042,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df2 = items_not_in_df2[mask]
                         items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
                         items_not_in_df2
+                        df_podcast
 
         with col2:
             with st.expander('Collections', expanded=True):
