@@ -33,6 +33,7 @@ import plotly.graph_objs as go
 import feedparser
 import requests
 from format_entry import format_entry
+from rss_feed import df_podcast
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -87,7 +88,7 @@ split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
 df['Authors'] = df['Authors'].fillna('null')  
 
-# Change type name
+# Change type name 
 type_map = {
     'thesis': 'Thesis',
     'journalArticle': 'Journal article',
@@ -1891,7 +1892,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if item_monitoring:
                     st.subheader('Monitoring section')
                     st.write('The following items are not in the library yet. Book reviews will not be included!')
-                    with st.spinner('Scanning journals to find sources...'): 
+                    with st.spinner('Scanning sources to find items...'): 
                         api_links = [
                             'https://api.openalex.org/works?filter=primary_location.source.id:s33269604&sort=publication_year:desc&per_page=10', #IJIC
                             "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10", #The Historical Journal
@@ -2042,6 +2043,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df2 = items_not_in_df2[mask]
                         items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
                         items_not_in_df2
+
+                        df_item_podcast = df_dedup.copy()
+                        df_item_podcast.dropna(subset=['Title'], inplace=True)
+                        column_to_keep = 'Title'
+                        df_item_podcast = df_item_podcast[[column_to_keep]]
+                        df_podcast = pd.merge(df_podcast, df_item_podcast[['Title']], on='Title', how='left', indicator=True)
+                        items_not_in_df_item_podcast = df_podcast[df_podcast['_merge'] == 'left_only']
+                        items_not_in_df_item_podcast.drop('_merge', axis=1, inplace=True)
+                        items_not_in_df_item_podcast
 
         with col2:
             with st.expander('Collections', expanded=True):
