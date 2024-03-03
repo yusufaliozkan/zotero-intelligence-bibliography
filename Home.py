@@ -33,7 +33,7 @@ import plotly.graph_objs as go
 import feedparser
 import requests
 from format_entry import format_entry
-from rss_feed import df_podcast
+from rss_feed import df_podcast, df_magazines
 from openalex_api_journals import filtered_final_df
 
 # Connecting Zotero with API 
@@ -1923,7 +1923,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df_item_podcast = items_not_in_df_item_podcast.reset_index(drop=True)
                         items_not_in_df_item_podcast
 
-                        df_maganizes
+                        df_magazines
 
         with col2:
             with st.expander('Collections', expanded=True):
