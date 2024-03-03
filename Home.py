@@ -1932,7 +1932,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df_item_magazines.drop('_merge', axis=1, inplace=True)
                         items_not_in_df_item_magazines = items_not_in_df_item_magazines.reset_index(drop=True)
                         items_not_in_df_item_magazines
-                        items_not_in_df_item_magazines
 
         with col2:
             with st.expander('Collections', expanded=True):
