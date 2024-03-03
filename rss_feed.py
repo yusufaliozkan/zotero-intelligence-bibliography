@@ -65,7 +65,7 @@ for rss_feed_url in rss_feed_urls:
 pubDates = [datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z") for date in pubDates]
 
 # Calculate the date 60 days ago from today and make it timezone-aware
-cutoff_date = datetime.now().astimezone(pubDates[0].tzinfo) - timedelta(days=15)
+cutoff_date = datetime.now().astimezone(pubDates[0].tzinfo) - timedelta(days=60)
 
 # Filter items published in the last 60 days
 filtered_titles = [title for title, date in zip(titles, pubDates) if date >= cutoff_date]
