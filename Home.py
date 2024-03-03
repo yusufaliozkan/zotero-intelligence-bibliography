@@ -2028,7 +2028,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_final_df = pd.concat([other_journals, historical_journal_filtered], ignore_index=True)
 
                         df_dois = df_dedup.copy()
-                        df_dois.dropna(subset=['DOI'], inplace=True)
+                        df_dois.dropna(subset=['DOI'], inplace=True) 
                         column_to_keep = 'DOI'
                         df_dois = df_dois[[column_to_keep]]
                         df_dois = df_dois.reset_index(drop=True) 
@@ -2051,6 +2051,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_podcast = pd.merge(df_podcast, df_item_podcast[['Title']], on='Title', how='left', indicator=True)
                         items_not_in_df_item_podcast = df_podcast[df_podcast['_merge'] == 'left_only']
                         items_not_in_df_item_podcast.drop('_merge', axis=1, inplace=True)
+                        items_not_in_df_item_podcast = items_not_in_df_item_podcast.reset_index(drop=True)
                         items_not_in_df_item_podcast
 
         with col2:
