@@ -35,6 +35,7 @@ import requests
 from format_entry import format_entry
 from rss_feed import df_podcast
 from openalex_api_journals import filtered_final_df
+from test import df_test_2
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -2561,6 +2562,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Display the initial 5 sources
                 for index, formatted_entry in enumerate(articles_list[:5]):
                     st.write(f"{index + 1}) {formatted_entry}")
+            df_test_2
     st.write('---')
     with st.expander('Acknowledgements'):
         st.subheader('Acknowledgements')
