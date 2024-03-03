@@ -1923,7 +1923,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df_item_podcast = items_not_in_df_item_podcast.reset_index(drop=True)
                         items_not_in_df_item_podcast
 
-                        df_magazines
+                        df_item_magazines = df_dedup.copy()
+                        df_item_magazines.dropna(subset=['Title'], inplace=True)
+                        column_to_keep = 'Title'
+                        df_item_magazines = df_item_magazines[[column_to_keep]]
+                        df_magazines = pd.merge(df_magazines, df_item_magazines[['Title']], on='Title', how='left', indicator=True)
+                        items_not_in_df_item_magazines = df_magazines[df_magazines['_merge'] == 'left_only']
+                        items_not_in_df_item_magazines.drop('_merge', axis=1, inplace=True)
+                        items_not_in_df_item_magazines = items_not_in_df_item_magazines.reset_index(drop=True)
+                        items_not_in_df_item_magazines
+                        items_not_in_df_item_magazines
 
         with col2:
             with st.expander('Collections', expanded=True):
