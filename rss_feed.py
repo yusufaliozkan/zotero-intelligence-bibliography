@@ -39,28 +39,33 @@ df_podcast = pd.DataFrame({
 })
 
 
-rss_feed_url = "https://www.foreignaffairs.com/rss.xml"
-
-# Parse the RSS feed
-feed = feedparser.parse(rss_feed_url)
+rss_feed_urls = [
+    "https://www.economist.com/international/rss.xml",
+    "https://www.foreignaffairs.com/rss.xml"
+]
 
 # Initialize lists to store data
 titles = []
 pubDates = []
 links = []
 
-# Extract data from the feed
-for entry in feed.entries:
-    titles.append(entry.title)
-    pubDates.append(entry.published)
-    link = entry.get('link', None)  # Check if 'link' attribute exists
-    links.append(link)
+# Process each RSS feed
+for rss_feed_url in rss_feed_urls:
+    # Parse the RSS feed
+    feed = feedparser.parse(rss_feed_url)
+
+    # Extract data from the feed
+    for entry in feed.entries:
+        titles.append(entry.title)
+        pubDates.append(entry.published)
+        link = entry.get('link', None)  # Check if 'link' attribute exists
+        links.append(link)
 
 # Convert publication dates to datetime objects
 pubDates = [datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z") for date in pubDates]
 
 # Calculate the date 60 days ago from today and make it timezone-aware
-cutoff_date = datetime.now().astimezone(pubDates[0].tzinfo) - timedelta(days=60)
+cutoff_date = datetime.now().astimezone(pubDates[0].tzinfo) - timedelta(days=15)
 
 # Filter items published in the last 60 days
 filtered_titles = [title for title, date in zip(titles, pubDates) if date >= cutoff_date]
@@ -68,7 +73,7 @@ filtered_pubDates = [date.strftime("%a, %d %b %Y %H:%M:%S %z") for date in pubDa
 filtered_links = [link for link, date in zip(links, pubDates) if date >= cutoff_date]
 
 # Create DataFrame
-df_maganizes = pd.DataFrame({
+df_magazines = pd.DataFrame({
     'Title': filtered_titles,
     'PubDate': filtered_pubDates,
     'Link': filtered_links
@@ -81,4 +86,5 @@ keywords = [
 ]
 
 # Filter DataFrame based on keywords
-df_maganizes = df_maganizes[df_maganizes['Title'].str.contains('|'.join(keywords), case=False)]
+df_magazines = df_magazines[df_magazines['Title'].str.contains('|'.join(keywords), case=False)]
+
