@@ -33,7 +33,7 @@ import plotly.graph_objs as go
 import feedparser
 import requests
 from format_entry import format_entry
-from rss_feed import df_podcast, df_maganizes
+from rss_feed import df_podcast
 from openalex_api_journals import filtered_final_df
 
 # Connecting Zotero with API 
