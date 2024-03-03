@@ -103,3 +103,5 @@ df['Journal'] = df['Journal'].replace(mapping_journal)
 
 # df['Journal'] = df['Journal'].replace(['International Journal of Intelligence and Counterintelligence', 'International Journal of Intelligence and CounterIntelligence'], 'Intl Journal of Intelligence and Counterintelligence')
 # df['Journal'] = df['Journal'].replace(['Intelligence and national security', 'Intelligence and National Security', 'Intelligence & National Security'], 'Intelligence and National Security')
+
+df_test_2 = df.copy()
