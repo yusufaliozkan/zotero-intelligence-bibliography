@@ -2066,7 +2066,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df_item_magazines = items_not_in_df_item_magazines.reset_index(drop=True)
 
                         st.write('Magazine articles')
-                        items_not_in_df_item_magazines
+                        row_nu = len(items_not_in_df_item_magazines.index)
+                        if row_nu == 0:
+                            st.write('No new magazine article published')
+                        else:
+                            items_not_in_df_item_magazines
 
         with col2:
             with st.expander('Collections', expanded=True):
