@@ -89,7 +89,7 @@ split_df= pd.DataFrame(df['Col key'].tolist())
 df = pd.concat([df, split_df], axis=1)
 df['Authors'] = df['Authors'].fillna('null')  
 
-# Change type name 
+# Change type name
 type_map = {
     'thesis': 'Thesis',
     'journalArticle': 'Journal article',
