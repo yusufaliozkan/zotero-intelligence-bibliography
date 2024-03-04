@@ -2042,6 +2042,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         mask = ~items_not_in_df2['Title'].str.contains('|'.join(words_to_exclude), case=False)
                         items_not_in_df2 = items_not_in_df2[mask]
                         items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
+                        st.write('Journal articles')
                         items_not_in_df2
 
                         df_item_podcast = df_dedup.copy()
@@ -2052,6 +2053,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df_item_podcast = df_podcast[df_podcast['_merge'] == 'left_only']
                         items_not_in_df_item_podcast.drop('_merge', axis=1, inplace=True)
                         items_not_in_df_item_podcast = items_not_in_df_item_podcast.reset_index(drop=True)
+                        st.write('Podcasts')
                         items_not_in_df_item_podcast
 
                         df_item_magazines = df_dedup.copy()
@@ -2062,6 +2064,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         items_not_in_df_item_magazines = df_magazines[df_magazines['_merge'] == 'left_only']
                         items_not_in_df_item_magazines.drop('_merge', axis=1, inplace=True)
                         items_not_in_df_item_magazines = items_not_in_df_item_magazines.reset_index(drop=True)
+
+                        st.write('Magazine articles')
                         items_not_in_df_item_magazines
 
         with col2:
