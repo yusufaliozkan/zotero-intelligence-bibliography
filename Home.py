@@ -1936,6 +1936,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             'https://api.openalex.org/works?filter=primary_location.source.id:s4210184262&sort=publication_year:desc&per_page=10', #Small Wars & Insurgencies
                             'https://api.openalex.org/works?filter=primary_location.source.id:s4210236978&sort=publication_year:desc&per_page=10', #Journal of Cyber Policy
                             'https://api.openalex.org/works?filter=primary_location.source.id:s120889147&sort=publication_year:desc&per_page=10', #South Asia:Journal of South Asian Studies
+                            'https://api.openalex.org/works?filter=primary_location.source.id:s86954274&sort=cited_by_count:desc&per_page=10', #International Journal
 
                             # Add more API links here
                         ]
@@ -1951,7 +1952,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             'Cambridge Review of International Affairs', 'Public Policy and Administration', 'Armed Forces & Society', 'Studies in Conflict & Terrorism',
                             'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History',
                             'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror",
-                            'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies'
+                            'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies', 'International Journal'
                             ]
 
                         # Define keywords for filtering
