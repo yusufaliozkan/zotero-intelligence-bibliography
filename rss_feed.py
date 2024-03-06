@@ -41,7 +41,8 @@ df_podcast = pd.DataFrame({
 
 rss_feed_urls = [
     "https://www.economist.com/international/rss.xml",
-    "https://www.foreignaffairs.com/rss.xml"
+    "https://www.foreignaffairs.com/rss.xml",
+    'https://foreignpolicy.com/feed/'
 ]
 
 # Initialize lists to store data
@@ -82,7 +83,8 @@ df_magazines = pd.DataFrame({
 # Keywords to filter
 keywords = [
     'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert',
-    'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis', 'spying', 'spies', 'cia', 'mi6'
+    'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis', 'spying', 'spies', ' cia ', 'mi6',
+    "cia'"
 ]
 
 # Filter DataFrame based on keywords
