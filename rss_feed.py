@@ -28,7 +28,9 @@ cutoff_date = datetime.now().astimezone(pubDates[0].tzinfo) - timedelta(days=60)
 
 # Filter items published in the last 60 days
 filtered_titles = [title for title, date in zip(titles, pubDates) if date >= cutoff_date]
-filtered_pubDates = [date.strftime("%a, %d %b %Y %H:%M:%S %z") for date in pubDates if date >= cutoff_date]
+filtered_pubDates = [date.strftime("%Y-%m-%d") for date in pubDates if date >= cutoff_date]
+
+# filtered_pubDates = [date.strftime("%a, %d %b %Y %H:%M:%S %z") for date in pubDates if date >= cutoff_date]
 filtered_links = [link for link, date in zip(links, pubDates) if date >= cutoff_date]
 
 # Create DataFrame
