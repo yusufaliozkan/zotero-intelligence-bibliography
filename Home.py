@@ -2048,6 +2048,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if row_nu == 0:
                             st.write('No new podcast published!')
                         else:
+                            items_not_in_df2 = items_not_in_df2.sort_values(by=['Publication Date'], ascending=False)
                             items_not_in_df2
 
                         df_item_podcast = df_dedup.copy()
@@ -2063,6 +2064,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if row_nu == 0:
                             st.write('No new podcast published!')
                         else:
+                            items_not_in_df_item_podcast = items_not_in_df_item_podcast.sort_values(by=['PubDate'], ascending=False)
                             items_not_in_df_item_podcast
 
                         df_item_magazines = df_dedup.copy()
@@ -2078,7 +2080,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if row_nu == 0:
                             st.write('No new magazine article published!')
                         else:
-                            items_not_in_df_item_magazines
+                            items_not_in_df_item_magazines = items_not_in_df_item_magazines.sort_values(by=['PubDate'], ascending=False)
+                            items_not_in_df_item_magazines                            
 
         with col2:
             with st.expander('Collections', expanded=True):
