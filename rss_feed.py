@@ -80,7 +80,7 @@ df_magazines = pd.DataFrame({
     'Title': filtered_titles,
     'PubDate': filtered_pubDates,
     'Link': filtered_links 
-})
+}) 
 
 # Keywords to filter
 keywords = [
