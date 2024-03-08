@@ -79,7 +79,7 @@ filtered_links = [link for link, date in zip(links, pubDates) if date >= cutoff_
 df_magazines = pd.DataFrame({
     'Title': filtered_titles,
     'PubDate': filtered_pubDates,
-    'Link': filtered_links
+    'Link': filtered_links 
 })
 
 # Keywords to filter
