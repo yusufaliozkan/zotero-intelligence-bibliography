@@ -8,7 +8,8 @@ import altair as alt
 from pandas.io.json import json_normalize
 from datetime import date, timedelta  
 from datetime import datetime
-import datetime
+import datetime 
+import datetime as dt
 import plotly.express as px
 import numpy as np
 import re
