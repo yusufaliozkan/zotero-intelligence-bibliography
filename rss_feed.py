@@ -68,7 +68,7 @@ for rss_feed_url in rss_feed_urls:
 # Convert publication dates to datetime objects
 # pubDates = [datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z") for date in pubDates]
 pubDates = []
-for date_str in pubDates_raw:
+for date_str in pubDates:
     try:
         pub_date = datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S %Z")
     except ValueError:  # If parsing fails, try without timezone
