@@ -296,7 +296,7 @@ continent_replacements = {
     'Strengthening Naval Diplomacy RI-US in Intelligence, Surveillance, Reconnaissance through Cooperation Afloat Readiness and Training 2024':'Indonesia',
     'Beyond counterintelligence: understanding the SBU':'Ukraine',
     'Investigative Methods of the Secret Police':'Russia'
-    }
+    } 
 
 df_continent = df_countries.copy()
 df_continent['Country2'] = ''
