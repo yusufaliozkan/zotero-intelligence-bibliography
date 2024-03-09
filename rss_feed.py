@@ -43,7 +43,8 @@ df_podcast = pd.DataFrame({
 rss_feed_urls = [
     "https://www.economist.com/international/rss.xml",
     "https://www.foreignaffairs.com/rss.xml",
-    'https://foreignpolicy.com/feed/'
+    'https://foreignpolicy.com/feed/',
+    'https://feeds.bbci.co.uk/news/uk/rss.xml'
 ]
 
 # Initialize lists to store data
