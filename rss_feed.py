@@ -2,7 +2,7 @@ import feedparser
 import pandas as pd
 from datetime import datetime, timedelta
 
-@st.cache_data
+@st.cache_data(ttl=TTL)
 def fetch_and_process_podcast_rss_feed(rss_feed_url):
     # Parse the RSS feed
     feed = feedparser.parse(rss_feed_url)
@@ -40,7 +40,7 @@ def fetch_and_process_podcast_rss_feed(rss_feed_url):
     return df_podcast
 
 # Define function to fetch and process magazine RSS feeds
-@st.cache_data
+@st.cache_data(ttl=TTL)
 def fetch_and_process_magazines_rss_feeds(rss_feed_urls):
     # Initialize lists to store data
     titles = []
@@ -80,7 +80,7 @@ def fetch_and_process_magazines_rss_feeds(rss_feed_urls):
     return df_magazines
 
 # Define function to filter DataFrame based on keywords
-@st.cache_data
+@st.cache_data(ttl=TTL)
 def filter_data_by_keywords(df, keywords):
     df_filtered = df[df['Title'].str.contains('|'.join(keywords), case=False)]
     return df_filtered
