@@ -16,6 +16,7 @@ from gsheetsdb import connect
 from fpdf import FPDF
 import base64
 from sidebar_content import sidebar_content
+import requests
 from rss_feed import df_podcast, df_magazines
 
 
