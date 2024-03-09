@@ -72,6 +72,7 @@ for date_str in pubDates:
     try:
         pub_date = datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S %Z")
     except ValueError:  # If parsing fails, try without timezone
+        print("Parsing with timezone failed, attempting without timezone:", date_str)
         pub_date = datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S")
     pubDates.append(pub_date)
 # Calculate the date 60 days ago from today and make it timezone-aware
