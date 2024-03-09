@@ -33,7 +33,12 @@ import plotly.graph_objs as go
 import feedparser
 import requests
 from format_entry import format_entry
-from rss_feed import df_podcast, df_magazines
+# from rss_feed import df_podcast, df_magazines
+from rss_feed import (
+    fetch_and_process_podcast_rss_feed,
+    fetch_and_process_magazines_rss_feeds,
+    filter_data_by_keywords
+)
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -2050,38 +2055,57 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             items_not_in_df2 = items_not_in_df2.sort_values(by=['Publication Date'], ascending=False).reset_index(drop=True)
                             items_not_in_df2
+            
+                            df_podcast = fetch_and_process_podcast_rss_feed("https://feeds.megaphone.fm/spycast")
 
-                        df_item_podcast = df_dedup.copy()
-                        df_item_podcast.dropna(subset=['Title'], inplace=True)
-                        column_to_keep = 'Title'
-                        df_item_podcast = df_item_podcast[[column_to_keep]]
-                        df_podcast = pd.merge(df_podcast, df_item_podcast[['Title']], on='Title', how='left', indicator=True)
-                        items_not_in_df_item_podcast = df_podcast[df_podcast['_merge'] == 'left_only']
-                        items_not_in_df_item_podcast.drop('_merge', axis=1, inplace=True)
-                        items_not_in_df_item_podcast = items_not_in_df_item_podcast.reset_index(drop=True)
-                        st.write('**Podcasts**')
-                        row_nu = len(items_not_in_df_item_podcast.index)
-                        if row_nu == 0:
-                            st.write('No new podcast published!')
-                        else:
-                            items_not_in_df_item_podcast = items_not_in_df_item_podcast.sort_values(by=['PubDate'], ascending=False)
-                            items_not_in_df_item_podcast
+                            # Fetch and process magazine RSS feeds
+                            df_magazines = fetch_and_process_magazines_rss_feeds([
+                                "https://www.economist.com/international/rss.xml",
+                                "https://www.foreignaffairs.com/rss.xml",
+                                'https://foreignpolicy.com/feed/',
+                            ])
 
-                        df_item_magazines = df_dedup.copy()
-                        df_item_magazines.dropna(subset=['Title'], inplace=True)
-                        column_to_keep = 'Title'
-                        df_item_magazines = df_item_magazines[[column_to_keep]]
-                        df_magazines = pd.merge(df_magazines, df_item_magazines[['Title']], on='Title', how='left', indicator=True)
-                        items_not_in_df_item_magazines = df_magazines[df_magazines['_merge'] == 'left_only']
-                        items_not_in_df_item_magazines.drop('_merge', axis=1, inplace=True)
-                        items_not_in_df_item_magazines = items_not_in_df_item_magazines.reset_index(drop=True)
-                        st.write('**Magazine articles**')
-                        row_nu = len(items_not_in_df_item_magazines.index)
-                        if row_nu == 0:
-                            st.write('No new magazine article published!')
-                        else:
-                            items_not_in_df_item_magazines = items_not_in_df_item_magazines.sort_values(by=['PubDate'], ascending=False)
-                            items_not_in_df_item_magazines                            
+                            # Keywords to filter
+                            keywords = [
+                                'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert',
+                                'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis', 'spying', 'spies', ' cia ', 'mi6',
+                                "cia'"
+                            ]
+
+                            # Filter magazine DataFrame based on keywords
+                            df_magazines_filtered = filter_data_by_keywords(df_magazines, keywords)
+
+                        # df_item_podcast = df_dedup.copy()
+                        # df_item_podcast.dropna(subset=['Title'], inplace=True)
+                        # column_to_keep = 'Title'
+                        # df_item_podcast = df_item_podcast[[column_to_keep]]
+                        # df_podcast = pd.merge(df_podcast, df_item_podcast[['Title']], on='Title', how='left', indicator=True)
+                        # items_not_in_df_item_podcast = df_podcast[df_podcast['_merge'] == 'left_only']
+                        # items_not_in_df_item_podcast.drop('_merge', axis=1, inplace=True)
+                        # items_not_in_df_item_podcast = items_not_in_df_item_podcast.reset_index(drop=True)
+                        # st.write('**Podcasts**')
+                        # row_nu = len(items_not_in_df_item_podcast.index)
+                        # if row_nu == 0:
+                        #     st.write('No new podcast published!')
+                        # else:
+                        #     items_not_in_df_item_podcast = items_not_in_df_item_podcast.sort_values(by=['PubDate'], ascending=False)
+                        #     items_not_in_df_item_podcast
+
+                        # df_item_magazines = df_dedup.copy()
+                        # df_item_magazines.dropna(subset=['Title'], inplace=True)
+                        # column_to_keep = 'Title'
+                        # df_item_magazines = df_item_magazines[[column_to_keep]]
+                        # df_magazines = pd.merge(df_magazines, df_item_magazines[['Title']], on='Title', how='left', indicator=True)
+                        # items_not_in_df_item_magazines = df_magazines[df_magazines['_merge'] == 'left_only']
+                        # items_not_in_df_item_magazines.drop('_merge', axis=1, inplace=True)
+                        # items_not_in_df_item_magazines = items_not_in_df_item_magazines.reset_index(drop=True)
+                        # st.write('**Magazine articles**')
+                        # row_nu = len(items_not_in_df_item_magazines.index)
+                        # if row_nu == 0:
+                        #     st.write('No new magazine article published!')
+                        # else:
+                        #     items_not_in_df_item_magazines = items_not_in_df_item_magazines.sort_values(by=['PubDate'], ascending=False)
+                        #     items_not_in_df_item_magazines                            
 
         with col2:
             with st.expander('Collections', expanded=True):
