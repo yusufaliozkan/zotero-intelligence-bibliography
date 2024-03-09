@@ -66,15 +66,8 @@ for rss_feed_url in rss_feed_urls:
         links.append(link)
 
 # Convert publication dates to datetime objects
-# pubDates = [datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z") for date in pubDates]
-pubDates = []
-for date_str in pubDates:
-    try:
-        pub_date = datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S %Z")
-    except ValueError:  # If parsing fails, try without timezone
-        print("Parsing with timezone failed, attempting without timezone:", date_str)
-        pub_date = datetime.strptime(date_str, "%a, %d %b %Y %H:%M:%S")
-    pubDates.append(pub_date)
+pubDates = [datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %z") for date in pubDates]
+
 # Calculate the date 60 days ago from today and make it timezone-aware
 cutoff_date = datetime.now().astimezone(pubDates[0].tzinfo) - timedelta(days=60)
 
