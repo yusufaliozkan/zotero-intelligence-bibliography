@@ -35,7 +35,7 @@ country_names = [
     'Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems','RAW and the ISI','ASIO and the Cold War', 'SS-Intelligence',
     'Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','My Life as a Spy: Investigations in a Secret Police File','Bingchang',
     '2011 independent review of the intelligence community', 'Nehruvian Era','Wehrmacht', 'Strengthening Naval Diplomacy RI-US in Intelligence, Surveillance, Reconnaissance through Cooperation Afloat Readiness and Training 2024',
-    'Beyond counterintelligence: understanding the SBU'
+    'Beyond counterintelligence: understanding the SBU', 'Investigative Methods of the Secret Police'
 ]
 replacements = {
     'Arabizing the Omani intelligence services: Clash of cultures':'Oman',
@@ -133,7 +133,8 @@ replacements = {
     'Nehruvian Era':'India',
     'Wehrmacht':'Germany',
     'Strengthening Naval Diplomacy RI-US in Intelligence, Surveillance, Reconnaissance through Cooperation Afloat Readiness and Training 2024':'Indonesia',
-    'Beyond counterintelligence: understanding the SBU':'Ukraine'
+    'Beyond counterintelligence: understanding the SBU':'Ukraine',
+    'Investigative Methods of the Secret Police':'Russia'
     }
 
 replacements['\\bOttoman\\b'] = 'Turkey'
@@ -194,7 +195,7 @@ continent_country_names = [
     'Franco', 'Bundeswehr','Sino','Malayan','Irish','Hitler','Socratic','R&AW','Crypto AG','R.N. Kao: Gentleman Spymaster','Understanding the complexity of intelligence problems',
     'RAW and the ISI','ASIO and the Cold War','SS-Intelligence','Reich Main Security Office','Kautilyan','Gehlen','Lydia Stahl','Apartheid','secret police file','Bingchang',
     '2011 independent review of the intelligence community','Nehruvian Era','Wehrmacht','Strengthening Naval Diplomacy RI-US in Intelligence, Surveillance, Reconnaissance through Cooperation Afloat Readiness and Training 2024',
-    'Beyond counterintelligence: understanding the SBU'
+    'Beyond counterintelligence: understanding the SBU','Investigative Methods of the Secret Police'
 ]
 continent_replacements = {
     'Belgian': 'Belgium', 
@@ -293,7 +294,8 @@ continent_replacements = {
     'Nehruvian Era':'India',
     'Wehrmacht':'Germany',
     'Strengthening Naval Diplomacy RI-US in Intelligence, Surveillance, Reconnaissance through Cooperation Afloat Readiness and Training 2024':'Indonesia',
-    'Beyond counterintelligence: understanding the SBU':'Ukraine'
+    'Beyond counterintelligence: understanding the SBU':'Ukraine',
+    'Investigative Methods of the Secret Police':'Russia'
     }
 
 df_continent = df_countries.copy()

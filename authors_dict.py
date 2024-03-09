@@ -59,6 +59,7 @@ name_replacements = {
     "Eunan O’Halpin":"Eunan O'Halpin",
     'Yusuf Ozkan':'Yusuf A. Ozkan',
     'Yusuf Ali Ozkan':'Yusuf A. Ozkan',
-    'Stephen Coulthart':'Stephen J. Coulthart'
+    'Stephen Coulthart':'Stephen J. Coulthart',
+    'Kevin Riehle':'Kevin P. Riehle'
 }
 df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name']) 

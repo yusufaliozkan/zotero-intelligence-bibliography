@@ -1,6 +1,7 @@
 import feedparser
 import pandas as pd
 from datetime import datetime, timedelta
+import streamlit as st
 
 # RSS feed URL
 rss_feed_url = "https://feeds.megaphone.fm/spycast"
@@ -43,7 +44,7 @@ df_podcast = pd.DataFrame({
 rss_feed_urls = [
     "https://www.economist.com/international/rss.xml",
     "https://www.foreignaffairs.com/rss.xml",
-    'https://foreignpolicy.com/feed/'
+    'https://foreignpolicy.com/feed/',
 ]
 
 # Initialize lists to store data
@@ -80,7 +81,7 @@ df_magazines = pd.DataFrame({
     'Title': filtered_titles,
     'PubDate': filtered_pubDates,
     'Link': filtered_links 
-})
+}) 
 
 # Keywords to filter
 keywords = [
