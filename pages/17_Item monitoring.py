@@ -183,6 +183,7 @@ with col1:
             # Concatenate the filtered DataFrames
             filtered_final_df = pd.concat([other_journals, historical_journal_filtered], ignore_index=True)
 
+            df_dedup = pd.read_csv('all_items.csv')
             df_dois = df_dedup.copy() 
             df_dois.dropna(subset=['DOI'], inplace=True) 
             column_to_keep = 'DOI'
