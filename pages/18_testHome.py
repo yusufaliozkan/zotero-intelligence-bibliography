@@ -530,6 +530,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write('*Please note that this database **may not show** all research outputs of the author.*')
 
                         with st.popover('Filters and more'):
+                            col112, col113 = st.columns(2)
+                            with col112:
+                                display_abstracts = st.checkbox('Display abstracts')
+                            with col113:
+                                only_citation = st.checkbox('Show cited items only')
+                                if only_citation:
+                                    filtered_collection_df_authors = filtered_collection_df_authors[(filtered_collection_df_authors['Citation'].notna()) & (filtered_collection_df_authors['Citation'] != 0)]
                             types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
                             filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
                             filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
