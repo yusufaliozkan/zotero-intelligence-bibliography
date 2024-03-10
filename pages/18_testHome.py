@@ -345,10 +345,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                             download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
                             download_filtered = download_filtered.reset_index(drop=True)
-
                             def convert_df(download_filtered):
                                 return download_filtered.to_csv(index=False).encode('utf-8-sig')
-                            
                             csv = convert_df(download_filtered)
                             today = datetime.date.today().isoformat()
                             a = 'search-result-' + today
