@@ -681,9 +681,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     
                                     if display_abstracts:
                                         if pd.notnull(abstract):
-                                            highlighted_abstract = highlight_terms(abstract)
-                                            highlighted_abstract = abstract 
-                                            st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
+                                            st.caption(f"Abstract: {abstract}")
                                         else:
                                             st.caption(f"Abstract: No abstract")
 
