@@ -654,7 +654,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 # Display the numbered list using Markdown syntax
                                 for i, article in enumerate(articles_list, start=1):
                                     # Display the article with highlighted search terms
-                                    highlighted_article = highlight_terms(article, search_terms)
+                                    highlighted_article = highlight_terms(article)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
                                     
                                     # Display abstract under each numbered item only if the checkbox is selected
