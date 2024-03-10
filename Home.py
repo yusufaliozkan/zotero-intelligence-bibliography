@@ -333,7 +333,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                        types2 = st.multiselect('Publication types', types, types, key='original2')
+                        with st.popover('Select publication type'):
+                            types2 = st.multiselect('Publication types', types, types, key='original2')
 
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
