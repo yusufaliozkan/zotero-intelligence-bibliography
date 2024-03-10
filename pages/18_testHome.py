@@ -283,7 +283,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_csv = df_dedup.copy()
 
                         # include_abstracts = st.checkbox('Search keywords in abstracts too')
-                        with st.popover('Filters and more')
+                        with st.popover('Filters and more'):
                             col112, col113 = st.columns([1,4])
                             with col112:
                                 display_abstracts = st.checkbox('Display abstracts')
