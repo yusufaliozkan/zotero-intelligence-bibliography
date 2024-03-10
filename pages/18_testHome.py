@@ -347,11 +347,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 a = 'search-result-' + today
                                 st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
-                                on = st.toggle('Generate dashboard')
-
                             num_items = len(filtered_df)
                             st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
-
+                                
+                            on = st.toggle('Generate dashboard')
                             if on and len(filtered_df) > 0: 
                                 st.info(f'Dashboard for search terms: {phrase_filter}')
                                 search_df = filtered_df.copy()
