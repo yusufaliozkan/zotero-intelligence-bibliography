@@ -329,6 +329,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
 
                         if not filtered_df.empty:
+
+                            col112, col113 = st.columns(2)
+                            with col112:
+                                display_abstracts = st.checkbox('Display abstracts')
+                            with col113:
+                                only_citation = st.checkbox('Show cited items only')
+                                if only_citation:
+                                    filtered_df = filtered_df[(filtered_df['Citation'].notna()) & (filtered_df['Citation'] != 0)]
+
                             num_items = len(filtered_df)
                             st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
 
