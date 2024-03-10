@@ -322,6 +322,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
                             filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
 
+                            types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                            types2 = st.multiselect('Publication types', types, types, key='original2')
+
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
 
@@ -334,9 +337,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 only_citation = st.checkbox('Show cited items only')
                                 if only_citation:
                                     filtered_df = filtered_df[(filtered_df['Citation'].notna()) & (filtered_df['Citation'] != 0)]
-
-                            types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                            types2 = st.multiselect('Publication types', types, types, key='original2')
 
                             num_items = len(filtered_df)
                             st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
