@@ -661,8 +661,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         'Book': 'Published by',
                                     }
 
-                                    publication_type = row['Publication type']
-
                                     published_by_or_in = published_by_or_in_dict.get(publication_type, '')
                                     published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
                                     if publication_type == 'Book':
@@ -680,11 +678,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     )
                                     formatted_entry = format_entry(row)
                                     st.write(f"{index + 1}) {formatted_entry}")
-                                    abstracts_list = [] #Store abstracts in a list
+                                    
                                     if display_abstracts:
-                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                         if pd.notnull(abstract):
-                                            if include_abstracts=='In title & abstract':
+                                            if include_abstracts == 'In title & abstract':
                                                 highlighted_abstract = highlight_terms(abstract, search_terms)
                                             else:
                                                 highlighted_abstract = abstract 
