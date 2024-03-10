@@ -729,7 +729,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 only_citation = st.checkbox('Show cited items only')
                                 if only_citation:
                                     filtered_collection_df = filtered_collection_df[(filtered_collection_df['Citation'].notna()) & (filtered_collection_df['Citation'] != 0)]
-                            types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
+                            types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(), key='original')
                             filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
                             filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                             publications_by_type = filtered_collection_df['Publication type'].value_counts()
