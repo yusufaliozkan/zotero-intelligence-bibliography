@@ -282,15 +282,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         df_csv = df_dedup.copy()
 
-                        # include_abstracts = st.checkbox('Search keywords in abstracts too')
-                        col112, col113 = st.columns(2)
-                        with col112:
-                            display_abstracts = st.checkbox('Display abstracts')
-                        with col113:
-                            only_citation = st.checkbox('Show cited items only')
-                            if only_citation:
-                                df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
-
                         if include_abstracts=='In title & abstract':
                             # Search for the entire phrase first
                             filtered_df = df_csv[
