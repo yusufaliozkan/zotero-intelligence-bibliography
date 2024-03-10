@@ -629,7 +629,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 pub_date = popover.radio('Publication date:arrow_down', True)
                                 citation = popover.radio('Citation', True)
                                 # sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                                if pub_date == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
+                                if pub_date:
+                                # if pub_date == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                                     filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
                                 else:
