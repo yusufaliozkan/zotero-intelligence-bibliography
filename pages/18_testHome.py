@@ -537,13 +537,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 only_citation = st.checkbox('Show cited items only')
                                 if only_citation:
                                     filtered_collection_df_authors = filtered_collection_df_authors[(filtered_collection_df_authors['Citation'].notna()) & (filtered_collection_df_authors['Citation'] != 0)]
-                            types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
-                                
+                            # types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
+                            # filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
+
                             types = filtered_collection_df_authors['Publication type'].dropna().unique()  # Exclude NaN values
                             types2 = st.multiselect('Publication types', types, key='original22')
                             if types2:
                                 filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types2)]                    
-                            # filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
                             filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
 
                             def convert_df(filtered_collection_df_authors):
