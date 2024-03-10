@@ -528,9 +528,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     with st.expander('Click to expand', expanded=True): 
                         st.markdown('#### Publications by ' + selected_author)
                         st.write('*Please note that this database **may not show** all research outputs of the author.*')
-                        types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
-                        filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
-                        filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+
+                        with st.popover('Filters and more'):
+                            types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
+                            filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
+                            filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+
+                            def convert_df(filtered_collection_df_authors):
+                                return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
+                            download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                            download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
+                            csv = convert_df(download_filtered)
+                            today = datetime.date.today().isoformat()
+                            a = f'{selected_author}_{today}'
+                            st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
+
                         publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
                         num_items_collections = len(filtered_collection_df_authors)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
@@ -545,16 +557,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         citation_count = filtered_collection_df_authors['Citation'].sum()
                         st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
-
-                        def convert_df(filtered_collection_df_authors):
-                            return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
-                        download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                        download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
-                        csv = convert_df(download_filtered)
-            
-                        today = datetime.date.today().isoformat()
-                        a = f'{selected_author}_{today}'
-                        st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
                         on = st.toggle('Generate dashboard')
                         if on and len(filtered_collection_df_authors) > 0: 
