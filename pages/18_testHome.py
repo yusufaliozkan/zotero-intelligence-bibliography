@@ -883,6 +883,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     citation = int(float(citation))
                                     citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
                                     citation_link = citation_link.replace('api.', '')
+                                    abstract = row['Abstract']
 
                                     if publication_type == 'Journal article':
                                         published_by_or_in = 'Published in'
@@ -896,6 +897,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                                     formatted_entry = format_entry(row)
                                     st.write(f"{index + 1}) {formatted_entry}")
+                                    if display_abstracts:
+                                            if pd.notnull(abstract):
+                                                st.caption(f"Abstract: {abstract}")
+                                            else:
+                                                st.caption(f"Abstract: No abstract")
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
 
