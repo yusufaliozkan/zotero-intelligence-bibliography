@@ -634,13 +634,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # st.pyplot()
                         else:
                             if not on:  # If the toggle is off, display the publications
+                                abstracts_list = []
+
                                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                                 if sort_by == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
-                                    filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
+                                    filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
                                 else:
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
-                                    filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)                                   
+                                    filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+
                                 for index, row in filtered_collection_df_authors.iterrows():
                                     publication_type = row['Publication type']
                                     title = row['Title']
@@ -648,10 +651,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     date_published = row['Date published']
                                     link_to_publication = row['Link to publication']
                                     zotero_link = row['Zotero link']
-                                    citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
-                                    citation = int(float(citation))
+                                    citation = int(row['Citation']) if pd.notnull(row['Citation']) else 0
                                     citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
                                     citation_link = citation_link.replace('api.', '')
+                                    abstract = row['Abstract']
 
                                     published_by_or_in_dict = {
                                         'Journal article': 'Published in',
@@ -659,8 +662,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         'Newspaper article': 'Published in',
                                         'Book': 'Published by',
                                     }
-
-                                    publication_type = row['Publication type']
 
                                     published_by_or_in = published_by_or_in_dict.get(publication_type, '')
                                     published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
@@ -677,19 +678,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         '[[Zotero link]](' + str(zotero_link) + ') ' +
                                         ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
                                     )
-                                    formatted_entry = format_entry(row)
+
                                     st.write(f"{index + 1}) {formatted_entry}")
-                                    abstracts_list = [] #Store abstracts in a list
+
+                                    # Access abstracts using index instead of 'i'
                                     if display_abstracts:
-                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                         if pd.notnull(abstract):
-                                            if include_abstracts=='In title & abstract':
+                                            if include_abstracts == 'In title & abstract':
                                                 highlighted_abstract = highlight_terms(abstract, search_terms)
                                             else:
-                                                highlighted_abstract = abstract 
+                                                highlighted_abstract = abstract
                                             st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                         else:
                                             st.caption(f"Abstract: No abstract")
+
+                                    # Store abstracts in abstracts_list
+                                    abstracts_list.append(abstract)
 
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
