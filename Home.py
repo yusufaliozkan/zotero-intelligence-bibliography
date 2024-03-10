@@ -625,9 +625,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # st.pyplot()
                         else:
                             if not on:  # If the toggle is off, display the publications
-                                with st.popover('Sort by'):
-                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                                if pub_date == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                                if sort_by == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
                                     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                                     filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
                                 else:
