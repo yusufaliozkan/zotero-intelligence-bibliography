@@ -722,7 +722,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write(f"See the collection in [Zotero]({collection_link})")
 
                         with st.popover('Filters and more'):
-                           col112, col113 = st.columns(2)
+                            col112, col113 = st.columns(2)
                             with col112:
                                 display_abstracts = st.checkbox('Display abstracts')
                             with col113:
