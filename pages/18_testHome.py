@@ -684,10 +684,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     # Access abstracts using index instead of 'i'
                                     if display_abstracts:
                                         if pd.notnull(abstract):
-                                            if include_abstracts == 'In title & abstract':
-                                                highlighted_abstract = highlight_terms(abstract, search_terms)
-                                            else:
-                                                highlighted_abstract = abstract
                                             st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                         else:
                                             st.caption(f"Abstract: No abstract")
