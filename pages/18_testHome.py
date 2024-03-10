@@ -737,13 +737,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                             publications_by_type = filtered_collection_df['Publication type'].value_counts()
 
-                        download_collection = filtered_collection_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                        download_collection['Abstract'] = download_collection['Abstract'].str.replace('\n', ' ')
-                        download_collection = download_collection.reset_index(drop=True)
-                        def convert_df(download_collection):
-                            return download_collection.to_csv(index=False).encode('utf-8-sig')
-                        csv = convert_df(download_collection)
-                        today = datetime.date.today().isoformat()
+                            download_collection = filtered_collection_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                            download_collection['Abstract'] = download_collection['Abstract'].str.replace('\n', ' ')
+                            download_collection = download_collection.reset_index(drop=True)
+                            def convert_df(download_collection):
+                                return download_collection.to_csv(index=False).encode('utf-8-sig')
+                            csv = convert_df(download_collection)
+                            today = datetime.date.today().isoformat()
+                            a = f'{selected_collection}_{today}'
+                            st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+
                         num_items_collections = len(filtered_collection_df)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
@@ -757,9 +760,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         citation_count = filtered_collection_df['Citation'].sum()
                         st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
-
-                        a = f'{selected_collection}_{today}'
-                        st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
                         on = st.toggle('Generate dashboard')
                         if on and len(filtered_collection_df) > 0: 
