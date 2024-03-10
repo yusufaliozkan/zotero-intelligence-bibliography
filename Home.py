@@ -14,11 +14,11 @@ import plotly.express as px
 import numpy as np
 import re
 import matplotlib.pyplot as plt
-import nltk
-nltk.download('all') 
-from nltk.corpus import stopwords
-nltk.download('stopwords')
-from wordcloud import WordCloud
+# import nltk
+# nltk.download('all') 
+# from nltk.corpus import stopwords
+# nltk.download('stopwords')
+# from wordcloud import WordCloud
 from gsheetsdb import connect
 import gsheetsdb as gdb
 import datetime as dt
