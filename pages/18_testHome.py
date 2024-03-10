@@ -698,7 +698,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 all_unique_collections = df_csv_collections['Collection_Name'].unique()
                 filtered_collections = [col for col in numeric_start_collections if col not in excluded_collections]
 
-
                 select_options = [''] + sorted(list(filtered_collections))
                 selected_collection = st.selectbox('Select a collection', select_options)
 
@@ -721,8 +720,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     with st.expander('Click to expand', expanded=True):
                         st.markdown('#### Collection theme: ' + selected_collection)
                         st.write(f"See the collection in [Zotero]({collection_link})")
-                        types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
-                        filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
+
+                        with st.popover('Filters and more'):
+                           col112, col113 = st.columns(2)
+                            with col112:
+                                display_abstracts = st.checkbox('Display abstracts')
+                            with col113:
+                                only_citation = st.checkbox('Show cited items only')
+                                if only_citation:
+                                    filtered_collection_df = filtered_collection_df[(filtered_collection_df['Citation'].notna()) & (filtered_collection_df['Citation'] != 0)]
+                        # types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
+                        # filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
                         filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                         publications_by_type = filtered_collection_df['Publication type'].value_counts()
 
