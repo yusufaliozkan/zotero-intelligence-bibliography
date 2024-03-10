@@ -679,6 +679,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     )
                                     formatted_entry = format_entry(row)
                                     st.write(f"{index + 1}) {formatted_entry}")
+                                    abstracts_list = [] #Store abstracts in a list
                                     if display_abstracts:
                                         abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                         if pd.notnull(abstract):
