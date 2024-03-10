@@ -323,32 +323,32 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
 
                         if not filtered_df.empty:
+                            with st.popover('Filters and more'):
+                                col112, col113 = st.columns(2)
+                                with col112:
+                                    display_abstracts = st.checkbox('Display abstracts')
+                                with col113:
+                                    only_citation = st.checkbox('Show cited items only')
+                                    if only_citation:
+                                        filtered_df = filtered_df[(filtered_df['Citation'].notna()) & (filtered_df['Citation'] != 0)]
 
-                            col112, col113 = st.columns(2)
-                            with col112:
-                                display_abstracts = st.checkbox('Display abstracts')
-                            with col113:
-                                only_citation = st.checkbox('Show cited items only')
-                                if only_citation:
-                                    filtered_df = filtered_df[(filtered_df['Citation'].notna()) & (filtered_df['Citation'] != 0)]
+                                types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                                types2 = st.multiselect('Publication types', types, types, key='original2')
+                                if types2:
+                                    filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
 
-                            types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                            types2 = st.multiselect('Publication types', types, types, key='original2')
-                            if types2:
-                                filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+                                download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                                download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
+                                download_filtered = download_filtered.reset_index(drop=True)
+                                def convert_df(download_filtered):
+                                    return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                                csv = convert_df(download_filtered)
+                                today = datetime.date.today().isoformat()
+                                a = 'search-result-' + today
+                                st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
                             num_items = len(filtered_df)
                             st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
-
-                            download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                            download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
-                            download_filtered = download_filtered.reset_index(drop=True)
-                            def convert_df(download_filtered):
-                                return download_filtered.to_csv(index=False).encode('utf-8-sig')
-                            csv = convert_df(download_filtered)
-                            today = datetime.date.today().isoformat()
-                            a = 'search-result-' + today
-                            st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
                             on = st.toggle('Generate dashboard')
 
