@@ -731,7 +731,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     filtered_collection_df = filtered_collection_df[(filtered_collection_df['Citation'].notna()) & (filtered_collection_df['Citation'] != 0)]
                             types = filtered_collection_df['Publication type'].dropna().unique() 
                             types2 = st.multiselect('Publication types', types, key='original22')
-                            filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types2)]
+                            if types2:
+                                filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types2)]                    
+                            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                             filtered_collection_df = filtered_collection_df.reset_index(drop=True)
                             publications_by_type = filtered_collection_df['Publication type'].value_counts()
 
