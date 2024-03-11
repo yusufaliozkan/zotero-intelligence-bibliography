@@ -937,15 +937,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if selected_type == 'Thesis':
                             st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).')
                         
-                        download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                        download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
-                        download_types = download_types.reset_index(drop=True)
+                        with st.popover('Filters and more'):
+                            download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                            download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
+                            download_types = download_types.reset_index(drop=True)
+                            def convert_df(download_types):
+                                return download_types.to_csv(index=False).encode('utf-8-sig')
+                            csv = convert_df(download_types)
+                            today = datetime.date.today().isoformat()
+                            a = f'{selected_type}_{today}'
+                            st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4') 
 
-                        def convert_df(download_types):
-                            return download_types.to_csv(index=False).encode('utf-8-sig')
-
-                        csv = convert_df(download_types)
-                        today = datetime.date.today().isoformat()
                         num_items_collections = len(filtered_type_df)
                         st.write(f"**{num_items_collections}** sources found")
 
@@ -958,9 +960,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         citation_count = filtered_type_df['Citation'].sum()
                         st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
-
-                        a = f'{selected_type}_{today}'
-                        st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
                         on = st.toggle('Generate dashboard')
                         if on and len (filtered_type_df) > 0:
@@ -1062,6 +1061,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 citation = int(float(citation))
                                 citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
                                 citation_link = citation_link.replace('api.', '')
+                                abstract = row['Abstract']
 
                                 published_by_or_in_dict = {
                                     'Journal article': 'Published in',
