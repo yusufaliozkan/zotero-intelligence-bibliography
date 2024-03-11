@@ -72,6 +72,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col1:
             unique_collections = list(df_collections['Collection_Name'].unique()) 
             radio = container.radio('Select a collection', unique_collections)
+            st.query_params['search']= radio
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
@@ -99,7 +100,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
 
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
-            st.query_params['search']= types
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
             df_collections = df_collections.reset_index(drop=True)
             df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])
