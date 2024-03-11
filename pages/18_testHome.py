@@ -718,8 +718,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
                     
                     with st.expander('Click to expand', expanded=True):
-                        st.markdown('#### Collection theme: ' + selected_collection)
-                        st.write(f"See the collection in [Zotero]({collection_link})")
+                        st.markdown('#### Collection theme: ' + selected_collection)                        
 
                         with st.popover('Filters and more'):
                             col112, col113 = st.columns(2)
@@ -746,6 +745,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             today = datetime.date.today().isoformat()
                             a = f'{selected_collection}_{today}'
                             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+
+                            st.write(f"See the collection in [Zotero]({collection_link})")
 
                         num_items_collections = len(filtered_collection_df)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
