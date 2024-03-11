@@ -273,6 +273,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
+                    st.query_params['search']= search_term
                 
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
@@ -685,7 +686,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             st.caption(f"Abstract: {abstract}")
                                         else:
                                             st.caption(f"Abstract: No abstract")
-                                    st.query_params['author_search']= search_option
 
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
