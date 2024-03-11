@@ -99,6 +99,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
 
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
+            st.query_params['type']= types
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
             df_collections = df_collections.reset_index(drop=True)
             df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])

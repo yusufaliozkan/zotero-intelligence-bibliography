@@ -493,7 +493,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                         else:
                                             st.caption(f"Abstract: No abstract")
-                                st.query_params['phrase']= phrase_filter
+                                
                         else:
                             st.write("No articles found with the given keyword/phrase.")
                 else:
