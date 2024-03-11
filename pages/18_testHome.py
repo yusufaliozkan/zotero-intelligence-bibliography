@@ -684,6 +684,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             st.caption(f"Abstract: {abstract}")
                                         else:
                                             st.caption(f"Abstract: No abstract")
+                                    st.query_params['author']= selected_author
 
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
