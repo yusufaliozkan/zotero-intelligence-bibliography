@@ -938,6 +938,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).')
                         
                         with st.popover('Filters and more'):
+                            col112, col113 = st.columns(2)
+                            with col112:
+                                display_abstracts = st.checkbox('Display abstracts')
+                            with col113:
+                                only_citation = st.checkbox('Show cited items only')
+                                if only_citation:
+                                    filtered_type_df = filtered_type_df[(filtered_type_df['Citation'].notna()) & (filtered_type_df['Citation'] != 0)]
                             download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                             download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
                             download_types = download_types.reset_index(drop=True)
