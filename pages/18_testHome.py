@@ -273,7 +273,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
-                    st.query_params['search']= search_term
                 
                 if search_term:
                     with st.expander('Click to expand', expanded=True):
