@@ -300,7 +300,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
-            fig = px.bar(df_plot, x='Count', y='count', color='Publication type')
+            fig = px.bar(df_plot, x='count', y='Count', color='Publication type')
             fig.update_layout(
                 autosize=False,
                 width=400,
