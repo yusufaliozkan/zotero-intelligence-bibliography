@@ -318,6 +318,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2 = st.columns(2)
         with col1:
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+            df_year
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             fig = px.bar(df_year, x='Publication year', y='Count')
