@@ -288,11 +288,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         col1, col2 = st.columns(2)
         with col1:
-            ttt = df_collections['Publisher'].value_counts()
-            ttt
             df_plot = df_collections['Publication type'].value_counts() 
             df_plot
             df_plot = df_plot.rename(columns={'index': 'Publication type', 'Publication type': 'Count'})
+            df_plot = df_plot.reset_index(drop=True)
 
             plot = df_plot.copy()
 
