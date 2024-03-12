@@ -1,4 +1,4 @@
-from pyzotero import zotero
+# from pyzotero import zotero
 import pandas as pd
 import streamlit as st
 from IPython.display import HTML
