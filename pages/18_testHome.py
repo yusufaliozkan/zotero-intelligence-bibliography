@@ -689,7 +689,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
 
-            # SEARCH IN COLLECTIONS
+            # SEARCH IN COLLECTIONS 
             elif search_option == "Search collection": 
                 st.subheader('Search collection')
 
