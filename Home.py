@@ -14,11 +14,11 @@ import plotly.express as px
 import numpy as np
 import re
 import matplotlib.pyplot as plt
-# import nltk
-# nltk.download('all') 
-# from nltk.corpus import stopwords
-# nltk.download('stopwords')
-# from wordcloud import WordCloud
+import nltk
+nltk.download('all') 
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+from wordcloud import WordCloud
 from gsheetsdb import connect
 import gsheetsdb as gdb
 import datetime as dt
@@ -388,50 +388,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                                 st.plotly_chart(fig)
 
-                                # search_df = filtered_df.copy()
-                                # def clean_text (text):
-                                #     text = text.lower() # lowercasing
-                                #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                #     return text
-                                # search_df['clean_title'] = search_df['Title'].apply(clean_text)
-                                # search_df['clean_title'] = search_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                # def tokenization(text):
-                                #     text = re.split('\W+', text)
-                                #     return text    
-                                # search_df['token_title']=search_df['clean_title'].apply(tokenization)
-                                # stopword = nltk.corpus.stopwords.words('english')
-                                # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                                # stopword.extend(SW)
-                                # def remove_stopwords(text):
-                                #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                #     return text
-                                # search_df['stopword']=search_df['token_title'].apply(remove_stopwords)
-                                # wn = nltk.WordNetLemmatizer()
-                                # def lemmatizer(text):
-                                #     text = [wn.lemmatize(word) for word in text]
-                                #     return text
-                                # search_df['lemma_title'] = search_df['stopword'].apply(lemmatizer)
-                                # listdf = search_df['lemma_title']
-                                # df_list = [item for sublist in listdf for item in sublist]
-                                # string = pd.Series(df_list).str.cat(sep=' ')
-                                # wordcloud_texts = string
-                                # wordcloud_texts_str = str(wordcloud_texts)
-                                # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                # plt.figure(figsize=(20,8))
-                                # plt.axis('off')
-                                # plt.title(f"Word Cloud for Titles")
-                                # plt.imshow(wordcloud)
-                                # plt.axis("off")
-                                # plt.show()
-                                # st.set_option('deprecation.showPyplotGlobalUse', False)
-                                # st.pyplot()
+                                search_df = filtered_df.copy()
+                                def clean_text (text):
+                                    text = text.lower() # lowercasing
+                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                    return text
+                                search_df['clean_title'] = search_df['Title'].apply(clean_text)
+                                search_df['clean_title'] = search_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                                def tokenization(text):
+                                    text = re.split('\W+', text)
+                                    return text    
+                                search_df['token_title']=search_df['clean_title'].apply(tokenization)
+                                stopword = nltk.corpus.stopwords.words('english')
+                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                    'examines', 'become', 'used', 'journal', 'london', 'review']
+                                stopword.extend(SW)
+                                def remove_stopwords(text):
+                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                    return text
+                                search_df['stopword']=search_df['token_title'].apply(remove_stopwords)
+                                wn = nltk.WordNetLemmatizer()
+                                def lemmatizer(text):
+                                    text = [wn.lemmatize(word) for word in text]
+                                    return text
+                                search_df['lemma_title'] = search_df['stopword'].apply(lemmatizer)
+                                listdf = search_df['lemma_title']
+                                df_list = [item for sublist in listdf for item in sublist]
+                                string = pd.Series(df_list).str.cat(sep=' ')
+                                wordcloud_texts = string
+                                wordcloud_texts_str = str(wordcloud_texts)
+                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                plt.figure(figsize=(20,8))
+                                plt.axis('off')
+                                plt.title(f"Word Cloud for Titles")
+                                plt.imshow(wordcloud)
+                                plt.axis("off")
+                                plt.show()
+                                st.set_option('deprecation.showPyplotGlobalUse', False)
+                                st.pyplot()
 
                             else:
                                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
@@ -579,50 +579,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 title=f'Publications by Year ({selected_author})')
                             st.plotly_chart(fig_year_bar)
 
-                            # author_df = filtered_collection_df_authors
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for Titles published by ({selected_author})")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = filtered_collection_df_authors
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles published by ({selected_author})")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
                         else:
                             if not on:  # If the toggle is off, display the publications
                                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
@@ -783,50 +783,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig.update_layout(xaxis_tickangle=-45)
                             st.plotly_chart(fig)
 
-                            # author_df = filtered_collection_df.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for Titles in ({selected_collection})")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = filtered_collection_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles in ({selected_collection})")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
 
                         else:
                             if not on:
@@ -957,50 +957,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.plotly_chart(fig)
 
-                            # author_df = type_df.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for Titles in ({selected_type})")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = type_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles in ({selected_type})")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
                         else: 
                             sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                             if sort_by == 'Publication date :arrow_down:' or filtered_type_df['Citation'].sum() == 0:
@@ -1172,50 +1172,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.plotly_chart(fig)
 
-                            # author_df = type_df.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for Titles published in selected journal(s)")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = type_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles published in selected journal(s)")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
 
                         else:
                             sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
@@ -1416,53 +1416,53 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                             st.plotly_chart(fig)
 
-                            # author_df = df_all.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # if abs(years[1]-years[0])>0 and years[0]<current_year:
-                            #     plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
-                            # else:
-                            #     plt.title(f"Word Cloud for Titles in {int(years[0])}")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = df_all.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
+                            else:
+                                plt.title(f"Word Cloud for Titles in {int(years[0])}")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
                     else:
                         sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                         if sort_by == 'Publication date :arrow_down:' or df_all['Citation'].sum() == 0:
@@ -1652,51 +1652,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig.update_layout(xaxis_tickangle=-45)
                             st.plotly_chart(fig)
        
-
-                            # author_df = df_cited.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for cited papers")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = df_cited.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for cited papers")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
                     else: 
                         sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                         if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
@@ -2360,83 +2359,83 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     fig.update_xaxes(tickangle=-65)
                     col3.plotly_chart(fig, use_container_width=True)
 
-                # st.write('---')
-                # df=df_csv.copy()
-                # def clean_text (text):
-                #     text = text.lower() # lowercasing
-                #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                #     return text
-                # df['clean_title'] = df['Title'].apply(clean_text)
-                # df['clean_abstract'] = df['Abstract'].astype(str).apply(clean_text)
-                # df_abs_no = df.dropna(subset=['clean_abstract'])
-                # df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                # df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                st.write('---')
+                df=df_csv.copy()
+                def clean_text (text):
+                    text = text.lower() # lowercasing
+                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                    return text
+                df['clean_title'] = df['Title'].apply(clean_text)
+                df['clean_abstract'] = df['Abstract'].astype(str).apply(clean_text)
+                df_abs_no = df.dropna(subset=['clean_abstract'])
+                df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
 
-                # def tokenization(text):
-                #     text = re.split('\W+', text)
-                #     return text
-                # df['token_title']=df['clean_title'].apply(tokenization)
-                # df['token_abstract']=df['clean_abstract'].apply(tokenization)
-                # stopword = nltk.corpus.stopwords.words('english')
+                def tokenization(text):
+                    text = re.split('\W+', text)
+                    return text
+                df['token_title']=df['clean_title'].apply(tokenization)
+                df['token_abstract']=df['clean_abstract'].apply(tokenization)
+                stopword = nltk.corpus.stopwords.words('english')
 
-                # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                # stopword.extend(SW)
+                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                    'examines', 'become', 'used', 'journal', 'london', 'review']
+                stopword.extend(SW)
 
-                # def remove_stopwords(text):
-                #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                #     return text
-                # df['stopword']=df['token_title'].apply(remove_stopwords)
-                # df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
+                def remove_stopwords(text):
+                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                    return text
+                df['stopword']=df['token_title'].apply(remove_stopwords)
+                df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
 
-                # wn = nltk.WordNetLemmatizer()
-                # def lemmatizer(text):
-                #     text = [wn.lemmatize(word) for word in text]
-                #     return text
+                wn = nltk.WordNetLemmatizer()
+                def lemmatizer(text):
+                    text = [wn.lemmatize(word) for word in text]
+                    return text
 
-                # df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
-                # df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
+                df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
+                df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
 
-                # listdf = df['lemma_title']
-                # listdf_abstract = df['lemma_abstract']
+                listdf = df['lemma_title']
+                listdf_abstract = df['lemma_abstract']
 
-                # st.subheader('Wordcloud')
-                # wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
-                # if wordcloud_opt=='Titles':
-                #     df_list = [item for sublist in listdf for item in sublist]
-                #     string = pd.Series(df_list).str.cat(sep=' ')
-                #     wordcloud_texts = string
-                #     wordcloud_texts_str = str(wordcloud_texts)
-                #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                #     plt.figure(figsize=(20,8))
-                #     plt.axis('off')
-                #     plt.title('Top words in title (Intelligence bibliography collection)')
-                #     plt.imshow(wordcloud)
-                #     plt.axis("off")
-                #     plt.show()
-                #     st.set_option('deprecation.showPyplotGlobalUse', False)
-                #     st.pyplot() 
-                # else:
-                #     st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
-                #     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
-                #     string = pd.Series(df_list_abstract).str.cat(sep=' ')
-                #     wordcloud_texts = string
-                #     wordcloud_texts_str = str(wordcloud_texts)
-                #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                #     plt.figure(figsize=(20,8))
-                #     plt.axis('off')
-                #     plt.title('Top words in abstract (Intelligence bibliography collection)')
-                #     plt.imshow(wordcloud)
-                #     plt.axis("off")
-                #     plt.show()
-                #     st.set_option('deprecation.showPyplotGlobalUse', False)
-                #     st.pyplot() 
+                st.subheader('Wordcloud')
+                wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+                if wordcloud_opt=='Titles':
+                    df_list = [item for sublist in listdf for item in sublist]
+                    string = pd.Series(df_list).str.cat(sep=' ')
+                    wordcloud_texts = string
+                    wordcloud_texts_str = str(wordcloud_texts)
+                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                    plt.figure(figsize=(20,8))
+                    plt.axis('off')
+                    plt.title('Top words in title (Intelligence bibliography collection)')
+                    plt.imshow(wordcloud)
+                    plt.axis("off")
+                    plt.show()
+                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                    st.pyplot() 
+                else:
+                    st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
+                    df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
+                    string = pd.Series(df_list_abstract).str.cat(sep=' ')
+                    wordcloud_texts = string
+                    wordcloud_texts_str = str(wordcloud_texts)
+                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                    plt.figure(figsize=(20,8))
+                    plt.axis('off')
+                    plt.title('Top words in abstract (Intelligence bibliography collection)')
+                    plt.imshow(wordcloud)
+                    plt.axis("off")
+                    plt.show()
+                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                    st.pyplot() 
 
                 # Bring everything in the library
 
