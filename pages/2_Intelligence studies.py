@@ -290,7 +290,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col1:
             df_plot = df_collections['Publication type'].value_counts()
             df_plot
-            df_plot = df_plot.rename(columns={'index': 'Publication type', 'Publication type': 'Count'})
+            df_plot = df_plot.rename(columns={'index': 'Publication type', 'count': 'Count'})
             df_plot = df_plot.reset_index(drop=True)
             df_plot
 
