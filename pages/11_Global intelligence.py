@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 # from IPython.display import HTML
 import streamlit.components.v1 as components
-# import numpy as np
+import numpy as np
 # import altair as alt
 # from pandas.io.json import json_normalize
 import datetime
