@@ -4,7 +4,7 @@ import streamlit as st
 from IPython.display import HTML
 # import streamlit.components.v1 as components
 import numpy as np
-# import altair as alt
+import altair as alt
 from datetime import date, timedelta  
 from datetime import datetime
 # import datetime
