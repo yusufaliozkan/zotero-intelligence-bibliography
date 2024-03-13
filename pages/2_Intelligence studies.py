@@ -5,7 +5,7 @@ from IPython.display import HTML
 import streamlit.components.v1 as components
 import numpy as np
 import altair as alt
-from pandas.io.json import json_normalize
+# from pandas.io.json import json_normalize
 import datetime
 import plotly.express as px
 import numpy as np
@@ -293,6 +293,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
 
             plot= df_plot
+
             # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
             fig = px.pie(plot, values='Count', names='Publication type')
