@@ -431,7 +431,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 plt.axis("off")
                                 plt.show()
                                 st.set_option('deprecation.showPyplotGlobalUse', False)
-                                st.pyplot()
+                                st.pyplot() 
 
                             else:
                                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
