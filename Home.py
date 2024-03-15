@@ -51,7 +51,7 @@ pd.set_option('display.max_colwidth', None)
 zot = zotero.Zotero(library_id, library_type)
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
-    items = zot.top(limit=5)
+    items = zot.top(limit=10)
     items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
     data=[]
     columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue']
@@ -1803,7 +1803,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_intro = df_intro.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
                 df_intro = df_intro.reset_index(drop=True)
-                df_intro = df_intro.head(5)
+                df_intro = df_intro.head(10)
                 # articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
                 articles_list = [format_entry(row, include_citation=False) for _, row in df_intro.iterrows()]
                 for index, formatted_entry in enumerate(articles_list):
@@ -1831,7 +1831,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.markdown('#### Top 10 cited items')
                 display3 = st.checkbox('Display abstracts', key='top_cited')
 
-                df_top_display = df_top.head(5)  # Take top 5 items for display
+                df_top_display = df_top.head(10)  # Take top 5 items for display
                 articles_list = [format_entry(row) for _, row in df_top_display.iterrows()]
 
                 for index, formatted_entry in enumerate(articles_list):
