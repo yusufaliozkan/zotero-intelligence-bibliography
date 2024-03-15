@@ -1828,7 +1828,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_top = load_data()
 
-                st.markdown('#### Top 10 cited items')
+                st.markdown('#### Top cited items')
                 display3 = st.checkbox('Display abstracts', key='top_cited')
 
                 df_top_display = df_top.head(10)  # Take top 5 items for display
