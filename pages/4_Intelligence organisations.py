@@ -438,6 +438,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_journal = df_journal.sort_values(['Journal'], ascending=[False])
             df_journal = df_journal.reset_index()
             df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_journal.columns = ['Journal', 'Count']
+            # TEMP SOLUTION ENDS
+            df_journal = df_journal.sort_values(['Count'], ascending=[False])
             df_journal = df_journal.head(number2)
 
             log2 = st.checkbox('Show in log scale', key='log2')
