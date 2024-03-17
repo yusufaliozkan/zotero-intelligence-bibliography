@@ -239,7 +239,7 @@ with col1:
             else:
                 items_not_in_df_item_magazines = items_not_in_df_item_magazines.sort_values(by=['PubDate'], ascending=False)
                 items_not_in_df_item_magazines        
-            status.update(label="Search complete!", state="complete", expanded=tRUE)
+            status.update(label="Search complete!", state="complete", expanded=True)
 
 with col2:
     with st.expander('Collections', expanded=True):
