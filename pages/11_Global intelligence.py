@@ -83,7 +83,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_name = df_collections['Collection_Name'].iloc[0]
             pd.set_option('display.max_colwidth', None)
 
-            df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_collections['Date published'] = (
+                df_collections['Date published']
+                .str.strip()
+                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+            )
             df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
             df_collections['Date published'] = df_collections['Date published'].fillna('')
             df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
