@@ -2462,7 +2462,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.header('Items in the library by type: ', anchor=False)
                 
                 df_types = df_types.sort_values(['Count'], ascending=[False])
-                df_types
                 plot2= df_types.head(10)
 
                 st.bar_chart(plot2, height=600, width=600, use_container_width=True, x='Publication type')
