@@ -275,7 +275,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     search_term = st.text_input('Search keywords in titles or abstracts')
                 
                 if search_term:
-                    with st.expander('Click to expand', expanded=True):
+                    with st.status("Searching data..."): #st.expander('Click to expand', expanded=True):
                         search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                         phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
                         keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
@@ -500,6 +500,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             st.caption(f"Abstract: No abstract")
                         else:
                             st.write("No articles found with the given keyword/phrase.")
+                        status.update(label="Download complete!", state="complete", expanded=False)
                 else:
                     st.write("Please enter a keyword or author name to search.")
 
