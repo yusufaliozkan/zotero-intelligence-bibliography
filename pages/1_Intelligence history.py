@@ -319,6 +319,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         df_collections['Date year'] = df_collections['Date year'].fillna('No date')
         df_year=df_collections['Date year'].value_counts()
         df_year=df_year.reset_index()
+        df_year
 
         col1, col2 = st.columns(2)
         with col1:
