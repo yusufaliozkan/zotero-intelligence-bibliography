@@ -2542,7 +2542,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             title='Cumulative Number of Items Added'
                         )
                         st.altair_chart(cumulative_chart, use_container_width=True)
-            st.success("Operation completed successfully!")
+                st.success("Operation completed successfully!")
 
         else:
             st.info('Toggle to see the dashboard!')
