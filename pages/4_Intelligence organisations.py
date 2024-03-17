@@ -321,6 +321,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col1:
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_year.columns = ['Publication year', 'Count']
+            # TEMP SOLUTION ENDS
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             fig = px.bar(df_year, x='Publication year', y='Count')
             fig.update_xaxes(tickangle=-70)
