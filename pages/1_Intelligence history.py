@@ -300,7 +300,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
             df_plot.columns = ['Publication type', 'Count']
             # TEMP SOLUTION ENDS
-            
+
             plot= df_plot
             # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
@@ -377,6 +377,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
             df_publisher = df_publisher.reset_index()
             df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_publisher.columns = ['Publisher', 'Count']
+            # TEMP SOLUTION ENDS
             df_publisher = df_publisher.head(number)
             
             log1 = st.checkbox('Show in log scale', key='log1')
