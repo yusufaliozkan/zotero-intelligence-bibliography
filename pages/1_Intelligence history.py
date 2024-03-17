@@ -322,13 +322,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         col1, col2 = st.columns(2)
         with col1:
-            df_year.columns = ['Publication year', 'Count']
-            # df_year
-            # df_year = df_year.reset_index().rename(columns={'index': 'Publication year', 'Date year': 'Count'})
-            # df_year
-            # df_year = df_year.reset_index().rename(columns={'Count': 'Publication year', 'count': 'Count'})
-            # # df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-            # df_year
+            df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             fig = px.bar(df_year, x='Publication year', y='Count')
@@ -376,10 +370,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_publisher = pd.DataFrame(df_collections['Publisher'].value_counts())
             df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
             df_publisher = df_publisher.reset_index()
-            df_publisher
-            df_publisher.columns = ['Publisher', 'Count']
-            df_publisher
-            # df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
+            df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
             df_publisher = df_publisher.head(number)
             
             log1 = st.checkbox('Show in log scale', key='log1')
