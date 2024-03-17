@@ -299,7 +299,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
             df_plot.columns = ['Publication type', 'Count']
-
+            # TEMP SOLUTION ENDS
+            
             plot= df_plot
             # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
@@ -325,6 +326,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2 = st.columns(2)
         with col1:
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_year.columns = ['Publication year', 'Count']
+            # TEMP SOLUTION ENDS
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             fig = px.bar(df_year, x='Publication year', y='Count')
