@@ -206,6 +206,7 @@ with st.spinner('Preparing digest...'):
                     df_months = df_csv['Date months'].value_counts()
                     df_months = df_months.reset_index()
                     df_months = df_months.rename(columns={'index':'Publication month','Date months':'Count'})
+                    df_months.columns = ['Publication month', 'Count']
                     df_months = df_months.sort_values(by='Publication month', ascending=True)
                     df_months['sum'] = df_months['Count'].cumsum()
 
