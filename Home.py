@@ -500,7 +500,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             st.caption(f"Abstract: No abstract")
                         else:
                             st.write("No articles found with the given keyword/phrase.")
-                        status.update(label="Results found!", state="complete", expanded=False)
+                        status.update(label="Search completed!", state="complete", expanded=False)
                 else:
                     st.write("Please enter a keyword or author name to search.")
 
