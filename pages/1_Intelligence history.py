@@ -379,7 +379,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_publisher
             df_publisher.columns['Publisher', 'Count']
             df_publisher
-            df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
+            # df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
             df_publisher = df_publisher.head(number)
             
             log1 = st.checkbox('Show in log scale', key='log1')
