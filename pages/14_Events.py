@@ -269,9 +269,8 @@ with tab1:
     organiser_plot = df_gs_plot['organiser'].value_counts()
     organiser_plot=organiser_plot.reset_index()
     organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
-    organiser_plot.count = ['Organiser','Count']
+    organiser_plot.columns = ['Organiser','Count']
     organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
-    organiser_plot
     organiser_plot_all=organiser_plot.copy()        
     all = st.checkbox('Show all organisers')
     if all:
