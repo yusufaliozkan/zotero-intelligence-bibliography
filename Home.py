@@ -2003,7 +2003,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         on_main_dashboard = st.toggle('Display dashboard')
         
         if on_main_dashboard:
-            progress_text = "Operation in progress. Please wait."
+            progress_text = "Dashboard loading. Please wait."
             with st.spinner(text=progress_text):
                 # number0 = st.slider('Select a number collections', 3,30,15)
                 # df_collections_2.set_index('Name', inplace=True)
