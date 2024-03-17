@@ -530,7 +530,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
 
-                    with st.status("Downloading data...", expanded=True):# st.expander('Click to expand', expanded=True): 
+                    with st.expander('Click to expand', expanded=True): 
                         st.markdown('#### Publications by ' + selected_author)
                         st.write('*Please note that this database **may not show** all research outputs of the author.*')
                         types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
