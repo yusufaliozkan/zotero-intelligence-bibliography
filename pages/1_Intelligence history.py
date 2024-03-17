@@ -322,7 +322,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
         col1, col2 = st.columns(2)
         with col1:
-            df_year.columns = ['Publication year', 'Count']
+            df_year = df_year.columns = ['Publication year', 'Count']
             df_year
             df_year = df_year.reset_index().rename(columns={'index': 'Publication year', 'Date year': 'Count'})
             df_year
