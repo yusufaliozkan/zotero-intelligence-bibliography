@@ -186,6 +186,7 @@ with st.spinner('Preparing digest...'):
                     df_plot= df_csv['Publication type'].value_counts()
                     df_plot=df_plot.reset_index()
                     df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+                    df_plot.columns = ['Publication type', 'Count']
                     fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
                     fig.update_layout(
                         autosize=False,
