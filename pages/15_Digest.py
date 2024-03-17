@@ -36,6 +36,11 @@ with st.spinner('Preparing digest...'):
     sidebar_content()
 
     df_csv = pd.read_csv(r'all_items.csv', index_col=None)
+    df_csv['Date published'] = (
+        df_csv['Date published']
+        .str.strip()
+        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+    )
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.date
     df_csv['Publisher'] =df_csv['Publisher'].fillna('')
     df_csv['Journal'] =df_csv['Journal'].fillna('')
@@ -99,11 +104,7 @@ with st.spinner('Preparing digest...'):
             df_csv = df_csv.loc[filter]
 
             df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-            # df_csv['Date published'] = (
-            #     df_csv['Date published']
-            #     .str.strip()
-            #     .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-            # )
+
             df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
             df_csv['Date months'] = df_csv['Date published'].dt.strftime('%Y-%m')
             df_csv['Date published'] = df_csv['Date published'].fillna('No date')
