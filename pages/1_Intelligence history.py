@@ -319,17 +319,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
         df_collections['Date year'] = df_collections['Date year'].fillna('No date')
         df_year=df_collections['Date year'].value_counts()
         df_year=df_year.reset_index()
-        df_year
 
         col1, col2 = st.columns(2)
         with col1:
             df_year.columns = ['Publication year', 'Count']
-            df_year
-            df_year = df_year.reset_index().rename(columns={'index': 'Publication year', 'Date year': 'Count'})
-            df_year
-            df_year = df_year.reset_index().rename(columns={'Count': 'Publication year', 'count': 'Count'})
-            # df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
-            df_year
+            # df_year
+            # df_year = df_year.reset_index().rename(columns={'index': 'Publication year', 'Date year': 'Count'})
+            # df_year
+            # df_year = df_year.reset_index().rename(columns={'Count': 'Publication year', 'count': 'Count'})
+            # # df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+            # df_year
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             fig = px.bar(df_year, x='Publication year', y='Count')
