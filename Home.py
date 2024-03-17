@@ -2038,6 +2038,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_year.columns = ['Publication year', 'Count']
+            # TEMP SOLUTION ENDS
+
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             df_year=df_year.reset_index(drop=True)
