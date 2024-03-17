@@ -378,6 +378,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_publisher = df_publisher.reset_index()
             df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
             df_publisher = df_publisher.head(number)
+            df_publisher
             
             log1 = st.checkbox('Show in log scale', key='log1')
             leg1 = st.checkbox('Disable legend', key='leg1', disabled=False)
