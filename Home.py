@@ -2465,7 +2465,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_types
                 plot2= df_types.head(10)
 
-                st.bar_chart(plot2['Count'], height=600, width=600, use_container_width=True)
+                st.bar_chart(plot2, height=600, width=600, use_container_width=True, x='Publication type')
+
 
             st.header('Item inclusion history', anchor=False)
             df_added = df_dedup.copy()
