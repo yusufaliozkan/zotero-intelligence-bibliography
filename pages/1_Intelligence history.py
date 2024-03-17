@@ -324,6 +324,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col1:
             df_year
             df_year = df_year.reset_index().rename(columns={'index': 'Publication year', 'Date year': 'Count'})
+            df_year = df_year.reset_index().rename(columns={'Count': 'Publication year', 'count': 'Count'})
             # df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
             df_year
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
