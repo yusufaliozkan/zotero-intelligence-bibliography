@@ -380,7 +380,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
             df_publisher.columns = ['Publisher', 'Count']
             # TEMP SOLUTION ENDS
-            df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
+            df_publisher = df_publisher.sort_values(['Count'], ascending=[False])
             df_publisher = df_publisher.head(number)
             
             log1 = st.checkbox('Show in log scale', key='log1')
