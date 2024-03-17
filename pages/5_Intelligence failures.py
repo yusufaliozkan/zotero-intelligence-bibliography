@@ -80,7 +80,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_collections['Date published']
                 .str.strip()
                 .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-            )            df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
+            )            
+            df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
             df_collections['Date published'] = df_collections['Date published'].fillna('')
             df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
             df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
