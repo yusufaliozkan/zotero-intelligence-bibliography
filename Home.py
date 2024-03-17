@@ -2526,7 +2526,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             title='Cumulative Number of Items Added'
                         )
                         st.altair_chart(cumulative_chart, use_container_width=True)
-        status.update(label="Download complete!", state="complete", expanded=False)    
+            status.update(label="Download complete!", state="complete", expanded=False)    
         else:
             st.info('Toggle to see the dashboard!')
 
