@@ -299,7 +299,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_plot
 
             # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
-            df_plot
+            df_plot.columns = ['Publication type', 'Count']
 
             plot= df_plot
             # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
