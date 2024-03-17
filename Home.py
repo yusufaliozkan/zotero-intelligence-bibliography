@@ -2457,6 +2457,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
                 df_types = df_types.reset_index(drop=True)
+                df_types
                 df_types.columns = ['Publication type', 'Count']
 
                 st.header('Items in the library by type: ', anchor=False)
