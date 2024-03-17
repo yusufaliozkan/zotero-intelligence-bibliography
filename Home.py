@@ -2010,7 +2010,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 my_bar = st.progress(0)
                 
                 for percent_complete in range(100):
-                    time.sleep(0.01)
+                    time.sleep(0.1)
                     my_bar.progress(percent_complete + 1)
                 # number0 = st.slider('Select a number collections', 3,30,15)
                 # df_collections_2.set_index('Name', inplace=True)
@@ -2541,6 +2541,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             title='Cumulative Number of Items Added'
                         )
                         st.altair_chart(cumulative_chart, use_container_width=True)
+            st.success("Operation completed successfully!")
+              
         else:
             st.info('Toggle to see the dashboard!')
 
