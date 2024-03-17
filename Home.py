@@ -2002,8 +2002,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.header('Dashboard', anchor=False)
         on_main_dashboard = st.toggle('Display dashboard')
         
-        time.sleep(1)
-
         if on_main_dashboard:
             progress_text = "Operation in progress. Please wait."
             with st.spinner(text=progress_text):
