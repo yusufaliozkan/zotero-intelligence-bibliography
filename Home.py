@@ -2007,11 +2007,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         if on_main_dashboard:
             progress_text = "Operation in progress. Please wait."
             with st.spinner(text=progress_text):
-                my_bar = st.progress(0)
-                
-                for percent_complete in range(100):
-                    time.sleep(0.1)
-                    my_bar.progress(percent_complete + 1)
                 # number0 = st.slider('Select a number collections', 3,30,15)
                 # df_collections_2.set_index('Name', inplace=True)
                 # df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
