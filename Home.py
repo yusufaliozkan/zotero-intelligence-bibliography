@@ -2147,6 +2147,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_types = df_types.sort_values(['Publication type'], ascending=[False])
                 df_types=df_types.reset_index()
                 df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
+                # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+                df_types.columns = ['Publication type', 'Count']
+                # TEMP SOLUTION ENDS
 
 
                 col1, col2 = st.columns(2)
