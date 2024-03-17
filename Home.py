@@ -2001,13 +2001,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab2:
         st.header('Dashboard', anchor=False)
         on_main_dashboard = st.toggle('Display dashboard') 
-        progress_text = "Generating dashboard. Please wait."
-        my_bar = st.progress(0, text=progress_text)
-        for percent_complete in range(100):
-            time.sleep(0.01)
-            my_bar.progress(percent_complete + 1, text=progress_text)
-        time.sleep(1)
-        my_bar.empty()
 
         if on_main_dashboard:            
             # number0 = st.slider('Select a number collections', 3,30,15)
@@ -2025,6 +2018,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #     height=600,)
             # fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
             # st.plotly_chart(fig, use_container_width = True)
+
+            progress_text = "Generating dashboard. Please wait."
+            my_bar = st.progress(0, text=progress_text)
+            for percent_complete in range(100):
+                time.sleep(0.5)
+                my_bar.progress(percent_complete + 1, text=progress_text)
+            time.sleep(1)
+            my_bar.empty()
 
             df_csv = df_duplicated.copy()
             df_collections_2 =df_csv.copy()
