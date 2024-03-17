@@ -77,8 +77,8 @@ with st.spinner('Preparing digest...'):
             a='30 days'
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-            with st.popover('Filters'):
-                range_day = st.radio('Show sources published in the last:', ('10 days','30 days', '3 months', 'Custom (days)', 'Custom (select date)'), key='days')
+
+            range_day = st.radio('Show sources published in the last:', ('10 days','30 days', '3 months', 'Custom (days)', 'Custom (select date)'), key='days')
             if range_day == '10 days':
                 rg = previous_10
                 a='10 days'
