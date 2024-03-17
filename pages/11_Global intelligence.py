@@ -619,11 +619,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_plot=df_plot.reset_index()
             df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
 
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_plot.columns = ['Publication type', 'Count']
+            # TEMP SOLUTION ENDS
+
             plot= df_plot
             # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
 
             fig = px.pie(plot, values='Count', names='Publication type')
-            fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.45, 'yanchor':'top'})
+            fig.update_layout(title={'text':'Publications: '+collection_name})
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
@@ -632,7 +636,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 autosize=False,
                 width=400,
                 height=400,)
-            fig.update_layout(title={'text':'Publications: '+collection_name, 'y':0.95, 'x':0.3, 'yanchor':'top'})
+            fig.update_layout(title={'text':'Publications: '+collection_name})
             col2.plotly_chart(fig, use_container_width = True)
 
         df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
@@ -644,6 +648,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2 = st.columns(2)
         with col1:
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_year.columns = ['Publication year', 'Count']
+            # TEMP SOLUTION ENDS
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             fig = px.bar(df_year, x='Publication year', y='Count')
@@ -652,7 +659,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 autosize=False,
                 width=400,
                 height=500,)
-            fig.update_layout(title={'text':'Publications by year: '+collection_name, 'y':0.95, 'x':0.5, 'yanchor':'top'})
+            fig.update_layout(title={'text':'Publications by year: '+collection_name})
             col1.plotly_chart(fig, use_container_width = True)
 
         with col2:
@@ -676,7 +683,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 publications_by_author = filtered_authors['Author_name'].value_counts().head(num_authors)
                 fig = px.bar(publications_by_author, x=publications_by_author.index, y=publications_by_author.values)
                 fig.update_layout(
-                    title=f'Top {num_authors} Authors by Publication Count',
+                    title=f'Top {num_authors} Authors by Publication Count ({collection_name})',
                     xaxis_title='Author',
                     yaxis_title='Number of Publications',
                     xaxis_tickangle=-45,
@@ -692,6 +699,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
             df_publisher = df_publisher.reset_index()
             df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_publisher.columns = ['Publisher', 'Count']
+            # TEMP SOLUTION ENDS
+            df_publisher = df_publisher.sort_values(['Count'], ascending=[False])
             df_publisher = df_publisher.head(number)
             
             log1 = st.checkbox('Show in log scale', key='log1')
@@ -709,7 +720,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=False)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)'})
                         col1.plotly_chart(fig, use_container_width = True)
                     else:
                         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
@@ -719,7 +730,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=True)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers (in log scale)'})
                         col1.plotly_chart(fig, use_container_width = True)
                 else:
                     if leg1:
@@ -730,7 +741,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=False)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers'})
                         col1.plotly_chart(fig, use_container_width = True)
                     else:
                         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
@@ -740,7 +751,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             height=700,
                             showlegend=True)
                         fig.update_xaxes(tickangle=-70)
-                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers', 'y':0.95, 'x':0.4, 'yanchor':'top'})
+                        fig.update_layout(title={'text':'Top ' + str(number) + ' publishers'})
                         col1.plotly_chart(fig, use_container_width = True)
                 with st.expander('See publishers'):
                     row_nu_collections = len(df_publisher.index)        
@@ -755,6 +766,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_journal = df_journal.sort_values(['Journal'], ascending=[False])
             df_journal = df_journal.reset_index()
             df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_journal.columns = ['Journal', 'Count']
+            # TEMP SOLUTION ENDS
+            df_journal = df_journal.sort_values(['Count'], ascending=[False])
             df_journal = df_journal.head(number2)
 
             log2 = st.checkbox('Show in log scale', key='log2')
