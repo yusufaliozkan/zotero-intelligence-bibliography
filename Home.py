@@ -2458,11 +2458,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
                 df_types = df_types.reset_index()
                 df_types.columns = ['Publication type', 'Count']
-                df_types
 
                 st.header('Items in the library by type: ', anchor=False)
                 
-                df_types = df_types.sort_values(['Publication type'], ascending=[False])
+                df_types = df_types.sort_values(['Count'], ascending=[False])
                 plot2= df_types.head(10)
 
                 st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
