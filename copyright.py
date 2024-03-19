@@ -5,7 +5,7 @@ import streamlit as st
 cite_today = datetime.date.today().strftime("%d %B %Y")
 
 def display_custom_license():
-    st.write(f'**Cite this page:** Ozkan, Yusuf A. ‘*Intelligence Studies Network*’, Created 1 June 2020, Accessed {cite_today}. https://intelligence.streamlit.app/.')
+    st.code(f'**Cite this page:** Ozkan, Yusuf A. ‘*Intelligence Studies Network*’, Created 1 June 2020, Accessed {cite_today}. https://intelligence.streamlit.app/.')
     components.html(
     f"""
     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
