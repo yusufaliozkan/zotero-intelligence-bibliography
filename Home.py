@@ -176,7 +176,9 @@ st.title("Intelligence studies network", anchor=False)
 st.header('Intelligence studies bibliography', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
-into = '''
+cite_today = datetime.date.today().isoformat()
+
+into = f'''
 Welcome to **Intelligence studies bibliography**.
 This website lists **hundreds of sources, events, conferences, and call for papers** on intelligence history and intelligence studies. Finding sources on intelligence
 can sometimes be challening. This bibliography will be your helpful research assistant in finding and saving sources.
@@ -186,6 +188,8 @@ Check out the following guides for a quick intoduction about the website:
 Ozkan, Yusuf Ali. “Introduction to ‘Intelligence Studies Bibliography.’” Medium (blog), December 26, 2023. https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353.
 
 Ozkan, Yusuf Ali. ‘Enhancing the “Intelligence Studies Network” Website’. Medium (blog), 20 January 2024. https://medium.com/@yaliozkan/enhancing-the-intelligence-studies-network-website-13aa0c80f7f4.
+
+**Cite this page:** Ozkan, Yusuf A. ‘Intelligence Studies Network’, 1 June 2020, Accessed {cite_today}. https://intelligence.streamlit.app/.
 '''
 
 with st.spinner('Retrieving data & updating dashboard...'): 
