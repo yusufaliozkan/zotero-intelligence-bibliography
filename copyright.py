@@ -14,6 +14,7 @@ def display_custom_license():
     src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
     © {current_year} Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
     
-    **Cite this page:** Ozkan, Yusuf A. ‘*Intelligence Studies Network*’, Created 1 June 2020, Accessed {cite_today}. https://intelligence.streamlit.app/.
+    <strong>Cite this page:</strong> Ozkan, Yusuf A. ‘<em>Intelligence Studies Network</em>’, Created 1 June 2020, Accessed {cite_today}. <a href="https://intelligence.streamlit.app/">https://intelligence.streamlit.app/</a>.
+
     """
     )
