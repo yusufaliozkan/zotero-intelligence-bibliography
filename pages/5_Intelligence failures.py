@@ -75,7 +75,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
 
-            df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+            df_collections['Date published'] = (
+                df_collections['Date published']
+                .str.strip()
+                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+            )            
             df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
             df_collections['Date published'] = df_collections['Date published'].fillna('')
             df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
@@ -290,6 +295,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_plot= df_collections['Publication type'].value_counts()
             df_plot=df_plot.reset_index()
             df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_plot.columns = ['Publication type', 'Count']
+            # TEMP SOLUTION ENDS
 
             plot= df_plot
             # st.bar_chart(plot.sort_values(ascending=False), height=600, width=600, use_container_width=True)
@@ -316,6 +324,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2 = st.columns(2)
         with col1:
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_year.columns = ['Publication year', 'Count']
+            # TEMP SOLUTION ENDS
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             fig = px.bar(df_year, x='Publication year', y='Count')
@@ -364,6 +375,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
             df_publisher = df_publisher.reset_index()
             df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_publisher.columns = ['Publisher', 'Count']
+            # TEMP SOLUTION ENDS
+            df_publisher = df_publisher.sort_values(['Count'], ascending=[False])
             df_publisher = df_publisher.head(number)
             
             log1 = st.checkbox('Show in log scale', key='log1')
@@ -427,6 +442,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_journal = df_journal.sort_values(['Journal'], ascending=[False])
             df_journal = df_journal.reset_index()
             df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_journal.columns = ['Journal', 'Count']
+            # TEMP SOLUTION ENDS
+            df_journal = df_journal.sort_values(['Count'], ascending=[False])
             df_journal = df_journal.head(number2)
 
             log2 = st.checkbox('Show in log scale', key='log2')

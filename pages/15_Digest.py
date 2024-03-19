@@ -36,6 +36,11 @@ with st.spinner('Preparing digest...'):
     sidebar_content()
 
     df_csv = pd.read_csv(r'all_items.csv', index_col=None)
+    df_csv['Date published'] = (
+        df_csv['Date published']
+        .str.strip()
+        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+    )
     df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.date
     df_csv['Publisher'] =df_csv['Publisher'].fillna('')
     df_csv['Journal'] =df_csv['Journal'].fillna('')
@@ -99,6 +104,7 @@ with st.spinner('Preparing digest...'):
             df_csv = df_csv.loc[filter]
 
             df_csv['Date published'] = pd.to_datetime(df_csv['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+
             df_csv['Date published new'] = df_csv['Date published'].dt.strftime('%d/%m/%Y')
             df_csv['Date months'] = df_csv['Date published'].dt.strftime('%Y-%m')
             df_csv['Date published'] = df_csv['Date published'].fillna('No date')
@@ -186,6 +192,7 @@ with st.spinner('Preparing digest...'):
                     df_plot= df_csv['Publication type'].value_counts()
                     df_plot=df_plot.reset_index()
                     df_plot=df_plot.rename(columns={'index':'Publication type','Publication type':'Count'})
+                    df_plot.columns = ['Publication type', 'Count']
                     fig = px.bar(df_plot, x='Publication type', y='Count', color='Publication type')
                     fig.update_layout(
                         autosize=False,
@@ -198,12 +205,14 @@ with st.spinner('Preparing digest...'):
                     df_dates = df_csv['Date published'].value_counts()
                     df_dates = df_dates.reset_index()
                     df_dates = df_dates.rename(columns={'index':'Publication date','Date published':'Count'})
+                    df_dates.columns = ['Publication date', 'Count']
                     df_dates = df_dates.sort_values(by='Publication date', ascending=True)
                     df_dates['sum'] = df_dates['Count'].cumsum()
 
                     df_months = df_csv['Date months'].value_counts()
                     df_months = df_months.reset_index()
                     df_months = df_months.rename(columns={'index':'Publication month','Date months':'Count'})
+                    df_months.columns = ['Publication month', 'Count']
                     df_months = df_months.sort_values(by='Publication month', ascending=True)
                     df_months['sum'] = df_months['Count'].cumsum()
 

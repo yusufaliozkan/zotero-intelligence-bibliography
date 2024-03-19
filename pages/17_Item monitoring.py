@@ -47,7 +47,8 @@ with col1:
     if item_monitoring:
         st.subheader('Monitoring section')
         st.write('The following items are not in the library yet. Book reviews will not be included!')
-        with st.spinner('Scanning sources to find items...'): 
+        with st.status("Scanning sources to find items...", expanded=True) as status:
+        # with st.spinner('Scanning sources to find items...'): 
             api_links = [
                 'https://api.openalex.org/works?filter=primary_location.source.id:s33269604&sort=publication_year:desc&per_page=10', #IJIC
                 "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10", #The Historical Journal
@@ -238,6 +239,7 @@ with col1:
             else:
                 items_not_in_df_item_magazines = items_not_in_df_item_magazines.sort_values(by=['PubDate'], ascending=False)
                 items_not_in_df_item_magazines        
+            status.update(label="Search complete!", state="complete", expanded=True)
 
 with col2:
     with st.expander('Collections', expanded=True):

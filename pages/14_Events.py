@@ -241,6 +241,7 @@ with tab1:
         date_plot=df_gs_plot['year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Year','year':'Count'})
+        date_plot.columns = ['Year', 'Count']
         date_plot=date_plot.sort_values(by='Year')
         fig = px.bar(date_plot, x='Year', y='Count')
         fig.update_xaxes(tickangle=-70)
@@ -254,6 +255,7 @@ with tab1:
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
+        date_plot.columns = ['Date', 'Count']
         date_plot=date_plot.sort_values(by='Date')
         fig = px.bar(date_plot, x='Date', y='Count')
         fig.update_xaxes(tickangle=-70)
@@ -267,6 +269,7 @@ with tab1:
     organiser_plot = df_gs_plot['organiser'].value_counts()
     organiser_plot=organiser_plot.reset_index()
     organiser_plot=organiser_plot.rename(columns={'index':'Organiser', 'organiser':'Count'})
+    organiser_plot.columns = ['Organiser','Count']
     organiser_plot=organiser_plot.sort_values(by='Count', ascending = False)
     organiser_plot_all=organiser_plot.copy()        
     all = st.checkbox('Show all organisers')

@@ -176,7 +176,10 @@ st.title("Intelligence studies network", anchor=False)
 st.header('Intelligence studies bibliography', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
-into = '''
+# cite_today = datetime.date.today().isoformat()
+cite_today = datetime.date.today().strftime("%d %B %Y")
+
+into = f'''
 Welcome to **Intelligence studies bibliography**.
 This website lists **hundreds of sources, events, conferences, and call for papers** on intelligence history and intelligence studies. Finding sources on intelligence
 can sometimes be challening. This bibliography will be your helpful research assistant in finding and saving sources.
@@ -186,6 +189,8 @@ Check out the following guides for a quick intoduction about the website:
 Ozkan, Yusuf Ali. “Introduction to ‘Intelligence Studies Bibliography.’” Medium (blog), December 26, 2023. https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353.
 
 Ozkan, Yusuf Ali. ‘Enhancing the “Intelligence Studies Network” Website’. Medium (blog), 20 January 2024. https://medium.com/@yaliozkan/enhancing-the-intelligence-studies-network-website-13aa0c80f7f4.
+
+**Cite this page:** Ozkan, Yusuf A. ‘*Intelligence Studies Network*’, Created 1 June 2020, Accessed {cite_today}. https://intelligence.streamlit.app/.
 '''
 
 with st.spinner('Retrieving data & updating dashboard...'): 
@@ -275,7 +280,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     search_term = st.text_input('Search keywords in titles or abstracts')
                 
                 if search_term:
-                    with st.expander('Click to expand', expanded=True):
+                    with st.status("Searching publications...", expanded = True) as status: #st.expander('Click to expand', expanded=True):
                         search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
                         phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
                         keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
@@ -500,6 +505,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                             st.caption(f"Abstract: No abstract")
                         else:
                             st.write("No articles found with the given keyword/phrase.")
+                        status.update(label="Search completed!", state="complete", expanded=True)
                 else:
                     st.write("Please enter a keyword or author name to search.")
 
@@ -1999,9 +2005,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with tab2:
         st.header('Dashboard', anchor=False)
-        on_main_dashboard = st.toggle('Display dashboard') 
+        on_main_dashboard = st.toggle('Display dashboard')
+        
+        if on_main_dashboard:
 
-        if on_main_dashboard:            
             # number0 = st.slider('Select a number collections', 3,30,15)
             # df_collections_2.set_index('Name', inplace=True)
             # df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
@@ -2038,6 +2045,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_year.columns = ['Publication year', 'Count']
+            # TEMP SOLUTION ENDS
+
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             df_year=df_year.reset_index(drop=True)
@@ -2095,6 +2107,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             else:                
                 ## COLLECTIONS IN THE LIBRARY
+                
                 st.markdown(f'#### Intelligence studies bibliography dashboard (publications between {years[0]} and {years[1]})')
 
                 df_collections_21 = df_collections_2.copy()
@@ -2142,6 +2155,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_types = df_types.sort_values(['Publication type'], ascending=[False])
                 df_types=df_types.reset_index()
                 df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
+                # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+                df_types.columns = ['Publication type', 'Count']
+                # TEMP SOLUTION ENDS
 
 
                 col1, col2 = st.columns(2)
@@ -2207,6 +2223,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
                     df_publisher = df_publisher.reset_index()
                     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
+                    # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+                    df_publisher.columns = ['Publisher', 'Count']
+                    # TEMP SOLUTION ENDS
+                    df_publisher = df_publisher.sort_values(['Count'], ascending=[False])
                     df_publisher = df_publisher.head(number)
 
                     log1 = st.checkbox('Show in log scale', key='log1')
@@ -2270,6 +2290,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_journal = df_journal.sort_values(['Journal'], ascending=[False])
                     df_journal = df_journal.reset_index()
                     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
+                    # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+                    df_journal.columns = ['Journal', 'Count']
+                    # TEMP SOLUTION ENDS
+                    df_journal = df_journal.sort_values(['Count'], ascending=[False])
                     df_journal = df_journal.head(number2)
 
                     log2 = st.checkbox('Show in log scale', key='log2')
@@ -2440,13 +2464,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Bring everything in the library
 
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
+                df_types = df_types.reset_index()
+                df_types.columns = ['Publication type', 'Count']
 
                 st.header('Items in the library by type: ', anchor=False)
                 
-                df_types = df_types.sort_values(['Publication type'], ascending=[False])
+                df_types = df_types.sort_values(['Count'], ascending=[False])
                 plot2= df_types.head(10)
 
-                st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
+                st.bar_chart(plot2, height=600, width=600, use_container_width=True, x='Publication type')
+
 
             st.header('Item inclusion history', anchor=False)
             df_added = df_dedup.copy()
