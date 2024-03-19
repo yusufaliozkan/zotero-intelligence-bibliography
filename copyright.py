@@ -2,6 +2,7 @@ import streamlit.components.v1 as components
 import datetime
 import streamlit as st
 
+
 cite_today = datetime.date.today().strftime("%d %B %Y")
 
 def display_custom_license():
