@@ -1,5 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
+from copyright import display_custom_license, cc_by_licence_image
+
 
 
 def sidebar_content():
@@ -43,3 +45,4 @@ def sidebar_content():
             st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
         st.write('Check the digest [here](https://intelligence.streamlit.app/Digest)')
+        cc_by_licence_image()
