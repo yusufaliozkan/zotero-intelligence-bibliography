@@ -39,4 +39,3 @@ def sidebar_content():
             st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
         st.write('Check the digest [here](https://intelligence.streamlit.app/Digest)')
-        cc_by_licence_image()
