@@ -195,7 +195,7 @@ Ozkan, Yusuf Ali. ‘Enhancing the “Intelligence Studies Network” Website’
 
 with st.spinner('Retrieving data & updating dashboard...'): 
 
-    item_count = zot.num_items()
+    item_count = zot.num_items() 
 
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
