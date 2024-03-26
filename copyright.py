@@ -29,4 +29,4 @@ def cc_by_licence_image():
     </br>
     <br>
     """
-    ) 
+    )
