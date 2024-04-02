@@ -115,48 +115,37 @@ with col1:
             keywords = [
                 'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert', 'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis',
                 'spying', 'spies'
-                ] 
+            ]
 
-            # Initialize an empty list to store DataFrame for each API link
             dfs = []
 
-            # Loop through each API link
             for api_link in api_links:
-                # Send a GET request to the API
                 response = requests.get(api_link)
 
-                # Check if the request was successful
                 if response.status_code == 200:
-                    # Parse the JSON response
                     data = response.json()
-                    
-                    # Extract the results
                     results = data['results']
-                    
-                    # Initialize lists to store values for DataFrame
+
                     titles = []
                     dois = []
                     publication_dates = []
                     dois_without_https = []
                     journals = []
-                    
-                    # Get today's date
+
                     today = datetime.datetime.today().date()
-                    
-                    # Extract data for each result
+
                     for result in results:
-                        # Convert publication date string to datetime object
                         pub_date = datetime.datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
-                        
-                        # Check if the publication date is within the last # days
+
                         if today - pub_date <= timedelta(days=90):
-                            titles.append(result['title'])
-                            dois.append(result['doi'])
-                            publication_dates.append(result['publication_date'])
-                            dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
-                            journals.append(result['primary_location']['source']['display_name'])
-                    
-                    # Create DataFrame
+                            title = result['title'].lower()
+                            if any(keyword in title for keyword in keywords):
+                                titles.append(result['title'])
+                                dois.append(result['doi'])
+                                publication_dates.append(result['publication_date'])
+                                dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
+                                journals.append(result['primary_location']['source']['display_name'])
+
                     df = pd.DataFrame({
                         'Title': titles,
                         'Link': dois,
@@ -164,24 +153,18 @@ with col1:
                         'DOI': dois_without_https,
                         'Journal': journals
                     })
-                    
-                    # Append DataFrame to the list
+
                     dfs.append(df)
-                
+
                 else:
                     print(f"Failed to fetch data from the API: {api_link}")
 
-            # Concatenate DataFrames from all API links
             final_df = pd.concat(dfs, ignore_index=True)
 
-            # Filter 'The Historical Journal' to only include titles containing keywords
             historical_journal_filtered = final_df[final_df['Journal'].isin(journals_with_filtered_items)]
-            historical_journal_filtered = historical_journal_filtered[historical_journal_filtered['Title'].str.lower().str.contains('|'.join(keywords))]
 
-            # Filter other journals to exclude 'The Historical Journal'
             other_journals = final_df[~final_df['Journal'].isin(journals_with_filtered_items)]
 
-            # Concatenate the filtered DataFrames
             filtered_final_df = pd.concat([other_journals, historical_journal_filtered], ignore_index=True)
 
             df_dedup = pd.read_csv('all_items.csv')
