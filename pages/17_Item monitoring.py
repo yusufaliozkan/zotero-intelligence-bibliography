@@ -128,7 +128,7 @@ with col1:
 
                     titles = []
                     dois = []
-                    publication_dates = []
+                    publication_dates = [] 
                     dois_without_https = []
                     journals = []
 
