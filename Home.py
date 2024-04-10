@@ -1583,7 +1583,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if dashboard_all and len(df_cited) > 0: 
                             st.info(f'Dashboard for cited items in the library')
 
-                            colcite1, colcite2, colcite3 = st.columns(3)
+                            colcite1, colcite2, colcite3 = st.columns(3) 
 
                             with colcite1:
                                 st.metric(label=f"Citation average", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
