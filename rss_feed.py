@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import streamlit as st
 
 # RSS feed URL
-rss_feed_url = "https://feeds.megaphone.fm/spycast"
+rss_feed_url = "https://feeds.megaphone.fm/spycast" 
 
 # Parse the RSS feed
 feed = feedparser.parse(rss_feed_url)
