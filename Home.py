@@ -2066,7 +2066,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
             df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
  
-            with st.expander('**Select filters**', expanded=False):
+            with st.popover('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
 
                 df_journals = df_dedup.copy()

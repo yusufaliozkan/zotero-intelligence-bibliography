@@ -277,8 +277,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab2:
         st.header('Dashboard')
         st.markdown('#### Collection theme: ' + collection_name)
-        if st.button('Copyright'):
-            st.toast('© 2024 Yusuf Ozkan. All rights reserved. This website is licensed under a CC BY licence.')
 
         if df_collections['Title'].any() in ("", [], None, 0, False):
             all = st.checkbox('Show all types')
