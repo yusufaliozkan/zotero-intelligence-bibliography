@@ -201,7 +201,7 @@ with col1:
             items_not_in_df_item_podcast = items_not_in_df_item_podcast.reset_index(drop=True)
             st.write('**Podcasts**')
             row_nu = len(items_not_in_df_item_podcast.index)
-            if row_nu == 0:
+            if row_nu == 0: 
                 st.write('No new podcast published!')
             else:
                 items_not_in_df_item_podcast = items_not_in_df_item_podcast.sort_values(by=['PubDate'], ascending=False)
