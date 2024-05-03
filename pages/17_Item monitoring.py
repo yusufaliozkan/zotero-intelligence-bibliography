@@ -41,9 +41,7 @@ with st.sidebar:
 
 
 col1, col2 = st.columns([5,2])
-with st.popover("Open popover"):
-    st.markdown("Hello World 👋")
-    name = st.text_input("What's your name?")
+
 with col1:
 
     item_monitoring = st.button("Item monitoring")
