@@ -46,7 +46,7 @@ with col1:
     item_monitoring = st.button("Item monitoring")
     if item_monitoring:
         st.subheader('Monitoring section')
-        st.write('The following items :red-background[are not] in the library yet. Book reviews will not be included!')
+        st.markdown('The following items :red-background[are not] in the library yet. Book reviews will not be included!')
         with st.status("Scanning sources to find items...", expanded=True) as status:
         # with st.spinner('Scanning sources to find items...'): 
             api_links = [
