@@ -41,6 +41,7 @@ with st.sidebar:
 
 
 col1, col2 = st.columns([5,2])
+
 with col1:
 
     item_monitoring = st.button("Item monitoring")
