@@ -111,6 +111,7 @@ type_map = {
 df['Publication type'] = df['Publication type'].replace(type_map)
 
 df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
+df
 df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
 df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
 df['Date published'] = df['Date published'].fillna('No date')
