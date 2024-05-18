@@ -109,7 +109,6 @@ type_map = {
     'computerProgram':'Computer program'
 }
 df['Publication type'] = df['Publication type'].replace(type_map)
-df
 df['Date published'] = (
     df['Date published']
     .str.strip()
@@ -118,7 +117,6 @@ df['Date published'] = (
 df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
 df['Date published'] = df['Date published'].fillna('No date')
 # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
-df
 
 df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
 df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
