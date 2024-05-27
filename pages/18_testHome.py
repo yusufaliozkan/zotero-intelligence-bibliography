@@ -329,6 +329,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
                                     # Remove duplicates, if any
+                        filtered_df
                         filtered_df = filtered_df.drop_duplicates()
                         
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
