@@ -273,24 +273,27 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
+            def parse_boolean_query(query):
+                # Replace AND/OR/NOT with corresponding regex patterns
+                query = re.sub(r'\sAND\s', ' & ', query, flags=re.IGNORECASE)
+                query = re.sub(r'\sOR\s', ' | ', query, flags=re.IGNORECASE)
+                query = re.sub(r'\sNOT\s', ' ~ ', query, flags=re.IGNORECASE)
+                return query
+
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
                 cols, cola = st.columns([2,6])
                 with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
+                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
-                
-                if search_term:
-                    with st.status("Searching publications...", expanded = True) as status: #st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                        phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
-                        keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
 
+                if search_term:
+                    with st.status("Searching publications...", expanded=True) as status:
+                        # Update to support boolean search
+                        search_term = parse_boolean_query(search_term)
                         df_csv = df_dedup.copy()
 
-                        # include_abstracts = st.checkbox('Search keywords in abstracts too')
-                        
                         col112, col113 = st.columns([1,4])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
@@ -299,36 +302,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if only_citation:
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
 
-                        if include_abstracts=='In title & abstract':
-                            # Search for the entire phrase first
+                        if include_abstracts == 'In title & abstract':
+                            # Apply boolean search logic
                             filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
-                                (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                                df_csv.apply(lambda row: eval(f'({search_term})'), axis=1)
                             ]
-
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
-                                    (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
                         else:
-                            # Search for the entire phrase first
+                            # Apply boolean search logic to titles only
                             filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
+                                df_csv.apply(lambda row: eval(f'({search_term})'), axis=1)
                             ]
 
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
+                        # Display filtered results
+                        st.write(filtered_df)
 
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
