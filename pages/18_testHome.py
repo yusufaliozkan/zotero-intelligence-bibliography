@@ -428,7 +428,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 string = pd.Series(df_list).str.cat(sep=' ')
                                 wordcloud_texts = string
                                 wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False).generate(wordcloud_texts_str)
                                 plt.figure(figsize=(20,8))
                                 plt.axis('off')
                                 plt.title(f"Word Cloud for Titles")
@@ -460,6 +460,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
 
                                 def highlight_terms(text, terms):
+                                    # Define boolean operators
+                                    boolean_operators = {"AND", "OR", "NOT"}
+
                                     # Regular expression pattern to identify URLs
                                     url_pattern = r'https?://\S+'
 
@@ -470,8 +473,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     for url in urls:
                                         text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
 
-                                    # Create a regex pattern to find the search terms in the text
-                                    pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
+                                    # Create a regex pattern to find the search terms in the text, excluding boolean operators
+                                    pattern = re.compile('|'.join(re.escape(term) for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
 
                                     # Use HTML tags to highlight the terms in the text, excluding URLs
                                     highlighted_text = pattern.sub(
