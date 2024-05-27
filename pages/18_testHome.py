@@ -286,6 +286,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 query = ''
                 negate_next = False
+                negated_group = False
                 for token in search_tokens:
                     if token == "AND":
                         query += " & "
@@ -295,7 +296,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         negate_next = False
                     elif token == "NOT":
                         query += " ~("
-                        negate_next = True
+                        negated_group = True
+                        negate_next = False
                     else:
                         if include_abstracts == 'In title & abstract':
                             condition = f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
@@ -303,7 +305,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             condition = f'Title.str.contains("{token}", case=False, na=False)'
 
                         if negate_next:
+                            if negated_group:
+                                condition = f'({condition})'
                             condition = "~" + condition
+                            negated_group = False
                             negate_next = False
 
                         if query.endswith(" ~("):
