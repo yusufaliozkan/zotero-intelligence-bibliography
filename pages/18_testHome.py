@@ -328,11 +328,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
-                                    # Remove duplicates, if any
-                        filtered_df
+                        # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
-                        
-                        filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                                    
+                        filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                         filtered_df['Date published'] = filtered_df['Date published'].fillna('')
                         filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
@@ -363,7 +362,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             on = st.toggle('Generate dashboard')
 
                             if on and len(filtered_df) > 0: 
-                                st.info(f'Dashboard for search terms: {phrase_filter}')
+                                st.info(f'Dashboard for search terms: {search_term}')
                                 search_df = filtered_df.copy()
                                 publications_by_type = search_df['Publication type'].value_counts()
                                 fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
@@ -459,7 +458,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     articles_list.append(formatted_entry)  # Append formatted entry to the list
                                     abstract = row['Abstract']
                                     abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                    
+
                                 def highlight_terms(text, terms):
                                     # Regular expression pattern to identify URLs
                                     url_pattern = r'https?://\S+'
@@ -490,15 +489,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 # Display the numbered list using Markdown syntax
                                 for i, article in enumerate(articles_list, start=1):
                                     # Display the article with highlighted search terms
-                                    highlighted_article = article
+                                    highlighted_article = highlight_terms(article, search_tokens)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
                                     
                                     # Display abstract under each numbered item only if the checkbox is selected
                                     if display_abstracts:
                                         abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                         if pd.notnull(abstract):
-                                            if include_abstracts=='In title & abstract':
-                                                highlighted_abstract = abstract
+                                            if include_abstracts == 'In title & abstract':
+                                                highlighted_abstract = highlight_terms(abstract, search_tokens)
                                             else:
                                                 highlighted_abstract = abstract 
                                             st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
