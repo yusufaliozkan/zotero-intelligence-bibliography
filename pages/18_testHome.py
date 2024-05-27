@@ -357,8 +357,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
 
-                        filtered_df
-
                         filtered_df['Date published'] = (
                             filtered_df['Date published']
                             .str.strip()
