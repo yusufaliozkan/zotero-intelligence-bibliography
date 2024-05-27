@@ -285,18 +285,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     return df
 
                 query = ''
+                negate_next = False
                 for token in search_tokens:
                     if token == "AND":
                         query += " & "
+                        negate_next = False
                     elif token == "OR":
                         query += " | "
+                        negate_next = False
                     elif token == "NOT":
                         query += " ~("
+                        negate_next = True
                     else:
                         if include_abstracts == 'In title & abstract':
                             condition = f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
                         else:
                             condition = f'Title.str.contains("{token}", case=False, na=False)'
+
+                        if negate_next:
+                            condition = "~" + condition
+                            negate_next = False
 
                         if query.endswith(" ~("):
                             query += condition + ")"
