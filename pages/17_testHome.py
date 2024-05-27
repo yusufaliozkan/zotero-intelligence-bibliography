@@ -273,13 +273,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
-            if search_option == "Search keywords":
-                st.subheader('Search keywords', anchor=None)
-                cols, cola = st.columns([2,6])
-                with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
-                with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts')
                 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
