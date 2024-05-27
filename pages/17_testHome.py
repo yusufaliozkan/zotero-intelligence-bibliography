@@ -273,25 +273,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
-            def parse_boolean_query(query):
-                # Replace AND/OR/NOT with corresponding regex patterns
-                query = re.sub(r'\sAND\s', ' & ', query, flags=re.IGNORECASE)
-                query = re.sub(r'\sOR\s', ' | ', query, flags=re.IGNORECASE)
-                query = re.sub(r'\sNOT\s', ' ~ ', query, flags=re.IGNORECASE)
-                return query
-
-            if 'df_dedup' not in st.session_state:
-                # This is just a placeholder. Replace with actual data loading logic.
-                st.session_state.df_dedup = pd.DataFrame({
-                    'Title': ["Sample Title 1", "Sample Title 2"],
-                    'Abstract': ["Sample Abstract 1", "Sample Abstract 2"],
-                    'Citation': [5, None]
-                })
-
-            df_dedup = st.session_state.df_dedup
-
-            search_option = "Search keywords"  # This should be set based on actual user input.
-
+            if search_option == "Search keywords":
+                st.subheader('Search keywords', anchor=None)
+                cols, cola = st.columns([2,6])
+                with cols:
+                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
+                with cola:
+                    search_term = st.text_input('Search keywords in titles or abstracts')
+                
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
                 cols, cola = st.columns([2, 6])
@@ -302,9 +291,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 if search_term:
                     with st.spinner("Searching publications..."):
-                        search_term = parse_boolean_query(search_term)
+                        # Define the search pattern function
+                        def search_pattern(term):
+                            term = term.replace('AND', ' and ').replace('OR', ' or ').replace('NOT', ' not ')
+                            pattern = re.sub(r'(?:"([^"]*)")', r'"\1"', term)
+                            return pattern
+
+                        # Generate the search pattern
+                        pattern = search_pattern(search_term)
+
+                        # Function to filter dataframe based on pattern
+                        def boolean_search(df, column, pattern):
+                            return df[column].str.contains(pattern, case=False, na=False, regex=True)
+
                         df_csv = df_dedup.copy()
 
+                        # Checkbox for displaying abstracts and citation filter
                         col112, col113 = st.columns([1, 4])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
@@ -313,27 +315,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if only_citation:
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
 
-                        # Prepare search query
+                        # Apply the search filter based on user's selection
                         if include_abstracts == 'In title & abstract':
-                            search_query = (
-                                f"df_csv['Title'].str.contains('{search_term}', case=False, na=False, regex=True) | "
-                                f"df_csv['Abstract'].str.contains('{search_term}', case=False, na=False, regex=True)"
-                            )
+                            filtered_df = df_csv[
+                                boolean_search(df_csv, 'Title', pattern) | boolean_search(df_csv, 'Abstract', pattern)
+                            ]
                         else:
-                            search_query = f"df_csv['Title'].str.contains('{search_term}', case=False, na=False, regex=True)"
+                            filtered_df = df_csv[
+                                boolean_search(df_csv, 'Title', pattern)
+                            ]
 
-                        # Apply search query
-                        try:
-                            filtered_df = df_csv[eval(search_query)]
-                        except Exception as e:
-                            st.error(f"Error in search query: {e}")
-                            filtered_df = pd.DataFrame()  # Empty DataFrame
+                        # Display the filtered dataframe
+                        st.write(filtered_df)
 
+                        # Optionally display abstracts
                         if display_abstracts:
-                            st.write(filtered_df[['Title', 'Abstract']])
-                        else:
-                            st.write(filtered_df[['Title']])
-
+                            for index, row in filtered_df.iterrows():
+                                st.write(f"**Title**: {row['Title']}")
+                                st.write(f"**Abstract**: {row['Abstract']}")
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
                         
