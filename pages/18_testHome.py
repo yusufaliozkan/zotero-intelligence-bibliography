@@ -327,7 +327,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     return pd.DataFrame()  # Return empty DataFrame on error
 
                 return filtered_df
-
+            filtered_df
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
