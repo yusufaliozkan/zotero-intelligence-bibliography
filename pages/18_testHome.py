@@ -291,12 +291,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == "OR":
                         query += " | "
                     elif token == "NOT":
-                        query += " ~"
+                        query += " ~("
                     else:
                         if include_abstracts == 'In title & abstract':
-                            query += f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
+                            condition = f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
                         else:
-                            query += f'Title.str.contains("{token}", case=False, na=False)'
+                            condition = f'Title.str.contains("{token}", case=False, na=False)'
+
+                        if query.endswith(" ~("):
+                            query += condition + ")"
+                        else:
+                            query += condition
 
                 # Ensure the query string does not end with an operator
                 query = query.strip(' &|~')
