@@ -298,8 +298,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             query += f'Title.str.contains("{token}", case=False, na=False)'
 
+                # Ensure the query string does not end with an operator
+                query = query.strip(' &|~')
+
                 # Use eval to execute the query string on the DataFrame
-                filtered_df = df.query(query, engine='python')
+                try:
+                    filtered_df = df.query(query, engine='python')
+                except Exception as e:
+                    st.error(f"Error in query: {query}\n{e}")
+                    return pd.DataFrame()  # Return empty DataFrame on error
+
                 return filtered_df
 
             st.header('Search in database', anchor=None)
