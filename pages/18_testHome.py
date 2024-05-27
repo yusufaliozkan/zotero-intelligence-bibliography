@@ -327,7 +327,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     return pd.DataFrame()  # Return empty DataFrame on error
 
                 return filtered_df
-            filtered_df
+
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
@@ -356,6 +356,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
+
+                        filtered_df
                                     
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
                         filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
