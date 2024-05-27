@@ -269,6 +269,39 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #     )
 
             # Title input from the user
+            def parse_search_terms(search_term):
+                # Split the search term by spaces while keeping phrases in quotes together
+                tokens = re.findall(r'(?:"[^"]*"|\S+)', search_term)
+                boolean_tokens = []
+                for token in tokens:
+                    if token.upper() in ["AND", "OR", "NOT"]:
+                        boolean_tokens.append(token.upper())
+                    else:
+                        boolean_tokens.append(token.strip('"'))
+                return boolean_tokens
+
+            def apply_boolean_search(df, search_tokens, include_abstracts):
+                if not search_tokens:
+                    return df
+
+                query = ''
+                for token in search_tokens:
+                    if token == "AND":
+                        query += " & "
+                    elif token == "OR":
+                        query += " | "
+                    elif token == "NOT":
+                        query += " ~"
+                    else:
+                        if include_abstracts == 'In title & abstract':
+                            query += f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
+                        else:
+                            query += f'Title.str.contains("{token}", case=False, na=False)'
+
+                # Use eval to execute the query string on the DataFrame
+                filtered_df = df.query(query, engine='python')
+                return filtered_df
+
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
@@ -280,17 +313,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
-                
-                if search_term:
-                    with st.status("Searching publications...", expanded = True) as status: #st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                        phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
-                        keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
 
+                if search_term:
+                    with st.status("Searching publications...", expanded=True) as status:
+                        search_tokens = parse_search_terms(search_term)
                         df_csv = df_dedup.copy()
 
-                        # include_abstracts = st.checkbox('Search keywords in abstracts too')
-                        
                         col112, col113 = st.columns([1,4])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
@@ -299,38 +327,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if only_citation:
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
 
-                        if include_abstracts=='In title & abstract':
-                            # Search for the entire phrase first
-                            filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
-                                (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                            ]
-
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
-                                    (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
-                        else:
-                            # Search for the entire phrase first
-                            filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                            ]
-
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
-
-                        # Remove duplicates, if any
+                        filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
+                                    # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
                         
                         filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
