@@ -286,7 +286,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 query = ''
                 negate_next = False
-                for i, token in enumerate(search_tokens):
+                negated_group = False
+                for token in search_tokens:
                     if token == "AND":
                         query += " & "
                         negate_next = False
@@ -295,7 +296,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         negate_next = False
                     elif token == "NOT":
                         query += " ~("
-                        negate_next = True
+                        negated_group = True
+                        negate_next = False
                     else:
                         if include_abstracts == 'In title & abstract':
                             condition = f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
@@ -303,23 +305,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             condition = f'Title.str.contains("{token}", case=False, na=False)'
 
                         if negate_next:
+                            if negated_group:
+                                condition = f'({condition})'
                             condition = "~" + condition
+                            negated_group = False
                             negate_next = False
 
-                        if i < len(search_tokens) - 1 and search_tokens[i + 1] == "AND":
-                            condition += " & "
-                        elif i < len(search_tokens) - 1 and search_tokens[i + 1] == "OR":
-                            condition += " | "
-                        elif i < len(search_tokens) - 1 and search_tokens[i + 1] == "NOT":
-                            condition += " | "
-
-                        query += condition
+                        if query.endswith(" ~("):
+                            query += condition + ")"
+                        else:
+                            query += condition
 
                 # Ensure the query string does not end with an operator
                 query = query.strip(' &|~')
-
-                # Close any open parentheses at the end of the query
-                query += ")" * query.count("(")  # Close any open parentheses
 
                 # Use eval to execute the query string on the DataFrame
                 try:
