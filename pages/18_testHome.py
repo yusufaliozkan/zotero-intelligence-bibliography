@@ -279,6 +279,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     else:
                         boolean_tokens.append(token.strip('"'))
                 return boolean_tokens
+
             def apply_boolean_search(df, search_tokens, include_abstracts):
                 if not search_tokens:
                     return df
