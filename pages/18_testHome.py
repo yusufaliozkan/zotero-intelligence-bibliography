@@ -289,7 +289,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 query = ''
                 negate_next = False
-                negated_group = False
 
                 for i, token in enumerate(search_tokens):
                     if token == "AND":
@@ -299,12 +298,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         query += " | "
                         negate_next = False
                     elif token == "NOT":
-                        if i + 1 < len(search_tokens) and search_tokens[i + 1] != "(":
-                            query += " ~("
-                            negated_group = True
-                        else:
-                            query += " ~"
-                        negate_next = False
+                        query += " ~( "
+                        negate_next = True
                     elif token == "(":
                         query += " ("
                     elif token == ")":
@@ -317,14 +312,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             condition = f'Title.str.contains(r"\\b{token}\\b", case=False, na=False)'
 
                         if negate_next:
-                            if negated_group:
-                                condition = f'({condition})'
                             condition = "~" + condition
-                            negated_group = False
                             negate_next = False
-
-                        if query.endswith(" ~("):
-                            query += condition + ")"
+                            query += condition + " )"
                         else:
                             if i > 0 and search_tokens[i-1] not in ["AND", "OR", "NOT"]:
                                 query += " & " + condition
