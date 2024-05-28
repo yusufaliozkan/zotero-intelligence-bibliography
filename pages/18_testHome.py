@@ -522,7 +522,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
 
                                     # Create a regex pattern to find the search terms in the text, excluding boolean operators
-                                    pattern = re.compile('|'.join(re.escape(term) for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
+                                    pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
 
                                     # Use HTML tags to highlight the terms in the text, excluding URLs
                                     highlighted_text = pattern.sub(
