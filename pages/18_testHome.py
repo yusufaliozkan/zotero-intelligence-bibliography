@@ -300,9 +300,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == "NOT":
                         negate_next = True
                     elif token == "(":
-                        query += " ("
+                        query += "("
                     elif token == ")":
-                        query += ") "
+                        query += ")"
                     else:
                         # Using \b word boundaries to ensure whole word match
                         if include_abstracts == 'In title & abstract':
@@ -319,6 +319,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         query += condition
 
+                # Ensure the query is properly formatted
+                print(f"Constructed query: {query}")
+
                 # Use eval to execute the query string on the DataFrame
                 try:
                     filtered_df = df.query(query, engine='python')
@@ -327,7 +330,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     return pd.DataFrame()  # Return empty DataFrame on error
 
                 return filtered_df
-                                    
 
             def highlight_terms(text, terms):
                 # Define boolean operators
@@ -373,7 +375,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     search_term = st.text_input('Search keywords in titles or abstracts')
 
                 if search_term:
-                    with st.status("Searching publications...", expanded=True) as status:
+                    with st.spinner("Searching publications..."):
                         search_tokens = parse_search_terms(search_term)
                         df_csv = df_dedup.copy()
 
