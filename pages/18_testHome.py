@@ -278,7 +278,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if token.upper() in ["AND", "OR", "NOT", "(", ")"]:
                         boolean_tokens.append(token.upper())
                     else:
-                        boolean_tokens.append(token.strip('"'))
+                        boolean_tokens.append(token.strip('"','(', ')'))
                 return boolean_tokens
 
             def apply_boolean_search(df, search_tokens, include_abstracts):
