@@ -288,17 +288,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 query = ''
                 negate_next = False
-                negated_group = False
                 for token in search_tokens:
                     if token == "AND":
                         query += " & "
-                        negate_next = False
                     elif token == "OR":
                         query += " | "
-                        negate_next = False
                     elif token == "NOT":
-                        query += " ~("
-                        negated_group = True
                         negate_next = True
                     else:
                         token = re.escape(token)  # Escape special characters for regex
@@ -308,19 +303,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             condition = f'Title.str.contains("{token}", case=False, na=False)'
 
                         if negate_next:
-                            condition = f'~{condition}'
-                            if negated_group:
-                                condition += ")"
-                                negated_group = False
+                            condition = f'~({condition})'
                             negate_next = False
 
-                        if query.endswith(" ~("):
-                            query += condition + ")"
-                        else:
-                            query += condition
+                        query += condition
 
                 # Ensure the query string does not end with an operator
-                query = query.rstrip(' &|')
+                query = re.sub(r'\s[&|]*$', '', query)
 
                 # Use eval to execute the query string on the DataFrame
                 try:
@@ -344,7 +333,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     search_term = st.text_input('Search keywords in titles or abstracts')
 
                 if search_term:
-                    with st.status("Searching publications...", expanded=True) as status:
+                    with st.spinner("Searching publications..."):
                         search_tokens = parse_search_terms(search_term)
                         df_csv = df_dedup.copy()
 
