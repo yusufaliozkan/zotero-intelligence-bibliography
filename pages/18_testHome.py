@@ -278,7 +278,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if token.upper() in ["AND", "OR", "NOT", "(", ")"]:
                         boolean_tokens.append(token.upper())
                     else:
-                        boolean_tokens.append(token.strip('"')) 
+                        # Strip non-alphanumeric characters except spaces within quoted phrases
+                        stripped_token = re.sub(r'[^a-zA-Z0-9\s]', '', token)
+                        boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
 
             def apply_boolean_search(df, search_tokens, include_abstracts):
