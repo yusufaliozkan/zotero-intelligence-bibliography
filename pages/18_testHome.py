@@ -300,10 +300,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         negated_group = True
                         negate_next = False
                     else:
+                        # Using \b word boundaries to ensure whole word match
                         if include_abstracts == 'In title & abstract':
-                            condition = f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
+                            condition = f'(Title.str.contains(r"\\b{token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{token}\\b", case=False, na=False))'
                         else:
-                            condition = f'Title.str.contains("{token}", case=False, na=False)'
+                            condition = f'Title.str.contains(r"\\b{token}\\b", case=False, na=False)'
 
                         if negate_next:
                             if negated_group:
