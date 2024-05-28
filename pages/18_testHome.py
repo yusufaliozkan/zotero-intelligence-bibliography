@@ -269,12 +269,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #     )
 
             # Title input from the user
+
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
-                tokens = re.findall(r'(?:"[^"]*"|\S+)', search_term)
+                tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
-                    if token.upper() in ["AND", "OR", "NOT"]:
+                    if token.upper() in ["AND", "OR", "NOT", "(", ")"]:
                         boolean_tokens.append(token.upper())
                     else:
                         boolean_tokens.append(token.strip('"'))
@@ -299,6 +300,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         query += " ~("
                         negated_group = True
                         negate_next = False
+                    elif token == "(":
+                        query += " ("
+                    elif token == ")":
+                        query += ") "
                     else:
                         # Using \b word boundaries to ensure whole word match
                         if include_abstracts == 'In title & abstract':
@@ -333,6 +338,36 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 return filtered_df
 
+            def highlight_terms(text, terms):
+                # Define boolean operators
+                boolean_operators = {"AND", "OR", "NOT"}
+
+                # Regular expression pattern to identify URLs
+                url_pattern = r'https?://\S+'
+
+                # Find all URLs in the text
+                urls = re.findall(url_pattern, text)
+                
+                # Replace URLs in the text with placeholders to avoid highlighting
+                for url in urls:
+                    text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
+
+                # Create a regex pattern to find the search terms in the text, excluding boolean operators
+                pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
+
+                # Use HTML tags to highlight the terms in the text, excluding URLs
+                highlighted_text = pattern.sub(
+                    lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
+                                if match.group(0) not in urls else match.group(0),
+                    text
+                )
+
+                # Restore the original URLs in the highlighted text
+                for index, url in enumerate(urls):
+                    highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+
+                return highlighted_text
+
             # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
@@ -362,8 +397,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
                         # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
-                        filtered_df
-
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
                             # Ensure that 'Date published' is of string type
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
