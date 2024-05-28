@@ -324,6 +324,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Ensure the query string does not end with an operator
                 query = query.strip(' &|~')
 
+                # Print the generated query string for debugging
+                print("Generated Query:", query)
+
                 # Use eval to execute the query string on the DataFrame
                 try:
                     filtered_df = df.query(query, engine='python')
