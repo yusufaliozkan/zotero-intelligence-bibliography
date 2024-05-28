@@ -358,15 +358,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df = filtered_df.drop_duplicates()
                         filtered_df
 
-                        filtered_df['Date published'] = (
-                            filtered_df['Date published']
-                            .str.strip()
-                            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                        )                                    
-                        filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
-                        filtered_df['Date published'] = filtered_df['Date published'].fillna('')
-                        filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
-                        filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                        if not filtered_df.empty and 'Date published' in filtered_df.columns:
+                            # Ensure that 'Date published' is of string type
+                            filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
+                            
+                            # Convert to datetime with errors='coerce'
+                            filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                            
+                            # Check if there are any datetime-like values before using .dt accessor
+                            if filtered_df['Date published'].notna().any():
+                                filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                            else:
+                                filtered_df['Date published'] = ''
+                            
+                            filtered_df['Date published'] = filtered_df['Date published'].fillna('')
+                            filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
+                            filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                        else:
+                            # Handle the case where filtered_df is empty or does not contain 'Date published' column
+                            filtered_df['Date published'] = ''
+                            filtered_df['No date flag'] = 1  # or whatever default you need in this case
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         types2 = st.multiselect('Publication types', types, types, key='original2')
