@@ -300,9 +300,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == "NOT":
                         negate_next = True
                     elif token == "(":
-                        query += "("
+                        query += " ("
                     elif token == ")":
-                        query += ")"
+                        query += ") "
                     else:
                         # Using \b word boundaries to ensure whole word match
                         if include_abstracts == 'In title & abstract':
@@ -312,7 +312,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         if negate_next:
                             condition = f"~({condition})"
-                            negate_next = False  # Reset negate_next after applying negation
+                            negate_next = False
 
                         if query and query.strip()[-1] not in "&|(":
                             query += " & "
