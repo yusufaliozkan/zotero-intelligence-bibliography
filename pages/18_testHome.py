@@ -298,7 +298,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         query += " | "
                         negate_next = False
                     elif token == "NOT":
-                        query += " ~( "
                         negate_next = True
                     elif token == "(":
                         query += " ("
@@ -312,17 +311,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             condition = f'Title.str.contains(r"\\b{token}\\b", case=False, na=False)'
 
                         if negate_next:
-                            condition = "~" + condition
+                            condition = f"~({condition})"
                             negate_next = False
-                            query += condition + " )"
-                        else:
-                            if i > 0 and search_tokens[i-1] not in ["AND", "OR", "NOT"]:
-                                query += " & " + condition
-                            else:
-                                query += condition
 
-                # Ensure the query string does not end with an operator
-                query = query.strip(' &|~')
+                        if query and query.strip()[-1] not in "&|(":
+                            query += " & "
+
+                        query += condition
 
                 # Use eval to execute the query string on the DataFrame
                 try:
