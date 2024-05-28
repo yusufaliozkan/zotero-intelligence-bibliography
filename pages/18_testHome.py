@@ -413,6 +413,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Handle the case where filtered_df is empty or does not contain 'Date published' column
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1  # or whatever default you need in this case
+                        
+                        filtered_df
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         types2 = st.multiselect('Publication types', types, types, key='original2')
