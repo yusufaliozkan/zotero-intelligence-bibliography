@@ -333,7 +333,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 return filtered_df
             
-            filtered_df.columns
+            filtered_df
+            
 
             def highlight_terms(text, terms):
                 # Define boolean operators
