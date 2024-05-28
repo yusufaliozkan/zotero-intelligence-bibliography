@@ -291,13 +291,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 negate_next = False
 
                 for i, token in enumerate(search_tokens):
-                    if token == "AND":
+                    if token.upper() == "AND":
                         query += " & "
                         negate_next = False
-                    elif token == "OR":
+                    elif token.upper() == "OR":
                         query += " | "
                         negate_next = False
-                    elif token == "NOT":
+                    elif token.upper() == "NOT":
                         negate_next = True
                     elif token == "(":
                         query += " ("
