@@ -269,7 +269,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #     )
 
             # Title input from the user
-
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
                 tokens = re.findall(r'(?:"[^"]*"|\S+)', search_term)
@@ -298,19 +297,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == "NOT":
                         query += " ~("
                         negated_group = True
-                        negate_next = True
+                        negate_next = False
                     else:
-                        token = re.escape(token)  # Escape special characters for regex
                         if include_abstracts == 'In title & abstract':
                             condition = f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
                         else:
                             condition = f'Title.str.contains("{token}", case=False, na=False)'
 
                         if negate_next:
-                            condition = f'~{condition}'
                             if negated_group:
-                                condition += ")"
-                                negated_group = False
+                                condition = f'({condition})'
+                            condition = "~" + condition
+                            negated_group = False
                             negate_next = False
 
                         if query.endswith(" ~("):
@@ -319,7 +317,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             query += condition
 
                 # Ensure the query string does not end with an operator
-                query = query.rstrip(' &|')
+                query = query.strip(' &|~')
 
                 # Use eval to execute the query string on the DataFrame
                 try:
