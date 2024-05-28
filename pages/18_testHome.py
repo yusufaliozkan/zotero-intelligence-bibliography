@@ -270,6 +270,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
 
+
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
                 tokens = re.findall(r'(?:"[^"]*"|\S+)', search_term)
