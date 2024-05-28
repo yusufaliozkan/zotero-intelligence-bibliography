@@ -287,7 +287,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 query = ''
                 negate_next = False
                 negated_group = False
-                for token in search_tokens:
+
+                for i, token in enumerate(search_tokens):
                     if token == "AND":
                         query += " & "
                         negate_next = False
@@ -314,7 +315,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if query.endswith(" ~("):
                             query += condition + ")"
                         else:
-                            query += condition
+                            if i > 0 and search_tokens[i-1] not in ["AND", "OR", "NOT"]:
+                                query += " & " + condition
+                            else:
+                                query += condition
 
                 # Ensure the query string does not end with an operator
                 query = query.strip(' &|~')
@@ -328,6 +332,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 return filtered_df
 
+            # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
