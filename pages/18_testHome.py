@@ -299,8 +299,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         query += " | "
                         negate_next = False
                     elif token == "NOT":
-                        query += " ~("
-                        negated_group = True
+                        if i + 1 < len(search_tokens) and search_tokens[i + 1] != "(":
+                            query += " ~("
+                            negated_group = True
+                        else:
+                            query += " ~"
                         negate_next = False
                     elif token == "(":
                         query += " ("
