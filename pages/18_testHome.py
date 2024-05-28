@@ -287,7 +287,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 query = ''
                 negate_next = False
                 negated_group = False
-                open_paren_count = 0
 
                 for i, token in enumerate(search_tokens):
                     if token == "AND":
@@ -299,13 +298,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == "NOT":
                         query += " ~("
                         negated_group = True
-                        negate_next = True
-                    elif token.startswith("("):
-                        open_paren_count += 1
-                        query += token
-                    elif token.endswith(")"):
-                        open_paren_count -= 1
-                        query += token
+                        negate_next = False
                     else:
                         if include_abstracts == 'In title & abstract':
                             condition = f'(Title.str.contains("{token}", case=False, na=False) | Abstract.str.contains("{token}", case=False, na=False))'
@@ -313,20 +306,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             condition = f'Title.str.contains("{token}", case=False, na=False)'
 
                         if negate_next:
+                            if negated_group:
+                                condition = f'({condition})'
                             condition = "~" + condition
+                            negated_group = False
                             negate_next = False
 
-                        if negated_group and open_paren_count == 0:
-                            condition = condition + ")"
-                            negated_group = False
-
-                        if i > 0 and search_tokens[i-1] not in ["AND", "OR", "NOT", "("]:
-                            query += " & " + condition
+                        if query.endswith(" ~("):
+                            query += condition + ")"
                         else:
-                            query += condition
-
-                # Close any open parentheses
-                query += ")" * open_paren_count
+                            if i > 0 and search_tokens[i-1] not in ["AND", "OR", "NOT"]:
+                                query += " & " + condition
+                            else:
+                                query += condition
 
                 # Ensure the query string does not end with an operator
                 query = query.strip(' &|~')
