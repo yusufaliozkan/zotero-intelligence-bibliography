@@ -278,8 +278,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if token.upper() in ["AND", "OR", "NOT", "(", ")"]:
                         boolean_tokens.append(token.upper())
                     else:
-                        # Strip non-alphanumeric characters except spaces within quoted phrases
-                        stripped_token = re.sub(r'[^a-zA-Z0-9\s]', '', token)
+                        # Don't strip characters within quoted phrases
+                        if token.startswith('"') and token.endswith('"'):
+                            stripped_token = token.strip('"')
+                        else:
+                            # Strip non-alphanumeric characters except spaces within quoted phrases
+                            stripped_token = re.sub(r'[^a-zA-Z0-9\s]', '', token)
                         boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
 
@@ -305,10 +309,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         query += ") "
                     else:
                         # Using \b word boundaries to ensure whole word match
+                        escaped_token = re.escape(token)
                         if include_abstracts == 'In title & abstract':
-                            condition = f'(Title.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False))'
+                            condition = f'(Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{escaped_token}\\b", case=False, na=False))'
                         else:
-                            condition = f'Title.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False)'
+                            condition = f'Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False)'
 
                         if negate_next:
                             condition = f"~({condition})"
@@ -330,7 +335,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     return pd.DataFrame()  # Return empty DataFrame on error
 
                 return filtered_df
-                                    
+                                                
 
             def highlight_terms(text, terms):
                 # Define boolean operators
