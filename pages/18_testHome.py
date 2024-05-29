@@ -288,7 +288,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
 
-
+            # The rest of the code remains unchanged
             def apply_boolean_search(df, search_tokens, include_abstracts):
                 if not search_tokens:
                     return df
@@ -297,13 +297,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 negate_next = False
 
                 for i, token in enumerate(search_tokens):
-                    if token.upper() == "AND":
+                    if token == "AND":
                         query += " & "
                         negate_next = False
-                    elif token.upper() == "OR":
+                    elif token == "OR":
                         query += " | "
                         negate_next = False
-                    elif token.upper() == "NOT":
+                    elif token == "NOT":
                         negate_next = True
                     elif token == "(":
                         query += " ("
@@ -328,44 +328,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Debugging output
                 print(f"Query: {query}")
 
-                # Use eval to execute the query string on the DataFrame
                 try:
                     filtered_df = df.query(query, engine='python')
                 except Exception as e:
                     print(f"Error in query: {query}\n{e}")
-                    return pd.DataFrame()  # Return empty DataFrame on error
+                    return pd.DataFrame()
 
                 return filtered_df
-                                                
 
             def highlight_terms(text, terms):
-                # Define boolean operators
                 boolean_operators = {"AND", "OR", "NOT"}
-
-                # Regular expression pattern to identify URLs
                 url_pattern = r'https?://\S+'
-
-                # Find all URLs in the text
                 urls = re.findall(url_pattern, text)
-                
-                # Replace URLs in the text with placeholders to avoid highlighting
                 for url in urls:
                     text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
 
-                # Create a regex pattern to find the search terms in the text, excluding boolean operators
                 pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
-
-                # Use HTML tags to highlight the terms in the text, excluding URLs
-                highlighted_text = pattern.sub(
-                    lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' 
-                                if match.group(0) not in urls else match.group(0),
-                    text
-                )
-
-                # Restore the original URLs in the highlighted text
+                highlighted_text = pattern.sub(lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' if match.group(0) not in urls else match.group(0), text)
                 for index, url in enumerate(urls):
                     highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
-
+                
                 return highlighted_text
 
             # Example Streamlit code for context
@@ -375,9 +357,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
-                cols, cola = st.columns([2, 6])
+                cols, cola = st.columns([2,6])
                 with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
+                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
 
@@ -387,7 +369,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         search_tokens = parse_search_terms(search_term)
                         df_csv = df_dedup.copy()
 
-                        col112, col113 = st.columns([1, 4])
+                        col112, col113 = st.columns([1,4])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
                         with col113:
@@ -399,23 +381,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df = filtered_df.drop_duplicates()
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
-                            filtered_df['Date published'] = (
-                                filtered_df['Date published']
-                                .str.strip()
-                                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                            )
+                            filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
                             if filtered_df['Date published'].notna().any():
                                 filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                             else:
                                 filtered_df['Date published'] = ''
-
                             filtered_df['Date published'] = filtered_df['Date published'].fillna('')
                             filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
                             filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                         else:
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
-                        
                         filtered_df
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
