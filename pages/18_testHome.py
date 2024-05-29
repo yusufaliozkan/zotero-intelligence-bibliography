@@ -306,9 +306,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     else:
                         # Using \b word boundaries to ensure whole word match
                         if include_abstracts == 'In title & abstract':
-                            condition = f'(Title.str.contains(r"\\b{token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{token}\\b", case=False, na=False))'
+                            condition = f'(Title.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False))'
                         else:
-                            condition = f'Title.str.contains(r"\\b{token}\\b", case=False, na=False)'
+                            condition = f'Title.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False)'
 
                         if negate_next:
                             condition = f"~({condition})"
@@ -319,11 +319,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         query += condition
 
+                # Debugging output
+                print(f"Query: {query}")
+
                 # Use eval to execute the query string on the DataFrame
                 try:
                     filtered_df = df.query(query, engine='python')
                 except Exception as e:
-                    st.error(f"Error in query: {query}\n{e}")
+                    print(f"Error in query: {query}\n{e}")
                     return pd.DataFrame()  # Return empty DataFrame on error
 
                 return filtered_df
