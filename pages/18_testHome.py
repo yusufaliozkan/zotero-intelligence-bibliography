@@ -275,14 +275,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
-                    if token.upper() in ["AND", "OR", "NOT", "(", ")"]:
-                        boolean_tokens.append(token.upper())
+                    upper_token = token.upper()
+                    if upper_token in ["AND", "OR", "NOT", "(", ")"]:
+                        boolean_tokens.append(upper_token)
                     else:
-                        # Don't strip characters within quoted phrases
                         if token.startswith('"') and token.endswith('"'):
                             stripped_token = token.strip('"')
                         else:
-                            # Strip non-alphanumeric characters except spaces within quoted phrases
                             stripped_token = re.sub(r'[^a-zA-Z0-9\s]', '', token)
                         boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
