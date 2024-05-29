@@ -393,7 +393,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
                             
                             # Convert to datetime with errors='coerce'
-                            filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                            filtered_df['Date published'] = (
+                                filtered_df['Date published']
+                                .str.strip()
+                                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            )
+                            # filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
                             
                             # Check if there are any datetime-like values before using .dt accessor
                             if filtered_df['Date published'].notna().any():
