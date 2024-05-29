@@ -270,17 +270,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
 
+
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
-                tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
+                tokens = re.findall(r'(?:"([^"]+)"|\(|\)|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
+                    if isinstance(token, tuple):
+                        token = token[0]  # extract the actual match from the tuple
                     if token.upper() in ["AND", "OR", "NOT", "(", ")"]:
                         boolean_tokens.append(token.upper())
                     else:
-                        # Strip non-alphanumeric characters except spaces within quoted phrases
-                        stripped_token = re.sub(r'[^a-zA-Z0-9\s]', '', token)
-                        boolean_tokens.append(stripped_token.strip('"'))
+                        boolean_tokens.append(token)
                 return boolean_tokens
 
             def apply_boolean_search(df, search_tokens, include_abstracts):
