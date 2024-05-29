@@ -423,7 +423,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1  # or whatever default you need in this case
                         
-                        filtered_df
+                        filtered_df 
                 else:
                     st.warning("Please enter a search term.")
 
