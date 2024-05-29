@@ -272,15 +272,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
-                tokens = re.findall(r'(?:"([^"]+)"|\(|\)|\S+)', search_term)
+                tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
-                    if isinstance(token, tuple):
-                        token = token[0]  # extract the actual match from the tuple
                     if token.upper() in ["AND", "OR", "NOT", "(", ")"]:
                         boolean_tokens.append(token.upper())
                     else:
-                        boolean_tokens.append(token)
+                        # Strip non-alphanumeric characters except spaces within quoted phrases
+                        stripped_token = re.sub(r'[^a-zA-Z0-9\s]', '', token)
+                        boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
 
             def apply_boolean_search(df, search_tokens, include_abstracts):
@@ -304,19 +304,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == ")":
                         query += ") "
                     else:
-                        # Escape special characters in the token
-                        escaped_token = re.escape(token)
-                        # Handle phrase search
-                        if " " in token:  # if it's a phrase
-                            if include_abstracts == 'In title & abstract':
-                                condition = f'(Title.str.contains(r"{escaped_token}", case=False, na=False) | Abstract.str.contains(r"{escaped_token}", case=False, na=False))'
-                            else:
-                                condition = f'Title.str.contains(r"{escaped_token}", case=False, na=False)'
-                        else:  # single word
-                            if include_abstracts == 'In title & abstract':
-                                condition = f'(Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{escaped_token}\\b", case=False, na=False))'
-                            else:
-                                condition = f'Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False)'
+                        # Using \b word boundaries to ensure whole word match
+                        if include_abstracts == 'In title & abstract':
+                            condition = f'(Title.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False))'
+                        else:
+                            condition = f'Title.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False)'
 
                         if negate_next:
                             condition = f"~({condition})"
