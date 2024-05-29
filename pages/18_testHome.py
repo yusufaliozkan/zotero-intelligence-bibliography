@@ -270,7 +270,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
 
-
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
                 tokens = re.findall(r'(?:"([^"]+)"|\(|\)|\S+)', search_term)
@@ -305,11 +304,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == ")":
                         query += ") "
                     else:
-                        # Using \b word boundaries to ensure whole word match
-                        if include_abstracts == 'In title & abstract':
-                            condition = f'(Title.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False))'
-                        else:
-                            condition = f'Title.str.contains(r"\\b{re.escape(token)}\\b", case=False, na=False)'
+                        # Escape special characters in the token
+                        escaped_token = re.escape(token)
+                        # Handle phrase search
+                        if " " in token:  # if it's a phrase
+                            if include_abstracts == 'In title & abstract':
+                                condition = f'(Title.str.contains(r"{escaped_token}", case=False, na=False) | Abstract.str.contains(r"{escaped_token}", case=False, na=False))'
+                            else:
+                                condition = f'Title.str.contains(r"{escaped_token}", case=False, na=False)'
+                        else:  # single word
+                            if include_abstracts == 'In title & abstract':
+                                condition = f'(Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{escaped_token}\\b", case=False, na=False))'
+                            else:
+                                condition = f'Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False)'
 
                         if negate_next:
                             condition = f"~({condition})"
