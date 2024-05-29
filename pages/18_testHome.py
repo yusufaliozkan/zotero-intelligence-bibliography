@@ -423,9 +423,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1  # or whatever default you need in this case
                         
-                        filtered_df 
-                else:
-                    st.warning("Please enter a search term.")
+                        filtered_df
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         types2 = st.multiselect('Publication types', types, types, key='original2')
