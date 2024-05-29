@@ -373,9 +373,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
-                cols, cola = st.columns([2,6])
+                cols, cola = st.columns([2, 6])
                 with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
+                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
 
@@ -385,7 +385,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         search_tokens = parse_search_terms(search_term)
                         df_csv = df_dedup.copy()
 
-                        col112, col113 = st.columns([1,4])
+                        col112, col113 = st.columns([1, 4])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
                         with col113:
@@ -394,33 +394,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
-                        # Remove duplicates, if any
                         filtered_df = filtered_df.drop_duplicates()
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
-                            # Ensure that 'Date published' is of string type
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
-                            
-                            # Convert to datetime with errors='coerce'
                             filtered_df['Date published'] = (
                                 filtered_df['Date published']
                                 .str.strip()
                                 .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
                             )
-                            # filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                            
-                            # Check if there are any datetime-like values before using .dt accessor
                             if filtered_df['Date published'].notna().any():
                                 filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
                             else:
                                 filtered_df['Date published'] = ''
-                            
+
                             filtered_df['Date published'] = filtered_df['Date published'].fillna('')
                             filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
                             filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                         else:
-                            # Handle the case where filtered_df is empty or does not contain 'Date published' column
                             filtered_df['Date published'] = ''
-                            filtered_df['No date flag'] = 1  # or whatever default you need in this case
+                            filtered_df['No date flag'] = 1
                         
                         filtered_df
 
