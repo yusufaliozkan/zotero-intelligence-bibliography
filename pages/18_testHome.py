@@ -380,6 +380,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
 
+                search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
@@ -423,6 +424,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['No date flag'] = 1  # or whatever default you need in this case
                         
                         filtered_df
+                else:
+                    st.warning("Please enter a search term.")
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         types2 = st.multiselect('Publication types', types, types, key='original2')
