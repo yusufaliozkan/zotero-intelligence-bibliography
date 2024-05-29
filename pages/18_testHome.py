@@ -286,6 +286,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
 
+
             def apply_boolean_search(df, search_tokens, include_abstracts):
                 if not search_tokens:
                     return df
@@ -307,7 +308,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == ")":
                         query += ") "
                     else:
-                        # Using \b word boundaries to ensure whole word match
                         escaped_token = re.escape(token)
                         if include_abstracts == 'In title & abstract':
                             condition = f'(Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{escaped_token}\\b", case=False, na=False))'
