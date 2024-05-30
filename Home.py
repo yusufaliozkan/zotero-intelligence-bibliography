@@ -18,7 +18,7 @@ import nltk
 # nltk.download('all') 
 from nltk.corpus import stopwords
 # nltk.download('stopwords')
-# from wordcloud import WordCloud
+from wordcloud import WordCloud
 # from gsheetsdb import connect
 # import gsheetsdb as gdb
 from streamlit_gsheets import GSheetsConnection
