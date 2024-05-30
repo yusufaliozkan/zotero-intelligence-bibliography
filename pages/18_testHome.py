@@ -269,6 +269,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #     )
 
             # Title input from the user
+            @st.dialog("Cast your vote")
+
 
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
