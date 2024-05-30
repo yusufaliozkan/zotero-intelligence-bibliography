@@ -21,6 +21,7 @@ from nltk.corpus import stopwords
 # from wordcloud import WordCloud
 # from gsheetsdb import connect
 # import gsheetsdb as gdb
+from streamlit_gsheets import GSheetsConnection
 import datetime as dt
 import time
 import PIL
