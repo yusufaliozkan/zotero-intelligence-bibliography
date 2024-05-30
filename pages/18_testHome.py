@@ -1983,6 +1983,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             with st.expander('Events & conferences', expanded=True):
                 st.markdown('##### Next event')
+                conn = st.connection('')
+
+
                 conn = connect()
 
                 # Perform SQL query on the Google Sheet.
