@@ -9,19 +9,19 @@ import altair as alt
 from datetime import date, timedelta  
 from datetime import datetime
 import datetime
-# from streamlit_extras.switch_page_button import switch_page
-from streamlit_extras.stoggle import stoggle
+from streamlit_extras.switch_page_button import switch_page
 import plotly.express as px
 import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
-nltk.download('all') 
+# nltk.download('all') 
 from nltk.corpus import stopwords
-nltk.download('stopwords')
+# nltk.download('stopwords')
 from wordcloud import WordCloud
-from gsheetsdb import connect
-import gsheetsdb as gdb
+# from gsheetsdb import connect
+# import gsheetsdb as gdb
+from streamlit_gsheets import GSheetsConnection
 import datetime as dt
 import time
 import PIL
