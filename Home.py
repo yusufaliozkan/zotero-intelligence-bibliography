@@ -2007,8 +2007,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with tab2:
         st.header('Dashboard', anchor=False)
-        with st.popover("Open popover"):
-            st.markdown("Hello World 👋") 
         on_main_dashboard = st.toggle('Display dashboard')
         
         if on_main_dashboard:
