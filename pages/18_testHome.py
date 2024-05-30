@@ -221,8 +221,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard']) #, '🔀 Surprise me'])
     with tab1:
-        with st.popover("Open popover"):
-            st.markdown("Hello World 👋") 
+
         col1, col2 = st.columns([6,2]) 
         with col1: 
 
