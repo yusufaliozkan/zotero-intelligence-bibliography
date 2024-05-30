@@ -275,7 +275,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
-                    # Check if the token is a Boolean operator and it is in uppercase
+                    # Treat "AND", "OR", "NOT" as Boolean operators only if they are uppercase
                     if token in ["AND", "OR", "NOT", "(", ")"]:
                         boolean_tokens.append(token)
                     else:
@@ -288,7 +288,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
 
-            # The rest of the code remains unchanged
             def apply_boolean_search(df, search_tokens, include_abstracts):
                 if not search_tokens:
                     return df
