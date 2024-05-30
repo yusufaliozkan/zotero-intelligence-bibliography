@@ -277,7 +277,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 boolean_tokens = []
                 for token in tokens:
                     # Treat "AND", "OR", "NOT" as Boolean operators only if they are uppercase
-                    if token in ["AND", "OR", "NOT", "(", ")"]:
+                    if token in ["AND", "OR", "NOT"]:
                         boolean_tokens.append(token)
                     else:
                         # Don't strip characters within quoted phrases
