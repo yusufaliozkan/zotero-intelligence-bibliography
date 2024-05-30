@@ -3,7 +3,7 @@ pandas==2.2.1
 pyzotero==1.5.5
 PyQt6==6.6.1
 IPython==6.0
-NumPy==1.26.4
+NumPy==1.23.2
 Altair==4.2.0
 streamlit-extras==0.4.3
 plotly==5.13.1
