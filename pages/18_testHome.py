@@ -270,7 +270,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
             with st.popover("Open popover"):
-                st.markdown("Hello World 👋")
+                st.markdown("Hello World 👋") 
 
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
