@@ -270,6 +270,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
 
+
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
                 tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
@@ -283,8 +284,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if token.startswith('"') and token.endswith('"'):
                             stripped_token = token.strip('"')
                         else:
-                            # Strip non-alphanumeric characters except spaces within quoted phrases
-                            stripped_token = re.sub(r'[^a-zA-Z0-9\s]', '', token)
+                            # Preserve alphanumeric characters and apostrophes
+                            stripped_token = re.sub(r'[^a-zA-Z0-9\s\']', '', token)
                         boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
 
@@ -366,6 +367,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
+                        print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_dedup.copy()
 
                         col112, col113 = st.columns([1,4])
@@ -377,7 +379,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
+                        print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
                         filtered_df = filtered_df.drop_duplicates()
+                        print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
                             filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
@@ -391,6 +395,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
+                        print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
                         filtered_df
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
