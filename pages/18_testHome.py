@@ -221,6 +221,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard']) #, '🔀 Surprise me'])
     with tab1:
+        with st.popover("Open popover"):
+            st.markdown("Hello World 👋") 
         col1, col2 = st.columns([6,2]) 
         with col1: 
 
@@ -269,8 +271,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #     )
 
             # Title input from the user
-            with st.popover("Open popover"):
-                st.markdown("Hello World 👋") 
 
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
