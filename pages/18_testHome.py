@@ -284,8 +284,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if token.startswith('"') and token.endswith('"'):
                             stripped_token = token.strip('"')
                         else:
-                            # Preserve alphanumeric characters, apostrophes, and hyphens
-                            stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-]', '', token)
+                            # Preserve alphanumeric characters, apostrophes, hyphens, en dash, and other special characters
+                            stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–]', '', token)
                         boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
 
