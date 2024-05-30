@@ -1983,7 +1983,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             with st.expander('Events & conferences', expanded=True):
                 st.markdown('##### Next event')
-                conn = st.connection('')
+                conn = st.connection('gsheets', type=GSheetsConnection)
+                df_googlesheet = conn.read()
+                df_googlesheet
 
 
                 conn = connect()
