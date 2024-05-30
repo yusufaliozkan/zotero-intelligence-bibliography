@@ -365,7 +365,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 search_term = search_term.strip()
                 if search_term:
-                    with st.status("Searching publications...", expanded=True) as status:
+                    with st.spinner("Searching publications..."):
                         search_tokens = parse_search_terms(search_term)
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_dedup.copy()
