@@ -5,7 +5,7 @@ PyQt6==6.4.1
 IPython==6.0
 NumPy==1.23.0
 Altair==4.2.0
-streamlit-extras==0.2.4
+streamlit-extras==0.4.3
 plotly==5.13.1
 nltk==3.8.1
 wordcloud==1.9.3
