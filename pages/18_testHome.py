@@ -377,9 +377,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             only_citation = st.checkbox('Show cited items only')
                             if only_citation:
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
+                        
+                        df_csv
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
-                        filtered_df
                         print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
                         filtered_df = filtered_df.drop_duplicates()
                         print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
