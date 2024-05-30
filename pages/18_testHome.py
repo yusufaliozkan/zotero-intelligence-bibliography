@@ -270,21 +270,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
 
+            st.header('Search in database', anchor=None)
+            st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
             def parse_search_terms(search_term):
-                # Split the search term by spaces while keeping phrases in quotes together
                 tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
-                    # Treat "AND", "OR", "NOT" as Boolean operators only if they are uppercase
-                    if token in ["AND", "OR", "NOT", "(", ")"]:
-                        boolean_tokens.append(token)
+                    if token.upper() in ["AND", "OR", "NOT", "(", ")"]:
+                        boolean_tokens.append(token.upper())
                     else:
-                        # Don't strip characters within quoted phrases
                         if token.startswith('"') and token.endswith('"'):
                             stripped_token = token.strip('"')
                         else:
-                            # Preserve alphanumeric characters, apostrophes, and hyphens
                             stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-]', '', token)
                         boolean_tokens.append(stripped_token.strip('"'))
                 return boolean_tokens
@@ -306,9 +305,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     elif token == "NOT":
                         negate_next = True
                     elif token == "(":
-                        query += " ("
+                        query += "("
                     elif token == ")":
-                        query += ") "
+                        query += ")"
                     else:
                         escaped_token = re.escape(token)
                         if include_abstracts == 'In title & abstract':
@@ -336,25 +335,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 return filtered_df
 
-            def highlight_terms(text, terms):
-                boolean_operators = {"AND", "OR", "NOT"}
-                url_pattern = r'https?://\S+'
-                urls = re.findall(url_pattern, text)
-                for url in urls:
-                    text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
-
-                pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
-                highlighted_text = pattern.sub(lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' if match.group(0) not in urls else match.group(0), text)
-                for index, url in enumerate(urls):
-                    highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
-                
-                return highlighted_text
-
-            # Example Streamlit code for context
-            st.header('Search in database', anchor=None)
-            st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
-
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
                 cols, cola = st.columns([2,6])
@@ -365,7 +345,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 search_term = search_term.strip()
                 if search_term:
-                    with st.status("Searching publications...", expanded=True) as status:
+                    with st.spinner("Searching publications..."):
                         search_tokens = parse_search_terms(search_term)
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_dedup.copy()
@@ -396,6 +376,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
+
+                        # Ensure 'Publication type' column exists
+                        if 'Publication type' in filtered_df.columns:
+                            types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                        else:
+                            st.warning("No 'Publication type' column found in the filtered DataFrame.")
+                            types = []
                         filtered_df
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
