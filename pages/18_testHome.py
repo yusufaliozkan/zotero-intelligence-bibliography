@@ -271,7 +271,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Title input from the user
 
 
-
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
                 tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
@@ -337,9 +336,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 return filtered_df
 
-            # Example Streamlit code for context
-            import streamlit as st
+            def highlight_terms(text, terms):
+                boolean_operators = {"AND", "OR", "NOT"}
+                url_pattern = r'https?://\S+'
+                urls = re.findall(url_pattern, text)
+                for url in urls:
+                    text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
 
+                pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
+                highlighted_text = pattern.sub(lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' if match.group(0) not in urls else match.group(0), text)
+                for index, url in enumerate(urls):
+                    highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+                
+                return highlighted_text
+
+            # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
