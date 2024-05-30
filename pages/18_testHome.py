@@ -10,6 +10,7 @@ from datetime import date, timedelta
 from datetime import datetime
 import datetime
 # from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.stoggle import stoggle
 import plotly.express as px
 import numpy as np
 import re
