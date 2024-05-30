@@ -20,7 +20,7 @@ from nltk.corpus import stopwords
 # nltk.download('stopwords')
 from wordcloud import WordCloud
 from gsheetsdb import connect
-import gsheetsdb as gdb
+# import gsheetsdb as gdb
 import datetime as dt
 import time
 import PIL
