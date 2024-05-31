@@ -424,8 +424,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         dynamic_filters = DynamicFilters(df, filters=['region', 'country', 'city', 'district'])
 
-                        st.write("Apply filters in any order 👇")
-
                         dynamic_filters.display_filters()
 
                         # Retrieve the filtered DataFrame and give it a new name
