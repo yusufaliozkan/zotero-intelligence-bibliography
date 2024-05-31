@@ -20,8 +20,6 @@ from nltk.corpus import stopwords
 # nltk.download('stopwords')
 from wordcloud import WordCloud
 # from gsheetsdb import connect
-from shillelagh.backends.apsw.db import connect
-
 # import gsheetsdb as gdb
 from streamlit_gsheets import GSheetsConnection
 import datetime as dt
