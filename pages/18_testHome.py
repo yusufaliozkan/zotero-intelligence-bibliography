@@ -412,6 +412,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+                        
+                        if journals:
+                            filtered_df = filtered_df[filtered_df['Journal'].isin(journals)]
 
                         if not filtered_df.empty:
                             num_items = len(filtered_df)
