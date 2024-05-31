@@ -407,15 +407,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        
-                        with st.popover("Filters and more"):
-                            types2 = st.multiselect('Publication types', types, key='original2')
-                            collections = st.multiselect('Collection', collections, key='original_collection')
-                            container_download_button = st.container()
 
-                        st.toast('''
-                        **Search guide**                        
-                        ''')
+                        colfilter, coltoast = st.columns(2)
+                        with colfilter:
+                            with st.popover("Filters and more"):
+                                types2 = st.multiselect('Publication types', types, key='original2')
+                                collections = st.multiselect('Collection', collections, key='original_collection')
+                                container_download_button = st.container()
+                        with coltoast:
+                            if st.button('Search guide'):
+                                st.toast('''
+                                **Search guide**                        
+                                ''')
 
 
                         if types2:
