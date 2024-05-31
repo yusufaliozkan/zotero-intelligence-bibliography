@@ -237,7 +237,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
 
                 # Convert and format dates in df_forms
-                df_forms['date'] = pd.to_datetime(df_forms['date'], monthfirst=True)
+                df_forms['date'] = pd.to_datetime(df_forms['date'], dayfirst=True)
                 df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
                 df_forms['month'] = df_forms['date'].dt.strftime('%m')
                 df_forms['year'] = df_forms['date'].dt.strftime('%Y')
