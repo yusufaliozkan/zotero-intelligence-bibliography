@@ -404,7 +404,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                        with st.popover("Filters"):
+                        with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, types, key='original2')
                             container_download_button = st.container()
 
