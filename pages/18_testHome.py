@@ -34,7 +34,7 @@ import plotly.graph_objs as go
 import feedparser
 import requests
 from format_entry import format_entry
-from dynamic_filters import DynamicFilters
+from streamlit_dynamic_filters import DynamicFilters
 # from rss_feed import df_podcast, df_magazines
 
 
