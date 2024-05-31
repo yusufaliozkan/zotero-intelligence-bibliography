@@ -260,8 +260,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Filter events happening today or in the future
                 today = dt.date.today()
                 df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)  # Ensure 'date' is datetime
-                filter_mask = df_gs['date'] >= pd.to_datetime(today)
-                df_gs = df_gs[filter_mask]
+                filter = df_gs['date'] >= pd.to_datetime(today)
+                df_gs = df_gs[filter]
 
                 # Display the filtered dataframe
                 df_gs = df_gs.loc[filter]
