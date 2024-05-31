@@ -226,10 +226,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_gsheet
 
 
-                df_gsheet = conn.read()
-                df_gsheet
-
-
                 conn = connect()
 
                 # Perform SQL query on the Google Sheet.
