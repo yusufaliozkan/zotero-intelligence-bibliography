@@ -417,7 +417,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         with coltoast:
                             if st.button('Search guide'):
                                 st.toast('''
-                                **Search guide**                        
+                                **Search guide**
+                                The following Boolean operators are available: AND, OR, NOT                       
                                 ''')
 
 
