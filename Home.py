@@ -1980,7 +1980,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_con['details'] = df_con['details'].fillna('No details')
                 df_con['location'] = df_con['location'].fillna('No details')
                 df_con = df_con.fillna('')
-                df_con['date'] = pd.to_datetime(df_con['date'], dayfirst=True)     
+                df_con['date_end'] = pd.to_datetime(df_con['date'], dayfirst=True)     
                 filter = df_con['date_end']>=pd.to_datetime(today)
                 df_con = df_con.loc[filter]
                 df_con = df_con.head(1)
