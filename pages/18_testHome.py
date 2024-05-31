@@ -416,15 +416,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
                         
                         if journals:
-                            filtered_df = filtered_df[filtered_df['Journal'].isin(journals)]
-
-                        filtered_df = filtered_df.drop_duplicates(subset=['Zotero link'], keep='first')
+                            filtered_df = filtered_df[filtered_df['Journal'].isin(journals)]                        
 
                         if collections:
                             filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
                         if not filtered_df.empty:
                             num_items = len(filtered_df)
                             st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
+
+                            filtered_df = filtered_df.drop_duplicates(subset=['Zotero link'], keep='first')
 
                             download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                             download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
