@@ -423,6 +423,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df = pd.DataFrame(data)
 
                         dynamic_filters = DynamicFilters(df, filters=['region', 'country', 'city', 'district'])
+                        dynamic_filters
 
                         dynamic_filters.display_filters()
 
