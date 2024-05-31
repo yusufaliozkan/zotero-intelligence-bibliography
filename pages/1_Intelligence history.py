@@ -220,7 +220,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             with st.expander('Events', expanded=True):
                 # Create a connection object.
-                conn = connect()
+                conn = connect(":memory:")
 
                 # Perform SQL query on the Google Sheet.
                 # Uses st.cache to only rerun when the query changes or after 10 min.
