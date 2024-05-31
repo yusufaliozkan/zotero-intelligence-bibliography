@@ -12,16 +12,17 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
-nltk.download('all')
+# nltk.download('all')
 from nltk.corpus import stopwords
-nltk.download('stopwords')
+# nltk.download('stopwords')
 from wordcloud import WordCloud
-from gsheetsdb import connect
 import datetime as dt
 from fpdf import FPDF
 import base64
 from sidebar_content import sidebar_content
 from format_entry import format_entry
+from streamlit_gsheets import GSheetsConnection
+
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence studies network',
