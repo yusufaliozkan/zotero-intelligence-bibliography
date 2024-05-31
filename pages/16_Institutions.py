@@ -17,7 +17,6 @@ from nltk.corpus import stopwords
 # nltk.download('stopwords')
 from wordcloud import WordCloud
 import datetime as dt
-from fpdf import FPDF
 import base64
 from sidebar_content import sidebar_content
 from streamlit_gsheets import GSheetsConnection
