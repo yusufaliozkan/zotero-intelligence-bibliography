@@ -16,7 +16,7 @@ import nltk
 from nltk.corpus import stopwords
 # nltk.download('stopwords')
 from wordcloud import WordCloud
-from gsheetsdb import connect
+# from gsheetsdb import connect
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
