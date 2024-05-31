@@ -322,11 +322,9 @@ with tab3:
     df_cfp = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=135096406')
     df_cfp 
 
-    df_cfp['date'] = pd.to_datetime(df_cfp['date'])
-    df_cfp['date_new'] = df_cfp['date'].dt.strftime('%Y-%m-%d')
-    df_cfp['date_new'] = pd.to_datetime(df_cfp['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-    df_cfp['date_new_end'] = pd.to_datetime(df_cfp['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
-    df_cfp.sort_values(by='date', ascending = True, inplace=True)
+    df_cfp['deadline'] = pd.to_datetime(df_cfp['deadline'])
+    df_cfp['deadline'] = df_cfp['deadline'].dt.strftime('%Y-%m-%d')
+    df_cfp.sort_values(by='deadline', ascending = True, inplace=True)
 
     df_cfp['details'] = df_cfp['details'].fillna('No details')
     df_cfp = df_cfp.fillna('')
