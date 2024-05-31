@@ -319,20 +319,12 @@ with tab2:
         
 with tab3:
     st.subheader('Call for papers')
-    sheet_url3 = st.secrets["public_gsheets_url3"]
-    rows = run_query(f'SELECT * FROM "{sheet_url3}"')
+    df_cfp = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=135096406')
 
-    data = []
-    columns = ['name', 'organiser', 'link', 'date', 'details']
-
-    # Print results.
-    for row in rows:
-        data.append((row.name, row.organiser, row.link, row.deadline, row.details))
-
-    pd.set_option('display.max_colwidth', None)
-    df_cfp = pd.DataFrame(data, columns=columns)
-
+    df_cfp['date'] = pd.to_datetime(df_cfp['date'])
+    df_cfp['date_new'] = df_cfp['date'].dt.strftime('%Y-%m-%d')
     df_cfp['date_new'] = pd.to_datetime(df_cfp['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+    df_cfp['date_new_end'] = pd.to_datetime(df_cfp['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_cfp.sort_values(by='date', ascending = True, inplace=True)
 
     df_cfp['details'] = df_cfp['details'].fillna('No details')
