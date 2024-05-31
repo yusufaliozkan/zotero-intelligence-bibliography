@@ -404,57 +404,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
-
-                        data = {
-                            'region': ['North America', 'North America', 'Europe', 'Oceania',
-                                    'North America', 'North America', 'Europe', 'Oceania',
-                                    'North America', 'North America', 'Europe', 'Oceania'],
-                            'country': ['USA', 'Canada', 'UK', 'Australia',
-                                        'USA', 'Canada', 'UK', 'Australia',
-                                        'USA', 'Canada', 'UK', 'Australia'],
-                            'city': ['New York', 'Toronto', 'London', 'Sydney',
-                                    'New York', 'Toronto', 'London', 'Sydney',
-                                    'New York', 'Toronto', 'London', 'Sydney'],
-                            'district': ['Manhattan', 'Downtown', 'Westminster', 'CBD',
-                                        'Brooklyn', 'Midtown', 'Kensington', 'Circular Quay',
-                                        'Queens', 'Uptown', 'Camden', 'Bondi']
-                        }
-
-                        df = pd.DataFrame(data)
-
-                        dynamic_filters = DynamicFilters(df, filters=['region', 'country', 'city', 'district'])
-                        dynamic_filters
-
-                        dynamic_filters.display_filters()
-
-                        # Retrieve the filtered DataFrame and give it a new name
-                        filtered_df = dynamic_filters.display_df()
-                        filtered_df
-
-                        filtered_df
-                        dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Collection_Name'])
-                        dynamic_filters.display_filters()
-                        filtered_df = dynamic_filters.display_df()
-                        filtered_df
                         
-                        # types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                        # journals = filtered_df['Journal'].dropna().unique()
-                        # collections = filtered_df['Collection_Name'].dropna().unique()
+                        types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                        collections = filtered_df['Collection_Name'].dropna().unique()
                         
-                        # with st.popover("Filters and more"):
-                        #     types2 = st.multiselect('Publication types', types, key='original2')
-                        #     journals = st.multiselect('Journal', journals, key='original_journal' )
-                        #     collections = st.multiselect('Collection', collections, key='original_collection')
-                        #     container_download_button = st.container()
+                        with st.popover("Filters and more"):
+                            types2 = st.multiselect('Publication types', types, key='original2')
+                            journals = st.multiselect('Journal', journals, key='original_journal' )
+                            collections = st.multiselect('Collection', collections, key='original_collection')
+                            container_download_button = st.container()
 
-                        # if types2:
-                        #     filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
-                        
-                        # if journals:
-                        #     filtered_df = filtered_df[filtered_df['Journal'].isin(journals)]                        
+                        if types2:
+                            filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]                 
 
-                        # if collections:
-                        #     filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
+                        if collections:
+                            filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
 
 
                         if not filtered_df.empty:
