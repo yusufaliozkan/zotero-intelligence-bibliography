@@ -58,18 +58,6 @@ def run_query(query):
 tab1, tab2, tab3 = st.tabs(['Events', 'Conferences','Call for papers'])
 with tab1:
     st.header('Events')
-    sheet_url = st.secrets["public_gsheets_url"]
-    rows = run_query(f'SELECT * FROM "{sheet_url}"')
-
-    data = []
-    columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
-
-    # Print results.
-    for row in rows:
-        data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
-
-    pd.set_option('display.max_colwidth', None)
-    df_gs = pd.DataFrame(data, columns=columns)
 
     df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
