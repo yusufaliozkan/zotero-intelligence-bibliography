@@ -1914,68 +1914,61 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
                 st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
-            # with st.expander('Events & conferences', expanded=True):
-            #     st.markdown('##### Next event')
-            #     conn = connect()
+            with st.expander('Events & conferences', expanded=True):
+                st.markdown('##### Next event')
 
-            #     # Perform SQL query on the Google Sheet.
-            #     # Uses st.cache to only rerun when the query changes or after 10 min.
-            #     @st.cache_resource(ttl=900)
-            #     def run_query(query):
-            #         rows = conn.execute(query, headers=1)
-            #         rows = rows.fetchall()
-            #         return rows
+                conn = st.connection("gsheets", type=GSheetsConnection)
 
-            #     sheet_url = st.secrets["public_gsheets_url"]
-            #     rows = run_query(f'SELECT * FROM "{sheet_url}"')
+                # Read the first spreadsheet
+                df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
 
-            #     data = []
-            #     columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
+                # Read the second spreadsheet
+                df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
+                df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+                df_forms = df_forms.drop(columns=['Timestamp'])
 
-            #     # Print results.
-            #     for row in rows:
-            #         data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
+                # Convert and format dates in df_gs
+                df_gs['date'] = pd.to_datetime(df_gs['date'])
+                df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
 
-            #     pd.set_option('display.max_colwidth', None)
-            #     df_gs = pd.DataFrame(data, columns=columns)
-            #     df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                # Convert and format dates in df_forms
+                df_forms['date'] = pd.to_datetime(df_forms['date'])
+                df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
+                df_forms['month'] = df_forms['date'].dt.strftime('%m')
+                df_forms['year'] = df_forms['date'].dt.strftime('%Y')
+                df_forms['month_year'] = df_forms['date'].dt.strftime('%Y-%m')
+                df_forms.sort_values(by='date', ascending=True, inplace=True)
+                df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
 
-            #     sheet_url_forms = st.secrets["public_gsheets_url_forms"]
-            #     rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
-            #     data = []
-            #     columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
-            #     # Print results.
-            #     for row in rows:
-            #         data.append((row.Event_name, row.Event_organiser, row.Link_to_the_event, row.Date_of_event, row.Event_venue, row.Details))
-            #     pd.set_option('display.max_colwidth', None)
-            #     df_forms = pd.DataFrame(data, columns=columns)
+                # Fill missing values in df_forms
+                df_forms['details'] = df_forms['details'].fillna('No details')
+                df_forms = df_forms.fillna('')
 
-            #     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-            #     df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
-            #     df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
-            #     df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
-            #     df_forms.sort_values(by='date', ascending = True, inplace=True)
-            #     df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-                
-            #     df_forms['details'] = df_forms['details'].fillna('No details')
-            #     df_forms = df_forms.fillna('')
-            #     df_gs = pd.concat([df_gs, df_forms], axis=0)
-            #     df_gs = df_gs.reset_index(drop=True)
-            #     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+                # Concatenate df_gs and df_forms
+                df_gs = pd.concat([df_gs, df_forms], axis=0)
+                df_gs = df_gs.reset_index(drop=True)
+                df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
 
-            #     df_gs.sort_values(by='date', ascending = True, inplace=True)
-            #     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
-            #     df_gs = df_gs.fillna('')
-            #     today = dt.date.today()
-            #     filter = (df_gs['date']>=today)
-            #     df_gs = df_gs.loc[filter]
-            #     df_gs = df_gs.head(1)
-            #     if df_gs['event_name'].any() in ("", [], None, 0, False):
-            #         st.write('No upcoming event!')
-            #     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
-            #     row_nu = len(df_gs.index)
-            #     for i in range(row_nu):
-            #         st.write(df_gs1.iloc[i])
+                # Sort the concatenated dataframe by date_new
+                df_gs = df_gs.sort_values(by='date_new', ascending=True)
+
+                # Filter events happening today or in the future
+                today = dt.date.today()
+                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)  # Ensure 'date' is datetime
+                filter = df_gs['date'] >= pd.to_datetime(today)
+                df_gs = df_gs[filter]
+
+                # Display the filtered dataframe
+                df_gs = df_gs.loc[filter]
+                df_gs = df_gs.fillna('')
+                df_gs = df_gs.head(3)
+                if df_gs['event_name'].any() in ("", [], None, 0, False):
+                    st.write('No upcoming event!')
+                df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+                row_nu = len(df_gs.index)
+                for i in range(row_nu):
+                    st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+                st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
                 
             #     st.markdown('##### Next conference')
             #     sheet_url2 = st.secrets["public_gsheets_url2"]
