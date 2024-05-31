@@ -367,6 +367,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
+                @st.experimental_fragment
                 if st.button('Search guide'):
                     st.toast('''
                     **Search guide**
