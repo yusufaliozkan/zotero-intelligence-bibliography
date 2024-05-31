@@ -405,22 +405,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
 
-                        data = {
-                            'region': ['North America', 'North America', 'Europe', 'Oceania',
-                                    'North America', 'North America', 'Europe', 'Oceania',
-                                    'North America', 'North America', 'Europe', 'Oceania'],
-                            'country': ['USA', 'Canada', 'UK', 'Australia',
-                                        'USA', 'Canada', 'UK', 'Australia',
-                                        'USA', 'Canada', 'UK', 'Australia'],
-                            'city': ['New York', 'Toronto', 'London', 'Sydney',
-                                    'New York', 'Toronto', 'London', 'Sydney',
-                                    'New York', 'Toronto', 'London', 'Sydney'],
-                            'district': ['Manhattan', 'Downtown', 'Westminster', 'CBD',
-                                        'Brooklyn', 'Midtown', 'Kensington', 'Circular Quay',
-                                        'Queens', 'Uptown', 'Camden', 'Bondi']
-                        }
-
-                        df = pd.DataFrame(data)
+                        filtered_df
 
                         dynamic_filters = DynamicFilters(df, filters=['region', 'country', 'city', 'district'])
 
