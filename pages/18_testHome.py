@@ -405,7 +405,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         filtered_df
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                        types2 = st.multiselect('Publication types', types, types, key='original2')
+                        with st.popover("Open popover"):
+                            types2 = st.multiselect('Publication types', types, types, key='original2')
 
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
