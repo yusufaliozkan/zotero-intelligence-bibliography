@@ -356,19 +356,20 @@ with st.spinner('Preparing digest...'):
                             st.caption(row['Abstract']) 
         st.caption('[Go to top](#intelligence-studies-network-digest)')
 
-    with st.expander('Events:', expanded=ex):
+    with st.expander('Events:', expanded=True):
         st.header('Events')
         conn = st.connection("gsheets", type=GSheetsConnection)
         df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
 
         df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
-        df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+        df_forms = df_forms.rename(columns={'Event name': 'event_name', 'Event organiser': 'organiser', 'Link to the event': 'link', 'Date of event': 'date', 'Event venue': 'venue', 'Details': 'details'})
+
         # Convert and format dates in df_gs
-        df_gs['date'] = pd.to_datetime(df_gs['date'])
+        df_gs['date'] = pd.to_datetime(df_gs['date'], format='%d/%m/%Y', errors='coerce')
         df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
 
         # Convert and format dates in df_forms
-        df_forms['date'] = pd.to_datetime(df_forms['date'])
+        df_forms['date'] = pd.to_datetime(df_forms['date'], format='%d/%m/%Y', errors='coerce')
         df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
         df_forms['month'] = df_forms['date'].dt.strftime('%m')
         df_forms['year'] = df_forms['date'].dt.strftime('%Y')
@@ -376,23 +377,24 @@ with st.spinner('Preparing digest...'):
         df_forms.sort_values(by='date', ascending=True, inplace=True)
         df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
 
-        next_10 = today + dt.timedelta(days=10)    
-        next_20 = today + dt.timedelta(days=20)
-        next_30 = today + dt.timedelta(days=30)
+        next_10 = today_datetime + dt.timedelta(days=10)
+        next_20 = today_datetime + dt.timedelta(days=20)
+        next_30 = today_datetime + dt.timedelta(days=30)
         rg2 = next_10
-        aa='10 days'
+        aa = '10 days'
         range_day = st.radio('Show events in the next:', ('10 days', '20 days', '30 days'), key='events')
+        
         if range_day == '10 days':
             rg2 = next_10
             aa = '10 days'
-        if range_day == '20 days':
+        elif range_day == '20 days':
             rg2 = next_20
-            aa ='20 days'
-        if range_day == '30 days':
+            aa = '20 days'
+        elif range_day == '30 days':
             rg2 = next_30
-            aa='30 days'
-        df_gs['date'] = pd.to_datetime(df_gs['date'], format='%d/%m/%Y', errors='coerce')
+            aa = '30 days'
 
+        # Filter events between today and the selected range day
         filter_events = (df_gs['date'] < rg2) & (df_gs['date'] >= today_datetime)
         df_gs = df_gs.loc[filter_events]
 
