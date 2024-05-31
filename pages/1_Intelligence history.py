@@ -224,7 +224,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 conn = st.connection("gsheets", type=GSheetsConnection)
                 df_gsheet = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997') 
                 for row in df_gsheet.itertuples():
-                    st.write(f'{row.Event_name}')
+                    st.write(f'{row.Event-name}')
 
 
                 conn = connect()
