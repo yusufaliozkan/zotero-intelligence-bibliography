@@ -228,11 +228,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
                 df_forms = df_forms.drop(columns=['Timestamp'])
 
-                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
-                df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
 
-                df_forms['date'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
-                df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_forms['date'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
                 df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
                 df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
                 df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
