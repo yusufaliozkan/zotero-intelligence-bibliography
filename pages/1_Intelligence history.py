@@ -237,7 +237,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Convert and format dates in df_forms
                 df_forms['date'] = pd.to_datetime(df_forms['date'])
-                df_forms
                 df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
                 df_forms['month'] = df_forms['date'].dt.strftime('%m')
                 df_forms['year'] = df_forms['date'].dt.strftime('%Y')
@@ -253,7 +252,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_gs = pd.concat([df_gs, df_forms], axis=0)
                 df_gs = df_gs.reset_index(drop=True)
                 df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-                df_gs
 
                 # Sort the concatenated dataframe by date_new
                 df_gs = df_gs.sort_values(by='date_new', ascending=True)
