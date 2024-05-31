@@ -406,7 +406,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         with st.popover("Filters"):
                             types2 = st.multiselect('Publication types', types, types, key='original2')
-                            container = st.container()
+                            container_download_button = st.container()
 
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
@@ -425,7 +425,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             csv = convert_df(download_filtered)
                             today = datetime.date.today().isoformat()
                             a = 'search-result-' + today
-                            container.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+                            container_download_button.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
                             on = st.toggle('Generate dashboard')
 
