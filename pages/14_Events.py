@@ -329,7 +329,7 @@ with tab3:
     df_cfp['details'] = df_cfp['details'].fillna('No details')
     df_cfp = df_cfp.fillna('')
 
-    df_cfp = df_cfp.drop_duplicates(subset=['name', 'link', 'date'], keep='first')
+    df_cfp = df_cfp.drop_duplicates(subset=['name', 'link', 'deadline'], keep='first')
     
     display = st.checkbox('Show details', key='cfp')
 
