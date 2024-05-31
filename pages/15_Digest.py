@@ -391,7 +391,8 @@ with st.spinner('Preparing digest...'):
         if range_day == '30 days':
             rg2 = next_30
             aa='30 days'
-        df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True, format='%d/%m/%Y')
+        df_gs['date'] = pd.to_datetime(df_gs['date'], format='%d/%m/%Y', errors='coerce')
+
         filter_events = (df_gs['date'] < rg2) & (df_gs['date'] >= today_datetime)
         df_gs = df_gs.loc[filter_events]
 
