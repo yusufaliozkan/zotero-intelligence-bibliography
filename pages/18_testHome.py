@@ -377,7 +377,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     Search with parantheses is **not** available.                   
                     ''')
-                    time.sleep(.5)
+                    time.sleep(15)
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
