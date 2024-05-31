@@ -466,25 +466,16 @@ with st.spinner('Preparing digest...'):
 
     with st.expander('Call for papers:', expanded=ex):
         st.header('Call for papers')
-        sheet_url3 = st.secrets["public_gsheets_url3"]
-        rows = run_query(f'SELECT * FROM "{sheet_url3}"')
+        df_cfp = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=135096406') 
 
-        data = []
-        columns = ['name', 'organiser', 'link', 'date', 'details']
-
-        # Print results.
-        for row in rows:
-            data.append((row.name, row.organiser, row.link, row.deadline, row.details))
-
-        pd.set_option('display.max_colwidth', None)
-        df_cfp = pd.DataFrame(data, columns=columns)
-
-        df_cfp['date_new'] = pd.to_datetime(df_cfp['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-        df_cfp.sort_values(by='date', ascending = True, inplace=True)
-        df_cfp = df_cfp.drop_duplicates(subset=['name', 'link', 'date'], keep='first')
+        df_cfp['deadline'] = pd.to_datetime(df_cfp['deadline'])
+        df_cfp['deadline_new'] = df_cfp['deadline'].dt.strftime('%Y-%m-%d')
+        df_cfp.sort_values(by='deadline', ascending = True, inplace=True)
 
         df_cfp['details'] = df_cfp['details'].fillna('No details')
         df_cfp = df_cfp.fillna('')
+
+        df_cfp = df_cfp.drop_duplicates(subset=['name', 'link', 'deadline'], keep='first')
         
         display = st.checkbox('Show details', key='cfp')
 
