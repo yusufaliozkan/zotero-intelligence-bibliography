@@ -288,7 +288,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             stripped_token = token.strip('"')
                         else:
                             # Preserve alphanumeric characters, apostrophes, hyphens, en dash, and other special characters
-                            stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–’]', '', token)
+                            stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–’()]', '', token)
                         boolean_tokens.append(stripped_token.strip('"'))
                 
                 # Remove trailing operators
@@ -313,10 +313,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         negate_next = False
                     elif token == "NOT":
                         negate_next = True
-                    # elif token == "(":
-                    #     query += " ("
-                    # elif token == ")":
-                    #     query += ") "
+                    elif token == "(":
+                        query += " ("
+                    elif token == ")":
+                        query += ") "
                     else:
                         escaped_token = re.escape(token)
                         if include_abstracts == 'In title & abstract':
