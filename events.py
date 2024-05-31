@@ -5,8 +5,6 @@ import datetime as dt
 
 def evens_conferences():
     conn = st.connection("gsheets", type=GSheetsConnection)
-    st.markdown('##### Next event')
-    result = []
     # Read the first spreadsheet
     df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
 
@@ -52,6 +50,8 @@ def evens_conferences():
     df_gs = df_gs.head(3)
     
     result = []
+    result.append('##### Next event')
+
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         result.append('No upcoming event!')
     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
@@ -60,7 +60,7 @@ def evens_conferences():
         result.append(''+str(i+1)+') '+ df_gs1.iloc[i])
     result.append('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
-    st.markdown('##### Next conference')
+    result.append('##### Next conference')
     df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
     df_con['date'] = pd.to_datetime(df_con['date'])
     df_con['date_new'] = df_con['date'].dt.strftime('%Y-%m-%d')
