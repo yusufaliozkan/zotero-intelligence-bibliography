@@ -229,7 +229,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_forms = df_forms.drop(columns=['Timestamp'])
                 df_forms
 
-                df_gs['date'] = pd.to_datetime(df_gs['date'], format='%m/%d/%Y')
+                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m/%d/%Y')
                 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
 
                 df_forms['date'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
