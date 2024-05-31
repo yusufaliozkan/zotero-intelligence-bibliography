@@ -276,7 +276,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             def parse_search_terms(search_term):
                 # Split the search term by spaces while keeping phrases in quotes together
-                tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
+                tokens = re.findall(r'(?:"[^"]*"|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
                     # Treat "AND", "OR", "NOT" as Boolean operators only if they are uppercase
@@ -289,13 +289,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             # Preserve alphanumeric characters, apostrophes, hyphens, en dash, and other special characters
                             stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–’]', '', token)
+                            # Remove parentheses from the stripped token
+                            stripped_token = stripped_token.replace('(', '').replace(')', '')
                         boolean_tokens.append(stripped_token.strip('"'))
-                
-                # Remove trailing operators
-                while boolean_tokens and boolean_tokens[-1] in ["AND", "OR", "NOT"]:
-                    boolean_tokens.pop()
-                
-                return boolean_tokens
 
             def apply_boolean_search(df, search_tokens, include_abstracts):
                 if not search_tokens:
