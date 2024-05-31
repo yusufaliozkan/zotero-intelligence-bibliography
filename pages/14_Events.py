@@ -70,24 +70,7 @@ with tab1:
     df_gs['details'] = df_gs['details'].fillna('No details')
     df_gs = df_gs.fillna('')    
 
-    sheet_url_forms = st.secrets["public_gsheets_url_forms"]
-    rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
-    data = []
-    columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
-    # Print results.
-    for row in rows:
-        data.append((row.Event_name, row.Event_organiser, row.Link_to_the_event, row.Date_of_event, row.Event_venue, row.Details))
-    pd.set_option('display.max_colwidth', None)
-    df_forms = pd.DataFrame(data, columns=columns)
-
-    data2 = []
-    columns2 = ['timestamp']
-    # Print results.
-    for row in rows:
-        data2.append((row.Timestamp))
-    pd.set_option('display.max_colwidth', None)
-    df_forms2 = pd.DataFrame(data2, columns=columns2)
-    df_forms2['date_new'] = pd.to_datetime(df_forms2['timestamp'], dayfirst = True).dt.strftime('%d/%m/%Y - %H:%M')
+    df_forms2['date_new'] = pd.to_datetime(df_forms2['Timestamp'], dayfirst = True).dt.strftime('%d/%m/%Y - %H:%M')
     df_forms2 = df_forms2.sort_index(ascending=False)
     df_forms2 = df_forms2.reset_index(drop=True)
     container.write('The events page last updated on ' + '**'+ df_forms2.loc[0]['date_new']+'**')
