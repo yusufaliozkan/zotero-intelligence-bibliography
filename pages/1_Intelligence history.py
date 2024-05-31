@@ -226,6 +226,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
                 df_gs
                 df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
+                df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+                df_forms = df_forms.drop(columns=['TimeStamps'])
+
                 df_forms
 
 
