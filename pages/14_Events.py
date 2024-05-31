@@ -60,19 +60,18 @@ tab1, tab2, tab3 = st.tabs(['Events', 'Conferences','Call for papers'])
 with tab1:
     st.header('Events')
 
-    df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-    df_gs['month'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%m')
-    df_gs['year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y')
-    df_gs['month_year'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m')
-    df_gs.sort_values(by='date', ascending = True, inplace=True)
-    df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-    
-    df_gs['details'] = df_gs['details'].fillna('No details')
-    df_gs = df_gs.fillna('')    
+    # Convert and format dates in df_gs
+    df_gs['date'] = pd.to_datetime(df_gs['date'])
+    df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
 
-    df_forms2['date_new'] = pd.to_datetime(df_forms2['Timestamp'], dayfirst = True).dt.strftime('%d/%m/%Y - %H:%M')
-    df_forms2 = df_forms2.sort_index(ascending=False)
-    df_forms2 = df_forms2.reset_index(drop=True)
+    # Convert and format dates in df_forms
+    df_forms['date'] = pd.to_datetime(df_forms['date'])
+    df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
+    df_forms['month'] = df_forms['date'].dt.strftime('%m')
+    df_forms['year'] = df_forms['date'].dt.strftime('%Y')
+    df_forms['month_year'] = df_forms['date'].dt.strftime('%Y-%m')
+    df_forms.sort_values(by='date', ascending=True, inplace=True)
+    df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
     container.write('The events page last updated on ' + '**'+ df_forms2.loc[0]['date_new']+'**')
 
     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
