@@ -367,15 +367,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
-                @st.experimental_dialog("Cast your vote")
+                @st.experimental_dialog("Search guide")
                 def guide(item):
-                    st.write('text')
-                
-                if "guide" not in st.session_state:
-                    if st.button("A"):
-                        guide("A")
-                if st.button('Search guide'):
-                    st.toast('''
+                    st.write('''
                     **Search guide**
 
                     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
@@ -384,6 +378,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     Search with parantheses is **not** available.                   
                     ''')
+                
+                if "guide" not in st.session_state:
+                    if st.button("Search guide"):
+                        guide("Search guide")
+                # if st.button('Search guide'):
+                #     st.toast('''
+                #     **Search guide**
+
+                #     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
+
+                #     Search with double quote is available. (e.g. "covert action")
+
+                #     Search with parantheses is **not** available.                   
+                #     ''')
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
