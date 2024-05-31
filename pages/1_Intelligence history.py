@@ -222,8 +222,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Create a connection object.
 
                 conn = st.connection("gsheets", type=GSheetsConnection)
-                df_gsheet = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836') 
-                df_gsheet
+                df_gsheet = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997') 
+                for row in df_gsheet.itertuples():
+                    st.write(f'{row.Details}')
 
 
                 conn = connect()
