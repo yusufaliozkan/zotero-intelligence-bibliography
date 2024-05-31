@@ -16,8 +16,7 @@ import nltk
 from nltk.corpus import stopwords
 # nltk.download('stopwords')
 from wordcloud import WordCloud
-# from gsheetsdb import connect
-from shillelagh.backends.apsw.db import connect
+from gsheetsdb import connect
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
@@ -220,7 +219,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             with st.expander('Events', expanded=True):
                 # Create a connection object.
-                conn = connect(":memory:")
+                conn = connect()
 
                 # Perform SQL query on the Google Sheet.
                 # Uses st.cache to only rerun when the query changes or after 10 min.
