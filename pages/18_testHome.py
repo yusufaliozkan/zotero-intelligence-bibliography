@@ -313,10 +313,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         negate_next = False
                     elif token == "NOT":
                         negate_next = True
-                    elif token == "(":
-                        query += " ("
-                    elif token == ")":
-                        query += ") "
+                    # elif token == "(":
+                    #     query += " ("
+                    # elif token == ")":
+                    #     query += ") "
                     else:
                         escaped_token = re.escape(token)
                         if include_abstracts == 'In title & abstract':
