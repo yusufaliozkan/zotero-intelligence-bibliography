@@ -372,7 +372,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write('text')
                     st.rerun()
                 
-                if "vote" not in st.session_state:
+                if "guide" not in st.session_state:
                     if st.button("A"):
                         guide("A")
                 if st.button('Search guide'):
