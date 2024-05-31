@@ -405,11 +405,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
 
-                        dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Journal', 'Collection_Name'])
-                        dynamic_filters.display_filters()
-                        filtered_df = dynamic_filters.get_filtered_df()
+                        # dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Journal', 'Collection_Name'])
+                        # dynamic_filters.display_filters()
+                        # filtered_df = dynamic_filters.get_filtered_df()
 
-                        filtered_df
+                        # filtered_df
 
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
