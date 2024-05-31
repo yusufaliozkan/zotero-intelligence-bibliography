@@ -240,7 +240,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
                 df_forms.sort_values(by='date', ascending = True, inplace=True)
                 df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-                df_forms
                 
                 df_forms['details'] = df_forms['details'].fillna('No details')
                 df_forms = df_forms.fillna('')
@@ -252,7 +251,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_gs
                 today = dt.date.today()
                 today
-                filter = (df_gs['date']>=today)
+                filter = (df_gs['date_new']>=today)
                 df_gs = df_gs.loc[filter]
                 df_gs = df_gs.fillna('')
                 df_gs = df_gs.head(3)
