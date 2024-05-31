@@ -374,7 +374,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 if "vote" not in st.session_state:
                     if st.button("A"):
-                        vote("A")
+                        guide("A")
                 if st.button('Search guide'):
                     st.toast('''
                     **Search guide**
