@@ -418,22 +418,16 @@ with st.spinner('Preparing digest...'):
 
     with st.expander('Conferences:', expanded=ex):
         st.header('Conferences')
-        sheet_url2 = st.secrets["public_gsheets_url2"]
-        rows = run_query(f'SELECT * FROM "{sheet_url2}"')
-
-        data = []
-        columns = ['conference_name', 'organiser', 'link', 'date', 'date_end', 'venue', 'details', 'location']
-
-        # Print results.
-        for row in rows:
-            data.append((row.conference_name, row.organiser, row.link, row.date, row.date_end, row.venue, row.details, row.location))
-
-        pd.set_option('display.max_colwidth', None)
-        df_con = pd.DataFrame(data, columns=columns)
-
+        df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
+        df_con['date'] = pd.to_datetime(df_con['date'])
+        df_con['date_new'] = df_con['date'].dt.strftime('%Y-%m-%d')
         df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
         df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
         df_con.sort_values(by='date', ascending = True, inplace=True)
+        df_con['details'] = df_con['details'].fillna('No details')
+        df_con['location'] = df_con['location'].fillna('No details')
+        df_con = df_con.fillna('')
+        df_con['date_end'] = pd.to_datetime(df_con['date'], dayfirst=True)    
 
         next_1mo = today + dt.timedelta(days=30)
         next_3mo = today + dt.timedelta(days=90)    
