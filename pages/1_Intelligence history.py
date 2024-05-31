@@ -222,7 +222,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Create a connection object.
                 conn = st.connection("gsheets", type=GSheetsConnection)
                 data = conn.read(spreadsheet='public_gsheets_url', usecols=[0, 1])
-                data
+                data 
                 st.dataframe(data)
 
 
