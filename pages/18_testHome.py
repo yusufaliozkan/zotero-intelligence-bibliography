@@ -206,7 +206,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
     dynamic_filters = DynamicFilters(df_duplicated, filters=['Publication type', 'Journal', 'Collection_Name'])
-    dynamic_filters.df_duplicated()
+    dynamic_filters.display_df()
 
     col1, col2 = st.columns([3,5])
     with col2:
