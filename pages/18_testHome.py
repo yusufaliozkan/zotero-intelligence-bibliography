@@ -426,7 +426,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         st.write("Apply filters in any order 👇")
 
-                        dynamic_filters.display_filters(location='columns', num_columns=2, gap='large')
+                        dynamic_filters.display_filters()
 
                         # Retrieve the filtered DataFrame and give it a new name
                         filtered_df = dynamic_filters.filtered_df
