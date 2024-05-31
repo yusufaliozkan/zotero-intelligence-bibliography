@@ -417,8 +417,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         if journals:
                             filtered_df = filtered_df[filtered_df['Journal'].isin(journals)]
-                        # else:
-                        #     filtered_df = filtered_df.drop_duplicates(subset=['Zotero link'], keep='first')
+
+                        filtered_df = filtered_df.drop_duplicates(subset=['Zotero link'], keep='first')
 
                         if collections:
                             filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
