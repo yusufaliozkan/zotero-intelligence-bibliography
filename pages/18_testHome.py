@@ -370,7 +370,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 @st.experimental_dialog("Cast your vote")
                 def guide(item):
                     st.write('text')
-                    st.rerun()
                 
                 if "guide" not in st.session_state:
                     if st.button("A"):
