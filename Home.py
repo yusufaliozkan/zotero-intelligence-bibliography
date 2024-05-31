@@ -1972,7 +1972,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 st.markdown('##### Next conference')
                 df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
-                df_con
             #     sheet_url2 = st.secrets["public_gsheets_url2"]
             #     rows = run_query(f'SELECT * FROM "{sheet_url2}"')
             #     data = []
