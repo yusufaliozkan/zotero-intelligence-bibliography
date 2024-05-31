@@ -226,7 +226,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.dataframe(df_gsheet)
                 df_gsheet['Date of event'] = pd.to_datetime(df_gsheet['Date of event'], dayfirst = True).dt.strftime('%d/%m/%Y')
 
-                df_forms = 
 
 
                 conn = connect()
