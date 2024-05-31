@@ -403,6 +403,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
+
+                        dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Journal', 'Collection_Name'])
+                        with st.popover("Filters and more"):
+                            dynamic_filters.display_filters()
+                        filtered_df = dynamic_filters.get_filtered_df()
+                        filtered_df
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         journals = filtered_df['Journal'].dropna().unique()
@@ -422,6 +428,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         if collections:
                             filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
+
+
                         if not filtered_df.empty:
                             num_items = len(filtered_df)
                             st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
