@@ -370,13 +370,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if st.button('Search guide'):
                     st.toast('''
                     **Search guide**
-                    
+
                     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
 
                     Search with double quote is available. (e.g. "covert action")
 
                     Search with parantheses is **not** available.                   
                     ''')
+                    time.sleep(.5)
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
