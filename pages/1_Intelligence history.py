@@ -225,7 +225,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Read the first spreadsheet
                 df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
-                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)
 
                 # Read the second spreadsheet
                 df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
@@ -233,7 +232,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_forms = df_forms.drop(columns=['Timestamp'])
 
                 # Convert and format dates in df_gs
-                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)
+                df_gs['date'] = pd.to_datetime(df_gs['date'])
                 df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
 
                 # Convert and format dates in df_forms
