@@ -264,7 +264,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_gs = df_gs[filter_mask]
 
                 # Display the filtered dataframe
-                df_gs
                 df_gs = df_gs.loc[filter]
                 df_gs = df_gs.fillna('')
                 df_gs = df_gs.head(3)
