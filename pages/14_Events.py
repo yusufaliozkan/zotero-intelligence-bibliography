@@ -21,7 +21,6 @@ from urllib.parse import urlparse
 from sidebar_content import sidebar_content
 from streamlit_gsheets import GSheetsConnection
 
-
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence studies network',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",

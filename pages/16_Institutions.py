@@ -20,6 +20,7 @@ import datetime as dt
 import base64
 from sidebar_content import sidebar_content
 from streamlit_gsheets import GSheetsConnection
+from events import evens_conferences
 
 
 st.set_page_config(layout = "wide", 
