@@ -429,9 +429,9 @@ with st.spinner('Preparing digest...'):
         df_con = df_con.fillna('')
         df_con['date_end'] = pd.to_datetime(df_con['date'], dayfirst=True)    
 
-        next_1mo = today + dt.timedelta(days=30)
-        next_3mo = today + dt.timedelta(days=90)    
-        next_6mo = today + dt.timedelta(days=180)
+        next_1mo = today_datetime  + dt.timedelta(days=30)
+        next_3mo = today_datetime  + dt.timedelta(days=90)    
+        next_6mo = today_datetime  + dt.timedelta(days=180)
         rg3 = next_3mo
 
         range_day = st.radio('Show conferences in the next: ', ('1 month', '3 months', '6 months'), key='conferences')
@@ -444,7 +444,6 @@ with st.spinner('Preparing digest...'):
         if range_day == '6 months':
             rg3 = next_6mo
             aaa = '6 months'
-        # filter_events = (df_con['date']<rg3) & (df_con['date']>=today)
         filter_events = (df_con['date'] < rg3) & (df_con['date'] >= today_datetime)
         df_con = df_con.loc[filter_events]
 
