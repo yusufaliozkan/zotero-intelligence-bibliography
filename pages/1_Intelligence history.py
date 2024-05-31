@@ -297,6 +297,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 df_gs.sort_values(by='date', ascending = True, inplace=True)
                 today = dt.date.today()
+                today
                 filter = (df_gs['date']>=today)
                 df_gs = df_gs.loc[filter]
                 df_gs = df_gs.fillna('')
