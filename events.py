@@ -60,7 +60,7 @@ def evens_conferences():
         result.append(''+str(i+1)+') '+ df_gs1.iloc[i])
     result.append('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
-    result.append('##### Next conference')
+    st.markdown('##### Next conference')
     df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
     df_con['date'] = pd.to_datetime(df_con['date'])
     df_con['date_new'] = df_con['date'].dt.strftime('%Y-%m-%d')
