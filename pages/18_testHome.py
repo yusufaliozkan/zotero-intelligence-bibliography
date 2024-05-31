@@ -273,27 +273,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # Title input from the user
 
+
             def parse_search_terms(search_term):
-                # Split the search term by spaces while keeping phrases in quotes together
                 tokens = re.findall(r'(?:"[^"]*"|\(|\)|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
-                    # Treat "AND", "OR", "NOT" as Boolean operators only if they are uppercase
                     if token in ["AND", "OR", "NOT"]:
                         boolean_tokens.append(token)
                     else:
-                        # Don't strip characters within quoted phrases
                         if token.startswith('"') and token.endswith('"'):
                             stripped_token = token.strip('"')
                         else:
-                            # Preserve alphanumeric characters, apostrophes, hyphens, en dash, and other special characters
                             stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–’]', '', token)
                         boolean_tokens.append(stripped_token.strip('"'))
-                
-                # Remove trailing operators
                 while boolean_tokens and boolean_tokens[-1] in ["AND", "OR", "NOT"]:
                     boolean_tokens.pop()
-                
                 return boolean_tokens
 
             def apply_boolean_search(df, search_tokens, include_abstracts):
@@ -334,11 +328,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Debugging output
                 print(f"Query: {query}")
+                sys.stdout.flush()
 
                 try:
                     filtered_df = df.query(query, engine='python')
                 except Exception as e:
                     print(f"Error in query: {query}\n{e}")
+                    sys.stdout.flush()
                     return pd.DataFrame()
 
                 return filtered_df
@@ -372,9 +368,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 search_term = search_term.strip()
                 if search_term:
-                    with st.status("Searching publications...", expanded=True) as status:
+                    with st.spinner("Searching publications..."):
                         search_tokens = parse_search_terms(search_term)
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
+                        sys.stdout.flush()
                         df_csv = df_duplicated.copy()
 
                         col112, col113 = st.columns([1,4])
@@ -387,8 +384,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
                         print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
+                        sys.stdout.flush()
                         filtered_df = filtered_df.drop_duplicates()
                         print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
+                        sys.stdout.flush()
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
                             filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
@@ -403,12 +402,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
+                        sys.stdout.flush()
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         journals = filtered_df['Journal'].dropna().unique()
                         collections = filtered_df['Collection_Name'].dropna().unique()
                         
-                        with st.popover("Filters and more"):
+                        with st.expander("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
                             journals = st.multiselect('Journal', journals, key='original_journal' )
                             collections = st.multiselect('Collection', collections, key='original_collection')
@@ -439,7 +439,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             today = datetime.date.today().isoformat()
                             a = 'search-result-' + today
                             container_download_button.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
-
                             on = st.toggle('Generate dashboard')
 
                             if on and len(filtered_df) > 0: 
