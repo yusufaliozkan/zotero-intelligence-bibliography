@@ -11,9 +11,9 @@ import plotly.express as px
 import re
 import matplotlib.pyplot as plt
 import nltk
-# nltk.download('all')
+nltk.download('all')
 from nltk.corpus import stopwords
-# nltk.download('stopwords')
+nltk.download('stopwords')
 from wordcloud import WordCloud
 #import datetime as dt     
 # import random
