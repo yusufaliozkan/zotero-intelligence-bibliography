@@ -428,6 +428,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         # Retrieve the filtered DataFrame and give it a new name
                         filtered_df = dynamic_filters.display_df()
+                        filtered_df
 
                         filtered_df
                         dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Collection_Name'])
