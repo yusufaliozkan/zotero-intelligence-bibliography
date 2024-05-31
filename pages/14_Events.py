@@ -12,14 +12,15 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
-nltk.download('all')
+# nltk.download('all')
 from nltk.corpus import stopwords
-nltk.download('stopwords')
+# nltk.download('stopwords')
 from wordcloud import WordCloud
-from gsheetsdb import connect
 import datetime as dt
 from urllib.parse import urlparse
 from sidebar_content import sidebar_content
+from streamlit_gsheets import GSheetsConnection
+
 
 st.set_page_config(layout = "centered", 
                     page_title='Intelligence studies network',
@@ -39,6 +40,8 @@ st.write('Today is: '+ str(today2))
 container = st.container()
 
 # Create a connection object.
+df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
+df_gs
 conn = connect()
 
 # Perform SQL query on the Google Sheet.
