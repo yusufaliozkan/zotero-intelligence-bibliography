@@ -333,7 +333,9 @@ with tab3:
     
     display = st.checkbox('Show details', key='cfp')
 
-    filter = (df_cfp['date']>=today)
+    df_cfp['deadline'] = pd.to_datetime(df_cfp['deadline'], dayfirst=True)
+
+    filter = df_cfp['date']>=pd.to_datetime(today)
     df_cfp = df_cfp.loc[filter]
     if df_cfp['name'].any() in ("", [], None, 0, False):
         st.write('No upcoming Call for papers!')
