@@ -367,6 +367,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
+                @st.experimental_dialog("Cast your vote")
+                def guide(item):
+                    st.write('text')
+                    st.rerun()
+                
+                if "vote" not in st.session_state:
+                    if st.button("A"):
+                        vote("A")
                 if st.button('Search guide'):
                     st.toast('''
                     **Search guide**
@@ -377,7 +385,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     Search with parantheses is **not** available.                   
                     ''')
-                    time.sleep(15)
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
