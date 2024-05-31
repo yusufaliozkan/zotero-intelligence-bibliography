@@ -104,7 +104,7 @@ with tab1:
         
     st.write('See [📊 Event visuals](#event-visuals)')
 
-
+    df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)
     filter = df_gs['date']>=pd.to_datetime(today)
     filter2 = df_gs['date']<pd.to_datetime(today)
     df_gs2 = df_gs.loc[filter2]
