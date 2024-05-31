@@ -35,6 +35,8 @@ import feedparser
 import requests
 from format_entry import format_entry
 # from rss_feed import df_podcast, df_magazines
+from streamlit_dynamic_filters import DynamicFilters
+
 
 # Connecting Zotero with API 
 library_id = '2514686'
