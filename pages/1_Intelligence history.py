@@ -222,10 +222,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Create a connection object.
 
                 conn = st.connection("gsheets", type=GSheetsConnection)
-                df_gsheet = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997') 
+                df_gsheet = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0') 
                 st.dataframe(df_gsheet)
                 df_gsheet['Date of event'] = pd.to_datetime(df_gsheet['Date of event'], dayfirst = True).dt.strftime('%d/%m/%Y')
-                df_gsheet
+
+                df_forms = 
 
 
                 conn = connect()
