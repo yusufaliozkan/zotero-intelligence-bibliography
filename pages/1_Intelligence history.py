@@ -268,7 +268,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # pd.set_option('display.max_colwidth', None)
                 # df_gs = pd.DataFrame(data, columns=columns)
                 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-                df_gs
 
                 # sheet_url_forms = st.secrets["public_gsheets_url_forms"]
                 # rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
@@ -292,6 +291,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_gs = pd.concat([df_gs, df_forms], axis=0)
                 df_gs = df_gs.reset_index(drop=True)
                 df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+                df_gs
 
                 
                 df_gs.sort_values(by='date', ascending = True, inplace=True)
