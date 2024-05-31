@@ -45,8 +45,7 @@ df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpz
 
 df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
 df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
-df_forms2 = df_forms.copy()
-df_forms = df_forms.drop(columns=['Timestamp'])
+# df_forms = df_forms.drop(columns=['Timestamp'])
 
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
@@ -72,6 +71,8 @@ with tab1:
     df_forms['month_year'] = df_forms['date'].dt.strftime('%Y-%m')
     df_forms.sort_values(by='date', ascending=True, inplace=True)
     df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+    df_forms2 = df_forms.copy()
+    
     container.write('The events page last updated on ' + '**'+ df_forms2.loc[0]['date_new']+'**')
 
     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
