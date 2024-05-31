@@ -402,10 +402,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
-
+                        filtered_df
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                        collections = filtered_df['Publication type'].dropna().unique()
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, types, key='original2')
+                            collections = st.multiselect('Collection', )
                             container_download_button = st.container()
 
                         if types2:
