@@ -367,6 +367,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
+                if st.button('Search guide'):
+                    st.toast('''
+                    **Search guide**
+                    The following Boolean operators are available: AND, OR, NOT                       
+                    ''')
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
