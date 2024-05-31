@@ -1972,30 +1972,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 st.markdown('##### Next conference')
                 df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
-            #     sheet_url2 = st.secrets["public_gsheets_url2"]
-            #     rows = run_query(f'SELECT * FROM "{sheet_url2}"')
-            #     data = []
-            #     columns = ['conference_name', 'organiser', 'link', 'date', 'date_end', 'venue', 'details', 'location']
-            #     for row in rows:
-            #         data.append((row.conference_name, row.organiser, row.link, row.date, row.date_end, row.venue, row.details, row.location))
-            #     pd.set_option('display.max_colwidth', None)
-            #     df_con = pd.DataFrame(data, columns=columns)
-            #     df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-            #     df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
-            #     df_con.sort_values(by='date', ascending = True, inplace=True)
-            #     df_con['details'] = df_con['details'].fillna('No details')
-            #     df_con['location'] = df_con['location'].fillna('No details')
-            #     df_con = df_con.fillna('')            
-            #     filter = (df_con['date_end']>=today)
-            #     df_con = df_con.loc[filter]
-            #     df_con = df_con.head(1)
-            #     if df_con['conference_name'].any() in ("", [], None, 0, False):
-            #         st.write('No upcoming conference!')
-            #     df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
-            #     row_nu = len(df_con.index)
-            #     for i in range(row_nu):
-            #         st.write( df_con1.iloc[i])
-            #     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
+                df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_con.sort_values(by='date', ascending = True, inplace=True)
+                df_con['details'] = df_con['details'].fillna('No details')
+                df_con['location'] = df_con['location'].fillna('No details')
+                df_con = df_con.fillna('')            
+                filter = (df_con['date_end']>=today)
+                df_con = df_con.loc[filter]
+                df_con = df_con.head(1)
+                if df_con['conference_name'].any() in ("", [], None, 0, False):
+                    st.write('No upcoming conference!')
+                df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
+                row_nu = len(df_con.index)
+                for i in range(row_nu):
+                    st.write( df_con1.iloc[i])
+                st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
             with st.expander('Digest', expanded=True):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
