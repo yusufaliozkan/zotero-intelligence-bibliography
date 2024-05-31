@@ -34,6 +34,7 @@ import plotly.graph_objs as go
 import feedparser
 import requests
 from format_entry import format_entry
+from events import evens_conferences
 # from rss_feed import df_podcast, df_magazines
 
 # Connecting Zotero with API 
