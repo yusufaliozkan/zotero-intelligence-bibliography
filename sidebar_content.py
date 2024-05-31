@@ -34,6 +34,6 @@ def sidebar_content():
             Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).
             ''')
         with st.expander('Contact us'):
-            st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://www.intelligencenetwork.org/contact-us).')
+            st.write('If you have any questions or suggestions, please do get in touch with us by filling the form [here](https://kcsi.uk/members/yusuf-ozkan).')
             st.write('Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).')
         st.write('Check the digest [here](https://intelligence.streamlit.app/Digest)')
