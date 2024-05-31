@@ -105,8 +105,8 @@ with tab1:
     st.write('See [📊 Event visuals](#event-visuals)')
 
 
-    filter = (df_gs['date']>=today)
-    filter2 = (df_gs['date']<today)
+    filter = df_gs['date']>=pd.to_datetime(today)
+    filter2 = df_gs['date']<pd.to_datetime(today)
     df_gs2 = df_gs.loc[filter2]
     df_gs = df_gs.loc[filter]
     if df_gs['event_name'].any() in ("", [], None, 0, False):
