@@ -227,7 +227,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 column_names
                 st.write("Column Names:", column_names)
                 for row in df_gsheet.itertuples():
-                    # st.write(f'{row['Event name']}')
+                    st.write(f'{row[2]}')
 
 
                 conn = connect()
