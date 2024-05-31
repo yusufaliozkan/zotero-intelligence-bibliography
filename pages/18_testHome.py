@@ -404,7 +404,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
 
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                        with st.popover("Open popover"):
+                        with st.popover("Filters"):
                             types2 = st.multiselect('Publication types', types, types, key='original2')
 
                         if types2:
