@@ -409,7 +409,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
                             journals = st.multiselect('Journal', journals, key='original_journal' )
-                            collections2 = st.multiselect('Collection', collections, key='original_collection')
+                            collections = st.multiselect('Collection_Name', collections, key='original_collection')
                             container_download_button = st.container()
 
                         if types2:
@@ -418,7 +418,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if journals:
                             filtered_df = filtered_df[filtered_df['Journal'].isin(journals)]
 
-                        if collections2:
+                        if collections:
                             filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
                         if not filtered_df.empty:
                             num_items = len(filtered_df)
