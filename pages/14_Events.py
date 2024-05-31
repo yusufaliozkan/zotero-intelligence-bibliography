@@ -323,7 +323,7 @@ with tab3:
     df_cfp 
 
     df_cfp['deadline'] = pd.to_datetime(df_cfp['deadline'])
-    df_cfp['deadline'] = df_cfp['deadline'].dt.strftime('%Y-%m-%d')
+    df_cfp['deadline_new'] = df_cfp['deadline'].dt.strftime('%Y-%m-%d')
     df_cfp.sort_values(by='deadline', ascending = True, inplace=True)
 
     df_cfp['details'] = df_cfp['details'].fillna('No details')
