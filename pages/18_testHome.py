@@ -407,6 +407,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         journals = filtered_df['Journal'].dropna().unique()
                         collections = filtered_df['Collection_Name'].dropna().unique()
+                        dynamic_filters = DynamicFilters(df, filters=['Publication type', 'Journal', 'Collection_Name'])
+                        dynamic_filters.filtered_df()
+
+
                         
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
