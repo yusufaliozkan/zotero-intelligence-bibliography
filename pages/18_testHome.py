@@ -35,7 +35,6 @@ import feedparser
 import requests
 from format_entry import format_entry
 # from rss_feed import df_podcast, df_magazines
-from streamlit_dynamic_filters import DynamicFilters
 
 
 # Connecting Zotero with API 
@@ -204,12 +203,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
-
-    dynamic_filters = DynamicFilters(df_duplicated, filters=['Publication type', 'Journal', 'Collection_Name'])
-    dynamic_filters.display_filters(location='columns', num_columns=2, gap='large')
-
-
-    dynamic_filters.display_df()
 
     col1, col2 = st.columns([3,5])
     with col2:
