@@ -224,7 +224,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 conn = st.connection("gsheets", type=GSheetsConnection)
                 df_gsheet = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836') 
                 df_gsheet
-                st.dataframe(data)
 
 
                 df_gsheet = conn.read()
