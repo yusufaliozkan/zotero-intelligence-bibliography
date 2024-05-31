@@ -485,7 +485,7 @@ with st.spinner('Preparing digest...'):
         if df_cfp['name'].any() in ("", [], None, 0, False):
             st.write('No upcoming Call for papers!')
 
-        df_cfp1 = ('['+ df_cfp['name'] + ']'+ '('+ df_cfp['link'] + ')'', organised by '  + df_cfp['organiser'] + '. ' +'**' + 'Deadline: ' + df_cfp['deadlin_new']+'**' )
+        df_cfp1 = ('['+ df_cfp['name'] + ']'+ '('+ df_cfp['link'] + ')'', organised by '  + df_cfp['organiser'] + '. ' +'**' + 'Deadline: ' + df_cfp['deadline_new']+'**' )
         row_nu = len(df_cfp.index)
         for i in range(row_nu):
             st.write(''+str(i+1)+') '+ df_cfp1.iloc[i])
