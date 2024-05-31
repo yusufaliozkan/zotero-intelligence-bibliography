@@ -40,6 +40,7 @@ st.write('Today is: '+ str(today2))
 container = st.container()
 
 # Create a connection object.
+conn = st.connection("gsheets", type=GSheetsConnection)
 df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
 df_gs
 conn = connect()
