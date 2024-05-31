@@ -222,36 +222,49 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Create a connection object.
 
                 conn = st.connection("gsheets", type=GSheetsConnection)
-                df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0') 
-                df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+
+                # Read the first spreadsheet
+                df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
+                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)
+
+                # Read the second spreadsheet
                 df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
                 df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
                 df_forms = df_forms.drop(columns=['Timestamp'])
 
+                # Convert and format dates in df_gs
                 df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)
-                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-                df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
+                df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
 
+                # Convert and format dates in df_forms
                 df_forms['date'] = pd.to_datetime(df_forms['date'], dayfirst=True)
-                df_forms['date'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-                df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
-                df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
-                df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
-                df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
-                df_forms.sort_values(by='date', ascending = True, inplace=True)
+                df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
+                df_forms['month'] = df_forms['date'].dt.strftime('%m')
+                df_forms['year'] = df_forms['date'].dt.strftime('%Y')
+                df_forms['month_year'] = df_forms['date'].dt.strftime('%Y-%m')
+                df_forms.sort_values(by='date', ascending=True, inplace=True)
                 df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-                
+
+                # Fill missing values in df_forms
                 df_forms['details'] = df_forms['details'].fillna('No details')
                 df_forms = df_forms.fillna('')
+
+                # Concatenate df_gs and df_forms
                 df_gs = pd.concat([df_gs, df_forms], axis=0)
                 df_gs = df_gs.reset_index(drop=True)
                 df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-                
-                df_gs = df_gs.sort_values(by='date_new', ascending = True)
-                df_gs
+
+                # Sort the concatenated dataframe by date_new
+                df_gs = df_gs.sort_values(by='date_new', ascending=True)
+
+                # Filter events happening today or in the future
                 today = dt.date.today()
-                today
-                filter = (df_gs['date_new']>=today)
+                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)  # Ensure 'date' is datetime
+                filter_mask = df_gs['date'] >= pd.to_datetime(today)
+                df_gs = df_gs[filter_mask]
+
+                # Display the filtered dataframe
+                df_gs
                 df_gs = df_gs.loc[filter]
                 df_gs = df_gs.fillna('')
                 df_gs = df_gs.head(3)
