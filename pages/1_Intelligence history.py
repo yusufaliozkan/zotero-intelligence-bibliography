@@ -222,6 +222,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             with st.expander('Events', expanded=True):
                 # Create a connection object.
                 event_info = evens_conferences()
+                for info in event_info:
+                    st.write(info)
+
 
     with tab2:
         st.header('Dashboard')
