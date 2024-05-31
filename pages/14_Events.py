@@ -320,7 +320,7 @@ with tab2:
 with tab3:
     st.subheader('Call for papers')
     df_cfp = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=135096406')
-    df_cfp
+    df_cfp 
 
     df_cfp['date'] = pd.to_datetime(df_cfp['date'])
     df_cfp['date_new'] = df_cfp['date'].dt.strftime('%Y-%m-%d')
