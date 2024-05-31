@@ -317,10 +317,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         negate_next = False
                     elif token == "NOT":
                         negate_next = True
-                    # elif token == "(":
-                    #     query += " ("
-                    # elif token == ")":
-                    #     query += ") "
                     else:
                         escaped_token = re.escape(token)
                         if include_abstracts == 'In title & abstract':
@@ -407,7 +403,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
-                        print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
+                        print(f"Final Filtered DataFrame:\n{filtered_df}") 
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
