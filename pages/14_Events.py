@@ -45,15 +45,6 @@ df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpz
 
 df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
 df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
-# df_forms = df_forms.drop(columns=['Timestamp'])
-
-# Perform SQL query on the Google Sheet.
-# Uses st.cache to only rerun when the query changes or after 10 min.
-@st.cache_resource(ttl=10)
-def run_query(query):
-    rows = conn.execute(query, headers=1)
-    rows = rows.fetchall()
-    return rows
 
 tab1, tab2, tab3 = st.tabs(['Events', 'Conferences','Call for papers'])
 with tab1:

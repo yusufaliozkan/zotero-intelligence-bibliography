@@ -358,58 +358,23 @@ with st.spinner('Preparing digest...'):
 
     with st.expander('Events:', expanded=ex):
         st.header('Events')
-        # Create a connection object.
-        conn = connect()
+        conn = st.connection("gsheets", type=GSheetsConnection)
+        df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
 
-        # Perform SQL query on the Google Sheet.
-        # Uses st.cache to only rerun when the query changes or after 10 min.
-        @st.cache_resource(ttl=10)
-        def run_query(query):
-            rows = conn.execute(query, headers=1)
-            rows = rows.fetchall()
-            return rows
+        df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
+        df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+        # Convert and format dates in df_gs
+        df_gs['date'] = pd.to_datetime(df_gs['date'])
+        df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
 
-        sheet_url = st.secrets["public_gsheets_url"]
-        rows = run_query(f'SELECT * FROM "{sheet_url}"')
-
-        data = []
-        columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
-
-        # Print results.
-        for row in rows:
-            data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
-
-        pd.set_option('display.max_colwidth', None)
-        df_gs = pd.DataFrame(data, columns=columns)
-        df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-        df_gs.sort_values(by='date', ascending = True, inplace=True)
-        df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-        df_gs['details'] = df_gs['details'].fillna('No details provided.')
-        df_gs = df_gs.fillna('')
-        df_gs['event_name']=df_gs['event_name'].str.strip()
-
-        sheet_url_forms = st.secrets["public_gsheets_url_forms"]
-        rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
-        data = []
-        columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
-        # Print results.
-        for row in rows:
-            data.append((row.Event_name, row.Event_organiser, row.Link_to_the_event, row.Date_of_event, row.Event_venue, row.Details))
-        pd.set_option('display.max_colwidth', None)
-        df_forms = pd.DataFrame(data, columns=columns)
-
-        df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-        df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
-        df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
-        df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
-        df_forms.sort_values(by='date', ascending = True, inplace=True)
+        # Convert and format dates in df_forms
+        df_forms['date'] = pd.to_datetime(df_forms['date'])
+        df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
+        df_forms['month'] = df_forms['date'].dt.strftime('%m')
+        df_forms['year'] = df_forms['date'].dt.strftime('%Y')
+        df_forms['month_year'] = df_forms['date'].dt.strftime('%Y-%m')
+        df_forms.sort_values(by='date', ascending=True, inplace=True)
         df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-        
-        df_forms['details'] = df_forms['details'].fillna('No details')
-        df_forms = df_forms.fillna('')
-        df_gs = pd.concat([df_gs, df_forms], axis=0)
-        df_gs = df_gs.reset_index(drop=True)
-        df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
 
         next_10 = today + dt.timedelta(days=10)    
         next_20 = today + dt.timedelta(days=20)
