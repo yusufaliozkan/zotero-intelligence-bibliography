@@ -273,6 +273,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 for i in range(row_nu):
                     st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
                 st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
+                with st.popover("Open popover"):
+                    st.markdown("Hello World 👋")
+                    name = st.text_input("What's your name?")
 
     with tab2:
         st.header('Dashboard')
