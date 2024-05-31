@@ -46,27 +46,7 @@ col1, col2 = st.columns([5,2])
 with col1:
     conn = st.connection("gsheets", type=GSheetsConnection)
     df = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/1Xv8wo9nzFrcKfjDxPZz2WDPhi-2uXNvHMDOYMTJwZeE/edit#gid=0')
-    df
-    conn = connect()
 
-    # Perform SQL query on the Google Sheet.
-    # Uses st.cache to only rerun when the query changes or after 10 min.
-    @st.cache_resource(ttl=10)
-    def run_query(query):
-        rows = conn.execute(query, headers=1)
-        rows = rows.fetchall()
-        return rows
-
-    sheet_url = st.secrets["public_gsheets_url_orgs"]
-    rows = run_query(f'SELECT * FROM "{sheet_url}"')
-
-    data = []
-    columns = ['Type', 'Institution', 'Sub_type', 'Programme_level', 'Programme_name', 'Link', 'Country', 'Status']
-
-    # Print results.
-    for row in rows:
-        data.append((row.Type, row.Institution, row.Sub_type, row.Programme_level, row.Programme_name, row.Link, row.Country, row.Status))
-    df = pd.DataFrame(data, columns=columns)
     countries = df['Country'].unique()
     types = df['Type'].unique()
 
