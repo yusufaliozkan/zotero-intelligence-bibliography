@@ -205,6 +205,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
+    dynamic_filters = DynamicFilters(df_duplicated, filters=['Publication type', 'Journal', 'Collection_Name'])
+    dynamic_filters.df_duplicated()
+
     col1, col2 = st.columns([3,5])
     with col2:
         with st.expander('Introduction'):
@@ -407,10 +410,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         journals = filtered_df['Journal'].dropna().unique()
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        dynamic_filters = DynamicFilters(df, filters=['Publication type', 'Journal', 'Collection_Name'])
-                        dynamic_filters.filtered_df()
-
-
                         
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
