@@ -221,7 +221,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             with st.expander('Events', expanded=True):
                 # Create a connection object.
-                evens_conferences
+                event_info = evens_conferences()
+
+                for info in event_info:
+                    st.write(info)
 
                 conn = st.connection("gsheets", type=GSheetsConnection)
 
