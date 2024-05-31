@@ -5,8 +5,7 @@ import datetime as dt
 
 def evens_conferences():
     conn = st.connection("gsheets", type=GSheetsConnection)
-
-    st.markdown('##### Next event')
+    result = []
     result.append('##### Next event')
     # Read the first spreadsheet
     df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
