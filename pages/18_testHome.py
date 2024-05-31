@@ -406,8 +406,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         journals = filtered_df['Journal'].dropna().unique()
                         with st.popover("Filters and more"):
-                            types2 = st.multiselect('Publication types', types, types, key='original2')
-                            journals = st.multiselect('Journal', journals, journals, key='original_journal' )
+                            types2 = st.multiselect('Publication types', types, key='original2')
+                            journals = st.multiselect('Journal', journals, key='original_journal' )
                             container_download_button = st.container()
 
                         if types2:
