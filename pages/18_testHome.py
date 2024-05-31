@@ -403,24 +403,64 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
-                        types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                        journals = filtered_df['Journal'].dropna().unique()
-                        collections = filtered_df['Collection_Name'].dropna().unique()
-                        
-                        with st.popover("Filters and more"):
-                            types2 = st.multiselect('Publication types', types, key='original2')
-                            journals = st.multiselect('Journal', journals, key='original_journal' )
-                            collections = st.multiselect('Collection', collections, key='original_collection')
-                            container_download_button = st.container()
 
-                        if types2:
-                            filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
-                        
-                        if journals:
-                            filtered_df = filtered_df[filtered_df['Journal'].isin(journals)]                        
 
-                        if collections:
-                            filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
+                        def update_filter_options(df, selected_types, selected_journals, selected_collections):
+                            if selected_types:
+                                df = df[df['Publication type'].isin(selected_types)]
+                            if selected_journals:
+                                df = df[df['Journal'].isin(selected_journals)]
+                            if selected_collections:
+                                df = df[df['Collection_Name'].isin(selected_collections)]
+                            
+                            types = df['Publication type'].dropna().unique()
+                            journals = df['Journal'].dropna().unique()
+                            collections = df['Collection_Name'].dropna().unique()
+                            
+                            return types, journals, collections, df
+
+                        types, journals, collections, _ = update_filter_options(filtered_df, [], [], [])
+
+                        with st.popover("Filters and more"):                            
+                            selected_types = st.multiselect('Publication types', types, key='original2')
+                            selected_journals = st.multiselect('Journal', journals, key='original_journal')
+                            selected_collections = st.multiselect('Collection', collections, key='original_collection')
+
+                        types, journals, collections, filtered_df = update_filter_options(
+                            filtered_df,
+                            selected_types,
+                            selected_journals,
+                            selected_collections
+                        )
+
+                        selected_types = st.multiselect('Publication types', types, key='updated_types')
+                        selected_journals = st.multiselect('Journal', journals, key='updated_journals')
+                        selected_collections = st.multiselect('Collection', collections, key='updated_collections')
+
+                        filtered_df = filtered_df[
+                            (filtered_df['Publication type'].isin(selected_types)) &
+                            (filtered_df['Journal'].isin(selected_journals)) &
+                            (filtered_df['Collection_Name'].isin(selected_collections))
+                        ]
+
+                        # types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                        # journals = filtered_df['Journal'].dropna().unique()
+                        # collections = filtered_df['Collection_Name'].dropna().unique()
+                        
+                        # with st.popover("Filters and more"):
+                        #     types2 = st.multiselect('Publication types', types, key='original2')
+                        #     journals = st.multiselect('Journal', journals, key='original_journal' )
+                        #     collections = st.multiselect('Collection', collections, key='original_collection')
+                        #     container_download_button = st.container()
+
+                        # if types2:
+                        #     filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+                        
+                        # if journals:
+                        #     filtered_df = filtered_df[filtered_df['Journal'].isin(journals)]                        
+
+                        # if collections:
+                        #     filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
                         if not filtered_df.empty:
                             num_items = len(filtered_df)
                             st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
