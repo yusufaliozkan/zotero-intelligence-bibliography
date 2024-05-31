@@ -292,6 +292,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Remove parentheses from the stripped token
                             stripped_token = stripped_token.replace('(', '').replace(')', '')
                         boolean_tokens.append(stripped_token.strip('"'))
+                
+                # Remove trailing operators
+                while boolean_tokens and boolean_tokens[-1] in ["AND", "OR", "NOT"]:
+                    boolean_tokens.pop()
+                
+                return boolean_tokens
 
             def apply_boolean_search(df, search_tokens, include_abstracts):
                 if not search_tokens:
