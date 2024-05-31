@@ -357,6 +357,9 @@ with st.spinner('Preparing digest...'):
         st.caption('[Go to top](#intelligence-studies-network-digest)')
 
     with st.expander('Events:', expanded=True):
+        today = dt.date.today()
+        today_datetime = pd.to_datetime(today)
+
         st.header('Events')
         conn = st.connection("gsheets", type=GSheetsConnection)
         df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
