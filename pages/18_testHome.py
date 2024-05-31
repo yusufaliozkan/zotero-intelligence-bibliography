@@ -291,7 +291,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–’]', '', token)
                             # Remove parentheses from the stripped token
                             stripped_token = stripped_token.replace('(', '').replace(')', '')
-                        boolean_tokens.append(stripped_token.strip('"'))
+                        # Add token only if it's not empty after stripping parentheses
+                        if stripped_token:
+                            boolean_tokens.append(stripped_token.strip('"'))
                 
                 # Remove trailing operators
                 while boolean_tokens and boolean_tokens[-1] in ["AND", "OR", "NOT"]:
