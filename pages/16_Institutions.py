@@ -44,6 +44,9 @@ with st.sidebar:
 
 col1, col2 = st.columns([5,2])
 with col1:
+    conn = st.connection("gsheets", type=GSheetsConnection)
+    df = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/1Xv8wo9nzFrcKfjDxPZz2WDPhi-2uXNvHMDOYMTJwZeE/edit#gid=0')
+    df
     conn = connect()
 
     # Perform SQL query on the Google Sheet.
