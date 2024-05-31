@@ -250,6 +250,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Sort and reset index
                 df_gs.sort_values(by='date', ascending=True, inplace=True)
                 df_gs.reset_index(drop=True, inplace=True)
+                df_gs
 
                 # Filter data for events happening today or later
                 today = dt.date.today()
