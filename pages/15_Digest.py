@@ -444,7 +444,8 @@ with st.spinner('Preparing digest...'):
         if range_day == '6 months':
             rg3 = next_6mo
             aaa = '6 months'
-        filter_events = (df_con['date']<rg3) & (df_con['date']>=today)
+        # filter_events = (df_con['date']<rg3) & (df_con['date']>=today)
+        filter_events = (df_con['date'] < rg3) & (df_con['date'] >= today_datetime)
         df_con = df_con.loc[filter_events]
 
         df_con['details'] = df_con['details'].fillna('No details')
