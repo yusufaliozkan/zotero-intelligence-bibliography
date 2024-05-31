@@ -268,6 +268,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # pd.set_option('display.max_colwidth', None)
                 # df_gs = pd.DataFrame(data, columns=columns)
                 df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_gs
 
                 # sheet_url_forms = st.secrets["public_gsheets_url_forms"]
                 # rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
