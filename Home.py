@@ -1972,8 +1972,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 st.markdown('##### Next conference')
                 df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
-                df_forms['date'] = pd.to_datetime(df_forms['date'])
-                df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
+                df_con['date'] = pd.to_datetime(df_con['date'])
+                df_con['date_new'] = df_con['date'].dt.strftime('%Y-%m-%d')
                 df_con
                 df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
                 df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
