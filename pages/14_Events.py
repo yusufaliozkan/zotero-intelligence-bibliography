@@ -275,18 +275,7 @@ with tab1:
 
 with tab2:
     st.subheader('Conferences')
-    sheet_url2 = st.secrets["public_gsheets_url2"]
-    rows = run_query(f'SELECT * FROM "{sheet_url2}"')
-
-    data = []
-    columns = ['conference_name', 'organiser', 'link', 'date', 'date_end', 'venue', 'details', 'location']
-
-    # Print results.
-    for row in rows:
-        data.append((row.conference_name, row.organiser, row.link, row.date, row.date_end, row.venue, row.details, row.location))
-
-    pd.set_option('display.max_colwidth', None)
-    df_con = pd.DataFrame(data, columns=columns)
+    df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
 
     df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
