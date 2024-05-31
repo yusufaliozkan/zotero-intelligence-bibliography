@@ -424,10 +424,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         dynamic_filters = DynamicFilters(df, filters=['region', 'country', 'city', 'district'])
 
-                        with st.sidebar:
-                            st.write("Apply filters in any order 👇")
-
-                        dynamic_filters.display_filters(location='sidebar')
+                        dynamic_filters.display_filters()
 
                         dynamic_filters.display_df()
                         
