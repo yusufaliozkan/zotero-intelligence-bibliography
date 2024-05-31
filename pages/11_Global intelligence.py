@@ -1,31 +1,29 @@
 from pyzotero import zotero
 import pandas as pd
 import streamlit as st
-from IPython.display import HTML
+# from IPython.display import HTML
 import streamlit.components.v1 as components
 import numpy as np
-import altair as alt
+# import altair as alt
 # from pandas.io.json import json_normalize
 import datetime
 import plotly.express as px
-import numpy as np
 import re
 import matplotlib.pyplot as plt
 import nltk
-# nltk.download('all')
+nltk.download('all')
 from nltk.corpus import stopwords
-# nltk.download('stopwords')
+nltk.download('stopwords')
 from wordcloud import WordCloud
-# from gsheetsdb import connect
-from streamlit_gsheets import GSheetsConnection
+from gsheetsdb import connect
 import datetime as dt     
-import random
+# import random
 from authors_dict import df_authors, name_replacements
-from sidebar_content import sidebar_content 
+from countries_dict import country_names, replacements, df_countries, df_continent
+from sidebar_content import sidebar_content
+import time
 from format_entry import format_entry
-from copyright import display_custom_license
 from events import evens_conferences
-
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
