@@ -405,12 +405,31 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
 
-                        # dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Journal', 'Collection_Name'])
-                        # dynamic_filters.display_filters()
-                        # filtered_df = dynamic_filters.get_filtered_df()
+                        data = {
+                            'region': ['North America', 'North America', 'Europe', 'Oceania',
+                                    'North America', 'North America', 'Europe', 'Oceania',
+                                    'North America', 'North America', 'Europe', 'Oceania'],
+                            'country': ['USA', 'Canada', 'UK', 'Australia',
+                                        'USA', 'Canada', 'UK', 'Australia',
+                                        'USA', 'Canada', 'UK', 'Australia'],
+                            'city': ['New York', 'Toronto', 'London', 'Sydney',
+                                    'New York', 'Toronto', 'London', 'Sydney',
+                                    'New York', 'Toronto', 'London', 'Sydney'],
+                            'district': ['Manhattan', 'Downtown', 'Westminster', 'CBD',
+                                        'Brooklyn', 'Midtown', 'Kensington', 'Circular Quay',
+                                        'Queens', 'Uptown', 'Camden', 'Bondi']
+                        }
 
-                        # filtered_df
+                        df = pd.DataFrame(data)
 
+                        dynamic_filters = DynamicFilters(df, filters=['region', 'country', 'city', 'district'])
+
+                        with st.sidebar:
+                            st.write("Apply filters in any order 👇")
+
+                        dynamic_filters.display_filters(location='sidebar')
+
+                        dynamic_filters.display_df()
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         journals = filtered_df['Journal'].dropna().unique()
