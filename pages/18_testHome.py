@@ -406,15 +406,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
 
                         dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Journal', 'Collection_Name'])
-                        def display_filters_in_popover(dynamic_filters):
-                            with st.popover("Filters and more"):
-                                # Custom display of each filter using st.multiselect
-                                for filter_name in dynamic_filters.filters:
-                                    options = dynamic_filters.df[filter_name].dropna().unique()
-                                    selected = st.multiselect(f"Select {filter_name}", sorted(options), key=f"filter_{filter_name}")
-                                    dynamic_filters.selected_filters[filter_name] = selected
-                        display_filters_in_popover(dynamic_filters)
+                        dynamic_filters.display_filters()
                         filtered_df = dynamic_filters.get_filtered_df()
+
                         filtered_df
 
                         
