@@ -411,7 +411,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         dynamic_filters.display_filters()
 
-                        filtered_df = dynamic_filters.get_filtered_df()
+                        filtered_df = dynamic_filters.display_df()
                         filtered_df
                         
                         # types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
