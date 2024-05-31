@@ -410,7 +410,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
                             journals = st.multiselect('Journal', journals, key='original_journal' )
-                            collections = st.multiselect('Collection_Name', collections, key='original_collection')
+                            collections = st.multiselect('Collection', collections, key='original_collection')
                             container_download_button = st.container()
 
                         if types2:
