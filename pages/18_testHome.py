@@ -406,11 +406,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
 
                         filtered_df
-
-                        dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Collection_Name'])
-
+                        dynamic_filters = DynamicFilters(filtered_df, filters=['Publication type', 'Collection_Name', 'Journal'])
                         dynamic_filters.display_filters()
-
                         filtered_df = dynamic_filters.display_df()
                         filtered_df
                         
