@@ -478,8 +478,9 @@ with st.spinner('Preparing digest...'):
         df_cfp = df_cfp.drop_duplicates(subset=['name', 'link', 'deadline'], keep='first')
         
         display = st.checkbox('Show details', key='cfp')
+        df_cfp['deadline'] = pd.to_datetime(df_cfp['deadline'], dayfirst=True)
 
-        filter = (df_cfp['date']>=today)
+        filter = df_cfp['deadline']>=pd.to_datetime(today)
         df_cfp = df_cfp.loc[filter]
         if df_cfp['name'].any() in ("", [], None, 0, False):
             st.write('No upcoming Call for papers!')
