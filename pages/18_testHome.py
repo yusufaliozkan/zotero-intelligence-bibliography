@@ -598,7 +598,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                                     return highlighted_text
                                 if table_view:
-                                    df_table_view = filtered_df[filtered_df['Title']]
+                                    df_table_view = filtered_df[['Title']]
                                     df_table_view
                                 else:
                                 # Display the numbered list using Markdown syntax
