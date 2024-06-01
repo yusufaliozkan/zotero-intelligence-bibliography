@@ -407,7 +407,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
 
-                        col112, col113, col114 = st.columns([1,4])
+                        col112, col113, col114 = st.columns([1,4, 1])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
                         with col113:
