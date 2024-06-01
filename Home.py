@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import nltk
 nltk.download('all') 
 from nltk.corpus import stopwords
-nltk.download('stopwords')
+nltk.download('stopwords') 
 from wordcloud import WordCloud
 # from gsheetsdb import connect
 # import gsheetsdb as gdb
@@ -34,8 +34,9 @@ import plotly.graph_objs as go
 import feedparser
 import requests
 from format_entry import format_entry
-from events import evens_conferences
+from streamlit_dynamic_filters import DynamicFilters
 # from rss_feed import df_podcast, df_magazines
+
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -223,6 +224,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard']) #, '🔀 Surprise me'])
     with tab1:
+
         col1, col2 = st.columns([6,2]) 
         with col1: 
 
@@ -271,28 +273,140 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #     )
 
             # Title input from the user
+
+            def parse_search_terms(search_term):
+                # Split the search term by spaces while keeping phrases in quotes together
+                tokens = re.findall(r'(?:"[^"]*"|\S+)', search_term)
+                boolean_tokens = []
+                for token in tokens:
+                    # Treat "AND", "OR", "NOT" as Boolean operators only if they are uppercase
+                    if token in ["AND", "OR", "NOT"]:
+                        boolean_tokens.append(token)
+                    else:
+                        # Don't strip characters within quoted phrases
+                        if token.startswith('"') and token.endswith('"'):
+                            stripped_token = token.strip('"')
+                        else:
+                            # Preserve alphanumeric characters, apostrophes, hyphens, en dash, and other special characters
+                            stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–’]', '', token)
+                            # Remove parentheses from the stripped token
+                            stripped_token = stripped_token.replace('(', '').replace(')', '')
+                        boolean_tokens.append(stripped_token.strip('"'))
+                
+                # Remove trailing operators
+                while boolean_tokens and boolean_tokens[-1] in ["AND", "OR", "NOT"]:
+                    boolean_tokens.pop()
+                
+                return boolean_tokens
+
+            def apply_boolean_search(df, search_tokens, include_abstracts):
+                if not search_tokens:
+                    return df
+
+                query = ''
+                negate_next = False
+
+                for i, token in enumerate(search_tokens):
+                    if token == "AND":
+                        query += " & "
+                        negate_next = False
+                    elif token == "OR":
+                        query += " | "
+                        negate_next = False
+                    elif token == "NOT":
+                        negate_next = True
+                    elif token == "(":
+                        query += " ("
+                    elif token == ")":
+                        query += ") "
+                    else:
+                        escaped_token = re.escape(token)
+                        if include_abstracts == 'In title & abstract':
+                            condition = f'(Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{escaped_token}\\b", case=False, na=False))'
+                        else:
+                            condition = f'Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False)'
+
+                        if negate_next:
+                            condition = f"~({condition})"
+                            negate_next = False
+
+                        if query and query.strip()[-1] not in "&|(":
+                            query += " & "
+
+                        query += condition
+
+                # Debugging output
+                print(f"Query: {query}")
+
+                try:
+                    filtered_df = df.query(query, engine='python')
+                except Exception as e:
+                    print(f"Error in query: {query}\n{e}")
+                    return pd.DataFrame()
+
+                return filtered_df
+
+            def highlight_terms(text, terms):
+                boolean_operators = {"AND", "OR", "NOT"}
+                url_pattern = r'https?://\S+'
+                urls = re.findall(url_pattern, text)
+                for url in urls:
+                    text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
+
+                pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
+                highlighted_text = pattern.sub(lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' if match.group(0) not in urls else match.group(0), text)
+                for index, url in enumerate(urls):
+                    highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+                
+                return highlighted_text
+
+            # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
+                @st.experimental_dialog("Search guide")
+                def guide(item):
+                    st.write('''
+                    Intelligence studies bibliography offers a basic-level search with Boolean operators.
+
+                    The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
+
+                    Search with double quote is available. (e.g. "covert action")
+
+                    Search with parantheses is **not** available.
+
+                    Please note that the search function is not quite powerful. You will only find exact match and cannot see search relevance.             
+                    ''')
+                
+                if "guide" not in st.session_state:
+                    if st.button("Search guide"):
+                        guide("Search guide")
+                # if st.button('Search guide'):
+                #     st.toast('''
+                #     **Search guide**
+
+                #     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
+
+                #     Search with double quote is available. (e.g. "covert action")
+
+                #     Search with parantheses is **not** available.                   
+                #     ''')
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
-                
+
+                search_term = search_term.strip()
                 if search_term:
-                    with st.status("Searching publications...", expanded = True) as status: #st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                        phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
-                        keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
+                    with st.status("Searching publications...", expanded=True) as status:
+                        search_tokens = parse_search_terms(search_term)
+                        print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
+                        df_csv = df_duplicated.copy()
 
-                        df_csv = df_dedup.copy()
-
-                        # include_abstracts = st.checkbox('Search keywords in abstracts too')
-                        
                         col112, col113 = st.columns([1,4])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
@@ -301,53 +415,42 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             if only_citation:
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
 
-                        if include_abstracts=='In title & abstract':
-                            # Search for the entire phrase first
-                            filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
-                                (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                            ]
-
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
-                                    (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
-                        else:
-                            # Search for the entire phrase first
-                            filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                            ]
-
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
-
-                        # Remove duplicates, if any
+                        filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
+                        print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
                         filtered_df = filtered_df.drop_duplicates()
+                        print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
+                        if not filtered_df.empty and 'Date published' in filtered_df.columns:
+                            filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
+                            filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            if filtered_df['Date published'].notna().any():
+                                filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                            else:
+                                filtered_df['Date published'] = ''
+                            filtered_df['Date published'] = filtered_df['Date published'].fillna('')
+                            filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
+                            filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                        else:
+                            filtered_df['Date published'] = ''
+                            filtered_df['No date flag'] = 1
+                        print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
                         
-                        filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                        filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
-                        filtered_df['Date published'] = filtered_df['Date published'].fillna('')
-                        filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
-                        filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                        types2 = st.multiselect('Publication types', types, types, key='original2')
+                        collections = filtered_df['Collection_Name'].dropna().unique()
+
+                        with st.popover("Filters and more"):
+                            types2 = st.multiselect('Publication types', types, key='original2')
+                            collections = st.multiselect('Collection', collections, key='original_collection')
+                            container_download_button = st.container()
 
                         if types2:
-                            filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
+                            filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]                 
+
+                        if collections:
+                            filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
+
 
                         if not filtered_df.empty:
+                            filtered_df = filtered_df.drop_duplicates(subset=['Zotero link'], keep='first')
                             num_items = len(filtered_df)
                             st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
 
@@ -361,12 +464,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             csv = convert_df(download_filtered)
                             today = datetime.date.today().isoformat()
                             a = 'search-result-' + today
-                            st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+                            container_download_button.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
                             on = st.toggle('Generate dashboard')
 
                             if on and len(filtered_df) > 0: 
-                                st.info(f'Dashboard for search terms: {phrase_filter}')
+                                st.info(f'Dashboard for search terms: {search_term}')
                                 search_df = filtered_df.copy()
                                 publications_by_type = search_df['Publication type'].value_counts()
                                 fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
@@ -432,7 +535,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 string = pd.Series(df_list).str.cat(sep=' ')
                                 wordcloud_texts = string
                                 wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False).generate(wordcloud_texts_str)
                                 plt.figure(figsize=(20,8))
                                 plt.axis('off')
                                 plt.title(f"Word Cloud for Titles")
@@ -462,8 +565,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     articles_list.append(formatted_entry)  # Append formatted entry to the list
                                     abstract = row['Abstract']
                                     abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                    
+
                                 def highlight_terms(text, terms):
+                                    # Define boolean operators
+                                    boolean_operators = {"AND", "OR", "NOT"}
+
                                     # Regular expression pattern to identify URLs
                                     url_pattern = r'https?://\S+'
 
@@ -474,8 +580,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     for url in urls:
                                         text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
 
-                                    # Create a regex pattern to find the search terms in the text
-                                    pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
+                                    # Create a regex pattern to find the search terms in the text, excluding boolean operators
+                                    pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
 
                                     # Use HTML tags to highlight the terms in the text, excluding URLs
                                     highlighted_text = pattern.sub(
@@ -493,15 +599,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 # Display the numbered list using Markdown syntax
                                 for i, article in enumerate(articles_list, start=1):
                                     # Display the article with highlighted search terms
-                                    highlighted_article = highlight_terms(article, search_terms)
+                                    highlighted_article = highlight_terms(article, search_tokens)
                                     st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
                                     
                                     # Display abstract under each numbered item only if the checkbox is selected
                                     if display_abstracts:
                                         abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                         if pd.notnull(abstract):
-                                            if include_abstracts=='In title & abstract':
-                                                highlighted_abstract = highlight_terms(abstract, search_terms)
+                                            if include_abstracts == 'In title & abstract':
+                                                highlighted_abstract = highlight_terms(abstract, search_tokens)
                                             else:
                                                 highlighted_abstract = abstract 
                                             st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
@@ -1916,9 +2022,82 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
             with st.expander('Events & conferences', expanded=True):
-                event_info = evens_conferences()
-                for info in event_info:
-                    st.write(info)
+                st.markdown('##### Next event')
+
+                conn = st.connection("gsheets", type=GSheetsConnection)
+
+                # Read the first spreadsheet
+                df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
+
+                # Read the second spreadsheet
+                df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
+                df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+                df_forms = df_forms.drop(columns=['Timestamp'])
+
+                # Convert and format dates in df_gs
+                df_gs['date'] = pd.to_datetime(df_gs['date'])
+                df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
+
+                # Convert and format dates in df_forms
+                df_forms['date'] = pd.to_datetime(df_forms['date'])
+                df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
+                df_forms['month'] = df_forms['date'].dt.strftime('%m')
+                df_forms['year'] = df_forms['date'].dt.strftime('%Y')
+                df_forms['month_year'] = df_forms['date'].dt.strftime('%Y-%m')
+                df_forms.sort_values(by='date', ascending=True, inplace=True)
+                df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+
+                # Fill missing values in df_forms
+                df_forms['details'] = df_forms['details'].fillna('No details')
+                df_forms = df_forms.fillna('')
+
+                # Concatenate df_gs and df_forms
+                df_gs = pd.concat([df_gs, df_forms], axis=0)
+                df_gs = df_gs.reset_index(drop=True)
+                df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+
+                # Sort the concatenated dataframe by date_new
+                df_gs = df_gs.sort_values(by='date_new', ascending=True)
+
+                # Filter events happening today or in the future
+                today = dt.date.today()
+                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)  # Ensure 'date' is datetime
+                filter = df_gs['date'] >= pd.to_datetime(today)
+                df_gs = df_gs[filter]
+
+                # Display the filtered dataframe
+                df_gs = df_gs.loc[filter]
+                df_gs = df_gs.fillna('')
+                df_gs = df_gs.head(3)
+                if df_gs['event_name'].any() in ("", [], None, 0, False):
+                    st.write('No upcoming event!')
+                df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+                row_nu = len(df_gs.index)
+                for i in range(row_nu):
+                    st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+                st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
+                
+                st.markdown('##### Next conference')
+                df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
+                df_con['date'] = pd.to_datetime(df_con['date'])
+                df_con['date_new'] = df_con['date'].dt.strftime('%Y-%m-%d')
+                df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_con.sort_values(by='date', ascending = True, inplace=True)
+                df_con['details'] = df_con['details'].fillna('No details')
+                df_con['location'] = df_con['location'].fillna('No details')
+                df_con = df_con.fillna('')
+                df_con['date_end'] = pd.to_datetime(df_con['date'], dayfirst=True)     
+                filter = df_con['date_end']>=pd.to_datetime(today)
+                df_con = df_con.loc[filter]
+                df_con = df_con.head(1)
+                if df_con['conference_name'].any() in ("", [], None, 0, False):
+                    st.write('No upcoming conference!')
+                df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
+                row_nu = len(df_con.index)
+                for i in range(row_nu):
+                    st.write( df_con1.iloc[i])
+                st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
             with st.expander('Digest', expanded=True):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
