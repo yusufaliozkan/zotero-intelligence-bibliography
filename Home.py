@@ -452,7 +452,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if not filtered_df.empty:
                             filtered_df = filtered_df.drop_duplicates(subset=['Zotero link'], keep='first')
                             num_items = len(filtered_df)
-                            st.write(f"Matching articles (**{num_items}** sources found):")  # Display number of items found
+                            st.write(f"Matching articles (**{num_items}** {'source' if num_items == 1 else 'sources'} found):")
 
                             download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                             download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
