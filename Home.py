@@ -437,17 +437,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
 
-                        def show_filters():
+                        with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
                             collections = st.multiselect('Collection', collections, key='original_collection')
                             container_download_button = st.container()
-                        if st.button("Open Filters Dialog"):
-                            show_filters()
-
-                        # with st.popover("Filters and more"):
-                        #     types2 = st.multiselect('Publication types', types, key='original2')
-                        #     collections = st.multiselect('Collection', collections, key='original_collection')
-                        #     container_download_button = st.container()
 
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]                 
