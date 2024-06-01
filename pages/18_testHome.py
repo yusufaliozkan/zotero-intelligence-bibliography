@@ -407,13 +407,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
 
-                        col112, col113 = st.columns([1,4])
+                        col112, col113, col114 = st.columns([1,4])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
                         with col113:
                             only_citation = st.checkbox('Show cited items only')
                             if only_citation:
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
+                        with col114:
+                            table_view = st.checkbox('See results in table')
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
                         print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
