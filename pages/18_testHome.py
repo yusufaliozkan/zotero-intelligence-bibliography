@@ -558,6 +558,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     if show_first_20:
                                         filtered_df = filtered_df.head(20)
 
+                                filtered_df
                                 articles_list = []  # Store articles in a list
                                 abstracts_list = [] #Store abstracts in a list
                                 for index, row in filtered_df.iterrows():
