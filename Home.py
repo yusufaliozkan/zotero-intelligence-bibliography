@@ -370,16 +370,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 @st.experimental_dialog("Search guide")
                 def guide(item):
                     st.write('''
-                    Intelligence studies bibliography offers a basic-level search with Boolean operators.
+                        The Intelligence Studies Bibliography supports basic-level searches with Boolean operators.
 
-                    The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
+                        Available Boolean operators: **AND**, **OR**, **NOT** (e.g., "covert action" NOT British).
 
-                    Search with double quote is available. (e.g. "covert action")
+                        You can search using double quotes (e.g., "covert action").
 
-                    Search with parantheses is **not** available.
+                        Please note: Search with parentheses is **not** available.
 
-                    Please note that the search function is not quite powerful. You will only find exact match and cannot see search relevance.             
-                    ''')
+                        Note that the search function is limited: you will only find exact matches and cannot see search relevance.             
+                        ''')
                 
                 if "guide" not in st.session_state:
                     if st.button("Search guide"):
