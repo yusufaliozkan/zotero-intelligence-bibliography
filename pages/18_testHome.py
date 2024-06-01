@@ -560,7 +560,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     if show_first_20:
                                         filtered_df = filtered_df.head(20)
 
-                                filtered_df
                                 articles_list = []  # Store articles in a list
                                 abstracts_list = [] #Store abstracts in a list
                                 for index, row in filtered_df.iterrows():
@@ -598,24 +597,26 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
 
                                     return highlighted_text
-                                    
+                                if table_view:
+                                    filtered_df
+                                else:
                                 # Display the numbered list using Markdown syntax
-                                for i, article in enumerate(articles_list, start=1):
-                                    # Display the article with highlighted search terms
-                                    highlighted_article = highlight_terms(article, search_tokens)
-                                    st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-                                    
-                                    # Display abstract under each numbered item only if the checkbox is selected
-                                    if display_abstracts:
-                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
-                                        if pd.notnull(abstract):
-                                            if include_abstracts == 'In title & abstract':
-                                                highlighted_abstract = highlight_terms(abstract, search_tokens)
+                                    for i, article in enumerate(articles_list, start=1):
+                                        # Display the article with highlighted search terms
+                                        highlighted_article = highlight_terms(article, search_tokens)
+                                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                                        
+                                        # Display abstract under each numbered item only if the checkbox is selected
+                                        if display_abstracts:
+                                            abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
+                                            if pd.notnull(abstract):
+                                                if include_abstracts == 'In title & abstract':
+                                                    highlighted_abstract = highlight_terms(abstract, search_tokens)
+                                                else:
+                                                    highlighted_abstract = abstract 
+                                                st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                             else:
-                                                highlighted_abstract = abstract 
-                                            st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
-                                        else:
-                                            st.caption(f"Abstract: No abstract")
+                                                st.caption(f"Abstract: No abstract")
                         else:
                             st.write("No articles found with the given keyword/phrase.")
                         status.update(label="Search completed!", state="complete", expanded=True)
