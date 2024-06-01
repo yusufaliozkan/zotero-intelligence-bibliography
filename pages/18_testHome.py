@@ -599,7 +599,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     return highlighted_text
                                 if table_view:
                                     df_table_view = filtered_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Collection_Name','Link to publication','Zotero link']]
-                                    filtered_df
+                                    df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link',''})
                                     df_table_view
                                 else:
                                 # Display the numbered list using Markdown syntax
