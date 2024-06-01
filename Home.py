@@ -438,10 +438,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         collections = filtered_df['Collection_Name'].dropna().unique()
 
                         def show_filters():
-                            with st.expander("Filters and more"):
-                                types2 = st.multiselect('Publication types', types, key='original2')
-                                collections = st.multiselect('Collection', collections, key='original_collection')
-                                container_download_button = st.container()
+                            types2 = st.multiselect('Publication types', types, key='original2')
+                            collections = st.multiselect('Collection', collections, key='original_collection')
+                            container_download_button = st.container()
                         if st.button("Open Filters Dialog"):
                             show_filters()
 
