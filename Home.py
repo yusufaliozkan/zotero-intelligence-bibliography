@@ -407,13 +407,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
 
-                        col112, col113 = st.columns([1,4])
+                        col112, col113, col114 = st.columns([2,2,2])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
                         with col113:
                             only_citation = st.checkbox('Show cited items only')
                             if only_citation:
                                 df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
+                        with col114:
+                            table_view = st.checkbox('See results in table')
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
                         print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
@@ -595,24 +597,28 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
 
                                     return highlighted_text
-                                    
+                                if table_view:
+                                    df_table_view = filtered_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Collection_Name','Link to publication','Zotero link']]
+                                    df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
+                                    df_table_view
+                                else:
                                 # Display the numbered list using Markdown syntax
-                                for i, article in enumerate(articles_list, start=1):
-                                    # Display the article with highlighted search terms
-                                    highlighted_article = highlight_terms(article, search_tokens)
-                                    st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-                                    
-                                    # Display abstract under each numbered item only if the checkbox is selected
-                                    if display_abstracts:
-                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
-                                        if pd.notnull(abstract):
-                                            if include_abstracts == 'In title & abstract':
-                                                highlighted_abstract = highlight_terms(abstract, search_tokens)
+                                    for i, article in enumerate(articles_list, start=1):
+                                        # Display the article with highlighted search terms
+                                        highlighted_article = highlight_terms(article, search_tokens)
+                                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                                        
+                                        # Display abstract under each numbered item only if the checkbox is selected
+                                        if display_abstracts:
+                                            abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
+                                            if pd.notnull(abstract):
+                                                if include_abstracts == 'In title & abstract':
+                                                    highlighted_abstract = highlight_terms(abstract, search_tokens)
+                                                else:
+                                                    highlighted_abstract = abstract 
+                                                st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                             else:
-                                                highlighted_abstract = abstract 
-                                            st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
-                                        else:
-                                            st.caption(f"Abstract: No abstract")
+                                                st.caption(f"Abstract: No abstract")
                         else:
                             st.write("No articles found with the given keyword/phrase.")
                         status.update(label="Search completed!", state="complete", expanded=True)
