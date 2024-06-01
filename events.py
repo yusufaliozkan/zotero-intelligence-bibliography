@@ -3,6 +3,7 @@ from streamlit_gsheets import GSheetsConnection
 import streamlit as st
 import datetime as dt
 
+@st.cache_data(ttl=600)
 def evens_conferences():
     conn = st.connection("gsheets", type=GSheetsConnection)
     # Read the first spreadsheet
