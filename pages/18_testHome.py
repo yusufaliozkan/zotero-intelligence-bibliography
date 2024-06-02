@@ -1899,11 +1899,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     )
                         st.write(f"{i+1}) " + df_last.iloc[i])
                     else:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + 
+                                    '( In: ' + df['Book_title'] + ') '+', ' +                        
                                     ' (by ' + '*' + df['Authors'] + '*' + ') ' +
                                     ' (Published on: ' + df['Date published']+') ' +
                                     '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + '(In: ' + df['Book_title'] + ')'
+                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
                                     )
                         st.write(f"{i+1}) " + df_last.iloc[i])
                     
