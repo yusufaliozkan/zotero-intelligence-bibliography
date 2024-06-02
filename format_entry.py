@@ -41,7 +41,7 @@ def format_entry(row, include_citation=True):
         return (
             '**' + publication_type + '**' + ': ' +
             title + ' ' +
-            '(in: ' + '*' + book_title + ') ' + '*' +
+            '(in: ' + '*' + book_title + '*' + ') ' +
             '(by ' + '*' + authors + '*' + ') ' +
             '(Publication date: ' + str(date_published) + ') ' +
             '[[Publication link]](' + link_to_publication + ') ' +
