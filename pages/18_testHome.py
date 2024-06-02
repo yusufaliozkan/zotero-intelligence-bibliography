@@ -5,6 +5,7 @@ from IPython.display import HTML
 import streamlit.components.v1 as components
 import numpy as np
 import altair as alt
+# from pandas.io.json import json_normalize
 from datetime import date, timedelta  
 from datetime import datetime
 import datetime
@@ -13,13 +14,14 @@ import plotly.express as px
 import numpy as np
 import re
 import matplotlib.pyplot as plt
-# import nltk
-# nltk.download('all') 
-# from nltk.corpus import stopwords
-# nltk.download('stopwords')
-# from wordcloud import WordCloud
-from gsheetsdb import connect
-import gsheetsdb as gdb
+import nltk
+nltk.download('all') 
+from nltk.corpus import stopwords
+nltk.download('stopwords') 
+from wordcloud import WordCloud
+# from gsheetsdb import connect
+# import gsheetsdb as gdb
+from streamlit_gsheets import GSheetsConnection
 import datetime as dt
 import time
 import PIL
@@ -32,7 +34,9 @@ import plotly.graph_objs as go
 import feedparser
 import requests
 from format_entry import format_entry
+from streamlit_dynamic_filters import DynamicFilters
 # from rss_feed import df_podcast, df_magazines
+
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -50,10 +54,10 @@ pd.set_option('display.max_colwidth', None)
 zot = zotero.Zotero(library_id, library_type)
 @st.cache_data(ttl=600)
 def zotero_data(library_id, library_type):
-    items = zot.top(limit=5)
+    items = zot.top(limit=10)
     items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
     data=[]
-    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue']
+    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue', 'Book_title']
 
     for item in items:
         creators = item['data']['creators']
@@ -73,13 +77,14 @@ def zotero_data(library_id, library_type):
         item['data']['dateModified'],
         item['data']['collections'],
         creators_str,
-        item['data'].get('publicationTitle')
+        item['data'].get('publicationTitle'),
+        item['data'].get('bookTitle')
         ))
     df = pd.DataFrame(data, columns=columns)
     return df
 
 df = zotero_data(library_id, library_type)
-
+df
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
 df['Abstract'] = df['Abstract'].fillna('No abstract')
 
@@ -108,9 +113,11 @@ type_map = {
     'computerProgram':'Computer program'
 }
 df['Publication type'] = df['Publication type'].replace(type_map)
-
-df['Date published'] = pd.to_datetime(df['Date published'], errors='coerce')
-df['Date published'] = pd.to_datetime(df['Date published'],utc=True).dt.tz_convert('Europe/London')
+df['Date published'] = (
+    df['Date published']
+    .str.strip()
+    .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+)
 df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
 df['Date published'] = df['Date published'].fillna('No date')
 # df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
@@ -175,7 +182,10 @@ st.title("Intelligence studies network", anchor=False)
 st.header('Intelligence studies bibliography', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
-into = '''
+# cite_today = datetime.date.today().isoformat()
+cite_today = datetime.date.today().strftime("%d %B %Y")
+
+into = f'''
 Welcome to **Intelligence studies bibliography**.
 This website lists **hundreds of sources, events, conferences, and call for papers** on intelligence history and intelligence studies. Finding sources on intelligence
 can sometimes be challening. This bibliography will be your helpful research assistant in finding and saving sources.
@@ -185,11 +195,13 @@ Check out the following guides for a quick intoduction about the website:
 Ozkan, Yusuf Ali. “Introduction to ‘Intelligence Studies Bibliography.’” Medium (blog), December 26, 2023. https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353.
 
 Ozkan, Yusuf Ali. ‘Enhancing the “Intelligence Studies Network” Website’. Medium (blog), 20 January 2024. https://medium.com/@yaliozkan/enhancing-the-intelligence-studies-network-website-13aa0c80f7f4.
+
+**Cite this page:** Ozkan, Yusuf A. ‘*Intelligence Studies Network*’, Created 1 June 2020, Accessed {cite_today}. https://intelligence.streamlit.app/.
 '''
 
 with st.spinner('Retrieving data & updating dashboard...'): 
 
-    item_count = zot.num_items()
+    item_count = zot.num_items() 
 
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
@@ -213,6 +225,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard']) #, '🔀 Surprise me'])
     with tab1:
+
         col1, col2 = st.columns([6,2]) 
         with col1: 
 
@@ -261,97 +274,205 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #     )
 
             # Title input from the user
+
+            def parse_search_terms(search_term):
+                # Split the search term by spaces while keeping phrases in quotes together
+                tokens = re.findall(r'(?:"[^"]*"|\S+)', search_term)
+                boolean_tokens = []
+                for token in tokens:
+                    # Treat "AND", "OR", "NOT" as Boolean operators only if they are uppercase
+                    if token in ["AND", "OR", "NOT"]:
+                        boolean_tokens.append(token)
+                    else:
+                        # Don't strip characters within quoted phrases
+                        if token.startswith('"') and token.endswith('"'):
+                            stripped_token = token.strip('"')
+                        else:
+                            # Preserve alphanumeric characters, apostrophes, hyphens, en dash, and other special characters
+                            stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–’]', '', token)
+                            # Remove parentheses from the stripped token
+                            stripped_token = stripped_token.replace('(', '').replace(')', '')
+                        boolean_tokens.append(stripped_token.strip('"'))
+                
+                # Remove trailing operators
+                while boolean_tokens and boolean_tokens[-1] in ["AND", "OR", "NOT"]:
+                    boolean_tokens.pop()
+                
+                return boolean_tokens
+
+            def apply_boolean_search(df, search_tokens, include_abstracts):
+                if not search_tokens:
+                    return df
+
+                query = ''
+                negate_next = False
+
+                for i, token in enumerate(search_tokens):
+                    if token == "AND":
+                        query += " & "
+                        negate_next = False
+                    elif token == "OR":
+                        query += " | "
+                        negate_next = False
+                    elif token == "NOT":
+                        negate_next = True
+                    elif token == "(":
+                        query += " ("
+                    elif token == ")":
+                        query += ") "
+                    else:
+                        escaped_token = re.escape(token)
+                        if include_abstracts == 'In title & abstract':
+                            condition = f'(Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{escaped_token}\\b", case=False, na=False))'
+                        else:
+                            condition = f'Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False)'
+
+                        if negate_next:
+                            condition = f"~({condition})"
+                            negate_next = False
+
+                        if query and query.strip()[-1] not in "&|(":
+                            query += " & "
+
+                        query += condition
+
+                # Debugging output
+                print(f"Query: {query}")
+
+                try:
+                    filtered_df = df.query(query, engine='python')
+                except Exception as e:
+                    print(f"Error in query: {query}\n{e}")
+                    return pd.DataFrame()
+
+                return filtered_df
+
+            def highlight_terms(text, terms):
+                boolean_operators = {"AND", "OR", "NOT"}
+                url_pattern = r'https?://\S+'
+                urls = re.findall(url_pattern, text)
+                for url in urls:
+                    text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
+
+                pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
+                highlighted_text = pattern.sub(lambda match: f'<span style="background-color: #FF8581;">{match.group(0)}</span>' if match.group(0) not in urls else match.group(0), text)
+                for index, url in enumerate(urls):
+                    highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
+                
+                return highlighted_text
+
+            # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
+                @st.experimental_dialog("Search guide")
+                def guide(item):
+                    st.write('''
+                        The Intelligence Studies Bibliography supports basic-level searches with Boolean operators.
+
+                        Available Boolean operators: **AND**, **OR**, **NOT** (e.g., "covert action" NOT British).
+
+                        You can search using double quotes (e.g., "covert action").
+
+                        Please note: Search with parentheses is **not** available.
+
+                        Note that the search function is limited: you will only find exact matches and cannot see search relevance.             
+                        ''')
+                
+                if "guide" not in st.session_state:
+                    if st.button("Search guide"):
+                        guide("Search guide")
+                # if st.button('Search guide'):
+                #     st.toast('''
+                #     **Search guide**
+
+                #     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
+
+                #     Search with double quote is available. (e.g. "covert action")
+
+                #     Search with parantheses is **not** available.                   
+                #     ''')
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
-                
+
+                search_term = search_term.strip()
                 if search_term:
-                    with st.expander('Click to expand', expanded=True):
-                        search_terms = re.findall(r'(?:"[^"]*"|\w+)', search_term)  # Updated regex pattern
-                        phrase_filter = '|'.join(search_terms)  # Filter for the entire phrase
-                        keyword_filters = [term.strip('"') for term in search_terms]  # Separate filters for individual keywords
+                    with st.status("Searching publications...", expanded=True) as status:
+                        search_tokens = parse_search_terms(search_term)
+                        print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
+                        df_csv = df_duplicated.copy()
 
-                        df_csv = df_dedup.copy()
+                        col112, col113, col114 = st.columns([2,2,2])
+                        with col112:
+                            display_abstracts = st.checkbox('Display abstracts')
+                        with col113:
+                            only_citation = st.checkbox('Show cited items only')
+                            if only_citation:
+                                df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
+                        with col114:
+                            table_view = st.checkbox('See results in table')
 
-                        if include_abstracts=='In title & abstract':
-                            # Search for the entire phrase first
-                            filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True)) |
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True)) 
-                                (df_csv['Abstract'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                            ]
-
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True)) |
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True)) 
-                                    (df_csv['Abstract'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
-                        else:
-                            # Search for the entire phrase first
-                            filtered_df = df_csv[
-                                (df_csv['Title'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                                # (df_csv['FirstName2'].str.contains(phrase_filter, case=False, na=False, regex=True))
-                            ]
-
-                            # Search for individual keywords separately and combine the results
-                            for keyword in keyword_filters:
-                                keyword_filter_df = df_csv[
-                                    (df_csv['Title'].str.contains(keyword, case=False, na=False, regex=True))
-                                    # (df_csv['FirstName2'].str.contains(keyword, case=False, na=False, regex=True))
-                                ]
-                                filtered_df = pd.concat([filtered_df, keyword_filter_df])
-
-                            # Remove duplicates, if any
-                            filtered_df = filtered_df.drop_duplicates()
-                            
-                            filtered_df['Date published'] = pd.to_datetime(filtered_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                            filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                        filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
+                        print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
+                        filtered_df = filtered_df.drop_duplicates()
+                        print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
+                        if not filtered_df.empty and 'Date published' in filtered_df.columns:
+                            filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
+                            filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            if filtered_df['Date published'].notna().any():
+                                filtered_df['Date published'] = filtered_df['Date published'].dt.strftime('%Y-%m-%d')
+                            else:
+                                filtered_df['Date published'] = ''
                             filtered_df['Date published'] = filtered_df['Date published'].fillna('')
                             filtered_df['No date flag'] = filtered_df['Date published'].isnull().astype(np.uint8)
                             filtered_df = filtered_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                        else:
+                            filtered_df['Date published'] = ''
+                            filtered_df['No date flag'] = 1
+                        print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
+                        
+                        types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                        collections = filtered_df['Collection_Name'].dropna().unique()
+
+                        with st.popover("Filters and more"):
+                            types2 = st.multiselect('Publication types', types, key='original2')
+                            collections = st.multiselect('Collection', collections, key='original_collection')
+                            container_download_button = st.container()
+
+                        if types2:
+                            filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]                 
+
+                        if collections:
+                            filtered_df = filtered_df[filtered_df['Collection_Name'].isin(collections)] 
+
 
                         if not filtered_df.empty:
-                            with st.popover('Filters and more'):
-                                col112, col113 = st.columns(2)
-                                with col112:
-                                    display_abstracts = st.checkbox('Display abstracts')
-                                with col113:
-                                    only_citation = st.checkbox('Show cited items only')
-                                    if only_citation:
-                                        filtered_df = filtered_df[(filtered_df['Citation'].notna()) & (filtered_df['Citation'] != 0)]
-
-                                types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
-                                types2 = st.multiselect('Publication types', types, key='original2')
-                                if types2:
-                                    filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]
-
-                                download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                                download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
-                                download_filtered = download_filtered.reset_index(drop=True)
-                                def convert_df(download_filtered):
-                                    return download_filtered.to_csv(index=False).encode('utf-8-sig')
-                                csv = convert_df(download_filtered)
-                                today = datetime.date.today().isoformat()
-                                a = 'search-result-' + today
-                                st.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
-
+                            filtered_df = filtered_df.drop_duplicates(subset=['Zotero link'], keep='first')
                             num_items = len(filtered_df)
-                            st.write(f"Matching articles ({num_items} sources found):")  # Display number of items found
-                                
+                            st.write(f"Matching articles (**{num_items}** {'source' if num_items == 1 else 'sources'} found):")
+
+                            download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                            download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
+                            download_filtered = download_filtered.reset_index(drop=True)
+
+                            def convert_df(download_filtered):
+                                return download_filtered.to_csv(index=False).encode('utf-8-sig')
+                            
+                            csv = convert_df(download_filtered)
+                            today = datetime.date.today().isoformat()
+                            a = 'search-result-' + today
+                            container_download_button.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+
                             on = st.toggle('Generate dashboard')
+
                             if on and len(filtered_df) > 0: 
-                                st.info(f'Dashboard for search terms: {phrase_filter}')
+                                st.info(f'Dashboard for search terms: {search_term}')
                                 search_df = filtered_df.copy()
                                 publications_by_type = search_df['Publication type'].value_counts()
                                 fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
@@ -382,50 +503,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                                 st.plotly_chart(fig)
 
-                                # search_df = filtered_df.copy()
-                                # def clean_text (text):
-                                #     text = text.lower() # lowercasing
-                                #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                #     return text
-                                # search_df['clean_title'] = search_df['Title'].apply(clean_text)
-                                # search_df['clean_title'] = search_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                # def tokenization(text):
-                                #     text = re.split('\W+', text)
-                                #     return text    
-                                # search_df['token_title']=search_df['clean_title'].apply(tokenization)
-                                # stopword = nltk.corpus.stopwords.words('english')
-                                # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                                # stopword.extend(SW)
-                                # def remove_stopwords(text):
-                                #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                #     return text
-                                # search_df['stopword']=search_df['token_title'].apply(remove_stopwords)
-                                # wn = nltk.WordNetLemmatizer()
-                                # def lemmatizer(text):
-                                #     text = [wn.lemmatize(word) for word in text]
-                                #     return text
-                                # search_df['lemma_title'] = search_df['stopword'].apply(lemmatizer)
-                                # listdf = search_df['lemma_title']
-                                # df_list = [item for sublist in listdf for item in sublist]
-                                # string = pd.Series(df_list).str.cat(sep=' ')
-                                # wordcloud_texts = string
-                                # wordcloud_texts_str = str(wordcloud_texts)
-                                # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                # plt.figure(figsize=(20,8))
-                                # plt.axis('off')
-                                # plt.title(f"Word Cloud for Titles")
-                                # plt.imshow(wordcloud)
-                                # plt.axis("off")
-                                # plt.show()
-                                # st.set_option('deprecation.showPyplotGlobalUse', False)
-                                # st.pyplot()
+                                search_df = filtered_df.copy()
+                                def clean_text (text):
+                                    text = text.lower() # lowercasing
+                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                    return text
+                                search_df['clean_title'] = search_df['Title'].apply(clean_text)
+                                search_df['clean_title'] = search_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                                def tokenization(text):
+                                    text = re.split('\W+', text)
+                                    return text    
+                                search_df['token_title']=search_df['clean_title'].apply(tokenization)
+                                stopword = nltk.corpus.stopwords.words('english')
+                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                    'examines', 'become', 'used', 'journal', 'london', 'review']
+                                stopword.extend(SW)
+                                def remove_stopwords(text):
+                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                    return text
+                                search_df['stopword']=search_df['token_title'].apply(remove_stopwords)
+                                wn = nltk.WordNetLemmatizer()
+                                def lemmatizer(text):
+                                    text = [wn.lemmatize(word) for word in text]
+                                    return text
+                                search_df['lemma_title'] = search_df['stopword'].apply(lemmatizer)
+                                listdf = search_df['lemma_title']
+                                df_list = [item for sublist in listdf for item in sublist]
+                                string = pd.Series(df_list).str.cat(sep=' ')
+                                wordcloud_texts = string
+                                wordcloud_texts_str = str(wordcloud_texts)
+                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False).generate(wordcloud_texts_str)
+                                plt.figure(figsize=(20,8))
+                                plt.axis('off')
+                                plt.title(f"Word Cloud for Titles")
+                                plt.imshow(wordcloud)
+                                plt.axis("off")
+                                plt.show()
+                                st.set_option('deprecation.showPyplotGlobalUse', False)
+                                st.pyplot()
 
                             else:
                                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
@@ -447,8 +568,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     articles_list.append(formatted_entry)  # Append formatted entry to the list
                                     abstract = row['Abstract']
                                     abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                    
+
                                 def highlight_terms(text, terms):
+                                    # Define boolean operators
+                                    boolean_operators = {"AND", "OR", "NOT"}
+
                                     # Regular expression pattern to identify URLs
                                     url_pattern = r'https?://\S+'
 
@@ -459,8 +583,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     for url in urls:
                                         text = text.replace(url, f'___URL_PLACEHOLDER_{urls.index(url)}___')
 
-                                    # Create a regex pattern to find the search terms in the text
-                                    pattern = re.compile('|'.join(terms), flags=re.IGNORECASE)
+                                    # Create a regex pattern to find the search terms in the text, excluding boolean operators
+                                    pattern = re.compile('|'.join(rf'\b{re.escape(term)}\b' for term in terms if term not in boolean_operators), flags=re.IGNORECASE)
 
                                     # Use HTML tags to highlight the terms in the text, excluding URLs
                                     highlighted_text = pattern.sub(
@@ -474,27 +598,31 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         highlighted_text = highlighted_text.replace(f'___URL_PLACEHOLDER_{index}___', url)
 
                                     return highlighted_text
-                                    
+                                if table_view:
+                                    df_table_view = filtered_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Collection_Name','Link to publication','Zotero link']]
+                                    df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
+                                    df_table_view
+                                else:
                                 # Display the numbered list using Markdown syntax
-                                for i, article in enumerate(articles_list, start=1):
-                                    # Display the article with highlighted search terms
-                                    highlighted_article = highlight_terms(article, search_terms)
-                                    st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
-                                    
-                                    # Display abstract under each numbered item only if the checkbox is selected
-                                    if display_abstracts:
-                                        abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
-                                        if pd.notnull(abstract):
-                                            if include_abstracts=='In title & abstract':
-                                                highlighted_abstract = highlight_terms(abstract, search_terms)
+                                    for i, article in enumerate(articles_list, start=1):
+                                        # Display the article with highlighted search terms
+                                        highlighted_article = highlight_terms(article, search_tokens)
+                                        st.markdown(f"{i}. {highlighted_article}", unsafe_allow_html=True)
+                                        
+                                        # Display abstract under each numbered item only if the checkbox is selected
+                                        if display_abstracts:
+                                            abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
+                                            if pd.notnull(abstract):
+                                                if include_abstracts == 'In title & abstract':
+                                                    highlighted_abstract = highlight_terms(abstract, search_tokens)
+                                                else:
+                                                    highlighted_abstract = abstract 
+                                                st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
                                             else:
-                                                highlighted_abstract = abstract 
-                                            st.caption(f"Abstract: {highlighted_abstract}", unsafe_allow_html=True)
-                                        else:
-                                            st.caption(f"Abstract: No abstract")
-                                
+                                                st.caption(f"Abstract: No abstract")
                         else:
                             st.write("No articles found with the given keyword/phrase.")
+                        status.update(label="Search completed!", state="complete", expanded=True)
                 else:
                     st.write("Please enter a keyword or author name to search.")
 
@@ -528,33 +656,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     with st.expander('Click to expand', expanded=True): 
                         st.markdown('#### Publications by ' + selected_author)
                         st.write('*Please note that this database **may not show** all research outputs of the author.*')
-
-                        with st.popover('Filters and more'):
-                            col112, col113 = st.columns(2)
-                            with col112:
-                                display_abstracts = st.checkbox('Display abstracts')
-                            with col113:
-                                only_citation = st.checkbox('Show cited items only')
-                                if only_citation:
-                                    filtered_collection_df_authors = filtered_collection_df_authors[(filtered_collection_df_authors['Citation'].notna()) & (filtered_collection_df_authors['Citation'] != 0)]
-                            # types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
-                            # filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
-
-                            types = filtered_collection_df_authors['Publication type'].dropna().unique()  # Exclude NaN values
-                            types2 = st.multiselect('Publication types', types, key='original22')
-                            if types2:
-                                filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types2)]                    
-                            filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
-
-                            def convert_df(filtered_collection_df_authors):
-                                return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
-                            download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                            download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
-                            csv = convert_df(download_filtered)
-                            today = datetime.date.today().isoformat()
-                            a = f'{selected_author}_{today}'
-                            st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
-
+                        types = st.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
+                        filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
+                        filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
                         publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
                         num_items_collections = len(filtered_collection_df_authors)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
@@ -569,6 +673,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         citation_count = filtered_collection_df_authors['Citation'].sum()
                         st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+
+                        def convert_df(filtered_collection_df_authors):
+                            return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
+                        download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                        download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
+                        csv = convert_df(download_filtered)
+            
+                        today = datetime.date.today().isoformat()
+                        a = f'{selected_author}_{today}'
+                        st.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
 
                         on = st.toggle('Generate dashboard')
                         if on and len(filtered_collection_df_authors) > 0: 
@@ -588,50 +702,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                                 title=f'Publications by Year ({selected_author})')
                             st.plotly_chart(fig_year_bar)
 
-                            # author_df = filtered_collection_df_authors
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for Titles published by ({selected_author})")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = filtered_collection_df_authors
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles published by ({selected_author})")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
                         else:
                             if not on:  # If the toggle is off, display the publications
                                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
@@ -652,7 +766,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     citation = int(float(citation))
                                     citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
                                     citation_link = citation_link.replace('api.', '')
-                                    abstract = row['Abstract']
 
                                     published_by_or_in_dict = {
                                         'Journal article': 'Published in',
@@ -660,6 +773,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         'Newspaper article': 'Published in',
                                         'Book': 'Published by',
                                     }
+
+                                    publication_type = row['Publication type']
 
                                     published_by_or_in = published_by_or_in_dict.get(publication_type, '')
                                     published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
@@ -678,17 +793,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     )
                                     formatted_entry = format_entry(row)
                                     st.write(f"{index + 1}) {formatted_entry}")
-                                    
-                                    if display_abstracts:
-                                        if pd.notnull(abstract):
-                                            st.caption(f"Abstract: {abstract}")
-                                        else:
-                                            st.caption(f"Abstract: No abstract")
 
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
 
-            # SEARCH IN COLLECTIONS 
+            # SEARCH IN COLLECTIONS
             elif search_option == "Search collection": 
                 st.subheader('Search collection')
 
@@ -697,6 +806,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
                 all_unique_collections = df_csv_collections['Collection_Name'].unique()
                 filtered_collections = [col for col in numeric_start_collections if col not in excluded_collections]
+
 
                 select_options = [''] + sorted(list(filtered_collections))
                 selected_collection = st.selectbox('Select a collection', select_options)
@@ -718,36 +828,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
                     
                     with st.expander('Click to expand', expanded=True):
-                        st.markdown('#### Collection theme: ' + selected_collection)                        
+                        st.markdown('#### Collection theme: ' + selected_collection)
+                        st.write(f"See the collection in [Zotero]({collection_link})")
+                        types = st.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
+                        filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
+                        filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                        publications_by_type = filtered_collection_df['Publication type'].value_counts()
 
-                        with st.popover('Filters and more'):
-                            col112, col113 = st.columns(2)
-                            with col112:
-                                display_abstracts = st.checkbox('Display abstracts')
-                            with col113:
-                                only_citation = st.checkbox('Show cited items only')
-                                if only_citation:
-                                    filtered_collection_df = filtered_collection_df[(filtered_collection_df['Citation'].notna()) & (filtered_collection_df['Citation'] != 0)]
-                            types = filtered_collection_df['Publication type'].dropna().unique() 
-                            types2 = st.multiselect('Publication types', types, key='original22')
-                            if types2:
-                                filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types2)]                    
-                            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-                            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-                            publications_by_type = filtered_collection_df['Publication type'].value_counts()
-
-                            download_collection = filtered_collection_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                            download_collection['Abstract'] = download_collection['Abstract'].str.replace('\n', ' ')
-                            download_collection = download_collection.reset_index(drop=True)
-                            def convert_df(download_collection):
-                                return download_collection.to_csv(index=False).encode('utf-8-sig')
-                            csv = convert_df(download_collection)
-                            today = datetime.date.today().isoformat()
-                            a = f'{selected_collection}_{today}'
-                            st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
-
-                            st.write(f"See the collection in [Zotero]({collection_link})")
-
+                        download_collection = filtered_collection_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                        download_collection['Abstract'] = download_collection['Abstract'].str.replace('\n', ' ')
+                        download_collection = download_collection.reset_index(drop=True)
+                        def convert_df(download_collection):
+                            return download_collection.to_csv(index=False).encode('utf-8-sig')
+                        csv = convert_df(download_collection)
+                        today = datetime.date.today().isoformat()
                         num_items_collections = len(filtered_collection_df)
                         breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
@@ -761,6 +855,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         citation_count = filtered_collection_df['Citation'].sum()
                         st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+
+                        a = f'{selected_collection}_{today}'
+                        st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
                         on = st.toggle('Generate dashboard')
                         if on and len(filtered_collection_df) > 0: 
@@ -809,50 +906,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig.update_layout(xaxis_tickangle=-45)
                             st.plotly_chart(fig)
 
-                            # author_df = filtered_collection_df.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for Titles in ({selected_collection})")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = filtered_collection_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles in ({selected_collection})")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
 
                         else:
                             if not on:
@@ -884,7 +981,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     citation = int(float(citation))
                                     citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
                                     citation_link = citation_link.replace('api.', '')
-                                    abstract = row['Abstract']
 
                                     if publication_type == 'Journal article':
                                         published_by_or_in = 'Published in'
@@ -898,11 +994,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                                     formatted_entry = format_entry(row)
                                     st.write(f"{index + 1}) {formatted_entry}")
-                                    if display_abstracts:
-                                            if pd.notnull(abstract):
-                                                st.caption(f"Abstract: {abstract}")
-                                            else:
-                                                st.caption(f"Abstract: No abstract")
                             else:  # If toggle is on but no publications are available
                                 st.write("No publication type selected.")
 
@@ -937,24 +1028,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if selected_type == 'Thesis':
                             st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).')
                         
-                        with st.popover('Filters and more'):
-                            col112, col113 = st.columns(2)
-                            with col112:
-                                display_abstracts = st.checkbox('Display abstracts')
-                            with col113:
-                                only_citation = st.checkbox('Show cited items only')
-                                if only_citation:
-                                    filtered_type_df = filtered_type_df[(filtered_type_df['Citation'].notna()) & (filtered_type_df['Citation'] != 0)]
-                            download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                            download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
-                            download_types = download_types.reset_index(drop=True)
-                            def convert_df(download_types):
-                                return download_types.to_csv(index=False).encode('utf-8-sig')
-                            csv = convert_df(download_types)
-                            today = datetime.date.today().isoformat()
-                            a = f'{selected_type}_{today}'
-                            st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4') 
+                        download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                        download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
+                        download_types = download_types.reset_index(drop=True)
 
+                        def convert_df(download_types):
+                            return download_types.to_csv(index=False).encode('utf-8-sig')
+
+                        csv = convert_df(download_types)
+                        today = datetime.date.today().isoformat()
                         num_items_collections = len(filtered_type_df)
                         st.write(f"**{num_items_collections}** sources found")
 
@@ -967,6 +1049,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         citation_count = filtered_type_df['Citation'].sum()
                         st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+
+                        a = f'{selected_type}_{today}'
+                        st.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
                         on = st.toggle('Generate dashboard')
                         if on and len (filtered_type_df) > 0:
@@ -995,50 +1080,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.plotly_chart(fig)
 
-                            # author_df = type_df.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for Titles in ({selected_type})")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = type_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles in ({selected_type})")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
                         else: 
                             sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                             if sort_by == 'Publication date :arrow_down:' or filtered_type_df['Citation'].sum() == 0:
@@ -1068,7 +1153,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 citation = int(float(citation))
                                 citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
                                 citation_link = citation_link.replace('api.', '')
-                                abstract = row['Abstract']
 
                                 published_by_or_in_dict = {
                                     'Journal article': 'Published in',
@@ -1211,50 +1295,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             )
                             st.plotly_chart(fig)
 
-                            # author_df = type_df.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for Titles published in selected journal(s)")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = type_df.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for Titles published in selected journal(s)")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
 
                         else:
                             sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
@@ -1455,53 +1539,53 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 )
                             st.plotly_chart(fig)
 
-                            # author_df = df_all.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # if abs(years[1]-years[0])>0 and years[0]<current_year:
-                            #     plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
-                            # else:
-                            #     plt.title(f"Word Cloud for Titles in {int(years[0])}")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = df_all.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
+                            else:
+                                plt.title(f"Word Cloud for Titles in {int(years[0])}")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
                     else:
                         sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                         if sort_by == 'Publication date :arrow_down:' or df_all['Citation'].sum() == 0:
@@ -1616,7 +1700,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if dashboard_all and len(df_cited) > 0: 
                             st.info(f'Dashboard for cited items in the library')
 
-                            colcite1, colcite2, colcite3 = st.columns(3)
+                            colcite1, colcite2, colcite3 = st.columns(3) 
 
                             with colcite1:
                                 st.metric(label=f"Citation average", value=round((citation_count)/(number_of_items)), label_visibility='visible', 
@@ -1628,7 +1712,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
                                 help=f'''This is for items at least with 1 citation.
                                 ''')
-                            with colcite3:
+                            with colcite3: 
                                 mean_first_citaion = df_cited['Year_difference'].mean()
                                 st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
                                 help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
@@ -1691,51 +1775,50 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             fig.update_layout(xaxis_tickangle=-45)
                             st.plotly_chart(fig)
        
-
-                            # author_df = df_cited.copy()
-                            # def clean_text (text):
-                            #     text = text.lower() # lowercasing
-                            #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                            #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                            #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                            #     return text
-                            # author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                            # author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                            # def tokenization(text):
-                            #     text = re.split('\W+', text)
-                            #     return text    
-                            # author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                            # stopword = nltk.corpus.stopwords.words('english')
-                            # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                            #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                            #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                            #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                            #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                            # stopword.extend(SW)
-                            # def remove_stopwords(text):
-                            #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                            #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                            #     return text
-                            # author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                            # wn = nltk.WordNetLemmatizer()
-                            # def lemmatizer(text):
-                            #     text = [wn.lemmatize(word) for word in text]
-                            #     return text
-                            # author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                            # listdf = author_df['lemma_title']
-                            # df_list = [item for sublist in listdf for item in sublist]
-                            # string = pd.Series(df_list).str.cat(sep=' ')
-                            # wordcloud_texts = string
-                            # wordcloud_texts_str = str(wordcloud_texts)
-                            # wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                            # plt.figure(figsize=(20,8))
-                            # plt.axis('off')
-                            # plt.title(f"Word Cloud for cited papers")
-                            # plt.imshow(wordcloud)
-                            # plt.axis("off")
-                            # plt.show()
-                            # st.set_option('deprecation.showPyplotGlobalUse', False)
-                            # st.pyplot()
+                            author_df = df_cited.copy()
+                            def clean_text (text):
+                                text = text.lower() # lowercasing
+                                text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                return text
+                            author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                            author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                            def tokenization(text):
+                                text = re.split('\W+', text)
+                                return text    
+                            author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                            stopword = nltk.corpus.stopwords.words('english')
+                            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                'examines', 'become', 'used', 'journal', 'london', 'review']
+                            stopword.extend(SW)
+                            def remove_stopwords(text):
+                                text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                return text
+                            author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                            wn = nltk.WordNetLemmatizer()
+                            def lemmatizer(text):
+                                text = [wn.lemmatize(word) for word in text]
+                                return text
+                            author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                            listdf = author_df['lemma_title']
+                            df_list = [item for sublist in listdf for item in sublist]
+                            string = pd.Series(df_list).str.cat(sep=' ')
+                            wordcloud_texts = string
+                            wordcloud_texts_str = str(wordcloud_texts)
+                            wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                            plt.figure(figsize=(20,8))
+                            plt.axis('off')
+                            plt.title(f"Word Cloud for cited papers")
+                            plt.imshow(wordcloud)
+                            plt.axis("off")
+                            plt.show()
+                            st.set_option('deprecation.showPyplotGlobalUse', False)
+                            st.pyplot()
                     else: 
                         sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
                         if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
@@ -1780,56 +1863,84 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 display = st.checkbox('Display theme and abstract')
 
+                def format_row(row):
+                    if row['Publication type'] == 'Book chapter' and row['Book_title']:
+                        return ('**' + row['Publication type'] + '**' + ': ' + row['Title'] + ', ' +
+                                ' (by ' + '*' + row['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + row['Date published'] + ') ' +
+                                '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
+                                "[[Zotero link]]" + '(' + row['Zotero link'] + ') ' +
+                                '(In: ' + row['Book_title'] + ')')  # Including Book Title for book chapters
+                    else:
+                        return ('**' + row['Publication type'] + '**' + ': ' + row['Title'] + ', ' +
+                                ' (by ' + '*' + row['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + row['Date published'] + ') ' +
+                                '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
+                                "[[Zotero link]]" + '(' + row['Zotero link'] + ')')
+                df_last = df.apply(format_row, axis=1)
 
-                df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                            ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                            ' (Published on: ' + df['Date published']+') ' +
-                            '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                            )
+                # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                #             ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                #             ' (Published on: ' + df['Date published']+') ' +
+                #             '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                #             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                #             )
                 
-                row_nu_1 = len(df_last.index)
+                row_nu_1 = len(df_last)
                 for i in range(row_nu_1):
                     publication_type = df['Publication type'].iloc[i]
-                    if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                    ' (Published on: ' + df['Date published']+') ' +
-                                    " (Published in: " + "*" + df['Pub_venue'] + "*" + ') '+
-                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                    )
-                        st.write(f"{i+1}) " + df_last.iloc[i])
-                    else:
-                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                                    ' (Published on: ' + df['Date published']+') ' +
-                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                                    )
-                        st.write(f"{i+1}) " + df_last.iloc[i])
                     
+                    if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
+                        formatted_row = ('**'+ df['Publication type'].iloc[i]+ '**'+ ': ' + df['Title'].iloc[i] +', ' +                        
+                                        ' (by ' + '*' + df['Authors'].iloc[i] + '*' + ') ' +
+                                        ' (Published on: ' + df['Date published'].iloc[i]+') ' +
+                                        " (Published in: " + "*" + df['Pub_venue'].iloc[i] + "*" + ') '+
+                                        '[[Publication link]]'+ '('+ df['Link to publication'].iloc[i] + ')' +
+                                        "[[Zotero link]]" +'('+ df['Zotero link'].iloc[i] + ')' 
+                                        )
+                        st.write(f"{i+1}) " + formatted_row)
+                    
+                    elif publication_type == 'Book chapter':
+                        formatted_row = ('**'+ df['Publication type'].iloc[i]+ '**'+ ': ' + df['Title'].iloc[i] + 
+                                        ' (in: ' + '*'+  df['Book_title'].iloc[i] + ')'+ '*'+ ', ' +                        
+                                        ' (by ' + '*' + df['Authors'].iloc[i] + '*' + ') ' +
+                                        ' (Published on: ' + df['Date published'].iloc[i]+') ' +
+                                        '[[Publication link]]'+ '('+ df['Link to publication'].iloc[i] + ')' +
+                                        "[[Zotero link]]" +'('+ df['Zotero link'].iloc[i] + ')'
+                                        )
+                        st.write(f"{i+1}) " + formatted_row)
+                    
+                    else:
+                        formatted_row = ('**'+ df['Publication type'].iloc[i]+ '**'+ ': ' + df['Title'].iloc[i] +', ' +                        
+                                        ' (by ' + '*' + df['Authors'].iloc[i] + '*' + ') ' +
+                                        ' (Published on: ' + df['Date published'].iloc[i]+') ' +
+                                        '[[Publication link]]'+ '('+ df['Link to publication'].iloc[i] + ')' +
+                                        "[[Zotero link]]" +'('+ df['Zotero link'].iloc[i] + ')' 
+                                        )
+                        st.write(f"{i+1}) " + formatted_row)
+
                     if display:
-                        a=''
-                        b=''
-                        c=''
+                        a = ''
+                        b = ''
+                        c = ''
                         if 'Name_x' in df:
-                            a= '['+'['+df['Name_x'].iloc[i]+']' +'('+ df['Link_x'].iloc[i] + ')'+ ']'
-                            if df['Name_x'].iloc[i]=='':
-                                a=''
+                            a = '[' + '[' + df['Name_x'].iloc[i] + ']' + '(' + df['Link_x'].iloc[i] + ')' + ']'
+                            if df['Name_x'].iloc[i] == '':
+                                a = ''
                         if 'Name_y' in df:
-                            b='['+'['+df['Name_y'].iloc[i]+']' +'('+ df['Link_y'].iloc[i] + ')' +']'
-                            if df['Name_y'].iloc[i]=='':
-                                b=''
+                            b = '[' + '[' + df['Name_y'].iloc[i] + ']' + '(' + df['Link_y'].iloc[i] + ')' + ']'
+                            if df['Name_y'].iloc[i] == '':
+                                b = ''
                         if 'Name' in df:
-                            c= '['+'['+df['Name'].iloc[i]+']' +'('+ df['Link'].iloc[i] + ')'+ ']'
-                            if df['Name'].iloc[i]=='':
-                                c=''
-                        st.caption('Theme(s):  \n ' + a + ' ' +b+ ' ' + c)
+                            c = '[' + '[' + df['Name'].iloc[i] + ']' + '(' + df['Link'].iloc[i] + ')' + ']'
+                            if df['Name'].iloc[i] == '':
+                                c = ''
+                        st.caption('Theme(s):  \n ' + a + ' ' + b + ' ' + c)
                         if not any([a, b, c]):
                             st.caption('No theme to display!')
                         
-                        st.caption('Abstract: '+ df['Abstract'].iloc[i])
+                        st.caption('Abstract: ' + df['Abstract'].iloc[i])
+
             with tab12:
                 st.markdown('#### Recently published items')
                 display2 = st.checkbox('Display abstracts', key='recently_published')
@@ -1843,7 +1954,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_intro = df_intro.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
                 df_intro = df_intro.sort_values(by=['Date published'], ascending=False)
                 df_intro = df_intro.reset_index(drop=True)
-                df_intro = df_intro.head(5)
+                df_intro = df_intro.head(10)
                 # articles_list = [format_entry(row) for _, row in df_intro.iterrows()]
                 articles_list = [format_entry(row, include_citation=False) for _, row in df_intro.iterrows()]
                 for index, formatted_entry in enumerate(articles_list):
@@ -1866,12 +1977,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_top = df_top.reset_index(drop=True)
                     return df_top
 
-                df_top = load_data()
+                df_top = load_data() 
 
-                st.markdown('#### Top 10 cited items')
+                st.markdown('#### Top cited items')
                 display3 = st.checkbox('Display abstracts', key='top_cited')
 
-                df_top_display = df_top.head(5)  # Take top 5 items for display
+                df_top_display = df_top.head(10)  # Take top 5 items for display
                 articles_list = [format_entry(row) for _, row in df_top_display.iterrows()]
 
                 for index, formatted_entry in enumerate(articles_list):
@@ -1945,103 +2056,93 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
                 st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
-            # with st.expander('Events & conferences', expanded=True):
-            #     st.markdown('##### Next event')
-            #     conn = connect()
+            with st.expander('Events & conferences', expanded=True):
+                st.markdown('##### Next event')
 
-            #     # Perform SQL query on the Google Sheet.
-            #     # Uses st.cache to only rerun when the query changes or after 10 min.
-            #     @st.cache_resource(ttl=900)
-            #     def run_query(query):
-            #         rows = conn.execute(query, headers=1)
-            #         rows = rows.fetchall()
-            #         return rows
+                conn = st.connection("gsheets", type=GSheetsConnection)
 
-            #     sheet_url = st.secrets["public_gsheets_url"]
-            #     rows = run_query(f'SELECT * FROM "{sheet_url}"')
+                # Read the first spreadsheet
+                df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
 
-            #     data = []
-            #     columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
+                # Read the second spreadsheet
+                df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
+                df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+                df_forms = df_forms.drop(columns=['Timestamp'])
 
-            #     # Print results.
-            #     for row in rows:
-            #         data.append((row.event_name, row.organiser, row.link, row.date, row.venue, row.details))
+                # Convert and format dates in df_gs
+                df_gs['date'] = pd.to_datetime(df_gs['date'])
+                df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
 
-            #     pd.set_option('display.max_colwidth', None)
-            #     df_gs = pd.DataFrame(data, columns=columns)
-            #     df_gs['date_new'] = pd.to_datetime(df_gs['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                # Convert and format dates in df_forms
+                df_forms['date'] = pd.to_datetime(df_forms['date'])
+                df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
+                df_forms['month'] = df_forms['date'].dt.strftime('%m')
+                df_forms['year'] = df_forms['date'].dt.strftime('%Y')
+                df_forms['month_year'] = df_forms['date'].dt.strftime('%Y-%m')
+                df_forms.sort_values(by='date', ascending=True, inplace=True)
+                df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
 
-            #     sheet_url_forms = st.secrets["public_gsheets_url_forms"]
-            #     rows = run_query(f'SELECT * FROM "{sheet_url_forms}"')
-            #     data = []
-            #     columns = ['event_name', 'organiser', 'link', 'date', 'venue', 'details']
-            #     # Print results.
-            #     for row in rows:
-            #         data.append((row.Event_name, row.Event_organiser, row.Link_to_the_event, row.Date_of_event, row.Event_venue, row.Details))
-            #     pd.set_option('display.max_colwidth', None)
-            #     df_forms = pd.DataFrame(data, columns=columns)
+                # Fill missing values in df_forms
+                df_forms['details'] = df_forms['details'].fillna('No details')
+                df_forms = df_forms.fillna('')
 
-            #     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-            #     df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
-            #     df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
-            #     df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
-            #     df_forms.sort_values(by='date', ascending = True, inplace=True)
-            #     df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+                # Concatenate df_gs and df_forms
+                df_gs = pd.concat([df_gs, df_forms], axis=0)
+                df_gs = df_gs.reset_index(drop=True)
+                df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+
+                # Sort the concatenated dataframe by date_new
+                df_gs = df_gs.sort_values(by='date_new', ascending=True)
+
+                # Filter events happening today or in the future
+                today = dt.date.today()
+                df_gs['date'] = pd.to_datetime(df_gs['date'], dayfirst=True)  # Ensure 'date' is datetime
+                filter = df_gs['date'] >= pd.to_datetime(today)
+                df_gs = df_gs[filter]
+
+                # Display the filtered dataframe
+                df_gs = df_gs.loc[filter]
+                df_gs = df_gs.fillna('')
+                df_gs = df_gs.head(3)
+                if df_gs['event_name'].any() in ("", [], None, 0, False):
+                    st.write('No upcoming event!')
+                df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
+                row_nu = len(df_gs.index)
+                for i in range(row_nu):
+                    st.write(''+str(i+1)+') '+ df_gs1.iloc[i])
+                st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
                 
-            #     df_forms['details'] = df_forms['details'].fillna('No details')
-            #     df_forms = df_forms.fillna('')
-            #     df_gs = pd.concat([df_gs, df_forms], axis=0)
-            #     df_gs = df_gs.reset_index(drop=True)
-            #     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-
-            #     df_gs.sort_values(by='date', ascending = True, inplace=True)
-            #     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link'], keep='first')
-            #     df_gs = df_gs.fillna('')
-            #     today = dt.date.today()
-            #     filter = (df_gs['date']>=today)
-            #     df_gs = df_gs.loc[filter]
-            #     df_gs = df_gs.head(1)
-            #     if df_gs['event_name'].any() in ("", [], None, 0, False):
-            #         st.write('No upcoming event!')
-            #     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
-            #     row_nu = len(df_gs.index)
-            #     for i in range(row_nu):
-            #         st.write(df_gs1.iloc[i])
-                
-            #     st.markdown('##### Next conference')
-            #     sheet_url2 = st.secrets["public_gsheets_url2"]
-            #     rows = run_query(f'SELECT * FROM "{sheet_url2}"')
-            #     data = []
-            #     columns = ['conference_name', 'organiser', 'link', 'date', 'date_end', 'venue', 'details', 'location']
-            #     for row in rows:
-            #         data.append((row.conference_name, row.organiser, row.link, row.date, row.date_end, row.venue, row.details, row.location))
-            #     pd.set_option('display.max_colwidth', None)
-            #     df_con = pd.DataFrame(data, columns=columns)
-            #     df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
-            #     df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
-            #     df_con.sort_values(by='date', ascending = True, inplace=True)
-            #     df_con['details'] = df_con['details'].fillna('No details')
-            #     df_con['location'] = df_con['location'].fillna('No details')
-            #     df_con = df_con.fillna('')            
-            #     filter = (df_con['date_end']>=today)
-            #     df_con = df_con.loc[filter]
-            #     df_con = df_con.head(1)
-            #     if df_con['conference_name'].any() in ("", [], None, 0, False):
-            #         st.write('No upcoming conference!')
-            #     df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
-            #     row_nu = len(df_con.index)
-            #     for i in range(row_nu):
-            #         st.write( df_con1.iloc[i])
-            #     st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
+                st.markdown('##### Next conference')
+                df_con = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=939232836')
+                df_con['date'] = pd.to_datetime(df_con['date'])
+                df_con['date_new'] = df_con['date'].dt.strftime('%Y-%m-%d')
+                df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_con['date_new_end'] = pd.to_datetime(df_con['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
+                df_con.sort_values(by='date', ascending = True, inplace=True)
+                df_con['details'] = df_con['details'].fillna('No details')
+                df_con['location'] = df_con['location'].fillna('No details')
+                df_con = df_con.fillna('')
+                df_con['date_end'] = pd.to_datetime(df_con['date'], dayfirst=True)     
+                filter = df_con['date_end']>=pd.to_datetime(today)
+                df_con = df_con.loc[filter]
+                df_con = df_con.head(1)
+                if df_con['conference_name'].any() in ("", [], None, 0, False):
+                    st.write('No upcoming conference!')
+                df_con1 = ('['+ df_con['conference_name'] + ']'+ '('+ df_con['link'] + ')'', organised by ' + '**' + df_con['organiser'] + '**' + '. Date(s): ' + df_con['date_new'] + ' - ' + df_con['date_new_end'] + ', Venue: ' + df_con['venue'])
+                row_nu = len(df_con.index)
+                for i in range(row_nu):
+                    st.write( df_con1.iloc[i])
+                st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
             with st.expander('Digest', expanded=True):
                 st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 
     with tab2:
         st.header('Dashboard', anchor=False)
-        on_main_dashboard = st.toggle('Display dashboard') 
+        on_main_dashboard = st.toggle('Display dashboard')
+        
+        if on_main_dashboard:
 
-        if on_main_dashboard:            
             # number0 = st.slider('Select a number collections', 3,30,15)
             # df_collections_2.set_index('Name', inplace=True)
             # df_collections_2 = df_collections_2.sort_values(['Number'], ascending=[False])
@@ -2078,6 +2179,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df_year=df_csv['Date year'].value_counts()
             df_year=df_year.reset_index()
             df_year=df_year.rename(columns={'index':'Publication year','Date year':'Count'})
+
+            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+            df_year.columns = ['Publication year', 'Count']
+            # TEMP SOLUTION ENDS
+
             df_year.drop(df_year[df_year['Publication year']== 'No date'].index, inplace = True)
             df_year=df_year.sort_values(by='Publication year', ascending=True)
             df_year=df_year.reset_index(drop=True)
@@ -2092,7 +2198,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             
             # df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
-            df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
+            df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date') 
  
             with st.expander('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
@@ -2135,6 +2241,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             else:                
                 ## COLLECTIONS IN THE LIBRARY
+                
                 st.markdown(f'#### Intelligence studies bibliography dashboard (publications between {years[0]} and {years[1]})')
 
                 df_collections_21 = df_collections_2.copy()
@@ -2182,6 +2289,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_types = df_types.sort_values(['Publication type'], ascending=[False])
                 df_types=df_types.reset_index()
                 df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
+                # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+                df_types.columns = ['Publication type', 'Count']
+                # TEMP SOLUTION ENDS
 
 
                 col1, col2 = st.columns(2)
@@ -2247,6 +2357,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_publisher = df_publisher.sort_values(['Publisher'], ascending=[False])
                     df_publisher = df_publisher.reset_index()
                     df_publisher = df_publisher.rename(columns={'index':'Publisher','Publisher':'Count'})
+                    # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+                    df_publisher.columns = ['Publisher', 'Count']
+                    # TEMP SOLUTION ENDS
+                    df_publisher = df_publisher.sort_values(['Count'], ascending=[False])
                     df_publisher = df_publisher.head(number)
 
                     log1 = st.checkbox('Show in log scale', key='log1')
@@ -2310,6 +2424,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     df_journal = df_journal.sort_values(['Journal'], ascending=[False])
                     df_journal = df_journal.reset_index()
                     df_journal = df_journal.rename(columns={'index':'Journal','Journal':'Count'})
+                    # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+                    df_journal.columns = ['Journal', 'Count']
+                    # TEMP SOLUTION ENDS
+                    df_journal = df_journal.sort_values(['Count'], ascending=[False])
                     df_journal = df_journal.head(number2)
 
                     log2 = st.checkbox('Show in log scale', key='log2')
@@ -2399,94 +2517,97 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     fig.update_xaxes(tickangle=-65)
                     col3.plotly_chart(fig, use_container_width=True)
 
-                # st.write('---')
-                # df=df_csv.copy()
-                # def clean_text (text):
-                #     text = text.lower() # lowercasing
-                #     text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                #     text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                #     text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                #     return text
-                # df['clean_title'] = df['Title'].apply(clean_text)
-                # df['clean_abstract'] = df['Abstract'].astype(str).apply(clean_text)
-                # df_abs_no = df.dropna(subset=['clean_abstract'])
-                # df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                # df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                st.write('---')
+                df=df_csv.copy()
+                def clean_text (text):
+                    text = text.lower() # lowercasing
+                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                    return text
+                df['clean_title'] = df['Title'].apply(clean_text)
+                df['clean_abstract'] = df['Abstract'].astype(str).apply(clean_text)
+                df_abs_no = df.dropna(subset=['clean_abstract'])
+                df['clean_title'] = df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                df['clean_abstract'] = df['clean_abstract'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
 
-                # def tokenization(text):
-                #     text = re.split('\W+', text)
-                #     return text
-                # df['token_title']=df['clean_title'].apply(tokenization)
-                # df['token_abstract']=df['clean_abstract'].apply(tokenization)
-                # stopword = nltk.corpus.stopwords.words('english')
+                def tokenization(text):
+                    text = re.split('\W+', text)
+                    return text
+                df['token_title']=df['clean_title'].apply(tokenization)
+                df['token_abstract']=df['clean_abstract'].apply(tokenization)
+                stopword = nltk.corpus.stopwords.words('english')
 
-                # SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                #     'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                #     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                #     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                #     'examines', 'become', 'used', 'journal', 'london', 'review']
-                # stopword.extend(SW)
+                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                    'examines', 'become', 'used', 'journal', 'london', 'review']
+                stopword.extend(SW)
 
-                # def remove_stopwords(text):
-                #     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                #     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                #     return text
-                # df['stopword']=df['token_title'].apply(remove_stopwords)
-                # df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
+                def remove_stopwords(text):
+                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                    return text
+                df['stopword']=df['token_title'].apply(remove_stopwords)
+                df['stopword_abstract']=df['token_abstract'].apply(remove_stopwords)
 
-                # wn = nltk.WordNetLemmatizer()
-                # def lemmatizer(text):
-                #     text = [wn.lemmatize(word) for word in text]
-                #     return text
+                wn = nltk.WordNetLemmatizer()
+                def lemmatizer(text):
+                    text = [wn.lemmatize(word) for word in text]
+                    return text
 
-                # df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
-                # df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
+                df['lemma_title'] = df['stopword'].apply(lemmatizer) # error occurs in this line
+                df['lemma_abstract'] = df['stopword_abstract'].apply(lemmatizer) # error occurs in this line
 
-                # listdf = df['lemma_title']
-                # listdf_abstract = df['lemma_abstract']
+                listdf = df['lemma_title']
+                listdf_abstract = df['lemma_abstract']
 
-                # st.subheader('Wordcloud')
-                # wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
-                # if wordcloud_opt=='Titles':
-                #     df_list = [item for sublist in listdf for item in sublist]
-                #     string = pd.Series(df_list).str.cat(sep=' ')
-                #     wordcloud_texts = string
-                #     wordcloud_texts_str = str(wordcloud_texts)
-                #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                #     plt.figure(figsize=(20,8))
-                #     plt.axis('off')
-                #     plt.title('Top words in title (Intelligence bibliography collection)')
-                #     plt.imshow(wordcloud)
-                #     plt.axis("off")
-                #     plt.show()
-                #     st.set_option('deprecation.showPyplotGlobalUse', False)
-                #     st.pyplot() 
-                # else:
-                #     st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
-                #     df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
-                #     string = pd.Series(df_list_abstract).str.cat(sep=' ')
-                #     wordcloud_texts = string
-                #     wordcloud_texts_str = str(wordcloud_texts)
-                #     wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                #     plt.figure(figsize=(20,8))
-                #     plt.axis('off')
-                #     plt.title('Top words in abstract (Intelligence bibliography collection)')
-                #     plt.imshow(wordcloud)
-                #     plt.axis("off")
-                #     plt.show()
-                #     st.set_option('deprecation.showPyplotGlobalUse', False)
-                #     st.pyplot() 
+                st.subheader('Wordcloud')
+                wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+                if wordcloud_opt=='Titles':
+                    df_list = [item for sublist in listdf for item in sublist]
+                    string = pd.Series(df_list).str.cat(sep=' ')
+                    wordcloud_texts = string
+                    wordcloud_texts_str = str(wordcloud_texts)
+                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                    plt.figure(figsize=(20,8))
+                    plt.axis('off')
+                    plt.title('Top words in title (Intelligence bibliography collection)')
+                    plt.imshow(wordcloud)
+                    plt.axis("off")
+                    plt.show()
+                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                    st.pyplot() 
+                else:
+                    st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
+                    df_list_abstract = [item for sublist in listdf_abstract for item in sublist]
+                    string = pd.Series(df_list_abstract).str.cat(sep=' ')
+                    wordcloud_texts = string
+                    wordcloud_texts_str = str(wordcloud_texts)
+                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                    plt.figure(figsize=(20,8))
+                    plt.axis('off')
+                    plt.title('Top words in abstract (Intelligence bibliography collection)')
+                    plt.imshow(wordcloud)
+                    plt.axis("off")
+                    plt.show()
+                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                    st.pyplot() 
 
                 # Bring everything in the library
 
                 df_types = pd.DataFrame(df_csv['Publication type'].value_counts())
+                df_types = df_types.reset_index()
+                df_types.columns = ['Publication type', 'Count']
 
                 st.header('Items in the library by type: ', anchor=False)
                 
-                df_types = df_types.sort_values(['Publication type'], ascending=[False])
+                df_types = df_types.sort_values(['Count'], ascending=[False])
                 plot2= df_types.head(10)
 
-                st.bar_chart(plot2['Publication type'].sort_values(), height=600, width=600, use_container_width=True)
+                st.bar_chart(plot2, height=600, width=600, use_container_width=True, x='Publication type')
+
 
             st.header('Item inclusion history', anchor=False)
             df_added = df_dedup.copy()
