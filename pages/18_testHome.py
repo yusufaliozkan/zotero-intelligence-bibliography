@@ -1902,7 +1902,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     
                     elif publication_type == 'Book chapter':
                         formatted_row = ('**'+ df['Publication type'].iloc[i]+ '**'+ ': ' + df['Title'].iloc[i] + 
-                                        ' (In: ' + df['Book_title'].iloc[i] + ')'+', ' +                        
+                                        ' (in: ' + '*'+  df['Book_title'].iloc[i] + ')'+ '*'+ ', ' +                        
                                         ' (by ' + '*' + df['Authors'].iloc[i] + '*' + ') ' +
                                         ' (Published on: ' + df['Date published'].iloc[i]+') ' +
                                         '[[Publication link]]'+ '('+ df['Link to publication'].iloc[i] + ')' +
