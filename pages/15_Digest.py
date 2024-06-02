@@ -301,6 +301,7 @@ with st.spinner('Preparing digest...'):
             if len(df_cited) == 0: 
                 st.warning(f'No citation yet in {current_year}') 
             else:
+                len(df_cited)
                 st.info(f'**Papers cited in {current_year}**')
                 articles_list = []  # Store articles in a list
                 for index, row in df_cited.iterrows():
