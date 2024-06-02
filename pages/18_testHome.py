@@ -1878,8 +1878,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
                                 "[[Zotero link]]" + '(' + row['Zotero link'] + ')')
                 df_last = df.apply(format_row, axis=1)
-                df_last
-
 
                 # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                 #             ' (by ' + '*' + df['Authors'] + '*' + ') ' +
@@ -1905,7 +1903,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     ' (by ' + '*' + df['Authors'] + '*' + ') ' +
                                     ' (Published on: ' + df['Date published']+') ' +
                                     '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')' + '(In: ' + df['Book_title'] + ')'
                                     )
                         st.write(f"{i+1}) " + df_last.iloc[i])
                     
