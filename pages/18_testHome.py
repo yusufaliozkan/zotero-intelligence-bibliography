@@ -57,7 +57,7 @@ def zotero_data(library_id, library_type):
     items = zot.top(limit=10)
     items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
     data=[]
-    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue']
+    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue', 'Book_title']
 
     for item in items:
         creators = item['data']['creators']
@@ -77,13 +77,14 @@ def zotero_data(library_id, library_type):
         item['data']['dateModified'],
         item['data']['collections'],
         creators_str,
-        item['data'].get('publicationTitle')
+        item['data'].get('publicationTitle'),
+        item['data'].get('bookTitle')
         ))
     df = pd.DataFrame(data, columns=columns)
     return df
 
 df = zotero_data(library_id, library_type)
-zotero_data
+df
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
 df['Abstract'] = df['Abstract'].fillna('No abstract')
 
