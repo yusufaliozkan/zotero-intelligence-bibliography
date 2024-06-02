@@ -1878,6 +1878,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
                                 "[[Zotero link]]" + '(' + row['Zotero link'] + ')')
                 df_last = df.apply(format_row, axis=1)
+                df_last
 
 
                 # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
