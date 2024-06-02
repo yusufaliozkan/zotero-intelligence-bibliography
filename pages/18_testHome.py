@@ -1870,7 +1870,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 ' (Published on: ' + row['Date published'] + ') ' +
                                 '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
                                 "[[Zotero link]]" + '(' + row['Zotero link'] + ') ' +
-                                '(In: ' + row['Book Title'] + ')')  # Including Book Title for book chapters
+                                '(In: ' + row['Book_title'] + ')')  # Including Book Title for book chapters
                     else:
                         return ('**' + row['Publication type'] + '**' + ': ' + row['Title'] + ', ' +
                                 ' (by ' + '*' + row['Authors'] + '*' + ') ' +
