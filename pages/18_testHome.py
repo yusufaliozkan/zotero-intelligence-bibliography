@@ -1898,9 +1898,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
                                     )
                         st.write(f"{i+1}) " + df_last.iloc[i])
-                    else:
+                    if publication_type in ['Book chapter']:
                         df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + 
                                     ' (In: ' + df['Book_title'] + ')'+', ' +                        
+                                    ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                                    ' (Published on: ' + df['Date published']+') ' +
+                                    '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                                    "[[Zotero link]]" +'('+ df['Zotero link'] + ')'
+                                    )
+                    else:
+                        df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
                                     ' (by ' + '*' + df['Authors'] + '*' + ') ' +
                                     ' (Published on: ' + df['Date published']+') ' +
                                     '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
