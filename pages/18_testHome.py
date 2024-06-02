@@ -1900,7 +1900,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.write(f"{i+1}) " + df_last.iloc[i])
                     else:
                         df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] + 
-                                    '( In: ' + df['Book_title'] + ') '+', ' +                        
+                                    '( In: ' + df['Book_title'] + ')'+', ' +                        
                                     ' (by ' + '*' + df['Authors'] + '*' + ') ' +
                                     ' (Published on: ' + df['Date published']+') ' +
                                     '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
