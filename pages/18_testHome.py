@@ -84,7 +84,7 @@ def zotero_data(library_id, library_type):
     return df
 
 df = zotero_data(library_id, library_type)
-df
+
 df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
 df['Abstract'] = df['Abstract'].fillna('No abstract')
 
