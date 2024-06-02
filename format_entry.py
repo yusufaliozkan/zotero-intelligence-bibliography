@@ -27,6 +27,8 @@ def format_entry(row, include_citation=True):
     published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
     if publication_type == 'Book':
         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+    if publication_type == 'Book chapter':
+        published_source = str(row['Book_title']) if pd.notnull(row['Book_title']) else ''
     citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 
         else '')
     
