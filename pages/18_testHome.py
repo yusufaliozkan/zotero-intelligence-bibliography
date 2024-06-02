@@ -1863,13 +1863,29 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 display = st.checkbox('Display theme and abstract')
 
+                def format_row(row):
+                    if row['Publication type'] == 'Book chapter' and row['Book_title']:
+                        return ('**' + row['Publication type'] + '**' + ': ' + row['Title'] + ', ' +
+                                ' (by ' + '*' + row['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + row['Date published'] + ') ' +
+                                '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
+                                "[[Zotero link]]" + '(' + row['Zotero link'] + ') ' +
+                                '(In: ' + row['Book Title'] + ')')  # Including Book Title for book chapters
+                    else:
+                        return ('**' + row['Publication type'] + '**' + ': ' + row['Title'] + ', ' +
+                                ' (by ' + '*' + row['Authors'] + '*' + ') ' +
+                                ' (Published on: ' + row['Date published'] + ') ' +
+                                '[[Publication link]]' + '(' + row['Link to publication'] + ')' +
+                                "[[Zotero link]]" + '(' + row['Zotero link'] + ')')
+                df['df_last'] = df.apply(format_row, axis=1)
 
-                df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                            ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                            ' (Published on: ' + df['Date published']+') ' +
-                            '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                            "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                            )
+
+                # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
+                #             ' (by ' + '*' + df['Authors'] + '*' + ') ' +
+                #             ' (Published on: ' + df['Date published']+') ' +
+                #             '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
+                #             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
+                #             )
                 
                 row_nu_1 = len(df_last.index)
                 for i in range(row_nu_1):
