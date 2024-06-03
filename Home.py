@@ -375,7 +375,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         Available Boolean operators: **AND**, **OR**, **NOT** (e.g., "covert action" **NOT** British).
 
-                        You can search using double quotes (e.g., **"** covert action **"**).
+                        You can search using double quotes (e.g., "covert action").
 
                         Multiple Boolean operators are allowed: (e.g. "covert action" **OR** "covert operation" **OR** "covert operations")
 
