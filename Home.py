@@ -373,11 +373,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write('''
                         The Intelligence Studies Bibliography supports basic-level searches with Boolean operators.
 
-                        Available Boolean operators: **AND**, **OR**, **NOT** (e.g., "covert action" NOT British).
+                        Available Boolean operators: **AND**, **OR**, **NOT** (e.g., "covert action" **NOT** British).
 
-                        You can search using double quotes (e.g., "covert action").
+                        You can search using double quotes (e.g., **"** covert action **"**).
 
-                        Multiple Boolean operators are allowed: (e.g. "covert action" OR "covert operation" OR "covert operations")
+                        Multiple Boolean operators are allowed: (e.g. "covert action" **OR** "covert operation" **OR** "covert operations")
 
                         Please note: Search with parentheses is **not** available.
 
