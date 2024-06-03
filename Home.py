@@ -377,6 +377,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         You can search using double quotes (e.g., "covert action").
 
+                        Multiple Boolean operators are allowed: (e.g. "covert action" OR "covert operation" OR "covert operations")
+
                         Please note: Search with parentheses is **not** available.
 
                         Note that the search function is limited: you will only find exact matches and cannot see search relevance.             
