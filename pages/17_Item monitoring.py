@@ -114,7 +114,7 @@ with col1:
             # Define keywords for filtering
             keywords = [
                 'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert', 'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis',
-                'spying', 'spies', 'surveillance', 'targeted killing', 'cyberespionage', 'cia', 'rendition'
+                'spying', 'spies', 'surveillance', 'targeted killing', 'cyberespionage', ' cia ', 'rendition'
             ]
 
             dfs = []
