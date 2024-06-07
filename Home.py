@@ -524,8 +524,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
                                     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
                                     'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                stopword.append(search_term.split()) 
+                                stopword.extend(search_term.split())
+                                stopword.append(search_term)
                                 search_tokens
                                 def remove_stopwords(text):
                                     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
