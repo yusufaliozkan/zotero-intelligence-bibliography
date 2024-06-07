@@ -116,6 +116,7 @@ with col1:
             keywords = [
                 'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert', 'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis',
                 'spying', 'spies', 'surveillance', 'targeted killing', 'cyberespionage', ' cia ', 'rendition', ' mi6 ', ' mi5 ', ' sis ', 'security service',
+                'central intelligence'
             ]
 
             dfs = []
