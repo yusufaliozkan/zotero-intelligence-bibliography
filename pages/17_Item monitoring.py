@@ -97,6 +97,7 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s160097506&sort=publication_year:desc', #American Journal of International Law
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s175405714&sort=publication_year:desc', #European Journal of International Law
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s84944781&sort=publication_year:desc', #Human Rights Law Review
+                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s154337186&sort=publication_year:desc', #Leiden Journal of International Law
 
                 # Add more API links here
             ]
@@ -113,7 +114,7 @@ with col1:
                 'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History',
                 'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror",
                 'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies', 'International Journal', 'German Law Journal',
-                'American Journal of International Law', 'European Journal of International Law', 'Human Rights Law Review'
+                'American Journal of International Law', 'European Journal of International Law', 'Human Rights Law Review', 'Leiden Journal of International Law'
                 ]
 
             # Define keywords for filtering
