@@ -43,12 +43,6 @@ col1, col2 = st.columns([5,2])
 
 with col1:
 
-    def reconstruct_abstract(abstract_inverted_index):
-        """Reconstruct the abstract text from the inverted index."""
-        index_to_word = {pos: word for word, positions in abstract_inverted_index.items() for pos in positions}
-        abstract_text = ' '.join(index_to_word[pos] for pos in sorted(index_to_word))
-        return abstract_text
-
     item_monitoring = st.button("Item monitoring")
     if item_monitoring:
         st.subheader('Monitoring section')
@@ -138,7 +132,6 @@ with col1:
                     publication_dates = [] 
                     dois_without_https = []
                     journals = []
-                    abstracts = []
 
                     today = datetime.datetime.today().date()
 
@@ -147,15 +140,13 @@ with col1:
 
                         if today - pub_date <= timedelta(days=90):
                             title = result['title'].lower()
-                            abstract_inverted_index = result.get('abstract_inverted_index', {})
-                            abstract = reconstruct_abstract(abstract_inverted_index).lower()
-                            if any(keyword in title for keyword in keywords) or any(keyword in abstract for keyword in keywords):
+
+                            if any(keyword in title for keyword in keywords):
                                 titles.append(result['title'])
                                 dois.append(result['doi'])
                                 publication_dates.append(result['publication_date'])
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
                                 journals.append(result['primary_location']['source']['display_name'])
-                                abstracts.append(abstract)
 
                     df = pd.DataFrame({
                         'Title': titles,
@@ -163,7 +154,6 @@ with col1:
                         'Publication Date': publication_dates,
                         'DOI': dois_without_https,
                         'Journal': journals,
-                        'Abstract':abstracts
                     })
 
                     dfs.append(df)
