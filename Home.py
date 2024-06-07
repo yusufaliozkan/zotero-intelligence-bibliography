@@ -534,7 +534,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                                 custom_stopwords = extract_quoted_phrases(search_term)
                                 stopword.extend(custom_stopwords)
-                                custom_stopwords
+
                                 def remove_stopwords(text):
                                     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
                                     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
