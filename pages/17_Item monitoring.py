@@ -143,7 +143,7 @@ with col1:
                             title = result['title'].lower()
                             abstract_inverted_index = result.get('abstract_inverted_index', {})
                             abstract = reconstruct_abstract(abstract_inverted_index).lower()
-                            if any(keyword in title for keyword in keywords):
+                            if any(keyword in title for keyword in keywords) or any(keyword in abstract for keyword in keywords):
                                 titles.append(result['title'])
                                 dois.append(result['doi'])
                                 publication_dates.append(result['publication_date'])
