@@ -92,7 +92,7 @@ with col1:
                 'https://api.openalex.org/works?filter=primary_location.source.id:s4210184262&sort=publication_year:desc&per_page=10', #Small Wars & Insurgencies
                 'https://api.openalex.org/works?filter=primary_location.source.id:s4210236978&sort=publication_year:desc&per_page=10', #Journal of Cyber Policy
                 'https://api.openalex.org/works?filter=primary_location.source.id:s120889147&sort=publication_year:desc&per_page=10', #South Asia:Journal of South Asian Studies
-                'https://api.openalex.org/works?filter=primary_location.source.id:s86954274&sort=cited_by_count:desc&per_page=10', #International Journal
+                'https://api.openalex.org/works?filter=primary_location.source.id:s86954274&sort=publication_year:desc&per_page=10', #International Journal
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s117224066&sort=publication_year:desc', #German Law Journal
 
                 # Add more API links here
