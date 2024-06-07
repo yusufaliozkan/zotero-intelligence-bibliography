@@ -403,6 +403,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts')
 
+                def extract_quoted_phrases(text):
+                    quoted_phrases = re.findall(r'"(.*?)"', text)
+                    text_without_quotes = re.sub(r'"(.*?)"', '', text)
+                    words = text_without_quotes.split()
+                    return quoted_phrases + words
+
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
@@ -524,6 +530,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
                                     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
                                     'examines', 'become', 'used', 'journal', 'london', 'review']
+                                stopword.extend(SW)
+                                
                                 stopword.extend(search_term.split())
                                 stopword.append(search_term)
                                 search_term
