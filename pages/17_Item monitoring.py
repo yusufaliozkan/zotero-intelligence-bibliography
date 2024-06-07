@@ -43,6 +43,12 @@ col1, col2 = st.columns([5,2])
 
 with col1:
 
+    def reconstruct_abstract(abstract_inverted_index):
+        """Reconstruct the abstract text from the inverted index."""
+        index_to_word = {pos: word for word, positions in abstract_inverted_index.items() for pos in positions}
+        abstract_text = ' '.join(index_to_word[pos] for pos in sorted(index_to_word))
+        return abstract_text
+
     item_monitoring = st.button("Item monitoring")
     if item_monitoring:
         st.subheader('Monitoring section')
