@@ -132,6 +132,7 @@ with col1:
                     publication_dates = [] 
                     dois_without_https = []
                     journals = []
+                    abstracts = []
 
                     today = datetime.datetime.today().date()
 
@@ -140,19 +141,23 @@ with col1:
 
                         if today - pub_date <= timedelta(days=90):
                             title = result['title'].lower()
+                            abstract_inverted_index = result.get('abstract_inverted_index', {})
+                            abstract = reconstruct_abstract(abstract_inverted_index).lower()
                             if any(keyword in title for keyword in keywords):
                                 titles.append(result['title'])
                                 dois.append(result['doi'])
                                 publication_dates.append(result['publication_date'])
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
                                 journals.append(result['primary_location']['source']['display_name'])
+                                abstracts.append(abstract)
 
                     df = pd.DataFrame({
                         'Title': titles,
                         'Link': dois,
                         'Publication Date': publication_dates,
                         'DOI': dois_without_https,
-                        'Journal': journals
+                        'Journal': journals,
+                        'Abstract':abstracts
                     })
 
                     dfs.append(df)
