@@ -674,7 +674,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # SEARCH AUTHORS
             elif search_option == "Search author":
                 st.query_params.clear()
-                st.subheader('Search author') 
+                st.subheader('Search author')
+
+                query_params = st.query_params.to_dict()
+                search_term = query_params.get("author", "")
 
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
 
