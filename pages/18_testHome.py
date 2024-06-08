@@ -413,6 +413,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
+                        query_params = st.query_params.to_dict()
+                        selected_collection = query_params.get("search", None)
+
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
 
