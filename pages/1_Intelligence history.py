@@ -77,6 +77,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             query_params = st.experimental_get_query_params()
             selected_collection = query_params.get("collection_name", [None])[0]
 
+            if selected_collection:
+                selected_collection = selected_collection.replace("_", " ")
+
             unique_collections = list(df_collections['Collection_Name'].unique())
 
             if selected_collection in unique_collections:
