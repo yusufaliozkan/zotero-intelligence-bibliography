@@ -64,6 +64,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
+    df_collections
+
+    def remove_numbers(name):
+        return re.sub(r'^\d+(\.\d+)*\s*', '', name)
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -74,24 +78,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            def remove_numbers(name):
-                return re.sub(r'^\d+(\.\d+)*\s*', '', name)
-
-            query_params = st.experimental_get_query_params()
             
-
-            unique_collections = list(df_collections['Collection_Name'].unique())
-            cleaned_to_original = {remove_numbers(name): name for name in unique_collections}
-            unique_collections_cleaned = list(cleaned_to_original.keys())
+            query_params = st.experimental_get_query_params()
             selected_collection = query_params.get("collection_name", [None])[0]
 
+            unique_collections = list(df_collections['Collection_Name'].unique())
 
-
-            if selected_collection in unique_collections_cleaned:
+            if selected_collection in unique_collections:
                 # Set the default value to the selected collection from the query params
-                radio = container.radio('Select a collection', unique_collections_cleaned, index=unique_collections_cleaned.index(selected_collection))
+                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
             else:
-                radio = container.radio('Select a collection', unique_collections_cleaned)
+                radio = container.radio('Select a collection', unique_collections)
 
             # radio = container.radio('Select a collection', unique_collections)
             # collection_name = st.selectbox('Select a collection:', clist)
