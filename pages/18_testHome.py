@@ -677,7 +677,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Read current query parameters
                 query_params = st.query_params.to_dict()
-                search_term = current_params.get("author", [""])[0]
+                search_term2 = current_params.get("author", [""])[0]
 
                 # Get unique authors and their publication counts
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
@@ -693,7 +693,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_author_display = st.selectbox(
                     'Select author', 
                     select_options_author_with_counts, 
-                    index=select_options_author_with_counts.index(f"{search_term} ({author_publications.get(search_term, 0)})") if search_term else 0
+                    index=select_options_author_with_counts.index(f"{search_term2} ({author_publications.get(search_term2, 0)})") if search_term2 else 0
                 )
                 selected_author_display
                 # Extract selected author name
