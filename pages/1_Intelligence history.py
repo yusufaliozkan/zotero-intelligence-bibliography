@@ -72,8 +72,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-
-    container = st.container()
+    with st.popover("Open popover"):
+        container = st.container()
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
@@ -82,7 +82,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             
             query_params = st.query_params.to_dict()
             selected_collection = query_params.get("collection_name", None)
-
 
             unique_collections = list(df_collections['Collection_Name'].unique())
 
