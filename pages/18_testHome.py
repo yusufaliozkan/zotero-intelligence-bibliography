@@ -364,7 +364,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-            current_params = st.query_params()
+
+            current_params = st.query_params.to_dict()
 
             options = [
                 "Search keywords", 
