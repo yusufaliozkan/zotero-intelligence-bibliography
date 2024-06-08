@@ -385,7 +385,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.query_params.search_option = search_option
 
             # Update query parameters when radio button value changes
-            update_query_params()
+            update_query_params({"search_option": search_option})
             # search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
             if search_option == "Search keywords":
@@ -675,34 +675,32 @@ with st.spinner('Retrieving data & updating dashboard...'):
             elif search_option == "Search author":
                 st.subheader('Search author')
 
+                # Read current query parameters
+                query_params = st.query_params.to_dict()
+                search_term = query_params.get("author", "")
+
+                # Get unique authors and their publication counts
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
                 author_publications = df_authors['Author_name'].value_counts().to_dict()
+
+                # Sort authors by publication count
                 sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
+                
+                # Prepare select options with author names and publication counts
                 select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
-                # Retrieve the author from the query parameters
-                search_term = current_params.get("author", "")
-
+                # Selectbox to choose an author
                 selected_author_display = st.selectbox(
                     'Select author', 
                     select_options_author_with_counts, 
                     index=select_options_author_with_counts.index(f"{search_term} ({author_publications.get(search_term, 0)})") if search_term else 0
                 )
+
+                # Extract selected author name
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
 
                 # Update the URL parameters for the shareable link
                 st.query_params.from_dict({"search_option": search_option, "author": selected_author})
-
-                if not selected_author or selected_author == "":
-                    st.write('Select an author to see items')
-
-                # Function to update query parameters for other options
-                def update_query_params():
-                    if search_option != "Search author":
-                        st.query_params.from_dict({"search_option": search_option})
-
-                # Update query parameters when radio button value changes
-                update_query_params()
 
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
