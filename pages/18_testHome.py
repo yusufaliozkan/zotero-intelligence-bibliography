@@ -364,7 +364,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-            current_params = st.experimental_get_query_params()
+            current_params = st.query_params()
 
             options = [
                 "Search keywords", 
@@ -421,7 +421,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 #     ''')
 
                 cols, cola = st.columns([2,6])
-                search_term = query_params.get("search_term", "")
+                search_term = current_params.get("search_term", "")
 
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
