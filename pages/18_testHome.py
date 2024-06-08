@@ -660,12 +660,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
                 select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
+                query_params = st.query_params.to_dict()
+                search_term = query_params.get("author", "")
+
                 selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
                 # selected_author = st.selectbox('Select author', select_options_author)
-
-                query_params = st.query_params.to_dict()
-                search_term = query_params.get("author", "")
 
                 if not selected_author or selected_author =="":
                     st.write('Select an author to see items')
