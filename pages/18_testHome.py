@@ -412,7 +412,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
-                        search_tokens = st.text_input("Search Term", value=st.query_params.get("search_term", ""), key="search_term")
+                        search_tokens = parse_search_terms(search_term)
+                        search_tokens = st.text_input("Search Term", value=st.query_params.get("search_tokens", ""), key="search_tokens")
                         st.query_params.from_dict({"search_term": search_tokens})
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
 
