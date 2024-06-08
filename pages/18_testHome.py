@@ -409,29 +409,29 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     words = text_without_quotes.split()
                     return quoted_phrases + words
 
+                search_term = st.query_params.get("search_term", "")
+
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
-                        search_tokens = st.text_input("Search Term", value=st.query_params.get("search_tokens", ""), key="search_tokens")
-                        st.query_params.from_dict({"search_term": search_tokens})
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
-
-                        # Read query parameters for checkboxes
-                        display_abstracts = st.checkbox('Display abstracts', value=bool(st.query_params.get("display_abstracts", False)))
-                        only_citation = st.checkbox('Show cited items only', value=bool(st.query_params.get("only_citation", False)))
-                        table_view = st.checkbox('See results in table', value=bool(st.query_params.get("table_view", False)))
-
                         df_csv = df_duplicated.copy()
-                        if only_citation:
-                            df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
 
-                        filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts=display_abstracts)
+                        col112, col113, col114 = st.columns([2,2,2])
+                        with col112:
+                            display_abstracts = st.checkbox('Display abstracts')
+                        with col113:
+                            only_citation = st.checkbox('Show cited items only')
+                            if only_citation:
+                                df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
+                        with col114:
+                            table_view = st.checkbox('See results in table')
 
-                        # Drop duplicates
+                        filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
+                        print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
                         filtered_df = filtered_df.drop_duplicates()
-
-                        # Further processing
+                        print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
                             filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
@@ -445,11 +445,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
-
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
-
+                        
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
+
+                        st.query_params.from_dict({"search_term": search_term})
+
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
