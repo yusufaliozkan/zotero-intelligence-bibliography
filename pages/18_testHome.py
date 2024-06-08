@@ -667,6 +667,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if not selected_author  or selected_author =="":
                     st.write('Select an author to see items')
                 else:
+                    query_params = st.query_params.to_dict()
+                    search_term = query_params.get("author", selected_author)
+
                     filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
 
                     filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
