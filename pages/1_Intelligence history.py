@@ -72,13 +72,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
+    if "container" not in st.session_state:
+        st.session_state.container = st.container()
+
+    def guide(item):
+        st.session_state.container = st.container()
+
     @st.experimental_dialog('Collections')
     def guide(item):
         container = st.container()
 
     if "guide" not in st.session_state:
         if st.button("Search guide"):
-            guide("Search guide")        
+            guide("Search guide")
+        
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
