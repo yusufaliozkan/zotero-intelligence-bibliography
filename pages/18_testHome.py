@@ -661,7 +661,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
                 query_params = st.query_params.to_dict()
-                search_term = query_params.get("author", "")
+                search_term = query_params.get("author", [""])[0]
 
                 selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
@@ -674,7 +674,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     filtered_collection_df_authors = df_authors[df_authors['Author_name'] == selected_author]
 
                     # Amend the URL parameters for the shareable link
-                    st.query_params.from_dict({"search_option": "Search author", "author": selected_author})
+                    st.query_params.from_dict(search_option=search_option, author=selected_author)
 
 
                     filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
