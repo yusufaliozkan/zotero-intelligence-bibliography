@@ -397,7 +397,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 #     Search with parantheses is **not** available.                   
                 #     ''')
-                query_params = st.query_params.to_dict()
+                # query_params = st.query_params.to_dict()
                 search_term = query_params.get("search", "")
                 cols, cola = st.columns([2,6])
                 with cols:
