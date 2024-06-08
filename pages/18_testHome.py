@@ -452,7 +452,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        st.query_params.from_dict("search_term": search_term)
+                        st.query_params.from_dict({"search_term": search_term})
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
