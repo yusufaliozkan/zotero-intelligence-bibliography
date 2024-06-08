@@ -72,20 +72,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    if "container" not in st.session_state:
-        st.session_state.container = st.container()
-
-    def guide(item):
-        st.session_state.container = st.container()
-
-    @st.experimental_dialog('Collections')
-    def guide(item):
+    with st.popover("Collections"):
         container = st.container()
-
-    if "guide" not in st.session_state:
-        if st.button("Search guide"):
-            guide("Search guide")
-        
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
@@ -99,9 +87,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             if selected_collection in unique_collections:
                 # Set the default value to the selected collection from the query params
-                radio = session_state.container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
+                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
             else:
-                radio = session_state.container.radio('Select a collection', unique_collections)
+                radio = container.radio('Select a collection', unique_collections)
 
             # radio = container.radio('Select a collection', unique_collections)
             # collection_name = st.selectbox('Select a collection:', clist)
