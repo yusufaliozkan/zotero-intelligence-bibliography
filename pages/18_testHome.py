@@ -675,7 +675,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH AUTHORS
             elif search_option == "Search author":
-                st.query_params.clear
+                st.query_params.clear()
 
                 st.subheader('Search author')
 
@@ -873,7 +873,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH IN COLLECTIONS
             elif search_option == "Search collection": 
-                st.query_params.clear
+                st.query_params.clear()
 
                 st.subheader('Search collection')
 
@@ -1074,7 +1074,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write("No publication type selected.")
 
             elif search_option == "Publication types":
-                st.query_params.clear
+                st.query_params.clear()
 
                 st.subheader('Publication types')
 
@@ -1250,7 +1250,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write(f"{index + 1}) {formatted_entry}")
 
             elif search_option == "Search journal":
-                st.query_params.clear
+                st.query_params.clear()
 
                 st.subheader('Search journal')
 
@@ -1464,7 +1464,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write(f"{index + 1}) {formatted_entry}")
 
             elif search_option == "Publication year":             
-                st.query_params.clear
+                st.query_params.clear()
    
                 st.subheader('Items by publication year')
 
@@ -1692,7 +1692,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
             elif search_option == "Cited papers":   
-                st.query_params.clear
+                st.query_params.clear()
             
                 st.subheader('Cited items in the library')
 
