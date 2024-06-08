@@ -686,7 +686,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
                 # Retrieve current query parameters
-                query_params = st.query_params.to_dict()
                 search_term = query_params.get("author", "")
 
                 selected_author_display = st.selectbox(
