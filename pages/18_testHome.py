@@ -399,6 +399,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 #     ''')
 
                 cols, cola = st.columns([2,6])
+                query_params = st.query_params.to_dict()
+                search_term = query_params.get("search", "")
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
@@ -409,9 +411,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     text_without_quotes = re.sub(r'"(.*?)"', '', text)
                     words = text_without_quotes.split()
                     return quoted_phrases + words
-            
-                query_params = st.query_params.to_dict()
-                search_term = query_params.get("search", "")
+    
 
                 search_term = search_term.strip()
                 if search_term:
