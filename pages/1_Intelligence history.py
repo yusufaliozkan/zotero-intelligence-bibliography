@@ -84,20 +84,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             unique_collections = list(df_collections['Collection_Name'].unique())
 
+            # Create a container for the radio button
+            container = st.container()
+
+            # Set the default value to the selected collection from the query params
             if selected_collection in unique_collections:
-                # Set the default value to the selected collection from the query params
                 radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
             else:
                 radio = container.radio('Select a collection', unique_collections)
 
-            # radio = container.radio('Select a collection', unique_collections)
-            # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
+
+            # Update the query parameters in the URL
             if collection_name:
                 st.query_params.from_dict({"collection_name": collection_name})
-            st.query_params.from_dict({"collection_name": collection_name})
 
-            df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            # Filter the DataFrame based on the selected collection
+            df_collections = df_collections.loc[df_collections['Collection_Name'] == collection_name]
             pd.set_option('display.max_colwidth', None)
 
             # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
