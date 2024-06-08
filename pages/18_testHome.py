@@ -380,7 +380,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             search_option = st.radio(
                 "Select search option", 
                 options, 
-                index=options.index(current_params.get("search_option", ["Search keywords"])[0])
+                index=options.index(current_params.get())
             )
 
             def update_query_params():
