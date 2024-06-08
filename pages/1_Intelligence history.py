@@ -77,12 +77,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
-        with col1:
-            
+        with col1:            
             query_params = st.query_params.to_dict()
             selected_collection = query_params.get("collection", None)
 
-            unique_collections = list(df_collections['Collection_Name'].unique())
+            unique_collections = ['All'] + list(df_collections['Collection_Name'].unique())
 
             if selected_collection in unique_collections:
                 # Set the default value to the selected collection from the query params
