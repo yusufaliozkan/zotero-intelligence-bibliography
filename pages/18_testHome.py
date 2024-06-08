@@ -672,7 +672,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
 
-                    st.query_params.from_dict({"search_option": "Search author", "author": selected_author})
+                    st.query_params.from_dict({"search_option": search_option, "author": selected_author})
 
                     filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].dt.strftime('%Y-%m-%d')
