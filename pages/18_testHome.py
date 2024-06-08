@@ -402,6 +402,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Extracting search_term from query params if available
                 query_params = st.query_params.to_dict()
                 search_term = query_params.get("search_term", "")
+            
+                with cols:
+                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
 
                 # User input for search term
                 with cola:
