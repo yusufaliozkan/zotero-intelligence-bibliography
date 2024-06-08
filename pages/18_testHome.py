@@ -664,7 +664,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Retrieve current query parameters
                 query_params = st.query_params.to_dict()
-                search_term = query_params.get("author", "")
+                search_term = query_params.get("author", None)
 
                 selected_author_display = st.selectbox(
                     'Select author', 
