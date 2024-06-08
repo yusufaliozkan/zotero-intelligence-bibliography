@@ -81,13 +81,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
             selected_collection = query_params.get("collection_name", [None])[0]
 
             unique_collections = list(df_collections['Collection_Name'].unique())
-            unique_collections_cleaned = [remove_numbers(name) for name in unique_collections]
 
-            if selected_collection in unique_collections_cleaned :
+            if selected_collection in unique_collections:
                 # Set the default value to the selected collection from the query params
-                radio = container.radio('Select a collection', unique_collections_cleaned , index=unique_collections_cleaned .index(selected_collection))
+                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
             else:
-                radio = container.radio('Select a collection', unique_collections_cleaned )
+                radio = container.radio('Select a collection', unique_collections)
 
             # radio = container.radio('Select a collection', unique_collections)
             # collection_name = st.selectbox('Select a collection:', clist)
