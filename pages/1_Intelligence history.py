@@ -72,8 +72,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    with st.popover("Collections"):
-        container = st.container()
+    container = st.container()
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
