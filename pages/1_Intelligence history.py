@@ -77,19 +77,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
-        with col1:            
-            query_params = st.query_params.to_dict()
-            selected_collection = query_params.get("collection", None)
+        with col1:
 
-            unique_collections = ['All'] + list(df_collections['Collection_Name'].unique())
+            unique_collections = ['All'] + list(df_collections['Collection_Name'].unique()) 
+            if radio != 'All':      
+                query_params = st.query_params.to_dict()
+                selected_collection = query_params.get("collection", None)
 
-            if selected_collection in unique_collections:
-                # Set the default value to the selected collection from the query params
-                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
-            else:
-                radio = container.radio('Select a collection', unique_collections)
+                if selected_collection in unique_collections:
+                    # Set the default value to the selected collection from the query params
+                    radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
+                else:
+                    radio = container.radio('Select a collection', unique_collections)
 
-            if radio != 'All':
+            
 
                 # radio = container.radio('Select a collection', unique_collections)
                 # collection_name = st.selectbox('Select a collection:', clist)
