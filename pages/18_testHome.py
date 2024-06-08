@@ -365,6 +365,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
+            current_params = st.query_params.to_dict()
+
             options = [
                 "Search keywords", 
                 "Search author", 
@@ -374,23 +376,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 "Publication year", 
                 "Cited papers"
             ]
-            current_params = st.query_params.to_dict()
             default_search_option = current_params.get("search_option", ["Search keywords"])[0]
 
             search_option = st.radio(
                 "Select search option", 
                 options, 
-                index=options.index(default_search_option)
+                index=options.index(current_params.get("search_option", "Search keywords"))
             )
-
-            def update_query_params(selected_option, additional_params={}):
-                params = st.experimental_get_query_params()
-                params['search_option'] = selected_option
-                params.update(additional_params)
-                st.experimental_set_query_params(**params)
+            def update_query_params():
+                st.query_params.search_option = search_option
 
             # Update query parameters when radio button value changes
-            update_query_params(search_option)
+            update_query_params()
             # search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
             if search_option == "Search keywords":
@@ -712,7 +709,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else ""
 
                 # Update the URL parameters for the shareable link
-                update_query_params(search_option, {"author_name": author_name})
+                st.query_params.from_dict(search_option=search_option, author=selected_author)
 
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
