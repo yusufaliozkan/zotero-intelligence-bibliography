@@ -376,11 +376,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 "Publication year", 
                 "Cited papers"
             ]
+            current_search_option = current_params.get('search_option', [options[0]])[0]
+            if current_search_option not in options:
+                current_search_option = options[0]
 
             search_option = st.radio(
                 "Select search option", 
                 options, 
-                index=options.index(current_params.get())
+                index=options.index(current_search_option)
             )
 
             def update_query_params():
