@@ -89,7 +89,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
             if collection_name:
-                sanitized_collection_name = collection_name.replace("+", "_")
+                sanitized_collection_name = collection_name.replace(" ", "_")
                 st.experimental_set_query_params(collection_name=collection_name)
             st.experimental_set_query_params(collection_name=radio)
 
