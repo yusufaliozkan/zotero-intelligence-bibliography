@@ -676,7 +676,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.subheader('Search author')
 
                 # Read current query parameters
-                current_params = st.experimental_get_query_params()
+                current_params = st.query_params.get()
                 search_term2 = current_params.get("author", [""])[0]
 
                 # Get unique authors and their publication counts
