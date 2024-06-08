@@ -387,7 +387,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             )
 
             def update_query_params():
-                st.experimental_set_query_params(search_option=search_option)
+                st.query_params(search_option=search_option)
 
             # Update query parameters when radio button value changes
             update_query_params()
