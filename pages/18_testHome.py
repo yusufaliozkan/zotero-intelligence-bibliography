@@ -696,13 +696,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
 
-            # Function to update query parameters for other options
-            def update_query_params():
-                if search_option != "Search author":
-                    st.query_params.from_dict({"search_option": search_option})
+                # Function to update query parameters for other options
+                def update_query_params():
+                    if search_option != "Search author":
+                        st.query_params.from_dict({"search_option": search_option})
 
-            # Update query parameters when radio button value changes
-            update_query_params()
+                # Update query parameters when radio button value changes
+                update_query_params()
 
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
