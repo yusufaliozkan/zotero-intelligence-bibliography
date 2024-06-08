@@ -695,7 +695,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     select_options_author_with_counts, 
                     index=select_options_author_with_counts.index(f"{search_term} ({author_publications.get(search_term, 0)})") if search_term else 0
                 )
-
+                selected_author_display
                 # Extract selected author name
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
 
