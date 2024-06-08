@@ -676,7 +676,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.subheader('Search author')
 
                 # Read current query parameters
-                query_params = st.query_params.to_dict()
+                current_params = st.experimental_get_query_params()
                 search_term2 = current_params.get("author", [""])[0]
 
                 # Get unique authors and their publication counts
@@ -689,18 +689,25 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 # Prepare select options with author names and publication counts
                 select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
+                # Check if search_term2 exists in the list, otherwise set index to 0
+                if search_term2:
+                    search_term_with_count = f"{search_term2} ({author_publications.get(search_term2, 0)})"
+                    index = select_options_author_with_counts.index(search_term_with_count) if search_term_with_count in select_options_author_with_counts else 0
+                else:
+                    index = 0
+
                 # Selectbox to choose an author
                 selected_author_display = st.selectbox(
                     'Select author', 
                     select_options_author_with_counts, 
-                    index=select_options_author_with_counts.index(f"{search_term2} ({author_publications.get(search_term2, 0)})") if search_term2 else 0
+                    index=index
                 )
-                selected_author_display
+
                 # Extract selected author name
-                selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
+                selected_author = selected_author_display.split(' (')[0] if selected_author_display else ""
 
                 # Update the URL parameters for the shareable link
-                st.query_params.from_dict({"search_option": search_option, "author": selected_author})
+                st.experimental_set_query_params(search_option=search_option, author=selected_author)
 
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
