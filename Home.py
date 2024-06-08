@@ -397,15 +397,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 #     Search with parantheses is **not** available.                   
                 #     ''')
-                cols, cola = st.columns([2, 6])
-
-                # Extracting search_term from query params if available
-                query_params = st.query_params.to_dict()
-                search_term = query_params.get("search_term", "")
-
-                # User input for search term
+                cols, cola = st.columns([2,6])
+                with cols:
+                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
+                    search_term = st.text_input('Search keywords in titles or abstracts')
 
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
@@ -420,7 +416,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
 
-                        col112, col113, col114 = st.columns([2, 2, 2])
+                        col112, col113, col114 = st.columns([2,2,2])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
                         with col113:
@@ -451,9 +447,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-
-                        # Update the URL with the new search term
-                        st.query_params.from_dict({"search_term": search_term})
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
