@@ -376,13 +376,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 "Publication year", 
                 "Cited papers"
             ]
+            default_search_option = current_params.get("search_option", ["Search keywords"])[0]
+
             search_option = st.radio(
                 "Select search option", 
                 options, 
-                index=options.index(current_params.get("search_option", "Search keywords"))
+                index=options.index(default_search_option)
             )
+
             def update_query_params():
-                st.query_params.search_option = search_option
+                st.query_params.search_option(search_option=search_option)
 
             # Update query parameters when radio button value changes
             update_query_params()
