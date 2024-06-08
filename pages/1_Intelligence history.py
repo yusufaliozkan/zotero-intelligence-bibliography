@@ -89,14 +89,18 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 radio = container.radio('Select a collection', unique_collections)
 
-            # radio = container.radio('Select a collection', unique_collections)
-            # collection_name = st.selectbox('Select a collection:', clist)
-            collection_name = radio
-            # if collection_name:
-            st.query_params.from_dict({"collection": collection_name})
-            # st.experimental_set_query_params(collection_name=radio)
+            if radio != 'All':
 
-            df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+                # radio = container.radio('Select a collection', unique_collections)
+                # collection_name = st.selectbox('Select a collection:', clist)
+                collection_name = radio
+                # if collection_name:
+                st.query_params.from_dict({"collection": collection_name})
+                # st.experimental_set_query_params(collection_name=radio)
+
+                df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+            else:
+                df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
             pd.set_option('display.max_colwidth', None)
 
             # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
