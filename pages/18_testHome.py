@@ -673,20 +673,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH AUTHORS
             elif search_option == "Search author":
-                st.query_params.clear()
                 st.subheader('Search author')
 
-                query_params = st.query_params.to_dict()
-                search_term = query_params.get("author", "")
-
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
-
                 author_publications = df_authors['Author_name'].value_counts().to_dict()
                 sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
                 select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
-                # Retrieve current query parameters
-                search_term = query_params.get("author", "")
+                # Retrieve the author from the query parameters
+                search_term = current_params.get("author", "")
 
                 selected_author_display = st.selectbox(
                     'Select author', 
@@ -697,6 +692,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Update the URL parameters for the shareable link
                 st.query_params.from_dict({"search_option": search_option, "author": selected_author})
+
+                if not selected_author or selected_author == "":
+                    st.write('Select an author to see items')
+
+            # Function to update query parameters for other options
+            def update_query_params():
+                if search_option != "Search author":
+                    st.query_params.from_dict({"search_option": search_option})
+
+            # Update query parameters when radio button value changes
+            update_query_params()
 
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
