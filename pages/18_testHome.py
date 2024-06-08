@@ -664,11 +664,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
                 # selected_author = st.selectbox('Select author', select_options_author)
 
+                query_params = st.query_params.to_dict()
+                search_term = query_params.get("author", "")
+
                 if not selected_author or selected_author =="":
                     st.write('Select an author to see items')
                 else:
-                    query_params = st.query_params.to_dict()
-                    search_term = query_params.get("author", selected_author)
 
                     filtered_collection_df_authors = df_authors[df_authors['Author_name'] == selected_author]
 
