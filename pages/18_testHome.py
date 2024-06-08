@@ -677,7 +677,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Read current query parameters
                 query_params = st.query_params.to_dict()
-                search_term = query_params.get("author", "")
+                search_term = current_params.get("author", [""])[0]
 
                 # Get unique authors and their publication counts
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
@@ -700,7 +700,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
 
                 # Update the URL parameters for the shareable link
-                st.query_params.from_dict({"search_option": search_option, "author": selected_author})
+                st.query_params.from_dict(search_option=search_option, author=selected_author)
 
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
