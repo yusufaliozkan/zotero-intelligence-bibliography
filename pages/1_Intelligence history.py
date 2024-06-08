@@ -74,9 +74,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            def remove_numbers(name):
-                return re.sub(r'^\d+(\.\d+)*\s*', '', name)
-
             query_params = st.experimental_get_query_params()
             selected_collection = query_params.get("collection_name", [None])[0]
 
