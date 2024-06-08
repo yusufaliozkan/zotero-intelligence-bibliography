@@ -78,11 +78,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 return re.sub(r'^\d+(\.\d+)*\s*', '', name)
 
             query_params = st.experimental_get_query_params()
-            selected_collection = query_params.get("collection_name", [None])[0]
+            
 
             unique_collections = list(df_collections['Collection_Name'].unique())
             cleaned_to_original = {remove_numbers(name): name for name in unique_collections}
             unique_collections_cleaned = list(cleaned_to_original.keys())
+            selected_collection = query_params.get("collection_name", [None])[0]
 
 
 
@@ -101,7 +102,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
-            df_collections
 
             # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections['Date published'] = (
