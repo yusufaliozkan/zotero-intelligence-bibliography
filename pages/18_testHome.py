@@ -409,8 +409,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     words = text_without_quotes.split()
                     return quoted_phrases + words
 
-                search_term = st.query_params.get("search_term", "")
-
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
