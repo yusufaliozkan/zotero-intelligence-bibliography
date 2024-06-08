@@ -77,11 +77,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
-        with col1:
-            
-            unique_collections = ['All'] + list(df_collections['Collection_Name'].unique())          
+        with col1:            
             query_params = st.query_params.to_dict()
             selected_collection = query_params.get("collection", None)
+
+            unique_collections = list(df_collections['Collection_Name'].unique())
 
             if selected_collection in unique_collections:
                 # Set the default value to the selected collection from the query params
@@ -89,18 +89,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 radio = container.radio('Select a collection', unique_collections)
 
-            if radio != 'All':
+            # radio = container.radio('Select a collection', unique_collections)
+            # collection_name = st.selectbox('Select a collection:', clist)
+            collection_name = radio
+            # if collection_name:
+            st.query_params.from_dict({"collection": collection_name})
+            # st.experimental_set_query_params(collection_name=radio)
 
-                # radio = container.radio('Select a collection', unique_collections)
-                # collection_name = st.selectbox('Select a collection:', clist)
-                collection_name = radio
-                # if collection_name:
-                st.query_params.from_dict({"collection": collection_name})
-                # st.experimental_set_query_params(collection_name=radio)
-
-                df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
-            else:
-                df_collections
+            df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
 
             # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
