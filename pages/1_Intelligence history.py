@@ -80,7 +80,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col1:
             
             query_params = st.query_params.to_dict()
-            selected_collection = query_params.get("collection_name", None)
+            selected_collection = query_params.get("collection", None)
 
             unique_collections = list(df_collections['Collection_Name'].unique())
 
@@ -94,7 +94,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
             # if collection_name:
-            st.query_params.from_dict({"collection_name": collection_name})
+            st.query_params.from_dict({"collection": collection_name})
             # st.experimental_set_query_params(collection_name=radio)
 
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
