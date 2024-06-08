@@ -668,7 +668,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write('Select an author to see items')
                 else:
                     query_params = st.query_params.to_dict()
-                    search_term = query_params.get({"search_option": "Search author", "author": selected_author})
+                    search_term = query_params.get("author", selected_author)
 
                     filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
 
