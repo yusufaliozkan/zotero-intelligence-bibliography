@@ -365,7 +365,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
-            current_params = st.query_params.to_dict()
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
                 @st.experimental_dialog("Search guide")
@@ -400,7 +399,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 cols, cola = st.columns([2,6])
                 query_params = st.query_params.to_dict()
-                search_term = query_params.get("search_term", "")
+                search_term = query_params.get("search_term", None)
 
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
