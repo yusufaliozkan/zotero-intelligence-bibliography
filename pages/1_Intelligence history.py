@@ -95,7 +95,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_name = radio
             if collection_name:
                 st.query_params.from_dict({"collection_name": collection_name})
-            # st.experimental_set_query_params(collection_name=radio)
+            st.query_params.from_dict({"collection_name": collection_name})
 
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
