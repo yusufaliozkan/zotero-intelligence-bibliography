@@ -673,19 +673,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     st.write("Please enter a keyword or author name to search.")
 
-            # SEARCH AUTHORS
-            if search_option == "Search keywords":
-                st.subheader('Search keywords', anchor=None)
-                # Additional logic for "Search keywords"...
+            elif search_option == "Search author":
+                st.subheader('Search author')
 
-                search_term2 = current_params.get("author", [""])[0]
+                # Get the author from the query parameters
+                search_term2 = current_params.get("author", [""])[0] if current_params.get("author") else ""
 
-                unique_authors = [''] + list(df_authors['Author_name'].unique())
+                # Prepare the author options for the selectbox
+                unique_authors = list(df_authors['Author_name'].unique())
                 author_publications = df_authors['Author_name'].value_counts().to_dict()
 
+                # Sort authors by the number of publications
                 sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
-                select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
+                select_options_author_with_counts = [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
+                # Add the empty option at the beginning
+                select_options_author_with_counts = [''] + select_options_author_with_counts
+
+                # Find the index of the author in the selectbox options
                 if search_term2:
                     search_term_with_count = f"{search_term2} ({author_publications.get(search_term2, 0)})"
                     index = select_options_author_with_counts.index(search_term_with_count) if search_term_with_count in select_options_author_with_counts else 0
@@ -698,6 +703,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     index=index
                 )
 
+                # Extract the author name from the selected display option
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else ""
 
                 # Update the URL parameters for the shareable link
