@@ -646,7 +646,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     st.write("Please enter a keyword or author name to search.")
 
-            st.query_params.clear()
             # SEARCH AUTHORS
             elif search_option == "Search author":
                 st.query_params.clear()
