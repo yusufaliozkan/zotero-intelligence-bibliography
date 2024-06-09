@@ -83,6 +83,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             unique_collections = list(df_collections['Collection_Name'].unique())
 
+            collection_mapping = {
+                'WW1 (First World War)': 'WW1-First World War',
+            }
+            def get_original_name(mapped_name):
+                for original, mapped in collection_mapping.items():
+                    if mapped == mapped_name:
+                        return original
+                return mapped_name
+
             if selected_collection in unique_collections:
                 # Set the default value to the selected collection from the query params
                 radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
@@ -93,6 +102,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
             # if collection_name:
+            query_param_value = collection_mapping.get(collection_name, collection_name)
+
             st.query_params.from_dict({"collection": collection_name})
             # st.experimental_set_query_params(collection_name=radio)
 
