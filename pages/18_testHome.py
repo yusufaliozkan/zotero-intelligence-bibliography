@@ -707,13 +707,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else ""
 
                 # Update the URL parameters for the shareable link
-                update_query_params({"search_option": search_option, "author": selected_author})
-
+                
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
                 else:
 
-                    filtered_collection_df_authors = df_authors[df_authors['Author_name'] == selected_author]              
+                    filtered_collection_df_authors = df_authors[df_authors['Author_name'] == selected_author]        
+                    update_query_params({"search_option": search_option, "author": selected_author})      
 
                     filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].dt.strftime('%Y-%m-%d')
