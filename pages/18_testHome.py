@@ -681,7 +681,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             elif search_option == "Search author":
                 st.subheader('Search author')
 
-                search_term2 = current_params.get("author", [""])[0]
+                search_term2 = current_params.get("author", [""])
                 if search_term2:
                     search_term2 = search_term2[0]
                 else:
