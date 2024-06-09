@@ -73,12 +73,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:
-            unique_collections = list(df_collections['Collection_Name'].unique()) 
-            radio = container.radio('Select a collection', unique_collections)
+            query_params = st.query_params.to_dict()
+            selected_collection = query_params.get("collection", None)
+
+            unique_collections = list(df_collections['Collection_Name'].unique())
+
+            if selected_collection in unique_collections:
+                # Set the default value to the selected collection from the query params
+                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
+            else:
+                radio = container.radio('Select a collection', unique_collections)
+
+            # radio = container.radio('Select a collection', unique_collections)
             # collection_name = st.selectbox('Select a collection:', clist)
-            # df_collections=df_collections.reset_index(drop=True)
-            # collection_name = df_collections.loc[0]['Collection_Name']
             collection_name = radio
+            # if collection_name:
+            st.query_params.from_dict({"collection": collection_name})
+            # st.experimental_set_query_params(collection_name=radio)
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
 
