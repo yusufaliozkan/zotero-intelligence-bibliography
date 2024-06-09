@@ -92,6 +92,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         return original
                 return mapped_name
 
+
+            if selected_collection:
+                selected_collection = get_original_name(selected_collection)
+
             if selected_collection in unique_collections:
                 # Set the default value to the selected collection from the query params
                 radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
