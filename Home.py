@@ -460,6 +460,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if container_refresh_button.button('Refresh'):
                             st.query_params.clear()
                             st.rerun()
+                            search_term = st.text_input('Search keywords in titles or abstracts')
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
