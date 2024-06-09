@@ -460,6 +460,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collections = st.multiselect('Collection', collections, key='original_collection')
                             container_download_button = st.container()
 
+                        if st.button('Refresh'):
+                            st.query_params.clear()
+
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]                 
 
