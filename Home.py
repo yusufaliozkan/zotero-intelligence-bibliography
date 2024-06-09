@@ -381,7 +381,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         Please note: Search with parentheses is **not** available.
 
-                        Note that the search function is limited: you will only find exact matches and cannot see search relevance.             
+                        Note that the search function is limited: you will only find exact matches and cannot see search relevance.
+
+                        You can share the link of your search result. Try: https://intelligence.streamlit.app/?query=cia+OR+mi6
                         ''')
                 
                 if "guide" not in st.session_state:
@@ -397,11 +399,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 #     Search with parantheses is **not** available.                   
                 #     ''')
+                query_params = st.query_params.to_dict() 
+                search_term = query_params.get("query", "")
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts')
+                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
+
+                def extract_quoted_phrases(text):
+                    quoted_phrases = re.findall(r'"(.*?)"', text)
+                    text_without_quotes = re.sub(r'"(.*?)"', '', text)
+                    words = text_without_quotes.split()
+                    return quoted_phrases + words
 
                 search_term = search_term.strip()
                 if search_term:
@@ -441,6 +451,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
+                        st.query_params.from_dict({"query": search_term})
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
@@ -525,6 +536,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                     'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
                                     'examines', 'become', 'used', 'journal', 'london', 'review']
                                 stopword.extend(SW)
+
+                                custom_stopwords = extract_quoted_phrases(search_term)
+                                stopword.extend(custom_stopwords)
+
                                 def remove_stopwords(text):
                                     text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
                                     text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
