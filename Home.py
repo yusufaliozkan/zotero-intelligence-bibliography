@@ -389,8 +389,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if "guide" not in st.session_state:
                     if st.button("Search guide"):
                         guide("Search guide")
-                if st.button('Refresh'):
-                    st.query_params.clear()
+                container_refresh_button = st.container()
+
                 # if st.button('Search guide'):
                 #     st.toast('''
                 #     **Search guide**
@@ -456,6 +456,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
                         st.query_params.from_dict({"query": search_term})
+            
+                        if container_refresh_button.button('Refresh'):
+                            st.query_params.clear()
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
