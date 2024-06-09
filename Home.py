@@ -367,7 +367,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
             if search_option == "Search keywords":
-                # st.query_params.clear()       
+                st.query_params.clear()       
                 st.subheader('Search keywords', anchor=None)
                 @st.experimental_dialog("Search guide")
                 def guide(item):
@@ -401,14 +401,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 #     Search with parantheses is **not** available.                   
                 #     ''')
 
-
-                # query_params = st.query_params.to_dict() 
-                # search_term = query_params.get("query", "")
+                
+                query_params = st.query_params.to_dict() 
+                search_term = query_params.get("query", "")
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts') #, search_term)
+                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
 
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
@@ -454,7 +454,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        # st.query_params.from_dict({"query": search_term})
+                        st.query_params.from_dict({"query": search_term})
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
@@ -648,7 +648,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH AUTHORS
             elif search_option == "Search author":
-                # st.query_params.clear()
+                st.query_params.clear()
                 st.subheader('Search author') 
 
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
@@ -820,7 +820,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH IN COLLECTIONS
             elif search_option == "Search collection": 
-                # st.query_params.clear()
+                st.query_params.clear()
                 st.subheader('Search collection')
 
                 df_csv_collections = df_duplicated.copy()
@@ -1020,7 +1020,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write("No publication type selected.")
 
             elif search_option == "Publication types":
-                # st.query_params.clear()
+                st.query_params.clear()
                 st.subheader('Publication types')
 
                 df_csv_types = df_dedup.copy()
@@ -1195,7 +1195,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write(f"{index + 1}) {formatted_entry}")
 
             elif search_option == "Search journal":
-                # st.query_params.clear()
+                st.query_params.clear()
                 st.subheader('Search journal')
 
                 df_csv = df_dedup.copy()
@@ -1408,7 +1408,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write(f"{index + 1}) {formatted_entry}")
 
             elif search_option == "Publication year": 
-                # st.query_params.clear()               
+                st.query_params.clear()               
                 st.subheader('Items by publication year')
 
                 with st.expander('Click to expand', expanded=True):                    
@@ -1635,7 +1635,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
             elif search_option == "Cited papers": 
-                # st.query_params.clear()               
+                st.query_params.clear()               
                 st.subheader('Cited items in the library')
 
                 with st.expander('Click to expand', expanded=True):                    
