@@ -389,6 +389,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if "guide" not in st.session_state:
                     if st.button("Search guide"):
                         guide("Search guide")
+                if st.button('Refresh'):
+                    st.query_params.clear()
                 # if st.button('Search guide'):
                 #     st.toast('''
                 #     **Search guide**
@@ -459,9 +461,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             types2 = st.multiselect('Publication types', types, key='original2')
                             collections = st.multiselect('Collection', collections, key='original_collection')
                             container_download_button = st.container()
-
-                        if st.button('Refresh'):
-                            st.query_params.clear()
 
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]                 
