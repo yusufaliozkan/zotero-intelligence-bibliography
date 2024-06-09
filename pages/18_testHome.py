@@ -364,31 +364,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-
-            current_params = st.query_params.to_dict()
-
-            options = [
-                "Search keywords", 
-                "Search author", 
-                "Search collection", 
-                "Publication types", 
-                "Search journal", 
-                "Publication year", 
-                "Cited papers"
-            ]
-            default_search_option = current_params.get("search_option", ["Search keywords"])[0]
-
-            search_option = st.radio(
-                "Select search option", 
-                options, 
-                index=options.index(current_params.get("search_option", "Search keywords"))
-            )
-            def update_query_params(params):
-                st.query_params.update(params)
-
-            # Update query parameters when radio button value changes
-            update_query_params({"search_option": search_option})
-            # search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
+            search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
 
             if search_option == "Search keywords":
                 st.subheader('Search keywords', anchor=None)
@@ -421,16 +397,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 #     Search with parantheses is **not** available.                   
                 #     ''')
-                cols, cola = st.columns([2, 6])
-
-                # Extracting search_term from query params if available
-                query_params = st.query_params.to_dict()
-                search_term = query_params.get("search_term", "")
-            
+                query_params = st.query_params.to_dict() 
+                search_term = query_params.get("query", "")
+                cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
-
-                # User input for search term
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts', search_term)
 
@@ -447,7 +418,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
 
-                        col112, col113, col114 = st.columns([2, 2, 2])
+                        col112, col113, col114 = st.columns([2,2,2])
                         with col112:
                             display_abstracts = st.checkbox('Display abstracts')
                         with col113:
@@ -478,10 +449,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-
-                        # Update the URL with the new search term
-                        st.query_params.from_dict({"search_option": search_option, "search_term": search_term})
-
+                        st.query_params.from_dict({"query": search_term})
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
@@ -673,52 +641,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     st.write("Please enter a keyword or author name to search.")
 
-            if search_option == "Search author":
-                st.subheader('Search author')
+            # SEARCH AUTHORS
+            elif search_option == "Search author":
+                st.subheader('Search author') 
 
-                # Get the author from the query parameters
-                search_term2 = current_params.get("author", [""])[0] if current_params.get("author") else ""
+                unique_authors = [''] + list(df_authors['Author_name'].unique())
 
-                # Prepare the author options for the selectbox
-                unique_authors = list(df_authors['Author_name'].unique())
                 author_publications = df_authors['Author_name'].value_counts().to_dict()
-
-                # Sort authors by the number of publications
                 sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
-                select_options_author_with_counts = [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
+                select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
-                # Add the empty option at the beginning
-                select_options_author_with_counts = [''] + select_options_author_with_counts
+                selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
+                selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
+                # selected_author = st.selectbox('Select author', select_options_author)
 
-                # Find the index of the author in the selectbox options
-                if search_term2:
-                    search_term_with_count = f"{search_term2} ({author_publications.get(search_term2, 0)})"
-                    if search_term_with_count in select_options_author_with_counts:
-                        index = select_options_author_with_counts.index(search_term_with_count)
-                    else:
-                        index = 0
-                else:
-                    index = 0
-
-                # Display the selectbox and prefill with the selected author
-                selected_author_display = st.selectbox(
-                    'Select author', 
-                    select_options_author_with_counts, 
-                    index=index
-                )
-
-                # Extract the author name from the selected display option
-                selected_author = selected_author_display.split(' (')[0] if selected_author_display else ""
-
-                # Update the URL parameters for the shareable link when a new author is selected
-                if selected_author != search_term2:
-                    update_query_params({"search_option": search_option, "author": selected_author})
-
-                if not selected_author or selected_author == "":
+                if not selected_author  or selected_author =="":
                     st.write('Select an author to see items')
                 else:
-
-                    filtered_collection_df_authors = df_authors[df_authors['Author_name'] == selected_author]              
+                    filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
 
                     filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
                     filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].dt.strftime('%Y-%m-%d')
@@ -874,8 +814,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH IN COLLECTIONS
             elif search_option == "Search collection": 
-                st.query_params.clear()
-
                 st.subheader('Search collection')
 
                 df_csv_collections = df_duplicated.copy()
@@ -1075,8 +1013,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write("No publication type selected.")
 
             elif search_option == "Publication types":
-                st.query_params.clear()
-
                 st.subheader('Publication types')
 
                 df_csv_types = df_dedup.copy()
@@ -1251,8 +1187,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write(f"{index + 1}) {formatted_entry}")
 
             elif search_option == "Search journal":
-                st.query_params.clear()
-
                 st.subheader('Search journal')
 
                 df_csv = df_dedup.copy()
@@ -1464,9 +1398,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 formatted_entry = format_entry(row)
                                 st.write(f"{index + 1}) {formatted_entry}")
 
-            elif search_option == "Publication year":             
-                st.query_params.clear()
-   
+            elif search_option == "Publication year":                
                 st.subheader('Items by publication year')
 
                 with st.expander('Click to expand', expanded=True):                    
@@ -1692,9 +1624,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Display the article with highlighted search terms
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
-            elif search_option == "Cited papers":   
-                st.query_params.clear()
-            
+            elif search_option == "Cited papers":                
                 st.subheader('Cited items in the library')
 
                 with st.expander('Click to expand', expanded=True):                    
