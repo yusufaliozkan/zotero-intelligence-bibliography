@@ -381,7 +381,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         Please note: Search with parentheses is **not** available.
 
-                        Note that the search function is limited: you will only find exact matches and cannot see search relevance.             
+                        Note that the search function is limited: you will only find exact matches and cannot see search relevance.
+
+                        You can share the link of your search result. Try: https://intelligence.streamlit.app/?query=cia+AND+mi6
                         ''')
                 
                 if "guide" not in st.session_state:
