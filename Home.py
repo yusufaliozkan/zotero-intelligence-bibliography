@@ -458,6 +458,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         st.query_params.from_dict({"query": search_term})
             
                         if container_refresh_button.button('Refresh'):
+                            st.query_params.clear()
                             st.rerun()
 
                         with st.popover("Filters and more"):
