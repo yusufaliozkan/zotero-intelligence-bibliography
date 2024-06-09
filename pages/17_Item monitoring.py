@@ -103,6 +103,7 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s42104779&sort=publication_year:desc', #Journal of International Dispute Settlement
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764513295&sort=publication_year:desc', #Security and Human Rights
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s82119083&sort=publication_year:desc', #Modern Law Review
+                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s129176075&sort=publication_year:desc', #International Theory
 
                 # Add more API links here
             ]
@@ -121,7 +122,7 @@ with col1:
                 'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies', 'International Journal', 'German Law Journal',
                 'American Journal of International Law', 'European Journal of International Law', 'Human Rights Law Review', 'Leiden Journal of International Law',
                 'International & Comparative Law Quarterly', 'Journal of Conflict and Security Law', 'Journal of International Dispute Settlement', 'Security and Human Rights',
-                'Modern Law Review'
+                'Modern Law Review', 'International Theory'
                 ]
 
             # Define keywords for filtering
