@@ -101,6 +101,7 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s156235965&sort=publication_year:desc', #International & Comparative Law Quarterl
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s68909633&sort=publication_year:desc', #Journal of Conflict and Security Law
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s42104779&sort=publication_year:desc', #Journal of International Dispute Settlement
+                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764513295&sort=publication_year:desc', #Security and Human Rights
 
                 # Add more API links here
             ]
@@ -118,7 +119,7 @@ with col1:
                 'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror",
                 'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies', 'International Journal', 'German Law Journal',
                 'American Journal of International Law', 'European Journal of International Law', 'Human Rights Law Review', 'Leiden Journal of International Law',
-                'International & Comparative Law Quarterly', 'Journal of Conflict and Security Law', 'Journal of International Dispute Settlement'
+                'International & Comparative Law Quarterly', 'Journal of Conflict and Security Law', 'Journal of International Dispute Settlement', 'Security and Human Rights'
                 ]
 
             # Define keywords for filtering
