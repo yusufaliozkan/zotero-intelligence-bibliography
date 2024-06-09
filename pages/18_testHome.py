@@ -674,6 +674,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.write("Please enter a keyword or author name to search.")
 
             # SEARCH AUTHORS
+            if search_option == "Search keywords":
+                st.subheader('Search keywords', anchor=None)
+                # Additional logic for "Search keywords"...
+
             elif search_option == "Search author":
                 st.subheader('Search author')
 
@@ -700,7 +704,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 selected_author = selected_author_display.split(' (')[0] if selected_author_display else ""
 
                 # Update the URL parameters for the shareable link
-                st.experimental_set_query_params(search_option=search_option, author=selected_author)
+                update_query_params({"search_option": search_option, "author": selected_author})
 
                 if not selected_author or selected_author == "":
                     st.write('Select an author to see items')
