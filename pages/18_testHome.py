@@ -678,14 +678,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.subheader('Search keywords', anchor=None)
                 # Additional logic for "Search keywords"...
 
-            elif search_option == "Search author":
-                st.subheader('Search author')
-
-                search_term2 = current_params.get("author", [""])
-                if search_term2:
-                    search_term2 = search_term2[0]
-                else:
-                    search_term2 = ""
+                search_term2 = current_params.get("author", [""])[0]
 
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
                 author_publications = df_authors['Author_name'].value_counts().to_dict()
