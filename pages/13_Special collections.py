@@ -65,6 +65,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections = df_collections[df_collections['Collection_Name'] != '01.98 Miscellaneous']
     df_collections = df_collections[df_collections['Collection_Name'] != '02.98 Methodology']
 
+    def remove_numbers(name):
+        return re.sub(r'^\d+(\.\d+)*\s*', '', name)
+
+    df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
+
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
     container = st.container()
