@@ -383,7 +383,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         Note that the search function is limited: you will only find exact matches and cannot see search relevance.
 
-                        You can share the link of your search result. Try: https://intelligence.streamlit.app/?query=cia+AND+mi6
+                        You can share the link of your search result. Try: https://intelligence.streamlit.app/?query=cia+OR+mi6
                         ''')
                 
                 if "guide" not in st.session_state:
