@@ -113,6 +113,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 csv = convert_df(df_download)
                 today = datetime.date.today().isoformat()
                 num_items_collections = len(df_collections)
+                publications_by_type = df_collections['Publication type'].value_counts()
                 breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
                 true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
@@ -127,42 +128,46 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 a = f'{collection_name}_{today}'
                 st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
+            # st.metric(label='Number of items', value=num_items_collections, help=breakdown_string)
+            st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+            st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+            # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
+
+            articles_list = []  # Store articles in a list
+            for index, row in df_collections.iterrows():
+                formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                articles_list.append(formatted_entry)        
+            
+            for index, row in df_collections.iterrows():
+                publication_type = row['Publication type']
+                title = row['Title']
+                authors = row['FirstName2']
+                date_published = row['Date published']
+                link_to_publication = row['Link to publication']
+                zotero_link = row['Zotero link']
+
+                if publication_type == 'Journal article':
+                    published_by_or_in = 'Published in'
+                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                elif publication_type == 'Book':
+                    published_by_or_in = 'Published by'
+                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                else:
+                    published_by_or_in = ''
+                    published_source = ''
+
+                formatted_entry = (
+                    '**' + str(publication_type) + '**' + ': ' +
+                    str(title) + ' ' +
+                    '(by ' + '*' + str(authors) + '*' + ') ' +
+                    '(Publication date: ' + str(date_published) + ') ' +
+                    ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                    '[[Publication link]](' + str(link_to_publication) + ') ' +
+                    '[[Zotero link]](' + str(zotero_link) + ')'
+                )
+            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+            
             with st.expander('Click to expand', expanded=True):
-                st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-                st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
-                articles_list = []  # Store articles in a list
-                for index, row in df_collections.iterrows():
-                    formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                    articles_list.append(formatted_entry)        
-                
-                for index, row in df_collections.iterrows():
-                    publication_type = row['Publication type']
-                    title = row['Title']
-                    authors = row['FirstName2']
-                    date_published = row['Date published']
-                    link_to_publication = row['Link to publication']
-                    zotero_link = row['Zotero link']
-
-                    if publication_type == 'Journal article':
-                        published_by_or_in = 'Published in'
-                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                    elif publication_type == 'Book':
-                        published_by_or_in = 'Published by'
-                        published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                    else:
-                        published_by_or_in = ''
-                        published_source = ''
-
-                    formatted_entry = (
-                        '**' + str(publication_type) + '**' + ': ' +
-                        str(title) + ' ' +
-                        '(by ' + '*' + str(authors) + '*' + ') ' +
-                        '(Publication date: ' + str(date_published) + ') ' +
-                        ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                        '[[Publication link]](' + str(link_to_publication) + ') ' +
-                        '[[Zotero link]](' + str(zotero_link) + ')'
-                    )
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
                 if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
                     count = 1
                     for index, row in df_collections.iterrows():
