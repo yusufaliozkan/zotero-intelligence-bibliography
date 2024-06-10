@@ -124,7 +124,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.markdown('#### Collection theme: ' + collection_name)
 
             with st.popover("Filters and more"):
-                st.write(f"View in [Zotero]({collection_link})")
+                st.write(f"View the collection in [Zotero]({collection_link})")
                 col112, col113 = st.columns(2)
                 with col112:
                     display2 = st.checkbox('Display abstracts')
