@@ -134,7 +134,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
         df_collections = df_collections[df_collections['Publication type'].isin(types)]
         df_collections = df_collections.reset_index(drop=True)
-        df_collections
 
         df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])
         df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
@@ -207,7 +206,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                                
                 with st.expander('Click to expand', expanded=True):
+                    df_collections
                     sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+                    df_collections
 
                     if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
                         count = 1
