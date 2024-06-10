@@ -146,7 +146,7 @@ with col1:
 
                     titles = []
                     dois = []
-                    publication_dates = [] 
+                    publication_dates = []
                     dois_without_https = []
                     journals = []
 
@@ -156,10 +156,10 @@ with col1:
                         pub_date = datetime.datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
 
                         if today - pub_date <= timedelta(days=90):
-                            title = result['title'].lower()
-
-                            if any(keyword in title for keyword in keywords):
-                                titles.append(result['title'])
+                            title = result.get('title')
+                            
+                            if title is not None and any(keyword in title.lower() for keyword in keywords):
+                                titles.append(title)
                                 dois.append(result['doi'])
                                 publication_dates.append(result['publication_date'])
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
