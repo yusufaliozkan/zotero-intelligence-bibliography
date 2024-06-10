@@ -144,6 +144,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 csv = convert_df(df_download)
                 today = datetime.date.today().isoformat()
                 num_items_collections = len(df_collections)
+                publications_by_type = df_collections['Publication type'].value_counts()
                 breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
                 true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
