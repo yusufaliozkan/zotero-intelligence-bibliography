@@ -123,7 +123,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             st.markdown('#### Collection theme: ' + collection_name)
 
-            with st.popover("Open popover"):
+            with st.popover("Filters and more"):
                 col112, col113 = st.columns([1,4])
                 with col112:
                     st.write(f"View in [Zotero]({collection_link})")
