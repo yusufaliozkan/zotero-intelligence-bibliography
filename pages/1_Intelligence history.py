@@ -118,7 +118,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
     st.markdown('#### Collection theme: ' + collection_name)
-
     with st.popover("Filters and more"):
         st.write(f"View the collection in [Zotero]({collection_link})")
         col112, col113, col114 = st.columns(3)
@@ -134,7 +133,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
         df_collections = df_collections[df_collections['Publication type'].isin(types)]
         df_collections = df_collections.reset_index(drop=True)
-
         df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])
         df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
         df_download = df_download.reset_index(drop=True)
@@ -158,6 +156,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         a = f'{collection_name}_{today}'
         st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
+
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
@@ -166,11 +165,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
             st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
             # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
-                
+
             if table_view:
                 df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Collection_Name','Link to publication','Zotero link']]
                 df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
-                st.dataframe(df_table_view)
+                df_table_view
             else:
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
@@ -204,10 +203,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + str(link_to_publication) + ') ' +
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation')) 
+                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+                
                 with st.expander('Click to expand', expanded=True):
-                                                    
-                    if sort_by == 'Publication date :arrow_down:' : #or df_collections['Citation'].sum() == 0:
+
+                    if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
                         count = 1
                         for index, row in df_collections.iterrows():
                             formatted_entry = format_entry(row)
@@ -215,7 +215,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count += 1
                             if display2:
                                 st.caption(row['Abstract']) 
-                    elif sort_by == 'Publication type':# or df_collections['Citation'].sum() == 0:
+                    elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
                         df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
                         current_type = None
                         count_by_type = {}
