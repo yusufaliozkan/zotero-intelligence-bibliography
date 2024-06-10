@@ -159,7 +159,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
             with st.expander('Click to expand', expanded=True):
-                st.metric(label='Number of items', value=num_items_collections)
+                st.metric(label='Number of items', value=num_items_collections, help=breakdown_string)
                 st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                 st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
                 # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
