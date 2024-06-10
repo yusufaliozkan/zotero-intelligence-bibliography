@@ -229,7 +229,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count_by_type[current_type] += 1
                             if display2:
                                 st.caption(row['Abstract'])
-                    else:
+                    elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
                         df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
                         count = 1
                         for index, row in df_collections.iterrows():
