@@ -70,6 +70,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
 
+    collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
+
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
     container = st.container()
@@ -92,8 +94,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # radio = container.radio('Select a collection', unique_collections)
             # collection_name = st.selectbox('Select a collection:', clist)
             collection_name = radio
+            collection_key = collection_mapping[collection_name]
             # if collection_name:
-            st.query_params.from_dict({"collection": collection_name})
+            st.query_params.from_dict({"collection": collection_key})
             # st.experimental_set_query_params(collection_name=radio)
 
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
