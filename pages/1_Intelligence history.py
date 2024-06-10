@@ -203,9 +203,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + str(link_to_publication) + ') ' +
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
-                
+                               
                 with st.expander('Click to expand', expanded=True):
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
 
                     if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
                         count = 1
