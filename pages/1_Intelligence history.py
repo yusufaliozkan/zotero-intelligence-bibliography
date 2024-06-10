@@ -71,6 +71,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
 
     collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
+    collection_mapping
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -100,7 +101,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # st.experimental_set_query_params(collection_name=radio)
 
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
-            df_collections
             pd.set_option('display.max_colwidth', None)
 
             # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
