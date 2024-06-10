@@ -131,6 +131,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     only_citation = st.checkbox('Show cited items only')
                     if only_citation:
                         df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+                display2 = st.checkbox('Display abstracts')
 
                 types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
                 df_collections = df_collections[df_collections['Publication type'].isin(types)]
@@ -195,7 +196,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
-                display2 = st.checkbox('Display abstracts')
+                
                 if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
                     count = 1
                     for index, row in df_collections.iterrows():
