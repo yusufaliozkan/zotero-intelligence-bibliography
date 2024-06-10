@@ -458,7 +458,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             collections = st.multiselect('Collection', collections, key='original_collection')
                             container_download_button = st.container()
 
-                            col112, col113, col114 = st.columns([2,2,2])
+                            col112, col113, col114 = st.columns(3)
                             with col112:
                                 display_abstracts = st.checkbox('Display abstracts')
                             with col113:
