@@ -69,6 +69,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         return re.sub(r'^\d+(\.\d+)*\s*', '', name)
 
     df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
+    reverse_collection_mapping = {v: k for k, v in collection_mapping.items()}
 
     collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
 
