@@ -68,34 +68,32 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     container = st.container()
 
-    tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
-    with tab1:
-        col1, col2 = st.columns([5,1.6])
-        with col1:
-            unique_collections = list(df_collections['Collection_Name'].unique()) 
-            radio = container.radio('Select a collection', unique_collections)
-            # collection_name = st.selectbox('Select a collection:', clist)
-            collection_name = radio
-            df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
-            pd.set_option('display.max_colwidth', None)
+    col1, col2 = st.columns([5,1.6])
+    with col1:
+        unique_collections = list(df_collections['Collection_Name'].unique()) 
+        radio = container.radio('Select a collection', unique_collections)
+        # collection_name = st.selectbox('Select a collection:', clist)
+        collection_name = radio
+        df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+        pd.set_option('display.max_colwidth', None)
 
-            # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-            df_collections['Date published'] = (
-                df_collections['Date published']
-                .str.strip()
-                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-            )
-            df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
-            df_collections['Date published'] = df_collections['Date published'].fillna('')
-            df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
-            df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-            df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
-            df_collections = df_collections.reset_index(drop=True)
+        # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+        df_collections['Date published'] = (
+            df_collections['Date published']
+            .str.strip()
+            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+        )
+        df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
+        df_collections['Date published'] = df_collections['Date published'].fillna('')
+        df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
+        df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+        df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
+        df_collections = df_collections.reset_index(drop=True)
 
-            publications_by_type = df_collections['Publication type'].value_counts()
-            collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
+        publications_by_type = df_collections['Publication type'].value_counts()
+        collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
-            st.markdown('#### Collection theme: ' + collection_name)
+        st.markdown('#### Collection theme: ' + collection_name)
     with st.popover("Filters and more"):
         st.write(f"View the collection in [Zotero]({collection_link})")
         col112, col113, col114 = st.columns(3)
