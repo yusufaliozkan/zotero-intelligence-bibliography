@@ -85,9 +85,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             unique_collections = list(df_collections['Collection_Name'].unique())
 
-            if selected_collection in unique_collections:
+            selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
+
+            if selected_collection_name in unique_collections:
                 # Set the default value to the selected collection from the query params
-                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
+                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
             else:
                 radio = container.radio('Select a collection', unique_collections)
 
@@ -96,7 +98,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_name = radio
             collection_key = collection_mapping[collection_name]
             # if collection_name:
-            st.query_params.from_dict({"collection_id": collection_name})
+            st.query_params.from_dict({"collection_id": collection_key})
             # st.experimental_set_query_params(collection_name=radio)
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
             pd.set_option('display.max_colwidth', None)
