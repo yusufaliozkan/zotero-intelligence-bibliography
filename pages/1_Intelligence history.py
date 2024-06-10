@@ -168,12 +168,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
 
             with st.expander('Click to expand', expanded=True):
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation')) 
+                
                 if table_view:
                     df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Collection_Name','Link to publication','Zotero link']]
                     df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                     st.dataframe(df_table_view)
                 else:
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation')) 
                     articles_list = []  # Store articles in a list
                     for index, row in df_collections.iterrows():
                         formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
