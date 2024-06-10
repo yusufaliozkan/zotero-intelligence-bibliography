@@ -172,6 +172,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
             sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
             
             with st.expander('Click to expand', expanded=True):
+            
+            with st.expander('Click to expand', expanded=True):
                 if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
                     count = 1
                     for index, row in df_collections.iterrows():
