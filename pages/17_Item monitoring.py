@@ -102,7 +102,7 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s68909633&sort=publication_year:desc', #Journal of Conflict and Security Law
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s42104779&sort=publication_year:desc', #Journal of International Dispute Settlement
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764513295&sort=publication_year:desc', #Security and Human Rights
-                # 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s82119083&sort=publication_year:desc', #Modern Law Review
+                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s82119083&sort=publication_year:desc', #Modern Law Review
                 # 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s129176075&sort=publication_year:desc', #International Theory
                 # 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc', #Journal of Global Security Studies
                 # 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764608241&sort=publication_year:desc', #Michigan Journal of International Law
@@ -124,7 +124,7 @@ with col1:
                 'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies', 'International Journal', 'German Law Journal',
                 'American Journal of International Law', 'European Journal of International Law', 'Human Rights Law Review', 'Leiden Journal of International Law',
                 'International & Comparative Law Quarterly', 'Journal of Conflict and Security Law', 'Journal of International Dispute Settlement', 'Security and Human Rights',
-                # 'Modern Law Review', 'International Theory', 'Journal of Global Security Studies', 'Michigan Journal of International Law'
+                'Modern Law Review', #'International Theory', 'Journal of Global Security Studies', 'Michigan Journal of International Law'
                 ]
 
             # Define keywords for filtering
