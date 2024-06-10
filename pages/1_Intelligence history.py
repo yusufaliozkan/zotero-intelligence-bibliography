@@ -124,14 +124,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
             st.markdown('#### Collection theme: ' + collection_name)
 
             with st.popover("Filters and more"):
+                st.write(f"View in [Zotero]({collection_link})")
                 col112, col113 = st.columns(2)
                 with col112:
-                    st.write(f"View in [Zotero]({collection_link})")
+                    display2 = st.checkbox('Display abstracts')
                 with col113:
                     only_citation = st.checkbox('Show cited items only')
                     if only_citation:
                         df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
-                display2 = st.checkbox('Display abstracts')
 
                 types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
                 df_collections = df_collections[df_collections['Publication type'].isin(types)]
