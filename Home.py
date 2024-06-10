@@ -1705,7 +1705,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_cited)
 
-                    colcit1, colcit2 = st.columns([1,4])
+                    colcit1, colcit2 = st.columns([2,4])
                     with colcit1:
                         citation_count = df_cited['Citation'].sum()
                         publications_by_type = df_cited['Publication type'].value_counts()
