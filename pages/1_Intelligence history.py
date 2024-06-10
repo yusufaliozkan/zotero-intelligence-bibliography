@@ -71,7 +71,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
 
     collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
-    collection_mapping
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -82,7 +81,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2 = st.columns([5,1.6])
         with col1:            
             query_params = st.query_params.to_dict()
-            selected_collection = query_params.get("collection", None)
+            selected_collection = query_params.get("collection_id", None)
 
             unique_collections = list(df_collections['Collection_Name'].unique())
 
@@ -97,7 +96,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             collection_name = radio
             collection_key = collection_mapping[collection_name]
             # if collection_name:
-            st.query_params.from_dict({"collection": collection_key})
+            st.query_params.from_dict({"collection_id": collection_key})
             # st.experimental_set_query_params(collection_name=radio)
 
             df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
