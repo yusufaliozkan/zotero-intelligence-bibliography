@@ -157,7 +157,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
         a = f'{collection_name}_{today}'
         st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
-
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
@@ -171,6 +170,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Collection_Name','Link to publication','Zotero link']]
                 df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                 df_table_view
+                df_collections
             else:
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
