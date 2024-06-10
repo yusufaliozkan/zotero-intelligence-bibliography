@@ -258,14 +258,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with tab2:
         st.header('Dashboard')
-        st.markdown('#### Collection theme: ' + collection_name)
 
         if df_collections['Title'].any() in ("", [], None, 0, False):
             all = st.checkbox('Show all types')
             if all:
                 df=df_collections.copy()
-        types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original2')
-        df_collections = df_collections[df_collections['Publication type'].isin(types)]  #filtered_df = df[df["app"].isin(selected_options)]
         df_collections = df_collections.reset_index()
         
         if df_collections['Title'].any() in ("", [], None, 0, False):
