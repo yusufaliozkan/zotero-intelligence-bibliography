@@ -106,6 +106,7 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s129176075&sort=publication_year:desc', #International Theory
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc', #Journal of Global Security Studies
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764608241&sort=publication_year:desc', #Michigan Journal of International Law
+                'https://api.openalex.org/works?page=1&filter=primary_topic.id:t12572&sort=publication_year:desc', #Intelligence Studies and Analysis in Modern Context
 
                 # Add more API links here
             ]
