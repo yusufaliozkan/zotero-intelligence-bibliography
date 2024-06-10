@@ -181,7 +181,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         count += 1
                         if display2:
                             st.caption(row['Abstract']) 
-                elif sort_by == 'Publication type' or df_collections['Citation'].sum() == 0:
+                elif sort_by == 'Publication type' :#or df_collections['Citation'].sum() == 0:
                     df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
                     current_type = None
                     count_by_type = {}
