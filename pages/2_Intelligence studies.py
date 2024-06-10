@@ -70,6 +70,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
 
     collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
+    reverse_collection_mapping = {v: k for k, v in collection_mapping.items()}
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
@@ -80,13 +81,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
         col1, col2 = st.columns([5,1.6])
         with col1:            
             query_params = st.query_params.to_dict()
-            selected_collection = query_params.get("collection_id", None)
+            selected_collection_key  = query_params.get("collection_id", None)
 
             unique_collections = list(df_collections['Collection_Name'].unique())
 
-            if selected_collection in unique_collections:
+            selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
+
+            if selected_collection_name in unique_collections:
                 # Set the default value to the selected collection from the query params
-                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection))
+                radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
             else:
                 radio = container.radio('Select a collection', unique_collections)
 
