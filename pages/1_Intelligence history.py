@@ -162,8 +162,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
         st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
         st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
         # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
-        tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
-        with tab1:
+    tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
+    with tab1:
             articles_list = []  # Store articles in a list
             for index, row in df_collections.iterrows():
                 formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
