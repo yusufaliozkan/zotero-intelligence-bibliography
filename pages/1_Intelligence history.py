@@ -207,9 +207,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 with st.expander('Click to expand', expanded=True):
 
-                    if sort_by == 'Citation' and df_collections['Citation'].sum() == 0:
-                        # Sort by publication date when Citation is selected and sum of Citations is zero
-                        df_collections = df_collections.sort_values(by=['Publication date'], ascending=True)
+                    if sort_by == 'Publication date :arrow_down:': # or df_collections['Citation'].sum() == 0:
                         count = 1
                         for index, row in df_collections.iterrows():
                             formatted_entry = format_entry(row)
@@ -217,15 +215,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count += 1
                             if display2:
                                 st.caption(row['Abstract']) 
-                    elif sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
-                        count = 1
-                        for index, row in df_collections.iterrows():
-                            formatted_entry = format_entry(row)
-                            st.write(f"{count}) {formatted_entry}")
-                            count += 1
-                            if display2:
-                                st.caption(row['Abstract']) 
-                    elif sort_by == 'Publication type':
+                    elif sort_by == 'Publication type': # or df_collections['Citation'].sum() == 0:
                         df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
                         current_type = None
                         count_by_type = {}
@@ -247,7 +237,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             st.write(f"{count}) {formatted_entry}")
                             count += 1
                             if display2:
-                                st.caption(row['Abstract'])
+                                st.caption(row['Abstract']) 
 
 #UNTIL HERE
         with col2:
