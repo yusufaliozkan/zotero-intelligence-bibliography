@@ -207,7 +207,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation')) 
                 with st.expander('Click to expand', expanded=True):
                                                     
-                    if sort_by == 'Publication date :arrow_down:':# or df_collections['Citation'].sum() == 0:
+                    if sort_by == 'Publication date :arrow_down:'or df_collections['Citation'].sum() == 0:
                         count = 1
                         for index, row in df_collections.iterrows():
                             formatted_entry = format_entry(row)
@@ -229,7 +229,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count_by_type[current_type] += 1
                             if display2:
                                 st.caption(row['Abstract'])
-                    elif sort_by == 'Citation' or df_collections['Citation'].sum() == 0:
+                    else:
                         df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
                         count = 1
                         for index, row in df_collections.iterrows():
