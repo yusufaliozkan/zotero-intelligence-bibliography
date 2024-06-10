@@ -206,9 +206,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                                
             with st.expander('Click to expand', expanded=True):
-                df_collections
                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
-                df_collections
 
                 if sort_by == 'Publication date :arrow_down:' or df_collections['Citation'].sum() == 0:
                     count = 1
