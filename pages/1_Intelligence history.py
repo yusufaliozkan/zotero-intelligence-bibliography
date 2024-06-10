@@ -143,7 +143,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 csv = convert_df(df_download)
                 today = datetime.date.today().isoformat()
                 num_items_collections = len(df_collections)
-                breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
                 true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
                 total_count = len(df_collections[df_collections['Publication type']=='Journal article'])
@@ -160,6 +159,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
             with st.expander('Click to expand', expanded=True):
+                breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                 # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
 
                 articles_list = []  # Store articles in a list
