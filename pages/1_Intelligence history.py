@@ -152,7 +152,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     oa_ratio = true_count / total_count * 100
 
-                st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                 citation_count = df_collections['Citation'].sum()
                 st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
 
@@ -160,6 +159,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
             with st.expander('Click to expand', expanded=True):
+                st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                 # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
 
                 articles_list = []  # Store articles in a list
