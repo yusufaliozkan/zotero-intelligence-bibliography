@@ -75,38 +75,27 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    # container = st.container()
+    container = st.container()
 
     query_params = st.query_params.to_dict()
-    app_state = st.query_params.to_dict()
-
-    first_query_params = st.session_state.first_query_params
-    sesion_state = st.session_state.get(first_query_params=query_params)
-
     selected_collection_key  = query_params.get("collection_id", None)
 
     unique_collections = list(df_collections['Collection_Name'].unique())
 
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
-    default_index = eval(first_query_params["radio"][0]) if "radio" in app_state else 0
-
-    radio = st.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
-    app_state['radio']=unique_collections.index(radio)
-
-    # if selected_collection_name in unique_collections:
-    #     # Set the default value to the selected collection from the query params
-    #     radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
-    # else:
-    #     radio = container.radio('Select a collection', unique_collections)
-
+    if selected_collection_name in unique_collections:
+        # Set the default value to the selected collection from the query params
+        radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
+    else:
+        radio = container.radio('Select a collection', unique_collections)
 
     # radio = container.radio('Select a collection', unique_collections)
     # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
     collection_key = collection_mapping[collection_name]
     # if collection_name:
-    st.query_params.from_dict(**app_state)
+    st.query_params.from_dict({"collection_id": collection_key})
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     pd.set_option('display.max_colwidth', None)
