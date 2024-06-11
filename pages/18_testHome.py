@@ -404,7 +404,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 
                 cols, cola = st.columns([2,6])
-                query_params = st.query_params.to_dict() 
+                query_params = st.query_params.to_dict()
+                query_params
                 search_term = query_params.get("query", "")
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
