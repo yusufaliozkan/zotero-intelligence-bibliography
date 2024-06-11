@@ -87,7 +87,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     unique_collections = list(df_collections['Collection_Name'].unique())
 
     # Determine the default index for the radio button
-    if selected_collection_name in unique_collections:
+    if selected_collection_name and selected_collection_name in unique_collections:
         default_index = unique_collections.index(selected_collection_name)
     else:
         default_index = 0
