@@ -64,7 +64,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
-
     def remove_numbers(name):
         return re.sub(r'^\d+(\.\d+)*\s*', '', name)
 
@@ -107,7 +106,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # Update session state and query parameters when selection changes
     if collection_key != st.session_state['selected_collection_key']:
         st.session_state['selected_collection_key'] = collection_key
-        st.query_params.from_dict({"collection_id": collection_key})
+        st.query_params.update({"collection_id": collection_key})
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     pd.set_option('display.max_colwidth', None)
