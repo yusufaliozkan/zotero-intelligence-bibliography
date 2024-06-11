@@ -403,7 +403,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 #     ''')
 
                 
-                query_params = st.query_params() 
+                query_params = st.query_params
                 search_term = query_params.get("query", [""])[0]
                 cols, cola = st.columns([2,6])
                 with cols:
