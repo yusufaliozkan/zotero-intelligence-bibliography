@@ -43,6 +43,33 @@ col1, col2 = st.columns([5,2])
 
 with col1:
 
+    if 'counter' not in st.session_state:
+        st.session_state.counter = 0
+
+    # Function to increment the counter
+    def increment_counter():
+        st.session_state.counter += 1
+
+    # Function to reset the counter
+    def reset_counter():
+        st.session_state.counter = 0
+
+    st.title("Session State Example")
+
+    # Display the current value of the counter
+    st.write("Counter value:", st.session_state.counter)
+
+    # Button to increment the counter
+    if st.button("Increment"):
+        increment_counter()
+
+    # Button to reset the counter
+    if st.button("Reset"):
+        reset_counter()
+
+    # Show the current state of the counter after potential changes
+    st.write("Updated counter value:", st.session_state.counter)
+
     item_monitoring = st.button("Item monitoring")
     if item_monitoring:
         st.subheader('Monitoring section')
