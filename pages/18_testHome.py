@@ -416,8 +416,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
                         st.query_params.from_dict({"query": search_term_input})
-                else:
-                    st.query_params.clear()
+
             
                         # if container_refresh_button.button('Refresh'):
                         #     st.query_params.clear()
