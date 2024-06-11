@@ -90,7 +90,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # Convert collection name to corresponding key
     collection_key = df_collections.loc[df_collections['Collection_Name'] == collection_name, 'Collection_Key'].iloc[0]
 
-    # st.query_params.from_dict({"collection_id": collection_name})
+    st.query_params.from_dict({"collection_id": collection_name})
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     pd.set_option('display.max_colwidth', None)
 
