@@ -404,7 +404,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 
                 query_params = st.query_params.to_dict() 
-                search_term = query_params.get("query", [""])[0]  # Default to empty string if no query param
+                search_term = query_params.get("query", "")  # Default to empty string if no query param
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
