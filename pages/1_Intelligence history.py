@@ -90,7 +90,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
     collection_name
-    collection_key = collection_mapping[collection_name]
     collection_key
     # if collection_name:
     
