@@ -73,22 +73,20 @@ with st.spinner('Retrieving data & updating dashboard...'):
     container = st.container()
 
     query_params = st.query_params.to_dict()
-    selected_collection_key = query_params.get("collection_id", None)
-
-    # Create a mapping between Collection_Name and Collection_Key
-    collection_mapping = dict(zip(df_collections['Collection_Name'], df_collections['Collection_Key']))
+    selected_collection_name = query_params.get("collection_id", None)
 
     unique_collection_names = list(df_collections['Collection_Name'].unique())
 
-    if selected_collection_key in collection_mapping.values():
+    if selected_collection_name in unique_collection_names:
         # Set the default value to the selected collection from the query params
-        selected_collection_name = [name for name, key in collection_mapping.items() if key == selected_collection_key][0]
         radio = container.radio('Select a collection', unique_collection_names, index=unique_collection_names.index(selected_collection_name))
     else:
         radio = container.radio('Select a collection', unique_collection_names)
 
     collection_name = radio
-    collection_key = collection_mapping.get(collection_name)
+
+    # Convert collection name to corresponding key
+    collection_key = df_collections.loc[df_collections['Collection_Name'] == collection_name, 'Collection_Key'].iloc[0]
 
     st.query_params.from_dict({"collection_id": collection_key})
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
