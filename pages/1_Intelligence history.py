@@ -79,22 +79,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     unique_collections = list(df_collections['Collection_Name'].unique())
 
-    selected_collection_name = unique_collections
-
-    if selected_collection_name in unique_collections:
-        # Set the default value to the selected collection from the query params
-        radio = st.radio('Select a collection', unique_collections, index=unique_collections.index())
+    # Determine the index of the selected collection
+    if selected_collection_key:
+        try:
+            selected_index = unique_collections.index(selected_collection_key)
+        except ValueError:
+            selected_index = 0
     else:
-        radio = st.radio('Select a collection', unique_collections)
+        selected_index = 0
 
-    # radio = container.radio('Select a collection', unique_collections)
-    # collection_name = st.selectbox('Select a collection:', clist)
-    collection_name = radio
-    df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
-    collection_key = list(df_collections['Collection_Key'].unique())
-    collection_key
-    collection_name
-    # if collection_name:
+    # Display the radio buttons
+    radio = st.radio('Select a collection', unique_collections, index=selected_index)
+
+    # Filter the DataFrame based on the selected collection
+    df_collections = df_collections.loc[df_collections['Collection_Name'] == radio]
+    collection_key = list(df_collections['Collection_Key'].unique())[0]
     
     st.query_params.from_dict({"collection_id": collection_key})
     # st.experimental_set_query_params(collection_name=radio)
