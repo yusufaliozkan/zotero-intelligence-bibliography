@@ -75,28 +75,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    # Retrieve query parameters
+    # container = st.container()
+
     query_params = st.query_params.to_dict()
-    selected_collection_key = query_params.get("collection_id", None)
+    selected_collection_key  = query_params.get("collection_id", None)
 
     unique_collections = list(df_collections['Collection_Name'].unique())
 
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
-    # Determine the default index for the radio button
     if selected_collection_name in unique_collections:
-        default_index = unique_collections.index(selected_collection_name)
+        # Set the default value to the selected collection from the query params
+        radio = st.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
     else:
-        default_index = 0
+        radio = st.radio('Select a collection', unique_collections)
 
-    # Create the radio button with the default index
-    radio = st.radio('Select a collection', unique_collections, index=default_index)
-
-    # Update query parameters only if there's a change in selection
-    if selected_collection_name != radio:
-        st.query_params.from_dict({"collection_id": collection_mapping[radio]})
-
-    # Further processing based on the selected collection
+    # radio = container.radio('Select a collection', unique_collections)
+    # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
     collection_key = collection_mapping[collection_name]
     # if collection_name:
