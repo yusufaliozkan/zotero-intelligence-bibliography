@@ -64,6 +64,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
+    
     def remove_numbers(name):
         return re.sub(r'^\d+(\.\d+)*\s*', '', name)
 
@@ -81,7 +82,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     # Getting query parameters
     query_params = st.query_params.to_dict()
-    selected_collection_key = query_params.get("collection_id", [None])[0]
+    selected_collection_key = query_params.get("collection_id", None)
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
     unique_collections = list(df_collections['Collection_Name'].unique())
@@ -97,7 +98,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     collection_name = radio
     collection_key = collection_mapping[collection_name]
 
-    # Update query parameters
+    # Update query parameters if selection changes
     if selected_collection_key != collection_key:
         st.query_params.from_dict({"collection_id": collection_key})
 
