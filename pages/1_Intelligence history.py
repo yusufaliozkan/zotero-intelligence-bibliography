@@ -68,27 +68,33 @@ with st.spinner('Retrieving data & updating dashboard...'):
         return re.sub(r'^\d+(\.\d+)*\s*', '', name)
 
     df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
+
+    collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
+    reverse_collection_mapping = {v: k for k, v in collection_mapping.items()}
+
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
     container = st.container()
 
     query_params = st.query_params.to_dict()
-    selected_collection_name = query_params.get("collection_id", None)
+    selected_collection_key  = query_params.get("collection_id", None)
 
-    unique_collection_names = list(df_collections['Collection_Name'].unique())
+    unique_collections = list(df_collections['Collection_Name'].unique())
 
-    if selected_collection_name in unique_collection_names:
+    selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
+
+    if selected_collection_name in unique_collections:
         # Set the default value to the selected collection from the query params
-        radio = container.radio('Select a collection', unique_collection_names, index=unique_collection_names.index(selected_collection_name))
+        radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
     else:
-        radio = container.radio('Select a collection', unique_collection_names)
+        radio = container.radio('Select a collection', unique_collections)
 
+    # radio = container.radio('Select a collection', unique_collections)
+    # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
-
-    # Convert collection name to corresponding key
-    collection_key = df_collections.loc[df_collections['Collection_Name'] == collection_name, 'Collection_Key'].iloc[0]
-
-    st.query_params.from_dict({"collection_id": collection_name})
+    collection_key = collection_mapping[collection_name]
+    # if collection_name:
+    st.query_params.from_dict({"collection_id": collection_key})
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     pd.set_option('display.max_colwidth', None)
 
