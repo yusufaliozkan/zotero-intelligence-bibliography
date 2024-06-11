@@ -78,8 +78,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     unique_collections = list(df_collections['Collection_Name'].unique())
 
-    radio = container.radio('Select a collection', unique_collections)
-
 
     if selected_collection_key in unique_collections:
         # Set the default value to the selected collection from the query params
