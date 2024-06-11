@@ -64,7 +64,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections = df_collections.sort_values(by='Collection_Name')
     df_collections=df_collections[df_collections['Collection_Name'].str.contains("01.")]
-    
+
     def remove_numbers(name):
         return re.sub(r'^\d+(\.\d+)*\s*', '', name)
 
@@ -80,9 +80,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # Create a container for the radio buttons
     container = st.container()
 
-    # Getting query parameters
+    # Getting query parameters and session state
     query_params = st.query_params.to_dict()
-    selected_collection_key = query_params.get("collection_id", None)
+    session_state = SessionState.get(first_query_params=query_params)
+
+    # Initialize or retrieve the query params from session state
+    if not hasattr(session_state, 'first_query_params'):
+        session_state.first_query_params = query_params
+
+    selected_collection_key = session_state.first_query_params.get("collection_id", [None])[0]
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
     unique_collections = list(df_collections['Collection_Name'].unique())
@@ -98,9 +104,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
     collection_name = radio
     collection_key = collection_mapping[collection_name]
 
-    # Update query parameters if selection changes
+    # Update query parameters and session state if selection changes
     if selected_collection_key != collection_key:
-        st.query_params.from_dict({"collection_id": collection_key})
+        session_state.first_query_params["collection_id"] = collection_key
+        st.query_params.from_dict(session_state.first_query_params)
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     pd.set_option('display.max_colwidth', None)
