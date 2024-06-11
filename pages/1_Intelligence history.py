@@ -74,20 +74,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
     reverse_collection_mapping = {v: k for k, v in collection_mapping.items()}
 
     # Initialize session state if necessary
-    if 'selected_collection_index' not in st.session_state:
-        st.session_state.selected_collection_index = 0
+    if 'selected_collection' not in st.session_state:
+        st.session_state.selected_collection = None
 
     # Get unique collection names
     unique_collections = list(df_collections['Collection_Name'].unique())
 
     # Render radio buttons with the selected collection
-    selected_collection_index = st.radio('Select a collection', options=range(len(unique_collections)), index=st.session_state.selected_collection_index)
+    selected_collection = st.radio('Select a collection', unique_collections, index=unique_collections.index(st.session_state.selected_collection))
 
-    # Store the selected collection index in session state
-    st.session_state.selected_collection_index = selected_collection_index
-
-    # Get the selected collection name
-    selected_collection = unique_collections[selected_collection_index]
+    # Store the selected collection in session state
+    st.session_state.selected_collection = selected_collection
 
     # Retrieve collection key based on selected collection
     collection_key = collection_mapping[selected_collection]
