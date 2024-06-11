@@ -84,13 +84,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
-    radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
-
-    # if selected_collection_name in unique_collections:
-    #     # Set the default value to the selected collection from the query params
-    #     radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
-    # else:
-    #     radio = container.radio('Select a collection', unique_collections)
+    if selected_collection_name in unique_collections:
+        # Set the default value to the selected collection from the query params
+        radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
+    else:
+        radio = container.radio('Select a collection', unique_collections)
 
     # radio = container.radio('Select a collection', unique_collections)
     # collection_name = st.selectbox('Select a collection:', clist)
