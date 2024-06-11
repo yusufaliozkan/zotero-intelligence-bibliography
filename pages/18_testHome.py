@@ -391,25 +391,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         guide("Search guide")
                 container_refresh_button = st.container()
 
-                cols, cola = st.columns([2,6])
-                query_params = st.query_params
-                query_params
-                initial_search_term = query_params.get("query", "")
-                initial_search_term
-
+                cols, cola = st.columns([2, 6])
+                query_params = st.experimental_get_query_params()
+                initial_search_term = query_params.get("query", [""])[0]
+                
                 with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
+                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', value=initial_search_term)
-                search_term
-                if search_term != initial_search_term:
-                    st.query_params = {"query": initial_search_term}
+                    search_term = st.text_input('Search keywords in titles or abstracts', value=initial_search_term, on_change=update_query_params, args=(search_term,))
+                
+                def update_query_params(search_term):
+                    st.experimental_set_query_params(query=search_term)
 
-                def extract_quoted_phrases(text):
-                    quoted_phrases = re.findall(r'"(.*?)"', text)
-                    text_without_quotes = re.sub(r'"(.*?)"', '', text)
-                    words = text_without_quotes.split()
-                    return quoted_phrases + words
+                # def extract_quoted_phrases(text):
+                #     quoted_phrases = re.findall(r'"(.*?)"', text)
+                #     text_without_quotes = re.sub(r'"(.*?)"', '', text)
+                #     words = text_without_quotes.split()
+                #     return quoted_phrases + words
 
                 search_term = search_term.strip()
                 if search_term:
