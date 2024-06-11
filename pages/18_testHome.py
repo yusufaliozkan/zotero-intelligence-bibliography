@@ -405,7 +405,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 cols, cola = st.columns([2,6])
                 query_params = st.query_params.to_dict()
-                query_params
                 search_term = query_params.get("query", "")
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
@@ -424,13 +423,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
-                        print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
-
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
-                        print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
                         filtered_df = filtered_df.drop_duplicates()
-                        print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
                             filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
@@ -444,9 +439,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
-                        print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
-                        
-                        types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
+                        types = filtered_df['Publication type'].dropna().unique()
                         collections = filtered_df['Collection_Name'].dropna().unique()
                                     
                         # if container_refresh_button.button('Refresh'):
