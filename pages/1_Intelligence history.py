@@ -73,31 +73,32 @@ with st.spinner('Retrieving data & updating dashboard...'):
     collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
     reverse_collection_mapping = {v: k for k, v in collection_mapping.items()}
 
-    # Apply styling to the radio buttons
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    # Get query parameters
-    query_params = st.experimental_get_query_params()
-    selected_collection_key = query_params.get("collection_id", [None])[0]
+    # container = st.container()
 
-    # Get unique collection names
+    query_params = st.query_params.to_dict()
+    selected_collection_key  = query_params.get("collection_id", None)
+
     unique_collections = list(df_collections['Collection_Name'].unique())
 
-    # Get the selected collection name based on the collection key
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
-    # Ensure the selected collection name is in the list of unique collections
     if selected_collection_name in unique_collections:
-        radio_index = unique_collections.index(selected_collection_name)
-        radio = st.radio('Select a collection', unique_collections, index=radio_index)
+        # Set the default value to the selected collection from the query params
+        radio = st.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
     else:
         radio = st.radio('Select a collection', unique_collections)
 
-    # Set the selected collection name and collection key
+    # radio = container.radio('Select a collection', unique_collections)
+    # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
+    collection_name
     collection_key = collection_mapping[collection_name]
+    collection_key
+    # if collection_name:
     
-    st.query_params.from_dict({"collection_id": collection_key})
+    st.query_params.from_dict({"collection_id": collection_name})
     # st.experimental_set_query_params(collection_name=radio)
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
