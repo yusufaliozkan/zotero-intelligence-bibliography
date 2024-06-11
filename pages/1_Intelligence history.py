@@ -26,6 +26,7 @@ from format_entry import format_entry
 from copyright import display_custom_license
 from events import evens_conferences
 from streamlit_dynamic_filters import DynamicFilters
+import SessionState
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
