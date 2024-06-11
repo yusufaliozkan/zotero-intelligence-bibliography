@@ -95,7 +95,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     collection_name
     # if collection_name:
     
-    st.query_params.from_dict({"collection_id": collection_name})
+    st.query_params.from_dict({"collection_id": collection_key})
     # st.experimental_set_query_params(collection_name=radio)
 
     pd.set_option('display.max_colwidth', None)
