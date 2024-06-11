@@ -75,7 +75,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    container = st.container()
+    # container = st.container()
 
     query_params = st.query_params.to_dict()
     selected_collection_key  = query_params.get("collection_id", None)
@@ -86,9 +86,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     if selected_collection_name in unique_collections:
         # Set the default value to the selected collection from the query params
-        radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
+        radio = st.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
     else:
-        radio = container.radio('Select a collection', unique_collections)
+        radio = st.radio('Select a collection', unique_collections)
 
     # radio = container.radio('Select a collection', unique_collections)
     # collection_name = st.selectbox('Select a collection:', clist)
