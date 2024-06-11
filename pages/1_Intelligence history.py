@@ -90,7 +90,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
     collection_name
-    collection_key
     # if collection_name:
     
     st.query_params.from_dict({"collection_id": collection_name})
