@@ -404,27 +404,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 st.query_params.clear()
                 query_params = st.query_params.to_dict() 
-                search_term = query_params.get("query", "")
+                search_term = query_params.get("query", [""])[0]
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
+                    search_term_input = st.text_input('Search keywords in titles or abstracts', value=search_term, key="search_term_input")
 
-                def extract_quoted_phrases(text):
-                    quoted_phrases = re.findall(r'"(.*?)"', text)
-                    text_without_quotes = re.sub(r'"(.*?)"', '', text)
-                    words = text_without_quotes.split()
-                    return quoted_phrases + words
-
-                search_term = search_term.strip()
-                if search_term:
+                search_term_input = search_term_input.strip()
+                if search_term_input:
                     with st.status("Searching publications...", expanded=True) as status:
-                        search_tokens = parse_search_terms(search_term)
+                        search_tokens = parse_search_terms(search_term_input)
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
-
-
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
                         print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
