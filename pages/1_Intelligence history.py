@@ -96,6 +96,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # radio = container.radio('Select a collection', unique_collections)
     # collection_name = st.selectbox('Select a collection:', clist)
     st.session_state.selected_collection_name = radio
+    collection_name = st.session_state.selected_collection_name
     collection_key = collection_mapping[collection_name]
     # if collection_name:
     st.query_params.from_dict({"collection_id": collection_key})
