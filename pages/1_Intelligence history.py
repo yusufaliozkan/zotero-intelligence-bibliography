@@ -70,37 +70,32 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
 
-    # Creating mappings for collections
     collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
     reverse_collection_mapping = {v: k for k, v in collection_mapping.items()}
 
-    # Applying custom CSS to radio buttons
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    # Create a container for the radio buttons
     container = st.container()
 
-    # Getting query parameters
     query_params = st.query_params.to_dict()
-    selected_collection_key = query_params.get("collection_id", None)
-    selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
+    selected_collection_key  = query_params.get("collection_id", None)
 
     unique_collections = list(df_collections['Collection_Name'].unique())
 
-    # Determine the default index for the radio button
-    if selected_collection_name and selected_collection_name in unique_collections:
-        default_index = unique_collections.index(selected_collection_name)
-    else:
-        default_index = 0
+    selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
-    # Render the radio button with the default index
-    radio = container.radio('Select a collection', unique_collections, index=default_index)
+    if selected_collection_name in unique_collections:
+        # Set the default value to the selected collection from the query params
+        radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
+    else:
+        radio = container.radio('Select a collection', unique_collections)
+
+    # radio = container.radio('Select a collection', unique_collections)
+    # collection_name = st.selectbox('Select a collection:', clist)
     collection_name = radio
     collection_key = collection_mapping[collection_name]
-
-    # Update query parameters if selection changes
-    if selected_collection_key != collection_key:
-        st.query_params.from_dict({"collection_id": collection_key})
+    # if collection_name:
+    st.query_params.from_dict({"collection_id": collection_key})
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     pd.set_option('display.max_colwidth', None)
