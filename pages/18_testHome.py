@@ -391,31 +391,45 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         guide("Search guide")
                 container_refresh_button = st.container()
 
-                cols, cola = st.columns([2, 6])
-                query_params = st.experimental_get_query_params()
-                initial_search_term = query_params.get("query", [""])[0]
-                
-                with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
-                with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', value=initial_search_term, on_change=update_query_params, args=(search_term,))
-                
-                def update_query_params(search_term):
-                    st.experimental_set_query_params(query=search_term)
+                # if st.button('Search guide'):
+                #     st.toast('''
+                #     **Search guide**
 
-                # def extract_quoted_phrases(text):
-                #     quoted_phrases = re.findall(r'"(.*?)"', text)
-                #     text_without_quotes = re.sub(r'"(.*?)"', '', text)
-                #     words = text_without_quotes.split()
-                #     return quoted_phrases + words
+                #     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
+
+                #     Search with double quote is available. (e.g. "covert action")
+
+                #     Search with parantheses is **not** available.                   
+                #     ''')
+
+                
+                query_params = st.query_params() 
+                search_term = query_params.get("query", [""])[0]
+                cols, cola = st.columns([2,6])
+                with cols:
+                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
+                with cola:
+                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
+
+                def extract_quoted_phrases(text):
+                    quoted_phrases = re.findall(r'"(.*?)"', text)
+                    text_without_quotes = re.sub(r'"(.*?)"', '', text)
+                    words = text_without_quotes.split()
+                    return quoted_phrases + words
 
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
+                        print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
+
+
+
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
+                        print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
                         filtered_df = filtered_df.drop_duplicates()
+                        print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
                             filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
@@ -429,9 +443,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         else:
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
-                        types = filtered_df['Publication type'].dropna().unique()
+                        print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
+                        
+                        types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                                    
+                        st.query_params(query={"query": search_term})
+            
                         # if container_refresh_button.button('Refresh'):
                         #     st.query_params.clear()
                         #     st.rerun()
