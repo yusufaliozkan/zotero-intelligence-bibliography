@@ -43,6 +43,17 @@ col1, col2 = st.columns([5,2])
 
 with col1:
 
+    options = ['Option 1', 'Option 2', 'Option 3']
+
+    # Display radio buttons
+    selection = st.radio("Select an option:", options)
+
+    # Define URL parameters based on selection
+    params = {'option': selection}
+
+    # Create the link with query parameters
+    link = st.url_builder('/path/to/your/page', params)
+
     item_monitoring = st.button("Item monitoring")
     if item_monitoring:
         st.subheader('Monitoring section')
