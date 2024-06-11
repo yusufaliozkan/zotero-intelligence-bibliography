@@ -68,7 +68,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     def remove_numbers(name):
         return re.sub(r'^\d+(\.\d+)*\s*', '', name)
 
-    # df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
+    df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
 
     collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
     reverse_collection_mapping = {v: k for k, v in collection_mapping.items()}
@@ -98,7 +98,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     collection_key
     # if collection_name:
     
-    st.query_params.from_dict({"collection_id": collection_key})
+    st.query_params.from_dict({"collection_id": collection_name})
     # st.experimental_set_query_params(collection_name=radio)
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
