@@ -83,11 +83,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
-    if selected_collection_name in unique_collections:
-        default_index = unique_collections.index(selected_collection_name)
-        radio = container.radio('Select a collection', unique_collections, index=default_index)
-    else:
-        radio = container.radio('Select a collection', unique_collections)
+    if 'selected_collection' not in st.session_state:
+        st.session_state.selected_collection = None
+
+    selected_collection = st.radio('Select a collection', unique_collections, index=unique_collections.index(st.session_state.selected_collection))
+
+    st.session_state.selected_collection = selected_collection
 
     # radio = container.radio('Select a collection', unique_collections)
     # collection_name = st.selectbox('Select a collection:', clist)
