@@ -81,24 +81,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
     selected_collection_key  = query_params.get("collection_id", None)
 
     unique_collections = list(df_collections['Collection_Name'].unique())
-
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
+    # Default selection handling
     if selected_collection_name in unique_collections:
         selected_index = unique_collections.index(selected_collection_name)
     else:
-        selected_index = 0
+        selected_index = 0  # Default to the first item if no valid selection
 
-    if selected_collection_name in unique_collections:
-        # Set the default value to the selected collection from the query params
-        radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
-    else:
-        radio = container.radio('Select a collection', unique_collections)
+    # Radio button for selection
+    selected_collection_name = container.radio('Select a collection', unique_collections, index=selected_index)
 
-    # radio = container.radio('Select a collection', unique_collections)
-    # collection_name = st.selectbox('Select a collection:', clist)
-    collection_name = radio
-    collection_key = collection_mapping[collection_name]
+    # Update the query parameters based on the selection
+    collection_key = collection_mapping[selected_collection_name]
     # if collection_name:
     st.query_params.from_dict({"collection_id": collection_key})
     # st.experimental_set_query_params(collection_name=radio)
