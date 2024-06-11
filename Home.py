@@ -403,7 +403,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 #     ''')
 
                 
-                query_params = st.query_params
+                query_params = st.query_params.to_dict() 
                 search_term = query_params.get("query", "")
                 cols, cola = st.columns([2,6])
                 with cols:
@@ -447,7 +447,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        st.query_params(query={"query": search_term})
+                        st.query_params.from_dict({"query": search_term})
             
                         # if container_refresh_button.button('Refresh'):
                         #     st.query_params.clear()
