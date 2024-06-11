@@ -411,6 +411,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts', search_term)
+                
+                st.query_params.from_dict({"query": search_term})
 
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
@@ -446,8 +448,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        st.query_params.from_dict({"query": search_term})
-            
+                                    
                         # if container_refresh_button.button('Refresh'):
                         #     st.query_params.clear()
                         #     st.rerun()
