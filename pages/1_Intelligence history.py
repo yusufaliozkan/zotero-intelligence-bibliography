@@ -26,7 +26,6 @@ from format_entry import format_entry
 from copyright import display_custom_license
 from events import evens_conferences
 from streamlit_dynamic_filters import DynamicFilters
-import SessionState
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
@@ -83,7 +82,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     # Getting query parameters and session state
     query_params = st.query_params.to_dict()
-    session_state = SessionState.get(first_query_params=query_params)
+    session_state = st.session_state.get(first_query_params=query_params)
 
     # Initialize or retrieve the query params from session state
     if not hasattr(session_state, 'first_query_params'):
