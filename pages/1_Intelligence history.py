@@ -79,7 +79,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     query_params = st.query_params.to_dict()
     selected_collection_key  = query_params.get("collection_id", None)
 
-    unique_collections = list(df_collections['Collection_Key'].unique())
+    unique_collections = list(df_collections['Collection_Name'].unique())
 
     selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
 
