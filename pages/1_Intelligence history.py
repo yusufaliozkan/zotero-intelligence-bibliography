@@ -98,8 +98,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     collection_key = collection_mapping[collection_name]
 
     # Update query parameters
-    st.query_params.from_dict({"collection_id": collection_key})
-
+    if selected_collection_key != collection_key:
+        st.query_params.from_dict({"collection_id": collection_key})
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     pd.set_option('display.max_colwidth', None)
