@@ -403,7 +403,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     search_term = st.text_input('Search keywords in titles or abstracts', value=initial_search_term)
                 search_term
                 if search_term != initial_search_term:
-                    st.query_params = {"query": search_term}
+                    st.query_params = {"query": initial_search_term}
 
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
