@@ -276,25 +276,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # Title input from the user
 
             def parse_search_terms(search_term):
-                # Split the search term by spaces while keeping phrases in quotes together
                 tokens = re.findall(r'(?:"[^"]*"|\S+)', search_term)
                 boolean_tokens = []
                 for token in tokens:
-                    # Treat "AND", "OR", "NOT" as Boolean operators only if they are uppercase
                     if token in ["AND", "OR", "NOT"]:
                         boolean_tokens.append(token)
                     else:
-                        # Don't strip characters within quoted phrases
                         if token.startswith('"') and token.endswith('"'):
                             stripped_token = token.strip('"')
                         else:
-                            # Preserve alphanumeric characters, apostrophes, hyphens, en dash, and other special characters
                             stripped_token = re.sub(r'[^a-zA-Z0-9\s\'\-–’]', '', token)
-                            # Remove parentheses from the stripped token
                             stripped_token = stripped_token.replace('(', '').replace(')', '')
                         boolean_tokens.append(stripped_token.strip('"'))
                 
-                # Remove trailing operators
                 while boolean_tokens and boolean_tokens[-1] in ["AND", "OR", "NOT"]:
                     boolean_tokens.pop()
                 
@@ -316,10 +310,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         negate_next = False
                     elif token == "NOT":
                         negate_next = True
-                    elif token == "(":
-                        query += " ("
-                    elif token == ")":
-                        query += ") "
                     else:
                         escaped_token = re.escape(token)
                         if include_abstracts == 'In title & abstract':
@@ -336,7 +326,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         query += condition
 
-                # Debugging output
                 print(f"Query: {query}")
 
                 try:
@@ -361,7 +350,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 return highlighted_text
 
-            # Example Streamlit code for context
             st.header('Search in database', anchor=None)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
@@ -385,31 +373,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         You can share the link of your search result. Try: https://intelligence.streamlit.app/?query=cia+OR+mi6
                         ''')
-                
+
                 if "guide" not in st.session_state:
                     if st.button("Search guide"):
                         guide("Search guide")
                 container_refresh_button = st.container()
 
-                # if st.button('Search guide'):
-                #     st.toast('''
-                #     **Search guide**
-
-                #     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
-
-                #     Search with double quote is available. (e.g. "covert action")
-
-                #     Search with parantheses is **not** available.                   
-                #     ''')
-
-                st.query_params.clear()
-                query_params = st.query_params.to_dict() 
+                query_params = st.query_params
                 search_term = query_params.get("query", "")
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
-                    search_term_input = st.text_input('Search keywords in titles or abstracts', value=search_term, key="search_term_input")
+                    search_term_input = st.text_input('Search keywords in titles or abstracts', value=search_term)
 
                 search_term_input = search_term_input.strip()
                 if search_term_input:
@@ -439,7 +415,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        st.query_params.from_dict({"query": search_term})
+                        st.query_params.from_dict({"query": search_term_input})
+                else:
+                    st.query_params.clear()
             
                         # if container_refresh_button.button('Refresh'):
                         #     st.query_params.clear()
