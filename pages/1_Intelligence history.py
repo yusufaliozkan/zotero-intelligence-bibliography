@@ -97,7 +97,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # if collection_name:
     if selected_collection_name != radio:
 
-        st.query_params.to_dict({"collection_id": collection_key})
+        st.query_params.from_dict({"collection_id": collection_key})
     # st.experimental_set_query_params(collection_name=radio)
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
