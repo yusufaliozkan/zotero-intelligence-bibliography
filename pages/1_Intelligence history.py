@@ -74,8 +74,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     query_params = st.query_params.to_dict()
     selected_collection_name = query_params.get("collection_id", None)
-    st.write(query_params)
-
 
     unique_collection_names = list(df_collections['Collection_Name'].unique())
 
