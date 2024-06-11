@@ -80,6 +80,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     unique_collections = list(df_collections['Collection_Name'].unique())
     radio = st.radio('Select a collection', unique_collections)
     collection_key = list(df_collections['Collection_Key'].unique())
+    df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     df_collections
 
     # if selected_collection_name in unique_collections:
@@ -98,7 +99,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
     st.query_params.from_dict({"collection_id": collection_name})
     # st.experimental_set_query_params(collection_name=radio)
 
-    df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
     pd.set_option('display.max_colwidth', None)
 
     # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
