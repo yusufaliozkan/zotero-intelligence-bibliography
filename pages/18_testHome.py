@@ -393,13 +393,15 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 cols, cola = st.columns([2,6])
                 query_params = st.query_params
+                query_params
                 initial_search_term = query_params.get("query", "")
+                initial_search_term
 
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
                     search_term = st.text_input('Search keywords in titles or abstracts', value=initial_search_term)
-                
+                search_term
                 if search_term != initial_search_term:
                     st.query_params = {"query": search_term}
 
