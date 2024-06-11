@@ -391,20 +391,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         guide("Search guide")
                 container_refresh_button = st.container()
 
-                # if st.button('Search guide'):
-                #     st.toast('''
-                #     **Search guide**
-
-                #     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
-
-                #     Search with double quote is available. (e.g. "covert action")
-
-                #     Search with parantheses is **not** available.                   
-                #     ''')
-
-                
-                query_params = st.query_params.to_dict() 
-                search_term = query_params.get("query", "")  # Default to empty string if no query param
+                query_params = st.query_params
+                search_term = query_params.get("query", "")
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
@@ -413,7 +401,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 search_term = search_term.strip()
                 if search_term:
-                    with st.spinner("Searching publications..."):
+                    with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
@@ -439,7 +427,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        st.query_params.from_dict({"query": search_term})
+                        st.query_params = {"query": search_term}
             
                         # if container_refresh_button.button('Refresh'):
                         #     st.query_params.clear()
