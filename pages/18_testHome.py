@@ -419,13 +419,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     search_term = st.text_input('Search keywords in titles or abstracts', initial_search_term, key="input_search_term")
 
                 # Check if the search term has changed
-                if st.session_state.input_search_term != st.session_state.prev_search_term:
+                if search_term != st.session_state.prev_search_term:
+                    st.session_state.search_term = search_term
+                    st.session_state.prev_search_term = search_term
                     clear_query_params()
-                    st.session_state.search_term = st.session_state.input_search_term
-                    st.session_state.prev_search_term = st.session_state.search_term
-                    
-                # Update query parameters with the new search term
-                st.query_params.from_dict({"query": st.session_state.search_term})
+                    # Update query parameters with the new search term
+                    st.query_params.from_dict({"query": st.session_state.search_term})
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
