@@ -391,25 +391,22 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         guide("Search guide")
                 container_refresh_button = st.container()
 
-                # if st.button('Search guide'):
-                #     st.toast('''
-                #     **Search guide**
+                def clear_query_params():
+                    st.query_params.clear()
 
-                #     The following Boolean operators are available: AND, OR, NOT (e.g. "covert action" NOT british).
-
-                #     Search with double quote is available. (e.g. "covert action")
-
-                #     Search with parantheses is **not** available.                   
-                #     ''')
-
+                if 'search_term' not in st.session_state:
+                    st.session_state.search_term = ''
+                if 'prev_search_term' not in st.session_state:
+                    st.session_state.prev_search_term = ''
                 
                 query_params = st.query_params.to_dict() 
                 search_term = query_params.get("query", "")
+
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
+                    search_term = st.text_input('Search keywords in titles or abstracts', search_term, key="search_term")
 
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
@@ -417,14 +414,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     words = text_without_quotes.split()
                     return quoted_phrases + words
 
+                if st.session_state.search_term != st.session_state.prev_search_term:
+                    clear_query_params()
+                    st.session_state.prev_search_term = st.session_state.search_term
+
+                st.query_params.from_dict({"query": st.session_state.search_term})
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
-
-
 
                         filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
                         print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
@@ -447,8 +447,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        st.query_params.from_dict({"query": search_term})
-            
+                                
                         # if container_refresh_button.button('Refresh'):
                         #     st.query_params.clear()
                         #     st.rerun()
