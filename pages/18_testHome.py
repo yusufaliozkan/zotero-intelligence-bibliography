@@ -390,35 +390,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if st.button("Search guide"):
                         guide("Search guide")
                 container_refresh_button = st.container()
-
-                def clear_query_params():
-                    st.query_params.clear()
-
-                if 'search_term' not in st.session_state:
-                    st.session_state.search_term = ''
-                if 'prev_search_term' not in st.session_state:
-                    st.session_state.prev_search_term = ''
                 
                 query_params = st.query_params.to_dict() 
                 search_term = query_params.get("query", "")
-
                 cols, cola = st.columns([2,6])
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', search_term, key="search_term")
+                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
 
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
                     text_without_quotes = re.sub(r'"(.*?)"', '', text)
                     words = text_without_quotes.split()
                     return quoted_phrases + words
-
-                if st.session_state.search_term != st.session_state.prev_search_term:
-                    clear_query_params()
-                    st.session_state.prev_search_term = st.session_state.search_term
-
-                st.query_params.from_dict({"query": st.session_state.search_term})
+                st.query_params.from_dict({"query": search_term})
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
@@ -448,9 +434,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
                                 
-                        if container_refresh_button.button('Refresh'):
-                            st.query_params.clear()
-                            st.rerun()
+                        # if container_refresh_button.button('Refresh'):
+                        #     st.query_params.clear()
+                        #     st.rerun()
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
