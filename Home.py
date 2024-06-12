@@ -409,7 +409,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts')
+                    search_term = st.text_input('Search keywords in titles or abstracts', placeholder='Type your keyword(s)')
 
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
