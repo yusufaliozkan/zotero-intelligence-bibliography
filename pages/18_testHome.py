@@ -416,7 +416,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with cols:
                     include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
                 with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', initial_search_term, key="input_search_term", placeholder='Type your keyword(s)')
+                    search_term = st.text_input('Search keywords in titles or abstractsi', initial_search_term, key="input_search_term", placeholder='Type your keyword(s)')
 
                 # Check if the search term has changed
                 if search_term != st.session_state.prev_search_term:
