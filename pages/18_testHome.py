@@ -391,20 +391,41 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         guide("Search guide")
                 container_refresh_button = st.container()
                 
-                query_params = st.query_params.to_dict() 
-                search_term = query_params.get("query", "")
-                cols, cola = st.columns([2,6])
-                with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
-                with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
+                def clear_query_params():
+                    st.query_params.clear()
 
+                # Function to extract quoted phrases
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
                     text_without_quotes = re.sub(r'"(.*?)"', '', text)
                     words = text_without_quotes.split()
                     return quoted_phrases + words
-                st.query_params.from_dict({"query": search_term})
+
+                # Initialize session state for the search term
+                if 'search_term' not in st.session_state:
+                    st.session_state.search_term = ''
+                if 'prev_search_term' not in st.session_state:
+                    st.session_state.prev_search_term = ''
+
+                # Extract current query parameters
+                query_params = st.query_params.to_dict()
+                initial_search_term = query_params.get("query", "")
+
+                # Create columns for layout
+                cols, cola = st.columns([2, 6])
+                with cols:
+                    include_abstracts = st.selectbox('🔍 options', ['In title', 'In title & abstract'])
+                with cola:
+                    search_term = st.text_input('Search keywords in titles or abstracts', initial_search_term, key="input_search_term")
+
+                # Check if the search term has changed
+                if st.session_state.input_search_term != st.session_state.prev_search_term:
+                    st.session_state.search_term = st.session_state.input_search_term
+                    st.session_state.prev_search_term = st.session_state.search_term
+                    clear_query_params()
+
+                # Update query parameters with the new search term
+                st.query_params.from_dict({"query": st.session_state.search_term})
                 search_term = search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
