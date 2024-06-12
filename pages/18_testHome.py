@@ -420,10 +420,10 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 # Check if the search term has changed
                 if st.session_state.input_search_term != st.session_state.prev_search_term:
+                    clear_query_params()
                     st.session_state.search_term = st.session_state.input_search_term
                     st.session_state.prev_search_term = st.session_state.search_term
-                    clear_query_params()
-
+                    
                 # Update query parameters with the new search term
                 st.query_params.from_dict({"query": st.session_state.search_term})
                 search_term = search_term.strip()
