@@ -448,9 +448,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
                                 
-                        # if container_refresh_button.button('Refresh'):
-                        #     st.query_params.clear()
-                        #     st.rerun()
+                        if container_refresh_button.button('Refresh'):
+                            st.query_params.clear()
+                            st.rerun()
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
