@@ -207,8 +207,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
-    col1, col2 = st.columns([3,5])
-    with col2:
+    col1, col2, col3 = st.columns([3,5,5])
+    with col3:
         with st.expander('Introduction'):
             st.info(into)
     with col1:
@@ -220,7 +220,41 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.month == current_date.month)
         ]        # st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.metric(label='Number of items in the library', value=item_count, delta=len(items_added_this_month),label_visibility='visible', help=f' **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}')
-        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**') 
+        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+    with col2:
+        with st.popover('More metrics'):
+            citation_count = df_dedup['Citation'].sum()
+            st.metric(label="Number of citations", value=int(citation_count))
+
+            true_count = df_dedup[df_dedup['Publication type']=='Journal article']['OA status'].sum()
+            total_count = len(df_dedup[df_dedup['Publication type']=='Journal article'])
+            if total_count == 0:
+                oa_ratio = 0.0
+            else:
+                oa_ratio = true_count / total_count * 100
+            st.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
+
+            item_type_no = df_dedup['Publication type'].nunique()
+            st.metric(label='Number of publication types', value=int(item_type_no))
+
+            def split_and_expand(authors):
+                # Ensure the input is a string
+                if isinstance(authors, str):
+                    # Split by comma and strip whitespace
+                    split_authors = [author.strip() for author in authors.split(',')]
+                    return pd.Series(split_authors)
+                else:
+                    # Return the original author if it's not a string
+                    return pd.Series([authors])
+            expanded_authors = df_dedup['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+            expanded_authors = expanded_authors.reset_index(name='Author')
+            author_no = len(expanded_authors)
+            if author_no == 0:
+                author_pub_ratio=0.0
+            else:
+                author_pub_ratio = round(author_no/item_count, 2)
+            st.metric(label='Number of authors', value=int(author_no))
+            st.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
 
     sidebar_content() 
 
