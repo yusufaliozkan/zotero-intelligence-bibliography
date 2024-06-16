@@ -191,6 +191,9 @@ The Intelligence studies bibliography is one of the most comprehensive databases
 Finding sources on intelligence can sometimes be challening because of various reasons. 
 Therefore, this bibliography offers a carefully curated selection of publications, serving as an invaluable research assistant to guide you through exploring various sources.
 
+Join our Google Groups to get updates and learn  new features about the website and the database. 
+You can also ask questions or make suggestions. (https://groups.google.com/g/intelligence-studies-network)
+
 Check out the following guides for a quick intoduction about the website:
 
 Ozkan, Yusuf Ali. “Introduction to ‘Intelligence Studies Bibliography.’” Medium (blog), December 26, 2023. https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353.
@@ -220,7 +223,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.month == current_date.month)
         ]        # st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.metric(label='Number of items in the library', value=item_count, delta=len(items_added_this_month),label_visibility='visible', help=f' **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}')
-        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+    st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
     with col2:
         with st.popover('More metrics'):
             citation_count = df_dedup['Citation'].sum()
@@ -2159,6 +2162,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     
 
         with col2:
+            st.info('Join the [mailing list](https://groups.google.com/g/intelligence-studies-network)')
             with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
