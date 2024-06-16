@@ -93,60 +93,90 @@ with st.spinner('Retrieving data & updating dashboard...'):
         publications_by_type = df_collections['Publication type'].value_counts()
         collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
-        st.markdown('#### Collection theme: ' + collection_name)
-    with st.popover("Filters and more"):
-        st.write(f"View the collection in [Zotero]({collection_link})")
-        col112, col113, col114 = st.columns(3)
-        with col112:
-            display2 = st.checkbox('Display abstracts')
-        with col113:
-            only_citation = st.checkbox('Show cited items only')
-            if only_citation:
-                df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
-        with col114:
-            table_view = st.checkbox('See results in table')
+    st.markdown('#### Collection theme: ' + collection_name)
+    col1, col2, col3 = st.columns([1,2,4])
+    with col1:
+        container_metric = st.container()
+    with col2:
+        with st.popover("More metrics"):
+            container_citation = st.container()
+            container_oa = st.container()
+            container_type = st.container()
+            container_author_no = st.container()
+            container_author_pub_ratio = st.container()
+    with col3:
+        with st.popover("Filters and more"):
+            st.write(f"View the collection in [Zotero]({collection_link})")
+            col112, col113, col114 = st.columns(3)
+            with col112:
+                display2 = st.checkbox('Display abstracts')
+            with col113:
+                only_citation = st.checkbox('Show cited items only')
+                if only_citation:
+                    df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
+            with col114:
+                table_view = st.checkbox('See results in table')
 
-        types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
-        df_collections = df_collections[df_collections['Publication type'].isin(types)]
-        df_collections = df_collections.reset_index(drop=True)
-        df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])
-        df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
-        df_download = df_download.reset_index(drop=True)
-        def convert_df(df_download):
-            return df_download.to_csv(index=False).encode('utf-8-sig')
-        csv = convert_df(df_download)
-        today = datetime.date.today().isoformat()
-        num_items_collections = len(df_collections)
-        publications_by_type = df_collections['Publication type'].value_counts()
-        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+            types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
+            df_collections = df_collections[df_collections['Publication type'].isin(types)]
+            df_collections = df_collections.reset_index(drop=True)
+            df_collections['FirstName2'] = df_collections['FirstName2'].map(name_replacements).fillna(df_collections['FirstName2'])
+            df_download = df_collections[['Publication type','Title','FirstName2','Abstract','Date published','Publisher','Journal','Link to publication','Zotero link']]
+            df_download = df_download.reset_index(drop=True)
+            df_download['Abstract'] = df_download['Abstract'].str.replace('\n', ' ')
+            def convert_df(df_download):
+                return df_download.to_csv(index=False).encode('utf-8-sig')
+            csv = convert_df(df_download)
+            today = datetime.date.today().isoformat()
+            num_items_collections = len(df_collections)
+            publications_by_type = df_collections['Publication type'].value_counts()
+            breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+            item_type_no = df_collections['Publication type'].nunique()
+            def split_and_expand(authors):
+                # Ensure the input is a string
+                if isinstance(authors, str):
+                    # Split by comma and strip whitespace
+                    split_authors = [author.strip() for author in authors.split(',')]
+                    return pd.Series(split_authors)
+                else:
+                    # Return the original author if it's not a string
+                    return pd.Series([authors])
+            expanded_authors = df_collections['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+            expanded_authors = expanded_authors.reset_index(name='Author')
+            author_no = len(expanded_authors)
+            if author_no == 0:
+                author_pub_ratio=0.0
+            else:
+                author_pub_ratio = round(author_no/num_items_collections, 2)
 
-        true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
-        total_count = len(df_collections[df_collections['Publication type']=='Journal article'])
-        if total_count == 0:
-            oa_ratio = 0.0
-        else:
-            oa_ratio = true_count / total_count * 100
+            true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
+            total_count = len(df_collections[df_collections['Publication type']=='Journal article'])
+            if total_count == 0:
+                oa_ratio = 0.0
+            else:
+                oa_ratio = true_count / total_count * 100
 
-        citation_count = df_collections['Citation'].sum()
+            citation_count = df_collections['Citation'].sum()
 
-        a = f'{collection_name}_{today}'
-        st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+            a = f'{collection_name}_{today}'
+            st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
+    container_metric.metric(label="Items found", value=num_items_collections, help=breakdown_string)
+    container_citation.metric(label="Number of citations", value=int(citation_count))
+    container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
+    container_type.metric(label='Number of publication types', value=int(item_type_no))
+    container_author_no.metric(label='Number of authors', value=int(author_no))
+    container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
 
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
         with col1:            
-            # st.metric(label='Number of items', value=num_items_collections, help=breakdown_string)
-            st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
-            st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+            # st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
+            # st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
             # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
-
-            if table_view:
-                df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Collection_Name','Link to publication','Zotero link']]
-                df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
-                df_table_view
-            else:
+            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+            if not table_view:
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
@@ -179,8 +209,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Publication link]](' + str(link_to_publication) + ') ' +
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
-                
+                                
                 with st.expander('Click to expand', expanded=True):
 
                     if sort_by == 'Publication date :arrow_down:': # or df_collections['Citation'].sum() == 0:
@@ -223,6 +252,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 count += 1
                                 if display2:
                                     st.caption(row['Abstract']) 
+            else:
+                df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal', 'Citation', 'Collection_Name','Link to publication','Zotero link']]
+                df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
+                if sort_by == 'Publication type':
+                    df_table_view = df_table_view.sort_values(by=['Publication type'], ascending=True)
+                    df_table_view = df_table_view.reset_index(drop=True)
+                    df_table_view
+                elif sort_by == 'Citation':
+                    df_table_view = df_table_view.sort_values(by=['Citation'], ascending=False)
+                    df_table_view = df_table_view.reset_index(drop=True)
+                    df_table_view
+                else:
+                    df_table_view
 #UNTIL HERE
         with col2:
             with st.expander('Collections', expanded=True):
