@@ -1034,7 +1034,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 st.info('Toggle to see the dashboard!')
         else:
-            st.warning('Selected a country to display dashboard!')
+            st.warning('Select a country to display dashboard!')
     components.html(
     """
     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
