@@ -187,8 +187,12 @@ cite_today = datetime.date.today().strftime("%d %B %Y")
 
 into = f'''
 Welcome to **Intelligence studies bibliography**.
-This website lists **hundreds of sources, events, conferences, and call for papers** on intelligence history and intelligence studies. Finding sources on intelligence
-can sometimes be challening. This bibliography will be your helpful research assistant in finding and saving sources.
+The Intelligence studies bibliography is one of the most comprehensive databases listing sources on intelligence studies and history. 
+Finding sources on intelligence can sometimes be challening because of various reasons. 
+Therefore, this bibliography offers a carefully curated selection of publications, serving as an invaluable research assistant to guide you through exploring various sources.
+
+Join our Google Groups to get updates and learn  new features about the website and the database. 
+You can also ask questions or make suggestions. (https://groups.google.com/g/intelligence-studies-network)
 
 Check out the following guides for a quick intoduction about the website:
 
@@ -206,8 +210,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
-    col1, col2 = st.columns([3,5])
-    with col2:
+    col1, col2, col3 = st.columns([3,5,8])
+    with col3:
         with st.expander('Introduction'):
             st.info(into)
     with col1:
@@ -219,7 +223,41 @@ with st.spinner('Retrieving data & updating dashboard...'):
             (df_intro['Date added'].dt.month == current_date.month)
         ]        # st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
         st.metric(label='Number of items in the library', value=item_count, delta=len(items_added_this_month),label_visibility='visible', help=f' **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}')
-        st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**') 
+    st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+    with col2:
+        with st.popover('More metrics'):
+            citation_count = df_dedup['Citation'].sum()
+            st.metric(label="Number of citations", value=int(citation_count))
+
+            true_count = df_dedup[df_dedup['Publication type']=='Journal article']['OA status'].sum()
+            total_count = len(df_dedup[df_dedup['Publication type']=='Journal article'])
+            if total_count == 0:
+                oa_ratio = 0.0
+            else:
+                oa_ratio = true_count / total_count * 100
+            st.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
+
+            item_type_no = df_dedup['Publication type'].nunique()
+            st.metric(label='Number of publication types', value=int(item_type_no))
+
+            def split_and_expand(authors):
+                # Ensure the input is a string
+                if isinstance(authors, str):
+                    # Split by comma and strip whitespace
+                    split_authors = [author.strip() for author in authors.split(',')]
+                    return pd.Series(split_authors)
+                else:
+                    # Return the original author if it's not a string
+                    return pd.Series([authors])
+            expanded_authors = df_dedup['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+            expanded_authors = expanded_authors.reset_index(name='Author')
+            author_no = len(expanded_authors)
+            if author_no == 0:
+                author_pub_ratio=0.0
+            else:
+                author_pub_ratio = round(author_no/item_count, 2)
+            st.metric(label='Number of authors', value=int(author_no))
+            st.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
 
     sidebar_content() 
 
@@ -300,7 +338,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 
                 return boolean_tokens
 
-            def apply_boolean_search(df, search_tokens, include_abstracts):
+            def apply_boolean_search(df, search_tokens, search_in):
                 if not search_tokens:
                     return df
 
@@ -322,7 +360,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         query += ") "
                     else:
                         escaped_token = re.escape(token)
-                        if include_abstracts == 'In title & abstract':
+                        if search_in == 'Title and abstract':
                             condition = f'(Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False) | Abstract.str.contains(r"\\b{escaped_token}\\b", case=False, na=False))'
                         else:
                             condition = f'Title.str.contains(r"\\b{escaped_token}\\b", case=False, na=False)'
@@ -383,12 +421,14 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                         Note that the search function is limited: you will only find exact matches and cannot see search relevance.
 
-                        You can share the link of your search result. Try: https://intelligence.streamlit.app/?query=cia+OR+mi6
+                        You can share the link of your search result. Try: https://intelligence.streamlit.app/?search_in=Title&query=cia+OR+mi6
                         ''')
                 
                 if "guide" not in st.session_state:
                     if st.button("Search guide"):
                         guide("Search guide")
+                container_refresh_button = st.container()
+
                 # if st.button('Search guide'):
                 #     st.toast('''
                 #     **Search guide**
@@ -399,41 +439,86 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                 #     Search with parantheses is **not** available.                   
                 #     ''')
-                query_params = st.query_params.to_dict() 
-                search_term = query_params.get("query", "")
-                cols, cola = st.columns([2,6])
-                with cols:
-                    include_abstracts = st.selectbox('🔍 options', ['In title','In title & abstract'])
-                with cola:
-                    search_term = st.text_input('Search keywords in titles or abstracts', search_term)
+                # Function to update search parameters in the query string
+                def update_search_params():
+                    st.session_state.search_term = st.session_state.search_term_input
+                    st.query_params.from_dict({
+                        "search_in": st.session_state.search_in,
+                        "query": st.session_state.search_term
+                    })
 
+                # Extracting initial query parameters
+                query_params = st.query_params
+                search_term = ""
+                search_in = "Title"
+
+                # Retrieve the initial search term and search_in from query parameters if available
+                if 'query' in query_params:
+                    search_term = query_params['query']
+                if 'search_in' in query_params:
+                    search_in = query_params['search_in']
+
+                # Initialize session state variables
+                if 'search_term' not in st.session_state:
+                    st.session_state.search_term = search_term
+                if 'search_in' not in st.session_state:
+                    st.session_state.search_in = search_in
+                if 'search_term_input' not in st.session_state:
+                    st.session_state.search_term_input = search_term
+
+                # Define unique search options
+                search_options = ["Title", "Title and abstract"]
+
+                # Handling the search_in select box selection
+                search_in_index = 0
+                if 'search_in' in query_params:
+                    try:
+                        search_in_from_key = query_params['search_in']
+                        search_in_index = search_options.index(search_in_from_key)
+                    except (ValueError, KeyError):
+                        pass
+
+                # Layout for input elements
+                cols, cola = st.columns([2, 6])
+
+                # Selectbox for search options
+                with cols:
+                    st.session_state.search_in = st.selectbox(
+                        '🔍 Search in', search_options,
+                        index=search_in_index,
+                        on_change=update_search_params
+                    )
+
+                # Text input for search keywords
+                with cola:
+                    st.text_input(
+                        'Search keywords in titles or abstracts',
+                        st.session_state.search_term_input,
+                        key='search_term_input',
+                        placeholder='Type your keyword(s)',
+                        on_change=update_search_params
+                    )
+
+                # Function to extract quoted phrases
                 def extract_quoted_phrases(text):
                     quoted_phrases = re.findall(r'"(.*?)"', text)
                     text_without_quotes = re.sub(r'"(.*?)"', '', text)
                     words = text_without_quotes.split()
                     return quoted_phrases + words
 
-                search_term = search_term.strip()
+                # Stripping and processing the search term
+                search_term = st.session_state.search_term.strip()
                 if search_term:
                     with st.status("Searching publications...", expanded=True) as status:
                         search_tokens = parse_search_terms(search_term)
                         print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                         df_csv = df_duplicated.copy()
 
-                        col112, col113, col114 = st.columns([2,2,2])
-                        with col112:
-                            display_abstracts = st.checkbox('Display abstracts')
-                        with col113:
-                            only_citation = st.checkbox('Show cited items only')
-                            if only_citation:
-                                df_csv = df_csv[(df_csv['Citation'].notna()) & (df_csv['Citation'] != 0)]
-                        with col114:
-                            table_view = st.checkbox('See results in table')
-
-                        filtered_df = apply_boolean_search(df_csv, search_tokens, include_abstracts)
+                        filtered_df = apply_boolean_search(df_csv, search_tokens, st.session_state.search_in)
                         print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
                         filtered_df = filtered_df.drop_duplicates()
                         print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
+                        
                         if not filtered_df.empty and 'Date published' in filtered_df.columns:
                             filtered_df['Date published'] = filtered_df['Date published'].astype(str).str.strip()
                             filtered_df['Date published'] = filtered_df['Date published'].str.strip().apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
@@ -448,15 +533,28 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             filtered_df['Date published'] = ''
                             filtered_df['No date flag'] = 1
                         print(f"Final Filtered DataFrame:\n{filtered_df}")  # Debugging: Print final DataFrame
-                        
+
                         types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                         collections = filtered_df['Collection_Name'].dropna().unique()
-                        st.query_params.from_dict({"query": search_term})
+
+                                # if container_refresh_button.button('Refresh'):
+                        #     st.query_params.clear()
+                        #     st.rerun()
 
                         with st.popover("Filters and more"):
                             types2 = st.multiselect('Publication types', types, key='original2')
                             collections = st.multiselect('Collection', collections, key='original_collection')
                             container_download_button = st.container()
+
+                            col112, col113, col114 = st.columns(3)
+                            with col112:
+                                display_abstracts = st.checkbox('Display abstracts')
+                            with col113:
+                                only_citation = st.checkbox('Show cited items only')
+                                if only_citation:
+                                    filtered_df = filtered_df[(df_csv['Citation'].notna()) & (filtered_df['Citation'] != 0)]
+                            with col114:
+                                table_view = st.checkbox('See results in table')
 
                         if types2:
                             filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]                 
@@ -630,7 +728,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                         if display_abstracts:
                                             abstract = abstracts_list[i - 1]  # Get the corresponding abstract for this article
                                             if pd.notnull(abstract):
-                                                if include_abstracts == 'In title & abstract':
+                                                if search_in == 'Title and abstract':
                                                     highlighted_abstract = highlight_terms(abstract, search_tokens)
                                                 else:
                                                     highlighted_abstract = abstract 
@@ -645,6 +743,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             # SEARCH AUTHORS
             elif search_option == "Search author":
+                st.query_params.clear()
                 st.subheader('Search author') 
 
                 unique_authors = [''] + list(df_authors['Author_name'].unique())
@@ -815,7 +914,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write("No publication type selected.")
 
             # SEARCH IN COLLECTIONS
-            elif search_option == "Search collection": 
+            elif search_option == "Search collection":
+                st.query_params.clear()
                 st.subheader('Search collection')
 
                 df_csv_collections = df_duplicated.copy()
@@ -1015,6 +1115,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write("No publication type selected.")
 
             elif search_option == "Publication types":
+                st.query_params.clear()
                 st.subheader('Publication types')
 
                 df_csv_types = df_dedup.copy()
@@ -1189,6 +1290,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write(f"{index + 1}) {formatted_entry}")
 
             elif search_option == "Search journal":
+                st.query_params.clear()
                 st.subheader('Search journal')
 
                 df_csv = df_dedup.copy()
@@ -1400,7 +1502,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 formatted_entry = format_entry(row)
                                 st.write(f"{index + 1}) {formatted_entry}")
 
-            elif search_option == "Publication year":                
+            elif search_option == "Publication year": 
+                st.query_params.clear()
                 st.subheader('Items by publication year')
 
                 with st.expander('Click to expand', expanded=True):                    
@@ -1626,7 +1729,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             # Display the article with highlighted search terms
                             st.markdown(f"{i}. {article}", unsafe_allow_html=True)
 
-            elif search_option == "Cited papers":                
+            elif search_option == "Cited papers":
+                st.query_params.clear()
                 st.subheader('Cited items in the library')
 
                 with st.expander('Click to expand', expanded=True):                    
@@ -1691,7 +1795,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     st.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     number_of_items = len(df_cited)
 
-                    colcit1, colcit2 = st.columns([1,3])
+                    colcit1, colcit2 = st.columns([2,4])
                     with colcit1:
                         citation_count = df_cited['Citation'].sum()
                         publications_by_type = df_cited['Publication type'].value_counts()
@@ -2058,6 +2162,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     
 
         with col2:
+            st.info('Join the [mailing list](https://groups.google.com/g/intelligence-studies-network)')
             with st.expander('Collections', expanded=True):
                 st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
                 st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
@@ -2520,17 +2625,17 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     gpe_counts = pd.read_csv('gpe.csv')
-                    fig = px.bar(gpe_counts.head(15), x='GPE', y='count', height=600, title="Top 15 locations mentioned in title & abstract")
+                    fig = px.bar(gpe_counts.head(15), x='GPE', y='count', height=600, title="Top 15 locations mentioned Title and abstract")
                     fig.update_xaxes(tickangle=-65)
                     col1.plotly_chart(fig, use_container_width=True)
                 with col2:
                     person_counts = pd.read_csv('person.csv')
-                    fig = px.bar(person_counts.head(15), x='PERSON', y='count', height=600, title="Top 15 person mentioned in title & abstract")
+                    fig = px.bar(person_counts.head(15), x='PERSON', y='count', height=600, title="Top 15 person mentioned Title and abstract")
                     fig.update_xaxes(tickangle=-65)
                     col2.plotly_chart(fig, use_container_width=True)
                 with col3:
                     org_counts = pd.read_csv('org.csv')
-                    fig = px.bar(org_counts.head(15), x='ORG', y='count', height=600, title="Top 15 organisations mentioned in title & abstract")
+                    fig = px.bar(org_counts.head(15), x='ORG', y='count', height=600, title="Top 15 organisations mentioned Title and abstract")
                     fig.update_xaxes(tickangle=-65)
                     col3.plotly_chart(fig, use_container_width=True)
 
@@ -2717,6 +2822,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
         Contributors with comments and sources:
         1. Daniela Richterove
         2. Steven Wagner
+        3. Sophie Duroy
         ''') 
 
     display_custom_license()

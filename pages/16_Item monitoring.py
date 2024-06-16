@@ -104,8 +104,9 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764513295&sort=publication_year:desc', #Security and Human Rights
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s82119083&sort=publication_year:desc', #Modern Law Review
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s129176075&sort=publication_year:desc', #International Theory
-                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc', #Journal of Global Security Studies
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764608241&sort=publication_year:desc', #Michigan Journal of International Law
+                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc', #Journal of Global Security Studies
+                'https://api.openalex.org/works?page=1&filter=primary_topic.id:t12572&sort=publication_year:desc', #Intelligence Studies and Analysis in Modern Context
 
                 # Add more API links here
             ]
@@ -124,7 +125,7 @@ with col1:
                 'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies', 'International Journal', 'German Law Journal',
                 'American Journal of International Law', 'European Journal of International Law', 'Human Rights Law Review', 'Leiden Journal of International Law',
                 'International & Comparative Law Quarterly', 'Journal of Conflict and Security Law', 'Journal of International Dispute Settlement', 'Security and Human Rights',
-                'Modern Law Review', 'International Theory', 'Journal of Global Security Studies', 'Michigan Journal of International Law'
+                'Modern Law Review', 'International Theory', 'Michigan Journal of International Law', 'Journal of Global Security Studies', 'Intelligence Studies and Analysis in Modern Context'
                 ]
 
             # Define keywords for filtering
@@ -145,7 +146,7 @@ with col1:
 
                     titles = []
                     dois = []
-                    publication_dates = [] 
+                    publication_dates = []
                     dois_without_https = []
                     journals = []
 
@@ -155,10 +156,10 @@ with col1:
                         pub_date = datetime.datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
 
                         if today - pub_date <= timedelta(days=90):
-                            title = result['title'].lower()
-
-                            if any(keyword in title for keyword in keywords):
-                                titles.append(result['title'])
+                            title = result.get('title')
+                            
+                            if title is not None and any(keyword in title.lower() for keyword in keywords):
+                                titles.append(title)
                                 dois.append(result['doi'])
                                 publication_dates.append(result['publication_date'])
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])

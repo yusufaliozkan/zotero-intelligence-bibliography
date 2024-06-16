@@ -26,16 +26,22 @@ from format_entry import format_entry
 from copyright import display_custom_license
 from events import evens_conferences
 
-
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence and cybersphere")
+st.title("Special collections")
 
 with st.spinner('Retrieving data & updating dashboard...'):
+
+    # # Connecting Zotero with API
+    # library_id = '2514686' # intel 2514686
+    # library_type = 'group'
+    # api_key = '' # api_key is only needed for private groups and libraries
+
     sidebar_content()
+
     # zot = zotero.Zotero(library_id, library_type)
 
     # @st.cache_data(ttl=300)
@@ -55,36 +61,62 @@ with st.spinner('Retrieving data & updating dashboard...'):
     # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
     df_collections = df_collections.sort_values(by='Collection_Name')
-    df_collections=df_collections[df_collections['Collection_Name'].str.contains("10.")]
+    df_collections=df_collections[df_collections['Collection_Name'].str.contains("98.")]
+    df_collections = df_collections[df_collections['Collection_Name'] != '01.98 Miscellaneous']
+    df_collections = df_collections[df_collections['Collection_Name'] != '02.98 Methodology']
+
+    def remove_numbers(name):
+        return re.sub(r'^\d+(\.\d+)*\s*', '', name)
+
+    df_collections['Collection_Name'] = df_collections['Collection_Name'].apply(remove_numbers)
+    
+    collection_mapping = df_collections.drop_duplicates('Collection_Name').set_index('Collection_Name')['Collection_Key'].to_dict()
+    reverse_collection_mapping = {v: k for k, v in collection_mapping.items()}
 
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
     container = st.container()
 
-    col1, col2 = st.columns([5,1.6])
-    with col1:
-        unique_collections = list(df_collections['Collection_Name'].unique()) 
-        radio = container.radio('Select a collection', unique_collections)
-        # collection_name = st.selectbox('Select a collection:', clist)
-        collection_name = radio
-        df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
-        pd.set_option('display.max_colwidth', None)
+    unique_collections = list(df_collections['Collection_Name'].unique())
 
-        # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-        df_collections['Date published'] = (
-            df_collections['Date published']
-            .str.strip()
-            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-        )
-        df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
-        df_collections['Date published'] = df_collections['Date published'].fillna('')
-        df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
-        df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-        df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
-        df_collections = df_collections.reset_index(drop=True)
+    def update_params():
+        st.query_params.from_dict({'collection_id': collection_mapping[st.session_state.qp]})
 
-        publications_by_type = df_collections['Publication type'].value_counts()
-        collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
+    query_params = st.query_params
+    ix = 0
+
+    if 'collection_id' in query_params:
+        try:
+            # Get the collection name using the key from query_params
+            collection_name_from_key = reverse_collection_mapping[query_params['collection_id']]
+            ix = unique_collections.index(collection_name_from_key)
+        except (ValueError, KeyError):
+            pass
+
+    radio = container.radio('Select a collection', unique_collections, index=ix, key="qp", on_change=update_params)
+    query_params = st.query_params.to_dict()
+
+    collection_name = radio
+    collection_key = collection_mapping[collection_name]
+
+    df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
+    pd.set_option('display.max_colwidth', None)
+
+    # df_collections['Date published'] = pd.to_datetime(df_collections['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+    df_collections['Date published'] = (
+        df_collections['Date published']
+        .str.strip()
+        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+    )
+    df_collections['Date published'] = df_collections['Date published'].dt.strftime('%Y-%m-%d')
+    df_collections['Date published'] = df_collections['Date published'].fillna('')
+    df_collections['No date flag'] = df_collections['Date published'].isnull().astype(np.uint8)
+    df_collections = df_collections.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+    df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
+    df_collections = df_collections.reset_index(drop=True)
+
+    publications_by_type = df_collections['Publication type'].value_counts()
+    collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
     st.markdown('#### Collection theme: ' + collection_name)
     col1, col2, col3 = st.columns([1,2,4])
@@ -284,10 +316,8 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     with tab2:
         st.header('Dashboard')
-        on = st.toggle("Display dashboard")
-
+        on = st.toggle('Display dashboard')
         if on:
-
             if df_collections['Title'].any() in ("", [], None, 0, False):
                 all = st.checkbox('Show all types')
                 if all:
@@ -533,8 +563,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
             df['token_abstract']=df['clean_abstract'].apply(tokenization)
 
             stopword = nltk.corpus.stopwords.words('english')
-
-            SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
+            
+            if collection_name=='98.1 War in Ukraine':
+                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'invasion',
+                    'ukraine', 'russian', 'ukrainian', 'russia', 'could', 'vladimir',
+                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                    'examines', 'become', 'used', 'journal', 'london', 'review']
+            else:
+                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter',
                 'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
                 'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
                 'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
@@ -592,6 +630,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 st.pyplot() 
         else:
             st.info('Toggle to see the dashboard!')
+            
     components.html(
     """
     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
