@@ -339,7 +339,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with tab2:
         st.header('Dashboard')
 
-        on = st.toggle('Reveal dashboard')
+        on = st.toggle('Display dashboard')
         if on:
 
             if df_collections['Title'].any() in ("", [], None, 0, False):
@@ -660,7 +660,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 plt.show()
                 st.set_option('deprecation.showPyplotGlobalUse', False)
                 st.pyplot() 
-
+        else:
+            st.info('Toggle to see the dashboard!')
+            
     # components.html(
     #     """
     #     <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
