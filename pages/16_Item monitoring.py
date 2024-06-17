@@ -134,7 +134,7 @@ with col1:
                 'spying', 'spies', 'surveillance', 'targeted killing', 'cyberespionage', ' cia ', 'rendition', ' mi6 ', ' mi5 ', ' sis ', 'security service',
                 'central intelligence'
             ]
-
+            
             dfs = []
 
             for api_link in api_links:
@@ -153,15 +153,22 @@ with col1:
                     today = datetime.datetime.today().date()
 
                     for result in results:
-                        pub_date = datetime.datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
+                        if result is None:
+                            continue
+                        
+                        pub_date_str = result.get('publication_date')
+                        if pub_date_str is None:
+                            continue
+
+                        pub_date = datetime.datetime.strptime(pub_date_str, '%Y-%m-%d').date()
 
                         if today - pub_date <= timedelta(days=90):
                             title = result.get('title')
                             
                             if title is not None and any(keyword in title.lower() for keyword in keywords):
                                 titles.append(title)
-                                dois.append(result['doi'])
-                                publication_dates.append(result['publication_date'])
+                                dois.append(result.get('doi', 'Unknown'))
+                                publication_dates.append(pub_date_str)
                                 
                                 # Ensure 'ids' and 'doi' are present before splitting
                                 ids = result.get('ids')
@@ -171,7 +178,13 @@ with col1:
                                     dois_without_https.append('Unknown')
 
                                 # Safely navigate through nested dictionaries using get
-                                journal_name = result.get('primary_location', {}).get('source', {}).get('display_name', 'Unknown')
+                                primary_location = result.get('primary_location', {})
+                                if primary_location:
+                                    source = primary_location.get('source', {})
+                                    journal_name = source.get('display_name', 'Unknown')
+                                else:
+                                    journal_name = 'Unknown'
+
                                 journals.append(journal_name)
 
                     if titles:  # Ensure DataFrame creation only if there are titles
