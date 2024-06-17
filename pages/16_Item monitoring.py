@@ -163,7 +163,10 @@ with col1:
                                 dois.append(result['doi'])
                                 publication_dates.append(result['publication_date'])
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
-                                journals.append(result['primary_location']['source']['display_name'])
+                                
+                                # Check if 'source' exists before appending
+                                journal_name = result['primary_location'].get('source', {}).get('display_name', 'Unknown')
+                                journals.append(journal_name)
 
                     df = pd.DataFrame({
                         'Title': titles,
