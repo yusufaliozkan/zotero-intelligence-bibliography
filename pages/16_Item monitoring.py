@@ -107,6 +107,7 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764608241&sort=publication_year:desc', #Michigan Journal of International Law
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc', #Journal of Global Security Studies
                 'https://api.openalex.org/works?page=1&filter=primary_topic.id:t12572&sort=publication_year:desc', #Intelligence Studies and Analysis in Modern Context
+                'https://openalex.org/works?page=1&filter=concepts.id%3Ac558872910&sort=publication_year%3Adesc', #Concept: Espionage
 
                 # Add more API links here
             ]
