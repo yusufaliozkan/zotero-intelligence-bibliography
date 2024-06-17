@@ -107,6 +107,7 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc', #Journal of Global Security Studies
                 'https://api.openalex.org/works?page=1&filter=primary_topic.id:t12572&sort=publication_year:desc', #Intelligence Studies and Analysis in Modern Context
                 'https://api.openalex.org/works?page=1&filter=concepts.id:c558872910&sort=publication_year:desc', #ConceptEspionage
+                'https://api.openalex.org/works?page=1&filter=concepts.id:c173127888&sort=publication_year:desc', #ConceptCounterintelligence
 
                 # Add more API links here
             ]
