@@ -213,6 +213,7 @@ with col1:
                 #     print(f"Failed to fetch data from the API: {api_link}")
 
             final_df = pd.concat(dfs, ignore_index=True)
+            final_df = final_df.drop_duplicates(subset='Link')
 
             historical_journal_filtered = final_df[final_df['Journal'].isin(journals_with_filtered_items)]
 
