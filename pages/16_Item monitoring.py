@@ -183,8 +183,11 @@ with col1:
 
                                 # Safely navigate through nested dictionaries using get
                                 primary_location = result.get('primary_location', {})
-                                source = primary_location.get('source', {})
-                                journal_name = source.get('display_name', 'Unknown')
+                                source = primary_location.get('source')
+                                if source:
+                                    journal_name = source.get('display_name', 'Unknown')
+                                else:
+                                    journal_name = 'Unknown'
 
                                 journals.append(journal_name)
 
@@ -198,10 +201,12 @@ with col1:
                         })
 
                         dfs.append(df)
+
+            # Combine all DataFrames in dfs list into a single DataFrame
             if dfs:
                 final_df = pd.concat(dfs, ignore_index=True)
             else:
-                final_df = pd.DataFrame()  
+                final_df = pd.DataFrame()  # Create an empty DataFrame if dfs is empty
 
                 # else:
                 #     print(f"Failed to fetch data from the API: {api_link}")
