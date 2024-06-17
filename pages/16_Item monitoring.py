@@ -164,19 +164,20 @@ with col1:
                                 publication_dates.append(result['publication_date'])
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
                                 
-                                # Check if 'source' exists before appending
-                                journal_name = result['primary_location'].get('source', {}).get('display_name', 'Unknown')
+                                # Safely navigate through nested dictionaries using get
+                                journal_name = result.get('primary_location', {}).get('source', {}).get('display_name', 'Unknown')
                                 journals.append(journal_name)
 
-                    df = pd.DataFrame({
-                        'Title': titles,
-                        'Link': dois,
-                        'Publication Date': publication_dates,
-                        'DOI': dois_without_https,
-                        'Journal': journals,
-                    })
+                    if titles:  # Ensure DataFrame creation only if there are titles
+                        df = pd.DataFrame({
+                            'Title': titles,
+                            'Link': dois,
+                            'Publication Date': publication_dates,
+                            'DOI': dois_without_https,
+                            'Journal': journals,
+                        })
 
-                    dfs.append(df)
+                        dfs.append(df)
 
                 else:
                     print(f"Failed to fetch data from the API: {api_link}")
