@@ -165,9 +165,7 @@ with col1:
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
                                 
                                 # Handle the case where 'primary_location' or 'source' might be None
-                                primary_location = result.get('primary_location', {})
-                                source = primary_location.get('source', {})
-                                journal = source.get('display_name', 'Unknown Journal')
+                                journal = result.get('primary_location', {}).get('source', {}).get('display_name', 'Unknown Journal')
                                 journals.append(journal)
 
                     df = pd.DataFrame({
