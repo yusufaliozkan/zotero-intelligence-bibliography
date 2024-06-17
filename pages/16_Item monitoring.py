@@ -134,7 +134,7 @@ with col1:
                 'spying', 'spies', 'surveillance', 'targeted killing', 'cyberespionage', ' cia ', 'rendition', ' mi6 ', ' mi5 ', ' sis ', 'security service',
                 'central intelligence'
             ]
-            
+
             dfs = []
 
             for api_link in api_links:
@@ -142,7 +142,7 @@ with col1:
 
                 if response.status_code == 200:
                     data = response.json()
-                    results = data['results']
+                    results = data.get('results', [])
 
                     titles = []
                     dois = []
@@ -160,7 +160,10 @@ with col1:
                         if pub_date_str is None:
                             continue
 
-                        pub_date = datetime.datetime.strptime(pub_date_str, '%Y-%m-%d').date()
+                        try:
+                            pub_date = datetime.datetime.strptime(pub_date_str, '%Y-%m-%d').date()
+                        except ValueError:
+                            continue  # Skip this result if the date is not in the expected format
 
                         if today - pub_date <= timedelta(days=90):
                             title = result.get('title')
@@ -171,19 +174,17 @@ with col1:
                                 publication_dates.append(pub_date_str)
                                 
                                 # Ensure 'ids' and 'doi' are present before splitting
-                                ids = result.get('ids')
-                                if ids and 'doi' in ids:
-                                    dois_without_https.append(ids['doi'].split("https://doi.org/")[-1])
+                                ids = result.get('ids', {})
+                                doi_value = ids.get('doi', 'Unknown')
+                                if doi_value != 'Unknown':
+                                    dois_without_https.append(doi_value.split("https://doi.org/")[-1])
                                 else:
                                     dois_without_https.append('Unknown')
 
                                 # Safely navigate through nested dictionaries using get
                                 primary_location = result.get('primary_location', {})
-                                if primary_location:
-                                    source = primary_location.get('source', {})
-                                    journal_name = source.get('display_name', 'Unknown')
-                                else:
-                                    journal_name = 'Unknown'
+                                source = primary_location.get('source', {})
+                                journal_name = source.get('display_name', 'Unknown')
 
                                 journals.append(journal_name)
 
@@ -197,9 +198,13 @@ with col1:
                         })
 
                         dfs.append(df)
+            if dfs:
+                final_df = pd.concat(dfs, ignore_index=True)
+            else:
+                final_df = pd.DataFrame()  
 
-                else:
-                    print(f"Failed to fetch data from the API: {api_link}")
+                # else:
+                #     print(f"Failed to fetch data from the API: {api_link}")
 
             final_df = pd.concat(dfs, ignore_index=True)
 
