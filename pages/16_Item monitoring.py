@@ -162,8 +162,14 @@ with col1:
                                 titles.append(title)
                                 dois.append(result['doi'])
                                 publication_dates.append(result['publication_date'])
-                                dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
                                 
+                                # Ensure 'ids' and 'doi' are present before splitting
+                                ids = result.get('ids')
+                                if ids and 'doi' in ids:
+                                    dois_without_https.append(ids['doi'].split("https://doi.org/")[-1])
+                                else:
+                                    dois_without_https.append('Unknown')
+
                                 # Safely navigate through nested dictionaries using get
                                 journal_name = result.get('primary_location', {}).get('source', {}).get('display_name', 'Unknown')
                                 journals.append(journal_name)
