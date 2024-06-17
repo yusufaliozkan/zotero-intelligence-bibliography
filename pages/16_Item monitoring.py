@@ -152,7 +152,6 @@ with col1:
                     journals = []
 
                     today = datetime.datetime.today().date()
-
                     for result in results:
                         pub_date = datetime.datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
 
@@ -165,8 +164,12 @@ with col1:
                                 publication_dates.append(result['publication_date'])
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
                                 
-                                # Handle the case where 'source' field might be null
-                                journal = result.get('primary_location', {}).get('source', {}).get('display_name', 'Unknown Journal')
+                                # Handle the case where 'primary_location' or 'source' might be None
+                                primary_location = result.get('primary_location')
+                                if primary_location and 'source' in primary_location and 'display_name' in primary_location['source']:
+                                    journal = primary_location['source']['display_name']
+                                else:
+                                    journal = 'Unknown Journal'
                                 journals.append(journal)
 
                     df = pd.DataFrame({
