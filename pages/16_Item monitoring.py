@@ -38,7 +38,6 @@ with st.sidebar:
 
     sidebar_content()
 
-
 col1, col2 = st.columns([5,2])
 
 with col1:
@@ -107,7 +106,6 @@ with col1:
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764608241&sort=publication_year:desc', #Michigan Journal of International Law
                 'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc', #Journal of Global Security Studies
                 'https://api.openalex.org/works?page=1&filter=primary_topic.id:t12572&sort=publication_year:desc', #Intelligence Studies and Analysis in Modern Context
-                'https://api.openalex.org/works?page=1&filter=concepts.id:c558872910&sort=publication_year:desc', #Concept: Espionage
 
                 # Add more API links here
             ]
@@ -152,6 +150,7 @@ with col1:
                     journals = []
 
                     today = datetime.datetime.today().date()
+
                     for result in results:
                         pub_date = datetime.datetime.strptime(result['publication_date'], '%Y-%m-%d').date()
 
@@ -163,10 +162,7 @@ with col1:
                                 dois.append(result['doi'])
                                 publication_dates.append(result['publication_date'])
                                 dois_without_https.append(result['ids']['doi'].split("https://doi.org/")[-1])
-                                
-                                # Handle the case where 'primary_location' or 'source' might be None
-                                journal = result.get('primary_location', {}).get('source', {}).get('display_name', 'Unknown Journal')
-                                journals.append(journal)
+                                journals.append(result['primary_location']['source']['display_name'])
 
                     df = pd.DataFrame({
                         'Title': titles,
@@ -175,6 +171,7 @@ with col1:
                         'DOI': dois_without_https,
                         'Journal': journals,
                     })
+
                     dfs.append(df)
 
                 else:
