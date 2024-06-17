@@ -2787,7 +2787,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     )
                     st.altair_chart(cumulative_chart, use_container_width=True)
         else:
-            st.info('Toggle to see the dashboard!')
+            st.info('Toggle to see the dashboard!') 
 
     # with tab3: 
     #         st.header('Suggest random sources', anchor=False)
