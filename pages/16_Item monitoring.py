@@ -228,6 +228,19 @@ with col1:
             df_dois = df_dois[[column_to_keep]]
             df_dois = df_dois.reset_index(drop=True) 
 
+            df_titles = df_dedup.copy()
+            df_titles.dropna(subset=['Title'], inplace=True)
+            column_to_keep = 'Title'
+            df_titles = df_titles[[column_to_keep]]
+            df_titles = df_titles.reset_index(drop=True)
+
+            merged_df_2 = pd.merge(filtered_final_df, df_titles[['Title']], on='Title', how='left', indicator=True)
+            items_not_in_df3 = merged_df_2[merged_df_2['_merge'] == 'left_only']
+            items_not_in_df3.drop('_merge', axis=1, inplace=True)
+            items_not_in_df3 = items_not_in_df3.sort_values(by=['Publication Date'], ascending=False)
+            items_not_in_df3 = items_not_in_df3.reset_index(drop=True)
+            items_not_in_df3
+
             merged_df = pd.merge(filtered_final_df, df_dois[['DOI']], on='DOI', how='left', indicator=True)
             items_not_in_df2 = merged_df[merged_df['_merge'] == 'left_only']
             items_not_in_df2.drop('_merge', axis=1, inplace=True)
@@ -242,7 +255,8 @@ with col1:
             if row_nu == 0:
                 st.write('No new podcast published!')
             else:
-                items_not_in_df2 = items_not_in_df2.sort_values(by=['Publication Date'], ascending=False).reset_index(drop=True)
+                items_not_in_df2 = items_not_in_df2.sort_values(by=['Publication Date'], ascending=False)
+                items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
                 items_not_in_df2
 
             df_item_podcast = df_dedup.copy()

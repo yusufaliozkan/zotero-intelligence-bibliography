@@ -58,7 +58,7 @@ def evens_conferences():
     df_gs1 = ('['+ df_gs['event_name'] + ']'+ '('+ df_gs['link'] + ')'', organised by ' + '**' + df_gs['organiser'] + '**' + '. Date: ' + df_gs['date_new'] + ', Venue: ' + df_gs['venue'])
     row_nu = len(df_gs.index)
     for i in range(row_nu):
-        result.append(''+str(i+1)+') '+ df_gs1.iloc[i])
+        result.append(df_gs1.iloc[i])
     result.append('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
     result.append('##### Next conference')
