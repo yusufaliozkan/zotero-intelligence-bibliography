@@ -209,7 +209,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_dedup = pd.read_csv('all_items.csv')
     nunique = len(df_dedup)
-    nunique
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
 
     col1, col2, col3 = st.columns([3,5,8])
