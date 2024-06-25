@@ -227,7 +227,7 @@ with col1:
             column_to_keep = 'DOI'
             df_dois = df_dois[[column_to_keep]]
             df_dois = df_dois.reset_index(drop=True) 
-            column_to_keep
+            df_dois
 
             merged_df = pd.merge(filtered_final_df, df_dois[['DOI']], on='DOI', how='left', indicator=True)
             items_not_in_df2 = merged_df[merged_df['_merge'] == 'left_only']
