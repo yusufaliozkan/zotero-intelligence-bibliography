@@ -229,6 +229,13 @@ with col1:
             df_dois = df_dois.reset_index(drop=True) 
             df_dois
 
+            df_titles = df_dedup.copy()
+            df_titles.dropna(subset=['Title'], inplace=True)
+            column_to_keep = 'Title'
+            df_titles = df_titles[[column_to_keep]]
+            df_titles = df_titles.reset_index(drop=True)
+            df_titles
+
             merged_df = pd.merge(filtered_final_df, df_dois[['DOI']], on='DOI', how='left', indicator=True)
             items_not_in_df2 = merged_df[merged_df['_merge'] == 'left_only']
             items_not_in_df2.drop('_merge', axis=1, inplace=True)
