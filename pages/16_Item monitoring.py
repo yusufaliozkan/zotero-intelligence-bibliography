@@ -255,6 +255,7 @@ with col1:
                 st.write('No new podcast published!')
             else:
                 items_not_in_df2 = items_not_in_df2.sort_values(by=['Publication Date'], ascending=False)
+                items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
                 items_not_in_df2
 
             df_item_podcast = df_dedup.copy()
