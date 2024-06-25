@@ -237,6 +237,7 @@ with col1:
             merged_df_2 = pd.merge(filtered_final_df, df_titles[['Title']], on='Title', how='left', indicator=True)
             items_not_in_df3 = merged_df_2[merged_df_2['_merge'] == 'left_only']
             items_not_in_df3.drop('_merge', axis=1, inplace=True)
+            items_not_in_df3 = items_not_in_df3.sort_values(by=['Publication Date'], ascending=False)
             items_not_in_df3 = items_not_in_df3.reset_index(drop=True)
             items_not_in_df3
 
