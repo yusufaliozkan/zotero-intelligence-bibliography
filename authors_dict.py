@@ -9,6 +9,7 @@ df_authors = df_authors.dropna(subset=['FirstName2'])
 name_replacements = {
     'David Gioe': 'David V. Gioe',
     'David Vincent Gioe': 'David V. Gioe',
+    'David V Gioe': 'David V. Gioe',
     'Michael Goodman': 'Michael S. Goodman',
     'Michael S Goodman': 'Michael S. Goodman',
     'Michael Simon Goodman': 'Michael S. Goodman',
