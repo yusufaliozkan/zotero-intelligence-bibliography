@@ -37,7 +37,7 @@ def sidebar_content():
             st.write('''
             Join our [mailing list](https://groups.google.com/g/intelligence-studies-network) to receive updates about the website.
 
-            Contact [me](https://kcsi.uk/members/yusuf-ozkan).
+            Contact [Yusuf Ozkan](https://linktr.ee/yusufozkan).
 
             Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).            
             ''')
