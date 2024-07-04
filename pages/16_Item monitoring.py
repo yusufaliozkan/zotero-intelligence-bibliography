@@ -19,6 +19,8 @@ from sidebar_content import sidebar_content
 import requests
 from rss_feed import df_podcast, df_magazines
 from events import evens_conferences
+import xml.etree.ElementTree as ET
+
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
@@ -327,6 +329,32 @@ with col1:
                 items_not_in_df_item_magazines = items_not_in_df_item_magazines.sort_values(by=['PubDate'], ascending=False)
                 items_not_in_df_item_magazines        
             status.update(label="Search complete!", state="complete", expanded=True)
+
+
+            ## LEIDEN THESIS
+            url = "https://rss.app/feeds/S566whCCjTbiXmns.xml"
+            response = requests.get(url)
+            rss_content = response.content
+
+            # Parse the RSS feed
+            root = ET.fromstring(rss_content)
+
+            # Extract title and link from each item except the first one
+            items = root.findall('.//item')[1:]
+            data = []
+            for item in items:
+                title = item.find('title').text
+                link = item.find('link').text
+                data.append({'title': title, 'link': link})
+
+            # Create a DataFrame
+            df = pd.DataFrame(data)
+            words_to_filter = ["intelligence", "espionage", "spy", "oversight"]
+            pattern = '|'.join(words_to_filter)
+
+            df = df[df['title'].str.contains(pattern, case=False, na=False)]
+            st.write('Leiden theses')
+            df
 
 with col2:
     with st.expander('Collections', expanded=True):
