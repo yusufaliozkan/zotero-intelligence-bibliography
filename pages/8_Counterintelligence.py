@@ -100,22 +100,23 @@ with st.spinner('Retrieving data & updating dashboard...'):
     with col2:
         with st.popover("More metrics"):
             container_citation = st.container()
+            container_citation_average = st.container()
             container_oa = st.container()
             container_type = st.container()
             container_author_no = st.container()
             container_author_pub_ratio = st.container()
+            container_publication_ratio = st.container()
     with col3:
         with st.popover("Filters and more"):
             st.write(f"View the collection in [Zotero]({collection_link})")
-            col112, col113, col114 = st.columns(3)
+            col112, col113 = st.columns(2)
             with col112:
                 display2 = st.checkbox('Display abstracts')
             with col113:
                 only_citation = st.checkbox('Show cited items only')
                 if only_citation:
                     df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
-            with col114:
-                table_view = st.checkbox('See results in table')
+            view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
 
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
@@ -141,12 +142,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 else:
                     # Return the original author if it's not a string
                     return pd.Series([authors])
-            expanded_authors = df_collections['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
-            expanded_authors = expanded_authors.reset_index(name='Author')
-            author_no = len(expanded_authors)
-            if author_no == 0:
+            if len(df_collections) == 0:
                 author_pub_ratio=0.0
+                author_no=0
             else:
+                expanded_authors = df_collections['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+                expanded_authors = expanded_authors.reset_index(name='Author')
+                author_no = len(expanded_authors)
                 author_pub_ratio = round(author_no/num_items_collections, 2)
 
             true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
@@ -158,6 +160,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
             citation_count = df_collections['Citation'].sum()
 
+
             a = f'{collection_name}_{today}'
             st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
@@ -168,6 +171,29 @@ with st.spinner('Retrieving data & updating dashboard...'):
     container_author_no.metric(label='Number of authors', value=int(author_no))
     container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
 
+    outlier_detector = (df_collections['Citation'] > 1000).any()
+    if outlier_detector == True:
+        outlier_count = (df_collections['Citation'] > 1000).sum()
+        citation_average = df_collections[df_collections['Citation'] < 1000]
+        citation_average = round(citation_average['Citation'].mean(), 2)
+        citation_average_with_outliers = round(df_collections['Citation'].mean(), 2)
+        container_citation_average.metric(
+            label="Average citation", 
+            value=citation_average, 
+            help=f'**{outlier_count}** item(s) passed the threshold of 1000 citations. With the outliers, the average citation count is **{citation_average_with_outliers}**.'
+            )
+    citation_average = round(df_collections['Citation'].mean(), 2)
+    container_citation_average.metric(label="Average citation", value=citation_average)
+    
+    df_collections['FirstName2'] = df_collections['FirstName2'].astype(str)
+    df_collections['multiple_authors'] = df_collections['FirstName2'].apply(lambda x: ',' in x)
+    if len(df_collections) == 0:
+        collaboration_ratio=0
+    else:
+        multiple_authored_papers = df_collections['multiple_authors'].sum()
+        collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
+        container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+
     tab1, tab2 = st.tabs(['📑 Publications', '📊 Dashboard'])
     with tab1:
         col1, col2 = st.columns([5,1.6])
@@ -176,7 +202,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
             # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
             sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
-            if not table_view:
+            if view == 'Basic list':
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
                     formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
@@ -210,7 +236,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
                                 
-                with st.expander('Click to expand', expanded=True):
+                with st.expander('**Basic list view**', expanded=True):
 
                     if sort_by == 'Publication date :arrow_down:': # or df_collections['Citation'].sum() == 0:
                         count = 1
@@ -252,19 +278,46 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 count += 1
                                 if display2:
                                     st.caption(row['Abstract']) 
-            else:
+            elif view == 'Table':
                 df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal', 'Citation', 'Collection_Name','Link to publication','Zotero link']]
                 df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                 if sort_by == 'Publication type':
                     df_table_view = df_table_view.sort_values(by=['Publication type'], ascending=True)
                     df_table_view = df_table_view.reset_index(drop=True)
-                    df_table_view
                 elif sort_by == 'Citation':
                     df_table_view = df_table_view.sort_values(by=['Citation'], ascending=False)
                     df_table_view = df_table_view.reset_index(drop=True)
+                with st.expander('**Table view**', expanded=True):
                     df_table_view
-                else:
-                    df_table_view
+            else:
+                if sort_by == 'Publication type':
+                    df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                elif sort_by == 'Citation':
+                    df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
+                with st.expander('**Bibliographic listing**', expanded=True):
+                    df_collections['zotero_item_key'] = df_collections['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                    df_zotero_id = pd.read_csv('zotero_citation_format.csv')
+                    df_collections = pd.merge(df_collections, df_zotero_id, on='zotero_item_key', how='left')
+                    df_zotero_id = df_collections[['zotero_item_key']]
+
+                    def display_bibliographies(df):
+                        df['bibliography'] = df['bibliography'].fillna('').astype(str)
+                        all_bibliographies = ""
+                        for index, row in df.iterrows():
+                            # Add a horizontal line between bibliographies
+                            if index > 0:
+                                all_bibliographies += '<p><p>'
+                            
+                            # Display bibliography
+                            all_bibliographies += row['bibliography']
+
+                        st.markdown(all_bibliographies, unsafe_allow_html=True)
+
+                    # Streamlit app
+
+                    # Display bibliographies from df_collections DataFrame
+                    display_bibliographies(df_collections)
+
 
 #UNTIL HERE
         with col2:

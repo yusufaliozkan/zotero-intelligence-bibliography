@@ -110,12 +110,35 @@ with st.spinner('Retrieving data & updating dashboard...'):
             else:
                 author_pub_ratio = round(author_no/num_items_collections, 2)
 
+            outlier_detector = (df_collections['Citation'] > 1000).any()
+            if outlier_detector == True:
+                outlier_count = (df_collections['Citation'] > 1000).sum()
+                citation_average = df_collections[df_collections['Citation'] < 1000]
+                citation_average = round(citation_average['Citation'].mean(), 2)
+                citation_average_with_outliers = round(df_collections['Citation'].mean(), 2)
+                container_citation_average.metric(
+                    label="Average citation", 
+                    value=citation_average, 
+                    help=f'**{outlier_count}** item(s) passed the threshold of 1000 citations. With the outliers, the average citation count is **{citation_average_with_outliers}**.'
+                    )
+            citation_average = round(df_collections['Citation'].mean(), 2)
+
             citation_count = df_collections['Citation'].sum()
             st.metric(label='Number of country', value=unique_items_count-1)
             st.metric(label="Number of citations", value=int(citation_count), help='Journal articles only')
+            st.metric(label="Average citation", value=citation_average)
             st.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
             st.metric(label='Number of authors', value=int(author_no))
             st.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
+            
+            df_collections['FirstName2'] = df_collections['FirstName2'].astype(str)
+            df_collections['multiple_authors'] = df_collections['FirstName2'].apply(lambda x: ',' in x)          
+            if len(df_collections) == 0:
+                collaboration_ratio=0
+            else:
+                multiple_authored_papers = df_collections['multiple_authors'].sum()
+                collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
+                st.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
 
             container_metric = container_metric.metric(label='Number of items', value=num_items_collections, help=f'sources found for **{unique_items_count-1}** countries.')
 
@@ -177,20 +200,21 @@ with st.spinner('Retrieving data & updating dashboard...'):
         with col2:
             with st.popover('More metrics'):
                 container_citation_2 = st.container()
+                container_citation_average = st.container()
                 container_oa = st.container()
                 container_type = st.container()
                 container_author_no = st.container()
                 container_country = st.container()
                 container_author_pub_ratio = st.container()
+                container_publication_ratio = st.container()
         with col3:
             with st.popover('Filters and more'):
-                col31, col32, col33 = st.columns(3)
+                col31, col32 = st.columns(2)
                 with col31:
                     container_abstract = st.container()
                 with col32:
                     container_cited_items = st.container()
-                with col33:
-                    table_view = st.checkbox('See results in table')
+                view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
                 container_pub_types = st.container()
                 container_download = st.container()
 
@@ -265,11 +289,34 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     container_country.metric(label='Number of country', value=unique_items_count-1)
                     container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
 
+                    outlier_detector = (df_collections['Citation'] > 1000).any()
+                    if outlier_detector == True:
+                        outlier_count = (df_collections['Citation'] > 1000).sum()
+                        citation_average = df_collections[df_collections['Citation'] < 1000]
+                        citation_average = round(citation_average['Citation'].mean(), 2)
+                        citation_average_with_outliers = round(df_collections['Citation'].mean(), 2)
+                        container_citation_average.metric(
+                            label="Average citation", 
+                            value=citation_average, 
+                            help=f'**{outlier_count}** item(s) passed the threshold of 1000 citations. With the outliers, the average citation count is **{citation_average_with_outliers}**.'
+                            )
+                    citation_average = round(df_collections['Citation'].mean(), 2)
+                    container_citation_average.metric(label="Average citation", value=citation_average)
+                    
+                    df_collections['FirstName2'] = df_collections['FirstName2'].astype(str)
+                    df_collections['multiple_authors'] = df_collections['FirstName2'].apply(lambda x: ',' in x)                    
+                    if len(df_collections) == 0:
+                        collaboration_ratio=0
+                    else:
+                        multiple_authored_papers = df_collections['multiple_authors'].sum()
+                        collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
+                        container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+
                     # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
                     sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
                     display2 = container_abstract.checkbox('Display abstracts', key='type_count2')
 
-                    if not table_view:
+                    if view == 'Basic list':
                         articles_list = []  # Store articles in a list
                         for index, row in df_collections.iterrows():
                             formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
@@ -334,7 +381,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 count += 1
                                 if display2:
                                     st.caption(row['Abstract']) 
-                    else:
+                    elif view == 'Table':
                         df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal', 'Citation', 'Collection_Name','Link to publication','Zotero link']]
                         df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                         if sort_by == 'Publication type':
@@ -347,6 +394,30 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             df_table_view
                         else:
                             df_table_view
+                    else:
+                        df_collections['zotero_item_key'] = df_collections['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                        df_zotero_id = pd.read_csv('zotero_citation_format.csv')
+                        df_collections = pd.merge(df_collections, df_zotero_id, on='zotero_item_key', how='left')
+                        df_zotero_id = df_collections[['zotero_item_key']]
+
+                        def display_bibliographies(df):
+                            df['bibliography'] = df['bibliography'].fillna('').astype(str)
+                            all_bibliographies = ""
+                            for index, row in df.iterrows():
+                                # Add a horizontal line between bibliographies
+                                if index > 0:
+                                    all_bibliographies += '<p><p>'
+                                
+                                # Display bibliography
+                                all_bibliographies += row['bibliography']
+
+                            st.markdown(all_bibliographies, unsafe_allow_html=True)
+
+                        # Streamlit app
+
+                        # Display bibliographies from df_collections DataFrame
+                        display_bibliographies(df_collections)
+
 
             else:
                 with st.expander('Click to expand', expanded=True):
@@ -375,7 +446,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     display2 = container_abstract.checkbox('Display abstracts', key='type_country_2')
 
                     articles_list = []  # Store articles in a list
-                    st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
 
                     true_count = df_countries[df_countries['Publication type']=='Journal article']['OA status'].sum()
                     total_count = len(df_countries[df_countries['Publication type']=='Journal article'])
@@ -406,7 +476,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
                     citation_count = df_countries['Citation'].sum()
                     item_type_no = df_countries['Publication type'].nunique()
-                    st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
 
                     container_metric_2.metric('Number of publications', value=num_items_collections)
                     container_citation_2.metric(label="Number of citations", value=int(citation_count))
@@ -416,8 +485,31 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     container_country.metric(label='Number of country', value=unique_items_count-1)
                     container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
 
+                    outlier_detector = (df_countries['Citation'] > 1000).any()
+                    if outlier_detector == True:
+                        outlier_count = (df_countries['Citation'] > 1000).sum()
+                        citation_average = df_countries[df_countries['Citation'] < 1000]
+                        citation_average = round(citation_average['Citation'].mean(), 2)
+                        citation_average_with_outliers = round(df_countries['Citation'].mean(), 2)
+                        container_citation_average.metric(
+                            label="Average citation", 
+                            value=citation_average, 
+                            help=f'**{outlier_count}** item(s) passed the threshold of 1000 citations. With the outliers, the average citation count is **{citation_average_with_outliers}**.'
+                            )
+                    citation_average = round(df_countries['Citation'].mean(), 2)
+                    container_citation_average.metric(label="Average citation", value=citation_average)
+                   
+                    df_countries['FirstName2'] = df_countries['FirstName2'].astype(str)
+                    df_countries['multiple_authors'] = df_countries['FirstName2'].apply(lambda x: ',' in x)                    
+                    if len(df_countries) == 0:
+                        collaboration_ratio=0
+                    else:
+                        multiple_authored_papers = df_countries['multiple_authors'].sum()
+                        collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
+                        container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+
                         
-                    if not table_view:      
+                    if view == 'Basic list':    
                         for index, row in df_countries.iterrows():
                             formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
                             articles_list.append(formatted_entry)        
@@ -481,7 +573,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 count += 1
                                 if display2:
                                     st.caption(row['Abstract']) 
-                    else:
+                    elif view == 'Table':
                         df_table_view = df_countries[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal', 'Citation', 'Collection_Name','Link to publication','Zotero link']]
                         df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                         if sort_by == 'Publication type':
@@ -494,7 +586,29 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             df_table_view
                         else:
                             df_table_view                                 
+                    else:
+                        df_countries['zotero_item_key'] = df_countries['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                        df_zotero_id = pd.read_csv('zotero_citation_format.csv')
+                        df_countries = pd.merge(df_countries, df_zotero_id, on='zotero_item_key', how='left')
+                        df_zotero_id = df_countries[['zotero_item_key']]
 
+                        def display_bibliographies(df):
+                            df['bibliography'] = df['bibliography'].fillna('').astype(str)
+                            all_bibliographies = ""
+                            for index, row in df.iterrows():
+                                # Add a horizontal line between bibliographies
+                                if index > 0:
+                                    all_bibliographies += '<p><p>'
+                                
+                                # Display bibliography
+                                all_bibliographies += row['bibliography']
+
+                            st.markdown(all_bibliographies, unsafe_allow_html=True)
+
+                        # Streamlit app
+
+                        # Display bibliographies from df_collections DataFrame
+                        display_bibliographies(df_countries)                        
             df_continent['Date published'] = pd.to_datetime(df_continent['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_continent['Date published'] = df_continent['Date published'].dt.strftime('%Y-%m-%d')
             df_continent['Date published'] = df_continent['Date published'].fillna('')
