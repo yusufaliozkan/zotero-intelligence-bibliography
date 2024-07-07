@@ -14,6 +14,9 @@ def format_entry(row, include_citation=True):
     citation = int(float(citation))
     citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
     citation_link = citation_link.replace('api.', '')
+    thesis_type = str(row['Thesis_type']) if pd.notnull(row['Thesis_type']) else ''
+    thesis_type2 = f"{thesis_type}: "
+    university = str(row['University']) if pd.notnull(row['University']) else ''
 
     published_by_or_in_dict = {
         'Journal article': 'Published in',
@@ -32,32 +35,41 @@ def format_entry(row, include_citation=True):
     elif publication_type == 'Book chapter':
         book_title = str(row['Book_title']) if pd.notnull(row['Book_title']) else ''
 
-    citation_text = ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
+    citation_text = f'Cited by [{citation}]({citation_link})' if citation > 0 else ''
     oa_url = str(row['OA_link']) if pd.notnull(row['OA_link']) else ''
     oa_url_fixed = oa_url.replace(' ', '%20')
-    oa_link_text = '[[Open access version](' + oa_url_fixed + ')]' if oa_url_fixed else ''
+    oa_link_text = f'[[Open access version]({oa_url_fixed})]' if oa_url_fixed else ''
 
     if publication_type == 'Book chapter':
         return (
-            '**' + publication_type + '**' + ': ' +
-            title + ' ' +
-            '(in: ' + '*' + book_title + '*' + ') ' +
-            '(by ' + '*' + authors + '*' + ') ' +
-            '(Publication date: ' + str(date_published) + ') ' +
-            '[[Publication link]](' + link_to_publication + ') ' +
-            '[[Zotero link]](' + zotero_link + ') ' +
-            (oa_link_text + ' ' if oa_link_text else '') +
-            (citation_text if include_citation else '')
+            f"**{publication_type}**: {title} "
+            f"(in: *{book_title}*) "
+            f"(by *{authors}*) "
+            f"(Publication date: {date_published}) "
+            f"[[Publication link]]({link_to_publication}) "
+            f"[[Zotero link]]({zotero_link}) "
+            f"{oa_link_text + ' ' if oa_link_text else ''}"
+            f"{citation_text if include_citation else ''}"
+        )
+    elif publication_type == 'Thesis':
+        return(
+            f"**{publication_type}**: {title} "
+            f" ({thesis_type2 if thesis_type != '' else ''}*{university}*)"
+            f" (by *{authors}*) "
+            f"(Publication date: {date_published}) "
+            f"[[Publication link]]({link_to_publication}) "
+            f"[[Zotero link]]({zotero_link}) "
+            f"{oa_link_text + ' ' if oa_link_text else ''}"
+            f"{citation_text if include_citation else ''}"
         )
     else:
         return (
-            '**' + publication_type + '**' + ': ' +
-            title + ' ' +
-            '(by ' + '*' + authors + '*' + ') ' +
-            '(Publication date: ' + str(date_published) + ') ' +
-            ('(' + published_by_or_in + ': ' + '*' + published_source + '*' + ') ' if published_by_or_in else '') +
-            '[[Publication link]](' + link_to_publication + ') ' +
-            '[[Zotero link]](' + zotero_link + ') ' +
-            (oa_link_text + ' ' if oa_link_text else '') +
-            (citation_text if include_citation else '')
+            f"**{publication_type}**: {title} "
+            f"(by *{authors}*) "
+            f"(Publication date: {date_published}) "
+            f"{f'({published_by_or_in}: *{published_source}*) ' if published_by_or_in else ''}"
+            f"[[Publication link]]({link_to_publication}) "
+            f"[[Zotero link]]({zotero_link}) "
+            f"{oa_link_text + ' ' if oa_link_text else ''}"
+            f"{citation_text if include_citation else ''}"
         )
