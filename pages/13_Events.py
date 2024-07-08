@@ -177,9 +177,7 @@ with tab1:
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
-        df_gs2
         df_gs2['year'] = df_gs2['date'].dt.strftime('%Y')
-        df_gs2
         years = sorted(df_gs2['year'].unique(), reverse=True)
         for year in years:
             if st.checkbox(f"Events in {year}", key=year):
@@ -209,6 +207,7 @@ with tab1:
         ap = ' (in ' + slider+')'
     
     if year:
+        df_gs_plot
         date_plot=df_gs_plot['year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Year','year':'Count'})
