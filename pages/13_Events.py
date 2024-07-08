@@ -139,6 +139,7 @@ with tab1:
 
         # Create a column for the year
         df_gs['year'] = df_gs['date'].dt.strftime('%Y')
+        df_gs
 
         # Iterate through unique month names
         for month_name in df_gs['month_name'].unique():
