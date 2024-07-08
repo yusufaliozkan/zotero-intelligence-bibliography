@@ -223,6 +223,7 @@ with tab1:
         st.plotly_chart(fig, use_container_width = True)
     else:
         df_gs_plot['year'] = df_gs_plot['date'].dt.strftime('%Y')
+        df_gs_plot
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
