@@ -139,7 +139,6 @@ with tab1:
 
         # Create a column for the year
         df_gs['year'] = df_gs['date'].dt.strftime('%Y')
-        df_gs
 
         # Iterate through unique month names
         for month_name in df_gs['month_name'].unique():
@@ -178,6 +177,8 @@ with tab1:
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
+        df_gs2
+        df_gs2['year'] = df_gs2['date'].dt.strftime('%Y')
         df_gs2
         years = df_gs2['year'].unique()[::-1]
         years
