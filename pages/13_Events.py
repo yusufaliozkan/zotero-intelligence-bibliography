@@ -207,7 +207,7 @@ with tab1:
         ap = ' (in ' + slider+')'
     
     if year:
-        date_plot['year'] = date_plot['date'].dt.strftime('%Y')
+        df_gs_plot['year'] = df_gs_plot['date'].dt.strftime('%Y')
         date_plot=df_gs_plot['year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Year','year':'Count'})
