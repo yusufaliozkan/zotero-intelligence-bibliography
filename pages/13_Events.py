@@ -198,8 +198,8 @@ with tab1:
     year = st.checkbox('Show years only')
     if selector:
         df_gs2
-        max_year = df_gs2['year'].max()
-        min_year = df_gs2['year'].min()
+        max_year = int(df_gs2['year'].max())
+        min_year = int(df_gs2['year'].min())
         current_year = pd.Timestamp.now().year
 
         slider = st.slider('Select a year', 2024, max_year, current_year, key='key888')
