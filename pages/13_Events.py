@@ -222,8 +222,9 @@ with tab1:
         fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
     else:
+        df_gs_plot['month'] = df_gs_plot['date'].dt.strftime('%m')
         df_gs_plot['year'] = df_gs_plot['date'].dt.strftime('%Y')
-        df_gs_plot
+        df_gs_plot['month_year'] = df_gs_plot['date'].dt.strftime('%Y-%m')
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
