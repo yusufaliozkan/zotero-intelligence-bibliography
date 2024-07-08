@@ -201,7 +201,7 @@ with tab1:
         min_year = df_gs['date'].dt.year.min()
         current_year = pd.Timestamp.now().year
 
-        slider = st.slider('Select a year', 2024, max_year, current_year)
+        slider = st.slider('Select a year', 2024, max_year, current_year, key='key888')
         slider = str(slider)
         df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
         ap = ' (in ' + slider+')'
