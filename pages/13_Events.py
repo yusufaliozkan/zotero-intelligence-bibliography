@@ -181,7 +181,6 @@ with tab1:
         df_gs2['year'] = df_gs2['date'].dt.strftime('%Y')
         df_gs2
         years = sorted(df_gs2['year'].unique(), reverse=True)
-        years
         for year in years:
             if st.checkbox(f"Events in {year}", key=year):
                 if year in df_gs2['year'].values:
@@ -200,8 +199,8 @@ with tab1:
     selector = st.checkbox('Select a year')
     year = st.checkbox('Show years only')
     if selector:
-        max_year = df_gs['date'].dt.year.max()
-        min_year = df_gs['date'].dt.year.min()
+        max_year = df_gs2['date'].dt.year.max()
+        min_year = df_gs2['date'].dt.year.min()
         current_year = pd.Timestamp.now().year
 
         slider = st.slider('Select a year', 2024, max_year, current_year)
