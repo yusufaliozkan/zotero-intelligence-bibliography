@@ -98,6 +98,7 @@ with tab1:
     filter = df_gs['date']>=pd.to_datetime(today)
     filter2 = df_gs['date']<pd.to_datetime(today)
     df_gs2 = df_gs.loc[filter2]
+    df_gs2
     df_gs = df_gs.loc[filter]
     if df_gs['event_name'].any() in ("", [], None, 0, False):
         st.write('No upcoming event!')
@@ -177,8 +178,7 @@ with tab1:
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
-        df_gs
-        years = df_gs['year'].unique()[::-1]
+        years = df_gs2['year'].unique()[::-1]
         for year in years:
             if st.checkbox(f"Events in {year}", key=year):
                 if year in df_gs2['year'].values:
