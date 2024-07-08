@@ -180,7 +180,7 @@ with tab1:
         df_gs2
         df_gs2['year'] = df_gs2['date'].dt.strftime('%Y')
         df_gs2
-        years = df_gs2['year'].unique()[::-1].sort()
+        years = df_gs2['year'].unique()[::-1].sort(ascending=True)
         years
         for year in years:
             if st.checkbox(f"Events in {year}", key=year):
