@@ -79,6 +79,7 @@ with tab1:
     df_gs = df_gs.reset_index(drop=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
     df_gs_plot = df_gs.copy()
+    df_gs_plot
         
     col1, col2 = st.columns(2)
 
