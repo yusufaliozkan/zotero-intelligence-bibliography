@@ -79,7 +79,6 @@ with tab1:
     df_gs = df_gs.reset_index(drop=True)
     df_gs = df_gs.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
     df_gs_plot = df_gs.copy()
-    df_gs_plot
         
     col1, col2 = st.columns(2)
 
@@ -178,7 +177,7 @@ with tab1:
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
-        years = df_gs2['year'].unique()[::-1]
+        years = df_gs['year'].unique()[::-1]
         for year in years:
             if st.checkbox(f"Events in {year}", key=year):
                 if year in df_gs2['year'].values:
