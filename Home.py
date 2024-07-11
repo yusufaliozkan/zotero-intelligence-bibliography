@@ -558,6 +558,7 @@ with st.spinner('Retrieving data...'):
 
                                 filtered_df = apply_boolean_search(df_csv, search_tokens, st.session_state.search_in)
                                 print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
+                                filtered_df_for_collections = filtered_df.copy()
                                 filtered_df = filtered_df.drop_duplicates()
                                 print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
                                 
