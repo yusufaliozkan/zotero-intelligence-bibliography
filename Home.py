@@ -446,7 +446,7 @@ with st.spinner('Retrieving data...'):
                 search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
                 if search_option == "Search keywords":
                     st.subheader('Search keywords', anchor=False, divider='blue')
-                    @st.experimental_fragment
+                    # @st.experimental_fragment
                     def search_keyword(): 
                         @st.experimental_dialog("Search guide")
                         def guide(item):
