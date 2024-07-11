@@ -558,7 +558,6 @@ with st.spinner('Retrieving data...'):
 
                                 filtered_df = apply_boolean_search(df_csv, search_tokens, st.session_state.search_in)
                                 print(f"Filtered DataFrame (before dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame before dropping duplicates
-                                filtered_df_for_collections = filtered_df.copy()
                                 filtered_df = filtered_df.drop_duplicates()
                                 print(f"Filtered DataFrame (after dropping duplicates):\n{filtered_df}")  # Debugging: Print DataFrame after dropping duplicates
                                 
@@ -583,61 +582,23 @@ with st.spinner('Retrieving data...'):
                                         # if container_refresh_button.button('Refresh'):
                                 #     st.query_params.clear()
                                 #     st.rerun()
-                                if len(filtered_df)==0:
-                                    num_items=0
-                                colsearch1, colsearch2, colsearch3, colsearch4 = st.columns(4)
-                                with colsearch1:
-                                    container_metric = st.container()
-                                with colsearch2:
-                                    with st.popover('More metrics'):
-                                        container_citation = st.container()
-                                        container_citation_average = st.container()
-                                        container_oa = st.container() 
-                                        container_type = st.container()
-                                        container_author_no = st.container()
-                                        container_author_pub_ratio= st.container()
-                                        container_publication_ratio = st.container()
-                                with colsearch3:
-                                    with st.popover('Relevant themes'):
-                                        st.markdown(f'##### Top relevant publication themes')
-                                        filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
-                                        filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(5)
-                                        filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
-                                        filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
-                                        def remove_numbers(name):
-                                            return re.sub(r'^\d+(\.\d+)*\s*', '', name)
-                                        filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
-                                        row_nu = len(filtered_df_for_collections)
-                                        formatted_rows = []
-                                        for i in range(row_nu):
-                                            collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
-                                            number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
-                                            zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
-                                            formatted_row = (
-                                                f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
-                                                f"{number_of_items} items"
-                                            )
-                                            formatted_rows.append(f"{i+1}) " + formatted_row)
 
-                                        # Use st.write to print each row
-                                        for row in formatted_rows:
-                                            st.caption(row)
+                                with st.popover("Filters and more"):
+                                    types2 = st.multiselect('Publication types', types, key='original2')
+                                    collections = st.multiselect('Collection', collections, key='original_collection')
+                                    container_download_button = st.container()
 
-
-                                with colsearch4:
-                                    with st.popover("Filters and more"):
-                                        types2 = st.multiselect('Publication types', types, key='original2')
-                                        collections = st.multiselect('Collection', collections, key='original_collection')
-                                        container_download_button = st.container()
-
+                                    col112, col113 = st.columns(2)
+                                    with col112:
                                         display_abstracts = st.checkbox('Display abstracts')
+                                    with col113:
                                         only_citation = st.checkbox('Show cited items only')
                                         if only_citation:
-                                            filtered_df = filtered_df[(filtered_df['Citation'].notna()) & (filtered_df['Citation'] != 0)]
+                                            filtered_df = filtered_df[(df_csv['Citation'].notna()) & (filtered_df['Citation'] != 0)]
 
-                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
-                                        # with col114:
-                                        #     table_view = st.checkbox('See results in table')
+                                    view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                    # with col114:
+                                    #     table_view = st.checkbox('See results in table')
 
                                 if types2:
                                     filtered_df = filtered_df[filtered_df['Publication type'].isin(types2)]                 
@@ -648,72 +609,8 @@ with st.spinner('Retrieving data...'):
 
                                 if not filtered_df.empty:
                                     filtered_df = filtered_df.drop_duplicates(subset=['Zotero link'], keep='first')
-
                                     num_items = len(filtered_df)
-                                    publications_by_type = filtered_df['Publication type'].value_counts()
-                                    num_items_collections = len(filtered_df)
-                                    breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                                    container_metric.metric(label="Number of items found", value=int(num_items), help=breakdown_string)
-
-                                    citation_average = round(filtered_df['Citation'].mean(), 2)
-                                    container_citation_average.metric(label="Average citation", value=citation_average)
-
-                                    citation_count = filtered_df['Citation'].sum()
-                                    total_rows = len(filtered_df)
-                                    nan_count_citation = filtered_df['Citation_list'].isna().sum()
-                                    non_nan_count_citation = total_rows - nan_count_citation
-                                    non_nan_cited_df_dedup = filtered_df.dropna(subset=['Citation_list'])
-                                    non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
-                                    citation_mean = non_nan_cited_df_dedup['Citation'].mean()
-                                    citation_median = non_nan_cited_df_dedup['Citation'].median()
-                                    container_citation.metric(
-                                        label="Number of citations", 
-                                        value=int(citation_count), 
-                                        help=f'Note that not all items are citeable.'
-                                        )
-
-                                    true_count = filtered_df[filtered_df['Publication type']=='Journal article']['OA status'].sum()
-                                    total_count = len(filtered_df[filtered_df['Publication type']=='Journal article'])
-                                    if total_count == 0:
-                                        oa_ratio = 0.0
-                                    else:
-                                        oa_ratio = true_count / total_count * 100
-                                    container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help=f'Not all items are measured for OA.')
-
-                                    item_type_no = filtered_df['Publication type'].nunique()
-                                    container_type.metric(label='Number of publication types', value=int(item_type_no))
-
-                                    def split_and_expand(authors):
-                                        # Ensure the input is a string
-                                        if isinstance(authors, str):
-                                            # Split by comma and strip whitespace
-                                            split_authors = [author.strip() for author in authors.split(',')]
-                                            return pd.Series(split_authors)
-                                        else:
-                                            # Return the original author if it's not a string
-                                            return pd.Series([authors])
-                                    if len(filtered_df) == 0:
-                                        author_pub_ratio=0.0
-                                        author_no=0
-                                    else:
-                                        expanded_authors = filtered_df['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
-                                        expanded_authors = expanded_authors.reset_index(name='Author')
-                                        expanded_authors_unique = expanded_authors.drop_duplicates(subset='Author')
-                                        author_no = len(expanded_authors)
-                                        unique_author_no = len(expanded_authors_unique)
-                                        author_pub_ratio = round(author_no/num_items_collections, 2)
-                                    container_author_no.metric(label='Number of unique authors', value=int(unique_author_no))
-                                
-                                    container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
-
-                                    filtered_df['FirstName2'] = filtered_df['FirstName2'].astype(str)
-                                    filtered_df['multiple_authors'] = filtered_df['FirstName2'].apply(lambda x: ',' in x)
-                                    if len(filtered_df) == 0:
-                                        collaboration_ratio=0
-                                    else:
-                                        multiple_authored_papers = filtered_df['multiple_authors'].sum()
-                                        collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
-                                        container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+                                    st.write(f"Matching articles (**{num_items}** {'source' if num_items == 1 else 'sources'} found):")
 
                                     download_filtered = filtered_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                                     download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
