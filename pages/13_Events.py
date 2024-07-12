@@ -177,7 +177,8 @@ with tab1:
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
-        years = df_gs2['year'].unique()[::-1]
+        df_gs2['year'] = df_gs2['date'].dt.strftime('%Y')
+        years = sorted(df_gs2['year'].unique(), reverse=True)
         for year in years:
             if st.checkbox(f"Events in {year}", key=year):
                 if year in df_gs2['year'].values:
@@ -196,16 +197,17 @@ with tab1:
     selector = st.checkbox('Select a year')
     year = st.checkbox('Show years only')
     if selector:
-        max_year = df_gs['date'].dt.year.max()
-        min_year = df_gs['date'].dt.year.min()
+        max_year = int(df_gs2['year'].max())
+        min_year = int(df_gs2['year'].min())
         current_year = pd.Timestamp.now().year
 
-        slider = st.slider('Select a year', 2024, max_year, current_year)
+        slider = st.slider('Select a year', min_year, max_year, current_year, key='key888')
         slider = str(slider)
         df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
         ap = ' (in ' + slider+')'
     
     if year:
+        df_gs_plot['year'] = df_gs_plot['date'].dt.strftime('%Y')
         date_plot=df_gs_plot['year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Year','year':'Count'})
@@ -220,6 +222,9 @@ with tab1:
         fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
     else:
+        df_gs_plot['month'] = df_gs_plot['date'].dt.strftime('%m')
+        df_gs_plot['year'] = df_gs_plot['date'].dt.strftime('%Y')
+        df_gs_plot['month_year'] = df_gs_plot['date'].dt.strftime('%Y-%m')
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})
