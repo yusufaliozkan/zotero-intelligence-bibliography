@@ -240,14 +240,14 @@ with col1:
             mask = ~items_not_in_df2['Title'].str.contains('|'.join(words_to_exclude), case=False)
             items_not_in_df2 = items_not_in_df2[mask]
             items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
-            st.write('**Journal articles (DOI based filtering)**')
-            row_nu = len(items_not_in_df2.index)
-            if row_nu == 0:
-                st.write('No new podcast published!')
-            else:
-                items_not_in_df2 = items_not_in_df2.sort_values(by=['Publication Date'], ascending=False)
-                items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
-                items_not_in_df2
+            # st.write('**Journal articles (DOI based filtering)**')
+            # row_nu = len(items_not_in_df2.index)
+            # if row_nu == 0:
+            #     st.write('No new podcast published!')
+            # else:
+            #     items_not_in_df2 = items_not_in_df2.sort_values(by=['Publication Date'], ascending=False)
+            #     items_not_in_df2 = items_not_in_df2.reset_index(drop=True)
+            #     items_not_in_df2
 
             ## Title based filtering
             df_titles = df_dedup.copy()
