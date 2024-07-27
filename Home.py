@@ -38,6 +38,9 @@ import requests
 from format_entry import format_entry
 from streamlit_dynamic_filters import DynamicFilters
 # from rss_feed import df_podcast, df_magazines
+from st_keyup import st_keyup
+from pyparsing import infixNotation, opAssoc, Keyword, Word, alphanums
+
 
 # Connecting Zotero with API 
 library_id = '2514686'
@@ -433,7 +436,113 @@ with st.spinner('Retrieving data...'):
             # Example Streamlit code for context
             st.header('Search in database', anchor=False)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-            @st.experimental_fragment
+
+            # @st.experimental_fragment
+            # def text_search():
+            #     st.subheader('Quick search', anchor=False, divider='blue')
+
+            #     name = st_keyup("Search keyword in title", debounce=500, placeholder='Type your keyword(s)')
+            #     @st.cache_data
+            #     def get_titles():
+            #         df_csv1 = df_dedup.copy()
+            #         return df_csv1
+            #     df_quick_search_titles = get_titles()
+            #     if name:
+            #         with st.status(f'Searching **{name}** in the database...') as status:
+            #             search_pattern = fr'\b{name.lower()}\b'
+            #             df_quick_search_titles = df_quick_search_titles[df_quick_search_titles.Title.str.lower().str.contains(search_pattern.lower(), na=False)]
+            #             df_quick_search_titles = df_quick_search_titles.reset_index(drop=True)
+            #             df_table_view = df_quick_search_titles[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Link to publication','Zotero link']]
+            #             df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
+                        
+            #             display = st.radio('Display as', ['Basic list', 'Table', 'Bibliographic list'])
+            #             if display == 'Basic list':
+            #                 st.write(f'{len(df_quick_search_titles)} result(s) found')
+            #                 for index, row in df_quick_search_titles.iterrows():
+            #                     publication_type = row['Publication type']
+            #                     title = row['Title']
+            #                     authors = row['FirstName2']
+            #                     date_published = row['Date published']
+            #                     link_to_publication = row['Link to publication']
+            #                     zotero_link = row['Zotero link']
+            #                     citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+            #                     citation = int(float(citation))
+            #                     citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
+            #                     citation_link = citation_link.replace('api.', '')
+
+            #                     published_by_or_in_dict = {
+            #                         'Journal article': 'Published in',
+            #                         'Magazine article': 'Published in',
+            #                         'Newspaper article': 'Published in',
+            #                         'Book': 'Published by',
+            #                     }
+
+            #                     publication_type = row['Publication type']
+
+            #                     published_by_or_in = published_by_or_in_dict.get(publication_type, '')
+            #                     published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+            #                     if publication_type == 'Book':
+            #                         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+
+            #                     formatted_entry = (
+            #                         '**' + str(publication_type) + '**' + ': ' +
+            #                         str(title) + ' ' +
+            #                         '(by ' + '*' + str(authors) + '*' + ') ' +
+            #                         '(Publication date: ' + str(date_published) + ') ' +
+            #                         ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+            #                         '[[Publication link]](' + str(link_to_publication) + ') ' +
+            #                         '[[Zotero link]](' + str(zotero_link) + ') ' +
+            #                         ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
+            #                     )
+            #                     formatted_entry = format_entry(row)
+            #                     st.write(f"{index + 1}) {formatted_entry}")
+            #             if display == 'Table':
+            #                 st.write(f'{len(df_quick_search_titles)} result(s) found')
+            #                 st.dataframe(df_table_view,hide_index=True, use_container_width=True)
+            #             if display == 'Bibliographic list':
+
+            #                 df_zotero_id = pd.read_csv('zotero_citation_format.csv')
+            #                 df_quick_search_titles['zotero_item_key'] = df_quick_search_titles['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+            #                 df_quick_search_titles = pd.merge(df_quick_search_titles, df_zotero_id, on='zotero_item_key', how='left')
+
+            #                 def display_bibliographies(df):
+            #                     df['bibliography'] = df['bibliography'].fillna('').astype(str)
+            #                     all_bibliographies = ""
+            #                     for index, row in df.iterrows():
+            #                         # Add a horizontal line between bibliographies
+            #                         if index > 0:
+            #                             all_bibliographies += '<p><p>'
+                                    
+            #                         # Display bibliography
+            #                         all_bibliographies += row['bibliography']
+            #                     st.markdown(all_bibliographies, unsafe_allow_html=True)
+
+            #                 num_items = len(df_quick_search_titles)
+
+            #                 if num_items < 20:
+            #                     display_bibliographies(df_quick_search_titles)
+            #                 else:
+            #                     show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+
+            #                     if show_first_20:
+            #                         df_quick_search_titles = df_quick_search_titles.head(20)
+            #                         display_bibliographies(df_quick_search_titles)
+            #                     else:
+            #                         num_tabs = (num_items // 20) + 1
+            #                         tab_titles = [f"Results {i*20+1}-{min((i+1)*20, num_items)}" for i in range(num_tabs)]
+
+            #                         tabs = st.tabs(tab_titles)
+            #                         for tab_index, tab in enumerate(tabs):
+            #                             with tab:
+            #                                 start_idx = tab_index * 20
+            #                                 end_idx = min(start_idx + 20, num_items)
+            #                                 display_bibliographies(df_quick_search_titles.iloc[start_idx:end_idx])
+            #             status.update(label=f'Search complete for **{name}** with **{len(df_quick_search_titles)}** results', state="complete", expanded=True)
+            #     else:
+            #         st.write(f'{zot.num_items()} items in the database')
+            # text_search()
+    
+            # @st.experimental_fragment
             def search_options_main_menu():
                 from authors_dict import name_replacements
                 total_rows = len(df_dedup)
@@ -521,6 +630,9 @@ with st.spinner('Retrieving data...'):
                                 pass
 
                         # Layout for input elements
+                        if 'visibility' not in st.session_state:
+                            st.session_state.disabled = False
+
                         cols, cola = st.columns([2, 6])
 
                         # Selectbox for search options
@@ -530,7 +642,7 @@ with st.spinner('Retrieving data...'):
                                 index=search_in_index,
                                 on_change=update_search_params
                             )
-
+                        
                         # Text input for search keywords
                         with cola:
                             st.text_input(
@@ -538,7 +650,8 @@ with st.spinner('Retrieving data...'):
                                 st.session_state.search_term_input,
                                 key='search_term_input',
                                 placeholder='Type your keyword(s)',
-                                on_change=update_search_params
+                                on_change=update_search_params,
+                                disabled=st.session_state.disabled,
                             )
 
                         # Function to extract quoted phrases
@@ -551,7 +664,7 @@ with st.spinner('Retrieving data...'):
                         # Stripping and processing the search term
                         search_term = st.session_state.search_term.strip()
                         if search_term:
-                            with st.status("Searching publications...", expanded=True) as status:
+                            with st.status(f"Searching publications for '**{search_term}**...", expanded=True) as status:
                                 search_tokens = parse_search_terms(search_term)
                                 print(f"Search Tokens: {search_tokens}")  # Debugging: Print search tokens
                                 df_csv = df_duplicated.copy()
@@ -579,6 +692,13 @@ with st.spinner('Retrieving data...'):
 
                                 types = filtered_df['Publication type'].dropna().unique()  # Exclude NaN values
                                 collections = filtered_df['Collection_Name'].dropna().unique()
+
+                                if 'rerun_flag' not in st.session_state:
+                                    st.session_state.rerun_flag = False
+
+                                if len(filtered_df) > len(filtered_df)+1 and not st.session_state.rerun_flag:
+                                    st.session_state.rerun_flag = True
+                                    st.rerun()
 
                                         # if container_refresh_button.button('Refresh'):
                                 #     st.query_params.clear()
@@ -727,9 +847,10 @@ with st.spinner('Retrieving data...'):
                                     a = 'search-result-' + today
                                     container_download_button.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
 
+
                                     on = st.toggle('Generate dashboard')
 
-                                    if on and len(filtered_df) > 0: 
+                                    if on and len(filtered_df) > 0:
                                         st.info(f'Dashboard for search terms: {search_term}')
                                         search_df = filtered_df.copy()
                                         publications_by_type = search_df['Publication type'].value_counts()
@@ -816,12 +937,15 @@ with st.spinner('Retrieving data...'):
                                         st.pyplot()
 
                                     else:
-                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
                                         if sort_by == 'Publication date :arrow_down:' or filtered_df['Citation'].sum() == 0:
                                             filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
                                             filtered_df = filtered_df.reset_index(drop=True)
-                                        else:
+                                        if sort_by=='Citation':
                                             filtered_df = filtered_df.sort_values(by=['Citation'], ascending=False)
+                                            filtered_df = filtered_df.reset_index(drop=True)
+                                        if sort_by == 'Date added :arrow_down:':
+                                            filtered_df = filtered_df.sort_values(by=['Date added'], ascending=False)
                                             filtered_df = filtered_df.reset_index(drop=True)
 
                                         articles_list = []  # Store articles in a list
@@ -959,12 +1083,12 @@ with st.spinner('Retrieving data...'):
                                 else:
                                     st.write("No articles found with the given keyword/phrase.")
                                 status.update(
-                                    label=f"Search found **{num_items}** {'matching source' if num_items == 1 else 'matching sources'} in the database for '{search_term}'.", 
+                                    label=f"Search found **{num_items}** {'matching source' if num_items == 1 else 'matching sources'} in the database for '**{search_term}**'.", 
                                     state="complete", 
                                     expanded=True
                                     )
                         else:
-                            st.write("Please enter a keyword or author name to search.")
+                            st.info("Please enter a keyword to search in title or abstract.")
                     search_keyword()
 
                 # SEARCH AUTHORS
@@ -972,223 +1096,921 @@ with st.spinner('Retrieving data...'):
                     st.query_params.clear()
                     st.subheader('Search author', anchor=False, divider='blue') 
 
-                    # @st.experimental_fragment
-                    # def search_author():
-                    unique_authors = [''] + list(df_authors['Author_name'].unique())
+                    @st.experimental_fragment
+                    def search_author():
+                        unique_authors = [''] + list(df_authors['Author_name'].unique())
 
-                    author_publications = df_authors['Author_name'].value_counts().to_dict()
-                    sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
-                    select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
+                        author_publications = df_authors['Author_name'].value_counts().to_dict()
+                        sorted_authors_by_publications = sorted(unique_authors, key=lambda author: author_publications.get(author, 0), reverse=True)
+                        select_options_author_with_counts = [''] + [f"{author} ({author_publications.get(author, 0)})" for author in sorted_authors_by_publications]
 
-                    selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
-                    selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
-                    # selected_author = st.selectbox('Select author', select_options_author)
+                        selected_author_display = st.selectbox('Select author', select_options_author_with_counts)
+                        selected_author = selected_author_display.split(' (')[0] if selected_author_display else None
+                        # selected_author = st.selectbox('Select author', select_options_author)
 
-                    if not selected_author  or selected_author =="":
-                        st.write('Select an author to see items')
-                    else:
-                        filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
-                        filtered_collection_df_authors_items = filtered_collection_df_authors[['Zotero link']]
+                        if not selected_author  or selected_author =="":
+                            st.write('Select an author to see items')
+                        else:
+                            filtered_collection_df_authors = df_authors[df_authors['Author_name']== selected_author]
+                            filtered_collection_df_authors_items = filtered_collection_df_authors[['Zotero link']]
 
-                        filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                        filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].dt.strftime('%Y-%m-%d')
-                        filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].fillna('')
-                        filtered_collection_df_authors['No date flag'] = filtered_collection_df_authors['Date published'].isnull().astype(np.uint8)
-                        filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                            filtered_collection_df_authors['Date published'] = pd.to_datetime(filtered_collection_df_authors['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                            filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].dt.strftime('%Y-%m-%d')
+                            filtered_collection_df_authors['Date published'] = filtered_collection_df_authors['Date published'].fillna('')
+                            filtered_collection_df_authors['No date flag'] = filtered_collection_df_authors['Date published'].isnull().astype(np.uint8)
+                            filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
 
-                        publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
-
-                        with st.expander('Click to expand', expanded=True): 
-                            st.subheader('Publications by ' + selected_author, anchor=False, divider='blue')
-                            colauthor1, colauthor2, colauthor3, colauthor4 = st.columns(4)
-                            with colauthor1:
-                                container_metric = st.container()
-                            with colauthor2:
-                                with st.popover('More metrics'):
-                                    container_citation = st.container()
-                                    container_citation_average = st.container()
-                                    container_oa = st.container()
-                                    container_type = st.container()
-                                    container_collaboration_ratio = st.container()
-                            with colauthor3:
-                                with st.popover('Relevant themes'):
-                                    st.markdown(f'##### Top 5 relevant themes')
-                                    filtered_df_for_collections =  df_duplicated.copy()
-                                    filtered_df_for_collections = pd.merge(filtered_df_for_collections, filtered_collection_df_authors_items, on='Zotero link')
-                                    filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
-                                    filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(10)
-                                    filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
-                                    filtered_df_for_collections_2 = filtered_df_for_collections_2[filtered_df_for_collections_2['Collection_Name']!='01 Intelligence history']
-                                    filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
-                                    def remove_numbers(name):
-                                        return re.sub(r'^\d+(\.\d+)*\s*', '', name)
-                                    filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
-                                    row_nu = len(filtered_df_for_collections)
-                                    formatted_rows = []
-                                    for i in range(row_nu):
-                                        collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
-                                        number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
-                                        zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
-                                        formatted_row = (
-                                            f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
-                                            f"{number_of_items} items"
-                                        )
-                                        formatted_rows.append(f"{i+1}) " + formatted_row)
-
-                                    # Use st.write to print each row
-                                    for row in formatted_rows:
-                                        st.caption(row)
-
-                            with colauthor4:
-                                with st.popover('Filters and more'):
-                                    container_types = st.container()
-                                    container_download = st.container()
-                                    view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
-
-                            st.write('*Please note that this database **may not show** all research outputs of the author.*')
-                            types = container_types.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
-                            filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
-                            filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
                             publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
-                            num_items_collections = len(filtered_collection_df_authors)
-                            breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                            container_metric.metric(label="Number of items", value=int(num_items_collections), help=breakdown_string) 
 
-                            citation_count = filtered_collection_df_authors['Citation'].sum()
+                            with st.expander('Click to expand', expanded=True): 
+                                st.subheader('Publications by ' + selected_author, anchor=False, divider='blue')
+                                colauthor1, colauthor2, colauthor3, colauthor4 = st.columns(4)
+                                with colauthor1:
+                                    container_metric = st.container()
+                                with colauthor2:
+                                    with st.popover('More metrics'):
+                                        container_citation = st.container()
+                                        container_citation_average = st.container()
+                                        container_oa = st.container()
+                                        container_type = st.container()
+                                        container_collaboration_ratio = st.container()
+                                with colauthor3:
+                                    with st.popover('Relevant themes'):
+                                        st.markdown(f'##### Top 5 relevant themes')
+                                        filtered_df_for_collections =  df_duplicated.copy()
+                                        filtered_df_for_collections = pd.merge(filtered_df_for_collections, filtered_collection_df_authors_items, on='Zotero link')
+                                        filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
+                                        filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(10)
+                                        filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
+                                        filtered_df_for_collections_2 = filtered_df_for_collections_2[filtered_df_for_collections_2['Collection_Name']!='01 Intelligence history']
+                                        filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
+                                        def remove_numbers(name):
+                                            return re.sub(r'^\d+(\.\d+)*\s*', '', name)
+                                        filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
+                                        row_nu = len(filtered_df_for_collections)
+                                        formatted_rows = []
+                                        for i in range(row_nu):
+                                            collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
+                                            number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
+                                            zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
+                                            formatted_row = (
+                                                f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
+                                                f"{number_of_items} items"
+                                            )
+                                            formatted_rows.append(f"{i+1}) " + formatted_row)
 
-                            citation_average = round(filtered_collection_df_authors['Citation'].mean(), 2)
-                            container_citation_average.metric(label="Average citation", value=citation_average)
+                                        # Use st.write to print each row
+                                        for row in formatted_rows:
+                                            st.caption(row)
+
+                                with colauthor4:
+                                    with st.popover('Filters and more'):
+                                        container_types = st.container()
+                                        container_download = st.container()
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+
+                                st.write('*Please note that this database **may not show** all research outputs of the author.*')
+                                types = container_types.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
+                                filtered_collection_df_authors = filtered_collection_df_authors[filtered_collection_df_authors['Publication type'].isin(types)]
+                                filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+                                publications_by_type = filtered_collection_df_authors['Publication type'].value_counts()
+                                num_items_collections = len(filtered_collection_df_authors)
+                                breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                                container_metric.metric(label="Number of items", value=int(num_items_collections), help=breakdown_string) 
+
+                                citation_count = filtered_collection_df_authors['Citation'].sum()
+
+                                citation_average = round(filtered_collection_df_authors['Citation'].mean(), 2)
+                                container_citation_average.metric(label="Average citation", value=citation_average)
+                    
+                                total_rows = len(filtered_collection_df_authors)
+                                nan_count_citation = filtered_collection_df_authors['Citation_list'].isna().sum()
+                                non_nan_count_citation = total_rows - nan_count_citation
+                                non_nan_cited_df_dedup = filtered_collection_df_authors.dropna(subset=['Citation_list'])
+                                non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
+                                citation_mean = non_nan_cited_df_dedup['Citation'].mean()
+                                citation_median = non_nan_cited_df_dedup['Citation'].median()
+                                container_citation.metric(
+                                    label="Number of citations", 
+                                    value=int(citation_count), 
+                                    help=f'''Not all papers are tracked for citation. 
+                                    Citation per publication: **{round(citation_mean, 1)}**, 
+                                    Citation median: **{round(citation_median, 1)}**'''
+                                    )
+
+                                true_count = filtered_collection_df_authors[filtered_collection_df_authors['Publication type']=='Journal article']['OA status'].sum()
+                                total_count = len(filtered_collection_df_authors[filtered_collection_df_authors['Publication type']=='Journal article'])
+                                if total_count == 0:
+                                    oa_ratio = 0.0
+                                else:
+                                    oa_ratio = true_count / total_count * 100
+                                container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
+
+                                item_type_no = filtered_collection_df_authors['Publication type'].nunique()
+                                container_type.metric(label='Number of publication types', value=int(item_type_no))
+
+                                filtered_collection_df_authors['multiple_authors'] = filtered_collection_df_authors['FirstName2'].apply(lambda x: ',' in x)
+                                multiple_authored_papers = filtered_collection_df_authors['multiple_authors'].sum()
+                                if multiple_authored_papers == 0:
+                                    collaboration_ratio = 0
+                                else:
+                                    collaboration_ratio = round(multiple_authored_papers/num_items_collections*100, 1)
+                                container_collaboration_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+
+                                non_nan_cited_df_dedup = filtered_collection_df_authors.dropna(subset=['Citation_list'])
+                                non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
+                                citation_mean = non_nan_cited_df_dedup['Citation'].mean()
+
+                                def convert_df(filtered_collection_df_authors):
+                                    return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
+                                download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                                download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
+                                csv = convert_df(download_filtered)
+                    
+                                today = datetime.date.today().isoformat()
+                                a = f'{selected_author}_{today}'
+                                container_download.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
+
+                                on = st.toggle('Generate dashboard')
+                                if on and len(filtered_collection_df_authors) > 0: 
+                                    st.info(f'Publications dashboard for {selected_author}')
+                                    author_df = filtered_collection_df_authors
+                                    publications_by_type = author_df['Publication type'].value_counts()
+                                    fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                                labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                                title=f'Publications by Type ({selected_author})')
+                                    st.plotly_chart(fig)
+
+                                    fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
+                                                        title=f'Top Publication Themes ({selected_author})')
+                                    fig.update_traces(fill='toself')
+                                    st.plotly_chart(fig, use_container_width = True)
+
+                                    author_df = filtered_collection_df_authors
+                                    author_df['Year'] = pd.to_datetime(author_df['Date published']).dt.year
+                                    publications_by_year = author_df['Year'].value_counts().sort_index()
+                                    fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                        labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                        title=f'Publications by Year ({selected_author})')
+                                    st.plotly_chart(fig_year_bar)
+
+                                    author_df = filtered_collection_df_authors
+                                    def clean_text (text):
+                                        text = text.lower() # lowercasing
+                                        text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                        text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                        text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                        return text
+                                    author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                                    author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                                    def tokenization(text):
+                                        text = re.split('\W+', text)
+                                        return text    
+                                    author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                                    stopword = nltk.corpus.stopwords.words('english')
+                                    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                        'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                        'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                        'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                        'examines', 'become', 'used', 'journal', 'london', 'review']
+                                    stopword.extend(SW)
+                                    def remove_stopwords(text):
+                                        text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                        text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                        return text
+                                    author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                                    wn = nltk.WordNetLemmatizer()
+                                    def lemmatizer(text):
+                                        text = [wn.lemmatize(word) for word in text]
+                                        return text
+                                    author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                                    listdf = author_df['lemma_title']
+                                    df_list = [item for sublist in listdf for item in sublist]
+                                    string = pd.Series(df_list).str.cat(sep=' ')
+                                    wordcloud_texts = string
+                                    wordcloud_texts_str = str(wordcloud_texts)
+                                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                    plt.figure(figsize=(20,8))
+                                    plt.axis('off')
+                                    plt.title(f"Word Cloud for Titles published by ({selected_author})")
+                                    plt.imshow(wordcloud)
+                                    plt.axis("off")
+                                    plt.show()
+                                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                                    st.pyplot()
+                                else:
+                                    if not on:  # If the toggle is off, display the publications
+                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                        if sort_by == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
+                                            filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
+                                            filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+                                        if sort_by=='Citation':
+                                            filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
+                                            filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+                                        if sort_by == 'Date added :arrow_down:':
+                                            filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date added'], ascending=False)
+                                            filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
+
+                                        # sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                                        # if sort_by == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
+                                        #     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
+                                        #     filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
+                                        # else:
+                                        #     filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
+                                        #     filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
+                                        if view == 'Basic list':                              
+                                            for index, row in filtered_collection_df_authors.iterrows():
+                                                publication_type = row['Publication type']
+                                                title = row['Title']
+                                                authors = row['FirstName2']
+                                                date_published = row['Date published']
+                                                link_to_publication = row['Link to publication']
+                                                zotero_link = row['Zotero link']
+                                                citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                                                citation = int(float(citation))
+                                                citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
+                                                citation_link = citation_link.replace('api.', '')
+
+                                                published_by_or_in_dict = {
+                                                    'Journal article': 'Published in',
+                                                    'Magazine article': 'Published in',
+                                                    'Newspaper article': 'Published in',
+                                                    'Book': 'Published by',
+                                                }
+
+                                                publication_type = row['Publication type']
+
+                                                published_by_or_in = published_by_or_in_dict.get(publication_type, '')
+                                                published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                                if publication_type == 'Book':
+                                                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+
+                                                formatted_entry = (
+                                                    '**' + str(publication_type) + '**' + ': ' +
+                                                    str(title) + ' ' +
+                                                    '(by ' + '*' + str(authors) + '*' + ') ' +
+                                                    '(Publication date: ' + str(date_published) + ') ' +
+                                                    ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
+                                                    '[[Publication link]](' + str(link_to_publication) + ') ' +
+                                                    '[[Zotero link]](' + str(zotero_link) + ') ' +
+                                                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
+                                                )
+                                                formatted_entry = format_entry(row)
+                                                st.write(f"{index + 1}) {formatted_entry}")
+                                        if view == 'Table':
+                                            df_table_view = filtered_collection_df_authors[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Citation', 'Link to publication','Zotero link']]
+                                            df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
+                                            df_table_view
+                                        if view =='Bibliography':
+                                            if sort_by == 'Publication type':
+                                                filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Publication type'], ascending=True)
+                                            elif sort_by == 'Citation':
+                                                filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
+                                            filtered_collection_df_authors['zotero_item_key'] = filtered_collection_df_authors['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                            df_zotero_id = pd.read_csv('zotero_citation_format.csv')
+                                            filtered_collection_df_authors = pd.merge(filtered_collection_df_authors, df_zotero_id, on='zotero_item_key', how='left')
+                                            df_zotero_id = filtered_collection_df_authors[['zotero_item_key']]
+
+                                            def display_bibliographies(df):
+                                                all_bibliographies = ""
+                                                for index, row in df.iterrows():
+                                                    # Add a horizontal line between bibliographies
+                                                    if index > 0:
+                                                        all_bibliographies += '<p><p>'
+                                                    
+                                                    # Display bibliography
+                                                    all_bibliographies += row['bibliography']
+
+                                                st.markdown(all_bibliographies, unsafe_allow_html=True)
+                                            display_bibliographies(filtered_collection_df_authors)
+
+                                    else:  # If toggle is on but no publications are available
+                                        st.write("No publication type selected.")
+        
+                    search_author()
+
+                # SEARCH IN COLLECTIONS
+                elif search_option == "Search collection":
+                    st.query_params.clear()
+                    st.subheader('Search collection', anchor=False, divider='blue')
+
+                    @st.experimental_fragment
+                    def search_collection():
+                        df_csv_collections = df_duplicated.copy()
+
+                        def remove_numbers(name):
+                            return re.sub(r'^\d+(\.\d+)*\s*', '', name)
+
+                        df_csv_collections['Collection_Name'] = df_csv_collections['Collection_Name'].apply(remove_numbers)
+                        excluded_collections = ['KCL intelligence', 'Events', 'Journals', '']
+                        all_unique_collections = df_csv_collections['Collection_Name'].unique()
+
+                        filtered_collections = [col for col in all_unique_collections if col not in excluded_collections]
+
+                        # Calculate the number of publications for each collection
+                        collection_publications = df_csv_collections['Collection_Name'].value_counts().to_dict()
+
+                        # Sort collections by the number of publications
+                        sorted_collections_by_publications = sorted(filtered_collections, key=lambda col: collection_publications.get(col, 0), reverse=True)
+
+                        # Format collection names with the publication count
+                        select_options_collection_with_counts = [''] + [f"{col} [{collection_publications.get(col, 0)} items]" for col in sorted_collections_by_publications]
+
+                        # Create the selectbox
+                        selected_collection_display = st.selectbox('Select a collection', select_options_collection_with_counts)
+                        selected_collection = selected_collection_display.rsplit(' [', 1)[0] if selected_collection_display else None
+
+                        if not selected_collection or selected_collection == '':
+                            st.write('Pick a collection to see items')
+                        else:
+                            filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
+                            # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+
+                            filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                            filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
+                            filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
+                            filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
+                            filtered_collection_df = filtered_collection_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+
+                            publications_by_type = filtered_collection_df['Publication type'].value_counts()
+
+                            collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
+                            
+                            with st.expander('Click to expand', expanded=True):
+                                st.markdown('#### Collection theme: ' + selected_collection)
+
+                                colcol1, colcol2, colcol3 = st.columns(3)
+                                with colcol1:
+                                    container_metric = st.container()
+                                with colcol2:
+                                    with st.popover('More metrics'):
+                                        container_citation = st.container()
+                                        container_citation_average = st.container()
+                                        container_oa = st.container()                                    
+                                        container_type = st.container()
+                                        container_author_no = st.container()
+                                        container_author_pub_ratio= st.container()
+                                        container_publication_ratio = st.container()
+                                with colcol3:
+                                    with st.popover('Filters and more'):
+                                        container_info = st.container()
+                                        container_filter = st.container()
+                                        container_download = st.container()
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                container_info.info(f"See the collection in [Zotero]({collection_link})")
+                                types = container_filter.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
+                                filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
+                                filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                                publications_by_type = filtered_collection_df['Publication type'].value_counts()
+
+                                download_collection = filtered_collection_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                                download_collection['Abstract'] = download_collection['Abstract'].str.replace('\n', ' ')
+                                download_collection = download_collection.reset_index(drop=True)
+                                def convert_df(download_collection):
+                                    return download_collection.to_csv(index=False).encode('utf-8-sig')
+                                csv = convert_df(download_collection)
+                                today = datetime.date.today().isoformat()
+                                num_items_collections = len(filtered_collection_df)
+                                breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                                container_metric.metric(label="Number of items", value=int(num_items_collections), help=breakdown_string)
+
+                                true_count = filtered_collection_df[filtered_collection_df['Publication type']=='Journal article']['OA status'].sum()
+                                total_count = len(filtered_collection_df[filtered_collection_df['Publication type']=='Journal article'])
+                                if total_count == 0:
+                                    oa_ratio = 0.0
+                                else:
+                                    oa_ratio = true_count / total_count * 100
+                                container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help=f'Not all items are measured for OA.')
+
+                                citation_count = filtered_collection_df['Citation'].sum()
+                                total_rows = len(filtered_collection_df)
+                                nan_count_citation = filtered_collection_df['Citation_list'].isna().sum()
+                                non_nan_count_citation = total_rows - nan_count_citation
+                                non_nan_cited_df_dedup = filtered_collection_df.dropna(subset=['Citation_list'])
+                                non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
+                                citation_mean = non_nan_cited_df_dedup['Citation'].mean()
+                                citation_median = non_nan_cited_df_dedup['Citation'].median()
+                                container_citation.metric(
+                                    label="Number of citations", 
+                                    value=int(citation_count), 
+                                    help=f'Not all items in this collection are citeable.'
+                                    )
+                            
+                                item_type_no = filtered_collection_df['Publication type'].nunique()
+                                container_type.metric(label='Number of publication types', value=int(item_type_no))
+
+                                def split_and_expand(authors):
+                                    # Ensure the input is a string
+                                    if isinstance(authors, str):
+                                        # Split by comma and strip whitespace
+                                        split_authors = [author.strip() for author in authors.split(',')]
+                                        return pd.Series(split_authors)
+                                    else:
+                                        # Return the original author if it's not a string
+                                        return pd.Series([authors])
+                                if len(filtered_collection_df) == 0:
+                                    author_pub_ratio=0.0
+                                    author_no=0
+                                else:
+                                    expanded_authors = filtered_collection_df['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+                                    expanded_authors = expanded_authors.reset_index(name='Author')
+                                    author_no = len(expanded_authors)
+                                    author_pub_ratio = round(author_no/num_items_collections, 2)
+                                container_author_no.metric(label='Number of authors', value=int(author_no))
+
+                                container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
+
+                                outlier_detector = (filtered_collection_df['Citation'] > 1000).any()
+                                if outlier_detector == True:
+                                    outlier_count = (filtered_collection_df['Citation'] > 1000).sum()
+                                    citation_average = filtered_collection_df[filtered_collection_df['Citation'] < 1000]
+                                    citation_average = round(citation_average['Citation'].mean(), 2)
+                                    citation_average_with_outliers = round(filtered_collection_df['Citation'].mean(), 2)
+                                    container_citation_average.metric(
+                                        label="Average citation", 
+                                        value=citation_average, 
+                                        help=f'**{outlier_count}** item(s) passed the threshold of 1000 citations. With the outliers, the average citation count is **{citation_average_with_outliers}**.'
+                                        )
+
+                                citation_average = round(filtered_collection_df['Citation'].mean(), 2)
+                                container_citation_average.metric(label="Average citation", value=citation_average)
+
+                                filtered_collection_df['FirstName2'] = filtered_collection_df['FirstName2'].astype(str)
+                                filtered_collection_df['multiple_authors'] = filtered_collection_df['FirstName2'].apply(lambda x: ',' in x)
+                                if len(filtered_collection_df) == 0:
+                                    collaboration_ratio=0
+                                else:
+                                    multiple_authored_papers = filtered_collection_df['multiple_authors'].sum()
+                                    collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
+                                    container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+
+                                a = f'{selected_collection}_{today}'
+                                container_download.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+
+                                on = st.toggle('Generate dashboard')
+                                if on and len(filtered_collection_df) > 0: 
+                                    st.info(f'Dashboard for {selected_collection}')
+                                    collection_df = filtered_collection_df.copy()
+                                    
+                                    publications_by_type = collection_df['Publication type'].value_counts()
+                                    fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                                labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                                title=f'Publications by Type ({selected_collection})')
+                                    st.plotly_chart(fig)
+
+                                    collection_df = filtered_collection_df.copy()
+                                    collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                    publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                    fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                        labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                        title=f'Publications by Year ({selected_collection})')
+                                    st.plotly_chart(fig_year_bar)
+                                
+                                    collection_author_df = filtered_collection_df.copy()
+                                    collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                                    collection_author_df = collection_author_df.explode('Author_name')
+                                    collection_author_df.reset_index(drop=True, inplace=True)
+                                    from authors_dict import name_replacements
+                                    collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
+                                    collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
+                                    fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
+                                    fig.update_layout(
+                                        title=f'Top 10 Authors by Publication Count ({selected_collection})',
+                                        xaxis_title='Author',
+                                        yaxis_title='Number of Publications',
+                                        xaxis_tickangle=-45,
+                                    )
+                                    st.plotly_chart(fig) 
+
+                                    author_citation_df = filtered_collection_df.copy()
+                                    author_citation_df['Author_name'] = author_citation_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                                    author_citation_df = author_citation_df.explode('Author_name')
+                                    name_replacements = {}  # Assuming name_replacements is defined elsewhere in your code
+                                    author_citation_df['Author_name'] = author_citation_df['Author_name'].map(name_replacements).fillna(author_citation_df['Author_name'])
+                                    author_citations = author_citation_df.groupby('Author_name')['Citation'].sum().reset_index()
+                                    author_citations = author_citations.sort_values(by='Citation', ascending=False)
+                                    fig = px.bar(author_citations.head(10), x='Author_name', y='Citation',
+                                                title=f'Top 10 Authors by Citation Count ({selected_collection})',
+                                                labels={'Citation': 'Number of Citations', 'Author_name': 'Author'})
+                                    fig.update_layout(xaxis_tickangle=-45)
+                                    st.plotly_chart(fig)
+
+                                    author_df = filtered_collection_df.copy()
+                                    def clean_text (text):
+                                        text = text.lower() # lowercasing
+                                        text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                        text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                        text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                        return text
+                                    author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                                    author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                                    def tokenization(text):
+                                        text = re.split('\W+', text)
+                                        return text    
+                                    author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                                    stopword = nltk.corpus.stopwords.words('english')
+                                    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                        'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                        'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                        'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                        'examines', 'become', 'used', 'journal', 'london', 'review']
+                                    stopword.extend(SW)
+                                    def remove_stopwords(text):
+                                        text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                        text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                        return text
+                                    author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                                    wn = nltk.WordNetLemmatizer()
+                                    def lemmatizer(text):
+                                        text = [wn.lemmatize(word) for word in text]
+                                        return text
+                                    author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                                    listdf = author_df['lemma_title']
+                                    df_list = [item for sublist in listdf for item in sublist]
+                                    string = pd.Series(df_list).str.cat(sep=' ')
+                                    wordcloud_texts = string
+                                    wordcloud_texts_str = str(wordcloud_texts)
+                                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                    plt.figure(figsize=(20,8))
+                                    plt.axis('off')
+                                    plt.title(f"Word Cloud for Titles in ({selected_collection})")
+                                    plt.imshow(wordcloud)
+                                    plt.axis("off")
+                                    plt.show()
+                                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                                    st.pyplot()
+
+                                else:
+                                    if not on:
+                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                        if sort_by == 'Publication date :arrow_down:' or filtered_collection_df['Citation'].sum() == 0:
+                                            filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
+                                            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                                        if sort_by=='Citation':
+                                            filtered_collection_df = filtered_collection_df.sort_values(by=['Citation'], ascending=False)
+                                            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                                        if sort_by == 'Date added :arrow_down:':
+                                            filtered_collection_df = filtered_collection_df.sort_values(by=['Date added'], ascending=False)
+                                            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+
+                                        if num_items_collections > 20:
+                                            show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+                                            if show_first_20:
+                                                filtered_collection_df = filtered_collection_df.head(20)
+
+                                        if view == 'Basic list':
+                                            articles_list = []  # Store articles in a list
+                                            for index, row in filtered_collection_df.iterrows():
+                                                formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                                                articles_list.append(formatted_entry)    
+                                            
+                                            for index, row in filtered_collection_df.iterrows():
+                                                publication_type = row['Publication type']
+                                                title = row['Title']
+                                                authors = row['FirstName2']
+                                                date_published = row['Date published']
+                                                link_to_publication = row['Link to publication']
+                                                zotero_link = row['Zotero link']
+                                                citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
+                                                citation = int(float(citation))
+                                                citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
+                                                citation_link = citation_link.replace('api.', '')
+
+                                                if publication_type == 'Journal article':
+                                                    published_by_or_in = 'Published in'
+                                                    published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
+                                                elif publication_type == 'Book':
+                                                    published_by_or_in = 'Published by'
+                                                    published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+                                                else:
+                                                    published_by_or_in = ''
+                                                    published_source = ''
+
+                                                formatted_entry = format_entry(row)
+                                                st.write(f"{index + 1}) {formatted_entry}")
+                                        if view == 'Table':
+                                            df_table_view = filtered_collection_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
+                                            df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
+                                            df_table_view
+                                        if view == 'Bibliography':
+                                            filtered_collection_df['zotero_item_key'] = filtered_collection_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                            df_zotero_id = pd.read_csv('zotero_citation_format.csv')
+                                            filtered_collection_df = pd.merge(filtered_collection_df, df_zotero_id, on='zotero_item_key', how='left')
+                                            df_zotero_id = filtered_collection_df[['zotero_item_key']]
+
+                                            def display_bibliographies2(df):
+                                                all_bibliographies = ""
+                                                for index, row in df.iterrows():
+                                                    # Add a horizontal line between bibliographies
+                                                    if index > 0:
+                                                        all_bibliographies += '<p><p>'
+                                                    
+                                                    # Display bibliography
+                                                    all_bibliographies += row['bibliography']
+
+                                                st.markdown(all_bibliographies, unsafe_allow_html=True)
+                                            display_bibliographies2(filtered_collection_df)
+                                    else:  # If toggle is on but no publications are available
+                                        st.write("No publication type selected.")
                 
-                            total_rows = len(filtered_collection_df_authors)
-                            nan_count_citation = filtered_collection_df_authors['Citation_list'].isna().sum()
-                            non_nan_count_citation = total_rows - nan_count_citation
-                            non_nan_cited_df_dedup = filtered_collection_df_authors.dropna(subset=['Citation_list'])
-                            non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
-                            citation_mean = non_nan_cited_df_dedup['Citation'].mean()
-                            citation_median = non_nan_cited_df_dedup['Citation'].median()
-                            container_citation.metric(
-                                label="Number of citations", 
-                                value=int(citation_count), 
-                                help=f'''Not all papers are tracked for citation. 
-                                Citation per publication: **{round(citation_mean, 1)}**, 
-                                Citation median: **{round(citation_median, 1)}**'''
+                    search_collection()
+
+                elif search_option == "Publication types": 
+                    st.query_params.clear()
+                    st.subheader('Publication types', anchor=False, divider='blue') 
+                    @st.experimental_fragment
+                    def type_selection():
+                        df_csv_types = df_dedup.copy()
+                        unique_types = [''] + list(df_authors['Publication type'].unique())
+                        # unique_types =  list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option The following bit was at the front [''] +
+                        selected_type = st.selectbox('Select a publication type', unique_types)
+
+                        if not selected_type or selected_type == '':
+                            st.write('Pick a publication type to see items')
+                        else:
+                            filtered_collection_df_authors = df_csv_types[df_csv_types['Publication type']== selected_type]
+                            filtered_collection_df_authors_items = filtered_collection_df_authors[['Zotero link']]
+
+                            filtered_type_df = df_csv_types[df_csv_types['Publication type']==selected_type]
+                            # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+
+                            # filtered_type_df['Date published'] = pd.to_datetime(filtered_type_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                            filtered_type_df['Date published'] = (
+                                filtered_type_df['Date published']
+                                .str.strip()
+                                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            )
+                            filtered_type_df['Date published'] = filtered_type_df['Date published'].dt.strftime('%Y-%m-%d')
+                            filtered_type_df['Date published'] = filtered_type_df['Date published'].fillna('')
+                            filtered_type_df['No date flag'] = filtered_type_df['Date published'].isnull().astype(np.uint8)
+                            filtered_type_df = filtered_type_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+
+                            # publications_by_type = filtered_collection_df['Publication type'].value_counts()
+                            
+                            with st.expander('Click to expand', expanded=True):
+                                st.subheader('Publication type: ' + selected_type, anchor=False, divider='blue')
+                                if selected_type == 'Thesis':
+                                    st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).')
+                                coltype1, coltype2, coltype3, coltype4 = st.columns(4)
+                                with coltype1:
+                                    container_metric = st.container()
+                                with coltype2:
+                                    with st.popover('More metrics'):
+                                        container_citation = st.container()
+                                        container_oa = st.container()
+                                        container_collaboration_ratio = st.container()
+                                        container_author_number  = st.container()
+                                        container_author_ratio = st.container()
+                                with coltype3:
+                                    with st.popover('Relevant themes'):
+                                        st.markdown(f'##### Top relevant publication themes')
+                                        filtered_df_for_collections =  df_duplicated.copy()
+                                        filtered_df_for_collections = pd.merge(filtered_df_for_collections, filtered_collection_df_authors_items, on='Zotero link')
+                                        filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
+                                        filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(10)
+                                        filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
+                                        filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
+                                        def remove_numbers(name):
+                                            return re.sub(r'^\d+(\.\d+)*\s*', '', name)
+                                        filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
+                                        row_nu = len(filtered_df_for_collections)
+                                        formatted_rows = []
+                                        for i in range(row_nu):
+                                            collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
+                                            number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
+                                            zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
+                                            formatted_row = (
+                                                f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
+                                                f"{number_of_items} items"
+                                            )
+                                            formatted_rows.append(f"{i+1}) " + formatted_row)
+
+                                        # Use st.write to print each row
+                                        for row in formatted_rows:
+                                            st.caption(row)
+                                with coltype4:
+                                    with st.popover('Filters and more'):
+                                        container_download_types = st.container()
+                                        if selected_type=='Thesis':
+                                            unique_thesis_types = [''] + list(filtered_type_df['Thesis_type'].unique())
+                                            selected_thesis_type = st.selectbox('Select a thesis type', unique_thesis_types)
+
+                                            if selected_thesis_type:
+                                                filtered_type_df = filtered_type_df[filtered_type_df['Thesis_type']==selected_thesis_type]
+                                                
+                                            unique_universities = [''] + sorted(list(map(str, filtered_type_df['University'].unique())))
+                                            selected_thesis_uni = st.selectbox('Select a university', unique_universities)
+
+                                            if not selected_thesis_uni == '':
+                                                filtered_type_df = filtered_type_df[filtered_type_df['University']==selected_thesis_uni]
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                            
+                                download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                                download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
+                                download_types = download_types.reset_index(drop=True)
+
+                                def convert_df(download_types):
+                                    return download_types.to_csv(index=False).encode('utf-8-sig')
+
+                                csv = convert_df(download_types)
+                                today = datetime.date.today().isoformat()
+
+                                num_items_collections = len(filtered_type_df)
+                                # st.write(f"**{num_items_collections}** sources found")
+                                container_metric.metric(label="Number of items", value=int(num_items_collections))
+
+                                true_count = filtered_type_df[filtered_type_df['Publication type']=='Journal article']['OA status'].sum()
+                                total_count = len(filtered_type_df[filtered_type_df['Publication type']=='Journal article'])
+                                if total_count == 0:
+                                    oa_ratio = 0.0
+                                else:
+                                    oa_ratio = true_count / total_count * 100
+                                container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
+
+                                filtered_type_df['multiple_authors'] = filtered_type_df['FirstName2'].apply(
+                                    lambda x: isinstance(x, str) and ',' in x
+                                )
+                                multiple_authored_papers = filtered_type_df['multiple_authors'].sum()
+                                if multiple_authored_papers == 0:
+                                    collaboration_ratio = 0
+                                else:
+                                    collaboration_ratio = round(multiple_authored_papers/num_items_collections*100, 1)
+                                container_collaboration_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+
+                                def split_and_expand(authors):
+                                    # Ensure the input is a string
+                                    if isinstance(authors, str):
+                                        # Split by comma and strip whitespace
+                                        split_authors = [author.strip() for author in authors.split(',')]
+                                        return pd.Series(split_authors)
+                                    else:
+                                        # Return the original author if it's not a string
+                                        return pd.Series([authors])
+                                expanded_authors_types = filtered_type_df['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+                                expanded_authors_types = expanded_authors_types.reset_index(name='Author')
+                                author_no = len(expanded_authors_types)
+                                if author_no == 0:
+                                    author_pub_ratio=0.0
+                                else:
+                                    author_pub_ratio = round(author_no/num_items_collections, 2)
+                                container_author_number.metric(label='Number of authors', value=int(author_no))
+                                container_author_ratio.metric(
+                                    label='Author/publication ratio', 
+                                    value=author_pub_ratio, 
+                                    help='The average author number per publication.'
                                 )
 
-                            true_count = filtered_collection_df_authors[filtered_collection_df_authors['Publication type']=='Journal article']['OA status'].sum()
-                            total_count = len(filtered_collection_df_authors[filtered_collection_df_authors['Publication type']=='Journal article'])
-                            if total_count == 0:
-                                oa_ratio = 0.0
-                            else:
-                                oa_ratio = true_count / total_count * 100
-                            container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
+                                citation_count = filtered_type_df['Citation'].sum()
+                                citation_mean = non_nan_cited_df_dedup['Citation'].mean()
+                                citation_median = non_nan_cited_df_dedup['Citation'].median()
+                                # st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+                                container_citation.metric(
+                                    label="Number of citations", 
+                                    value=int(citation_count), 
+                                    help=f'''Not all papers are tracked for citation. 
+                                    Citation per publication: **{round(citation_mean, 1)}**, 
+                                    Citation median: **{round(citation_median, 1)}**'''
+                                    )
 
-                            item_type_no = filtered_collection_df_authors['Publication type'].nunique()
-                            container_type.metric(label='Number of publication types', value=int(item_type_no))
+                                a = f'{selected_type}_{today}'
+                                container_download_types.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
 
-                            filtered_collection_df_authors['multiple_authors'] = filtered_collection_df_authors['FirstName2'].apply(lambda x: ',' in x)
-                            multiple_authored_papers = filtered_collection_df_authors['multiple_authors'].sum()
-                            if multiple_authored_papers == 0:
-                                collaboration_ratio = 0
-                            else:
-                                collaboration_ratio = round(multiple_authored_papers/num_items_collections*100, 1)
-                            container_collaboration_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+                                on = st.toggle('Generate dashboard')
+                                if on and len (filtered_type_df) > 0:
+                                    st.info(f'Dashboard for {selected_type}')
+                                    type_df = filtered_type_df.copy()
+                                    collection_df = type_df.copy()
+                                    collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                    publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                    fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                        labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                        title=f'Publications by Year ({selected_type})')
+                                    st.plotly_chart(fig_year_bar)
 
-                            non_nan_cited_df_dedup = filtered_collection_df_authors.dropna(subset=['Citation_list'])
-                            non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
-                            citation_mean = non_nan_cited_df_dedup['Citation'].mean()
+                                    fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
+                                                        title=f'Top Publication Themes ({selected_type})')
+                                    fig.update_traces(fill='toself')
+                                    st.plotly_chart(fig, use_container_width = True)
 
-                            def convert_df(filtered_collection_df_authors):
-                                return filtered_collection_df_authors.to_csv(index=False).encode('utf-8-sig')
-                            download_filtered = filtered_collection_df_authors[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                            download_filtered['Abstract'] = download_filtered['Abstract'].str.replace('\n', ' ')
-                            csv = convert_df(download_filtered)
-                
-                            today = datetime.date.today().isoformat()
-                            a = f'{selected_author}_{today}'
-                            container_download.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
+                                    if selected_type != 'Thesis':
+                                        collection_author_df = type_df.copy()
+                                        collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                                        collection_author_df = collection_author_df.explode('Author_name')
+                                        collection_author_df.reset_index(drop=True, inplace=True)
+                                        collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
+                                        collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
+                                        fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
+                                        fig.update_layout(
+                                            title=f'Top 10 Authors by Publication Count ({selected_type})',
+                                            xaxis_title='Author',
+                                            yaxis_title='Number of Publications',
+                                            xaxis_tickangle=-45,
+                                        )
+                                        st.plotly_chart(fig)
 
-                            on = st.toggle('Generate dashboard')
-                            if on and len(filtered_collection_df_authors) > 0: 
-                                st.info(f'Publications dashboard for {selected_author}')
-                                author_df = filtered_collection_df_authors
-                                publications_by_type = author_df['Publication type'].value_counts()
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type ({selected_author})')
-                                st.plotly_chart(fig)
+                                    if selected_type == 'Thesis':
+                                        col1, col2 = st.columns([2,3])
+                                        with col1:
+                                            thesis_types = type_df['Thesis_type'].value_counts().reset_index()
+                                            thesis_types.columns = ['Thesis Type', 'Number of Theses']
 
-                                fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
-                                                    title=f'Top Publication Themes ({selected_author})')
-                                fig.update_traces(fill='toself')
-                                st.plotly_chart(fig, use_container_width = True)
+                                            # Create the pie chart
+                                            fig = px.pie(thesis_types, names='Thesis Type', values='Number of Theses', 
+                                                        title='Theses by Type')
+                                            st.plotly_chart(fig)
+                                        with col2:
+                                            thesis_counts = type_df.groupby(['University', 'Thesis_type']).size().reset_index(name='Number of Theses')
 
-                                author_df = filtered_collection_df_authors
-                                author_df['Year'] = pd.to_datetime(author_df['Date published']).dt.year
-                                publications_by_year = author_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year ({selected_author})')
-                                st.plotly_chart(fig_year_bar)
+                                            # Calculate the total number of theses for each university
+                                            total_theses_per_university = thesis_counts.groupby('University')['Number of Theses'].sum().reset_index()
 
-                                author_df = filtered_collection_df_authors
-                                def clean_text (text):
-                                    text = text.lower() # lowercasing
-                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                    return text
-                                author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                                author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                def tokenization(text):
-                                    text = re.split('\W+', text)
-                                    return text    
-                                author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                                stopword = nltk.corpus.stopwords.words('english')
-                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                    'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                def remove_stopwords(text):
-                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                    return text
-                                author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                                wn = nltk.WordNetLemmatizer()
-                                def lemmatizer(text):
-                                    text = [wn.lemmatize(word) for word in text]
-                                    return text
-                                author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                                listdf = author_df['lemma_title']
-                                df_list = [item for sublist in listdf for item in sublist]
-                                string = pd.Series(df_list).str.cat(sep=' ')
-                                wordcloud_texts = string
-                                wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                plt.figure(figsize=(20,8))
-                                plt.axis('off')
-                                plt.title(f"Word Cloud for Titles published by ({selected_author})")
-                                plt.imshow(wordcloud)
-                                plt.axis("off")
-                                plt.show()
-                                st.set_option('deprecation.showPyplotGlobalUse', False)
-                                st.pyplot()
-                            else:
-                                if not on:  # If the toggle is off, display the publications
-                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                                    if sort_by == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
-                                        filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
-                                        filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
-                                    else:
-                                        filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
-                                        filtered_collection_df_authors =filtered_collection_df_authors.reset_index(drop=True)
-                                    if view == 'Basic list':                              
-                                        for index, row in filtered_collection_df_authors.iterrows():
+                                            # Filter to get the top 10 universities by the total number of theses
+                                            top_universities = total_theses_per_university.nlargest(10, 'Number of Theses')['University']
+                                            # Filter the thesis_counts DataFrame to include only these top 10 universities
+                                            thesis_counts_top = thesis_counts[thesis_counts['University'].isin(top_universities)]
+                                            # Merge the total counts to retain the ordering
+                                            thesis_counts_top = thesis_counts_top.merge(total_theses_per_university, on='University', suffixes=('', '_total'))
+                                            # Order the universities by the total number of theses
+                                            thesis_counts_top = thesis_counts_top.sort_values('Number of Theses_total', ascending=False).reset_index(drop=True)
+
+                                            fig = px.bar(thesis_counts_top, x='University', y='Number of Theses', color='Thesis_type',
+                                                        labels={'x': 'University', 'y': 'Number of Theses', 'color': 'Thesis Type'},
+                                                        title='Theses by Institution and Type')
+                                            # Display the bar chart in the Streamlit app
+                                            st.plotly_chart(fig)
+
+                                    author_df = type_df.copy()
+                                    def clean_text (text):
+                                        text = text.lower() # lowercasing
+                                        text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                        text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                        text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                        return text
+                                    author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                                    author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                                    def tokenization(text):
+                                        text = re.split('\W+', text)
+                                        return text    
+                                    author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                                    stopword = nltk.corpus.stopwords.words('english')
+                                    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                        'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                        'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                        'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                        'examines', 'become', 'used', 'journal', 'london', 'review']
+                                    stopword.extend(SW)
+                                    def remove_stopwords(text):
+                                        text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                        text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                        return text
+                                    author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                                    wn = nltk.WordNetLemmatizer()
+                                    def lemmatizer(text):
+                                        text = [wn.lemmatize(word) for word in text]
+                                        return text
+                                    author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                                    listdf = author_df['lemma_title']
+                                    df_list = [item for sublist in listdf for item in sublist]
+                                    string = pd.Series(df_list).str.cat(sep=' ')
+                                    wordcloud_texts = string
+                                    wordcloud_texts_str = str(wordcloud_texts)
+                                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                    plt.figure(figsize=(20,8))
+                                    plt.axis('off')
+                                    plt.title(f"Word Cloud for Titles in ({selected_type})")
+                                    plt.imshow(wordcloud)
+                                    plt.axis("off")
+                                    plt.show()
+                                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                                    st.pyplot()
+                                else:
+                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                    if sort_by == 'Publication date :arrow_down:' or filtered_type_df['Citation'].sum() == 0:
+                                        filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
+                                        filtered_type_df = filtered_type_df.reset_index(drop=True)
+                                    if sort_by=='Citation':
+                                        filtered_type_df = filtered_type_df.sort_values(by=['Citation'], ascending=False)
+                                        filtered_type_df = filtered_type_df.reset_index(drop=True)
+                                    if sort_by == 'Date added :arrow_down:':
+                                        filtered_type_df = filtered_type_df.sort_values(by=['Date added'], ascending=False)
+                                        filtered_type_df = filtered_type_df.reset_index(drop=True)
+
+                                    if num_items_collections > 20:
+                                        show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+                                        if show_first_20:
+                                            filtered_type_df = filtered_type_df.head(20) 
+
+                                    if view =='Basic list':
+                                        articles_list = []  # Store articles in a list
+                                        for index, row in filtered_type_df.iterrows():
+                                            formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                                            articles_list.append(formatted_entry)                     
+                                        
+                                        for index, row in filtered_type_df.iterrows():
                                             publication_type = row['Publication type']
                                             title = row['Title']
                                             authors = row['FirstName2']
-                                            date_published = row['Date published']
+                                            date_published = row['Date published'] 
                                             link_to_publication = row['Link to publication']
                                             zotero_link = row['Zotero link']
                                             citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
@@ -1210,33 +2032,19 @@ with st.spinner('Retrieving data...'):
                                             if publication_type == 'Book':
                                                 published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
-                                            formatted_entry = (
-                                                '**' + str(publication_type) + '**' + ': ' +
-                                                str(title) + ' ' +
-                                                '(by ' + '*' + str(authors) + '*' + ') ' +
-                                                '(Publication date: ' + str(date_published) + ') ' +
-                                                ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                                '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                                '[[Zotero link]](' + str(zotero_link) + ') ' +
-                                                ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
-                                            )
                                             formatted_entry = format_entry(row)
                                             st.write(f"{index + 1}) {formatted_entry}")
-                                    if view == 'Table':
-                                        df_table_view = filtered_collection_df_authors[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Citation', 'Link to publication','Zotero link']]
+                                    if view =='Table':
+                                        df_table_view = filtered_type_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
                                         df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                                         df_table_view
                                     if view =='Bibliography':
-                                        if sort_by == 'Publication type':
-                                            filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Publication type'], ascending=True)
-                                        elif sort_by == 'Citation':
-                                            filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
-                                        filtered_collection_df_authors['zotero_item_key'] = filtered_collection_df_authors['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                        filtered_type_df['zotero_item_key'] = filtered_type_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
                                         df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-                                        filtered_collection_df_authors = pd.merge(filtered_collection_df_authors, df_zotero_id, on='zotero_item_key', how='left')
-                                        df_zotero_id = filtered_collection_df_authors[['zotero_item_key']]
+                                        filtered_type_df = pd.merge(filtered_type_df, df_zotero_id, on='zotero_item_key', how='left')
+                                        df_zotero_id = filtered_type_df[['zotero_item_key']]
 
-                                        def display_bibliographies(df):
+                                        def display_bibliographies2(df):
                                             all_bibliographies = ""
                                             for index, row in df.iterrows():
                                                 # Add a horizontal line between bibliographies
@@ -1247,274 +2055,319 @@ with st.spinner('Retrieving data...'):
                                                 all_bibliographies += row['bibliography']
 
                                             st.markdown(all_bibliographies, unsafe_allow_html=True)
-                                        display_bibliographies(filtered_collection_df_authors)
-
-                                else:  # If toggle is on but no publications are available
-                                    st.write("No publication type selected.")
-        
-                    # search_author()
-
-                # SEARCH IN COLLECTIONS
-                elif search_option == "Search collection":
+                                        display_bibliographies2(filtered_type_df)
+                    
+                    type_selection()
+                
+                elif search_option == "Search journal":
                     st.query_params.clear()
-                    st.subheader('Search collection', anchor=False, divider='blue')
+                    st.subheader('Search journal', anchor=False, divider='blue')
 
-                    # @st.experimental_fragment
-                    # def search_collection():
-                    df_csv_collections = df_duplicated.copy()
-                    excluded_collections = ['97 KCL intelligence']
-                    numeric_start_collections = df_csv_collections[df_csv_collections['Collection_Name'].str[0].str.isdigit()]['Collection_Name'].unique()
-                    all_unique_collections = df_csv_collections['Collection_Name'].unique()
-                    filtered_collections = [col for col in numeric_start_collections if col not in excluded_collections]
+                    @st.experimental_fragment
+                    def search_journal():
+                        df_csv = df_dedup.copy()
+                        df_csv = df_csv[df_csv['Publication type']=='Journal article']
+                        journal_counts = df_csv['Journal'].value_counts()
+                        unique_journals_sorted = journal_counts.index.tolist()
+                        journals = st.multiselect('Select a journal', unique_journals_sorted)
 
+                        if not journals:
+                            st.write('Pick a journal name to see items')
+                        else:
+                            selected_journal_df = df_csv[df_csv['Journal'].isin(journals)]
 
-                    select_options = [''] + sorted(list(filtered_collections))
-                    selected_collection = st.selectbox('Select a collection', select_options)
+                            filtered_collection_df_journals = selected_journal_df.copy()
+                            filtered_collection_df_journals_items = filtered_collection_df_journals[['Zotero link']]
 
-                    if not selected_collection or selected_collection == '':
-                        st.write('Pick a collection to see items')
-                    else:
-                        filtered_collection_df = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]
-                        # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+                            selected_journal_df['Date published'] = (
+                                selected_journal_df['Date published']
+                                .str.strip()
+                                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            )
+                            # selected_journal_df['Date published'] = pd.to_datetime(selected_journal_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                            selected_journal_df['Date published'] = selected_journal_df['Date published'].dt.strftime('%Y-%m-%d')
+                            selected_journal_df['Date published'] = selected_journal_df['Date published'].fillna('')
+                            selected_journal_df['No date flag'] = selected_journal_df['Date published'].isnull().astype(np.uint8)
+                            selected_journal_df = selected_journal_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
 
-                        filtered_collection_df['Date published'] = pd.to_datetime(filtered_collection_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                        filtered_collection_df['Date published'] = filtered_collection_df['Date published'].dt.strftime('%Y-%m-%d')
-                        filtered_collection_df['Date published'] = filtered_collection_df['Date published'].fillna('')
-                        filtered_collection_df['No date flag'] = filtered_collection_df['Date published'].isnull().astype(np.uint8)
-                        filtered_collection_df = filtered_collection_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-
-                        publications_by_type = filtered_collection_df['Publication type'].value_counts()
-
-                        collection_link = df_csv_collections[df_csv_collections['Collection_Name'] == selected_collection]['Collection_Link'].iloc[0]
-                        
-                        with st.expander('Click to expand', expanded=True):
-                            st.markdown('#### Collection theme: ' + selected_collection)
-
-                            colcol1, colcol2, colcol3 = st.columns(3)
-                            with colcol1:
-                                container_metric = st.container()
-                            with colcol2:
-                                with st.popover('More metrics'):
-                                    container_citation = st.container()
-                                    container_citation_average = st.container()
-                                    container_oa = st.container()                                    
-                                    container_type = st.container()
-                                    container_author_no = st.container()
-                                    container_author_pub_ratio= st.container()
-                                    container_publication_ratio = st.container()
-                            with colcol3:
-                                with st.popover('Filters and more'):
-                                    container_info = st.container()
-                                    container_filter = st.container()
-                                    container_download = st.container()
-                                    view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
-                            container_info.info(f"See the collection in [Zotero]({collection_link})")
-                            types = container_filter.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
-                            filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
-                            filtered_collection_df = filtered_collection_df.reset_index(drop=True)
-                            publications_by_type = filtered_collection_df['Publication type'].value_counts()
-
-                            download_collection = filtered_collection_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                            download_collection['Abstract'] = download_collection['Abstract'].str.replace('\n', ' ')
-                            download_collection = download_collection.reset_index(drop=True)
-                            def convert_df(download_collection):
-                                return download_collection.to_csv(index=False).encode('utf-8-sig')
-                            csv = convert_df(download_collection)
-                            today = datetime.date.today().isoformat()
-                            num_items_collections = len(filtered_collection_df)
-                            breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                            container_metric.metric(label="Number of items", value=int(num_items_collections), help=breakdown_string)
-
-                            true_count = filtered_collection_df[filtered_collection_df['Publication type']=='Journal article']['OA status'].sum()
-                            total_count = len(filtered_collection_df[filtered_collection_df['Publication type']=='Journal article'])
-                            if total_count == 0:
-                                oa_ratio = 0.0
-                            else:
-                                oa_ratio = true_count / total_count * 100
-                            container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help=f'Not all items are measured for OA.')
-
-                            citation_count = filtered_collection_df['Citation'].sum()
-                            total_rows = len(filtered_collection_df)
-                            nan_count_citation = filtered_collection_df['Citation_list'].isna().sum()
-                            non_nan_count_citation = total_rows - nan_count_citation
-                            non_nan_cited_df_dedup = filtered_collection_df.dropna(subset=['Citation_list'])
-                            non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
-                            citation_mean = non_nan_cited_df_dedup['Citation'].mean()
-                            citation_median = non_nan_cited_df_dedup['Citation'].median()
-                            container_citation.metric(
-                                label="Number of citations", 
-                                value=int(citation_count), 
-                                help=f'Not all items in this collection are citeable.'
-                                )
-                        
-                            item_type_no = filtered_collection_df['Publication type'].nunique()
-                            container_type.metric(label='Number of publication types', value=int(item_type_no))
-
-                            def split_and_expand(authors):
-                                # Ensure the input is a string
-                                if isinstance(authors, str):
-                                    # Split by comma and strip whitespace
-                                    split_authors = [author.strip() for author in authors.split(',')]
-                                    return pd.Series(split_authors)
+                            # publications_by_type = filtered_collection_df['Publication type'].value_counts()
+                            
+                            with st.expander('Click to expand', expanded=True):
+                                if len(selected_journal_df['Journal'].drop_duplicates())==1:
+                                    st.markdown('#### Selected Journal: ' + str(journals[0]))
                                 else:
-                                    # Return the original author if it's not a string
-                                    return pd.Series([authors])
-                            if len(filtered_collection_df) == 0:
-                                author_pub_ratio=0.0
-                                author_no=0
-                            else:
-                                expanded_authors = filtered_collection_df['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
-                                expanded_authors = expanded_authors.reset_index(name='Author')
-                                author_no = len(expanded_authors)
-                                author_pub_ratio = round(author_no/num_items_collections, 2)
-                            container_author_no.metric(label='Number of authors', value=int(author_no))
+                                    st.markdown('#### Selected Journals: ')
+                                    items_string = ', '.join(journals)
+                                    st.write(items_string)
 
-                            container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
+                                coljournal1, coljournal2, coljournal3, coljournal4 = st.columns(4)
+                                with coljournal1:
+                                    container_metric = st.container()
+                                with coljournal2:
+                                    with st.popover('More metrics'):
+                                        container_citation = st.container()
+                                        container_oa = st.container()
+                                        container_collaboration_ratio = st.container()
+                                        container_author_number  = st.container()
+                                        container_author_ratio = st.container()
+                                        container_dataframe = st.container()
+                                with coljournal3:
+                                    with st.popover('Relevant themes'):
+                                        st.markdown(f'##### Top 5 relevant themes')
+                                        filtered_df_for_collections =  df_duplicated.copy()
+                                        filtered_df_for_collections = pd.merge(filtered_df_for_collections, filtered_collection_df_journals_items, on='Zotero link')
+                                        filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
+                                        filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(10)
+                                        filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
+                                        filtered_df_for_collections_2 = filtered_df_for_collections_2[filtered_df_for_collections_2['Collection_Name']!='01 Intelligence history']
+                                        filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
+                                        def remove_numbers(name):
+                                            return re.sub(r'^\d+(\.\d+)*\s*', '', name)
+                                        filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
+                                        row_nu = len(filtered_df_for_collections)
+                                        formatted_rows = []
+                                        for i in range(row_nu):
+                                            collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
+                                            number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
+                                            zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
+                                            formatted_row = (
+                                                f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
+                                                f"{number_of_items} items"
+                                            )
+                                            formatted_rows.append(f"{i+1}) " + formatted_row)
 
-                            outlier_detector = (filtered_collection_df['Citation'] > 1000).any()
-                            if outlier_detector == True:
-                                outlier_count = (filtered_collection_df['Citation'] > 1000).sum()
-                                citation_average = filtered_collection_df[filtered_collection_df['Citation'] < 1000]
-                                citation_average = round(citation_average['Citation'].mean(), 2)
-                                citation_average_with_outliers = round(filtered_collection_df['Citation'].mean(), 2)
-                                container_citation_average.metric(
-                                    label="Average citation", 
-                                    value=citation_average, 
-                                    help=f'**{outlier_count}** item(s) passed the threshold of 1000 citations. With the outliers, the average citation count is **{citation_average_with_outliers}**.'
+                                        # Use st.write to print each row
+                                        for row in formatted_rows:
+                                            st.caption(row)
+                                with coljournal4:
+                                    with st.popover('Filters and more'):
+                                        container_download = st.container()
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                non_nan_id = selected_journal_df['ID'].count()
+
+                                download_journal = selected_journal_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                                download_journal['Abstract'] = download_journal['Abstract'].str.replace('\n', ' ')
+                                download_journal = download_journal.reset_index(drop=True)
+                                def convert_df(download_journal):
+                                    return download_journal.to_csv(index=False).encode('utf-8-sig')
+
+                                csv = convert_df(download_journal)
+                                today = datetime.date.today().isoformat()
+                                num_items_collections = len(selected_journal_df)
+                                citation_count = selected_journal_df['Citation'].sum()
+
+                                true_count = selected_journal_df['OA status'].sum()
+                                total_count = len(selected_journal_df['OA status'])
+                                if total_count == 0:
+                                    oa_ratio = 0.0
+                                else:
+                                    oa_ratio = true_count / total_count * 100
+                                container_metric.metric(label="Number of items", value=int(num_items_collections))
+                                container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
+                                
+                                journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
+                                if len(journal_citations) >1:
+                                    container_dataframe.dataframe(journal_citations)
+
+                                citation_count = selected_journal_df['Citation'].sum()
+
+                                citation_count = selected_journal_df['Citation'].sum()
+                                total_rows = len(selected_journal_df)
+                                nan_count_citation = selected_journal_df['Citation_list'].isna().sum()
+                                non_nan_count_citation = total_rows - nan_count_citation
+                                non_nan_cited_df_dedup = selected_journal_df.dropna(subset=['Citation_list'])
+                                non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
+
+                                citation_mean = non_nan_cited_df_dedup['Citation'].mean()
+                                citation_median = non_nan_cited_df_dedup['Citation'].median()
+                                # st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
+                                container_citation.metric(
+                                    label="Number of citations", 
+                                    value=int(citation_count), 
+                                    help=f'''Not all papers are tracked for citation. 
+                                    Citation per publication: **{round(citation_mean, 1)}**, 
+                                    Citation median: **{round(citation_median, 1)}**'''
                                     )
 
-                            citation_average = round(filtered_collection_df['Citation'].mean(), 2)
-                            container_citation_average.metric(label="Average citation", value=citation_average)
-
-                            filtered_collection_df['FirstName2'] = filtered_collection_df['FirstName2'].astype(str)
-                            filtered_collection_df['multiple_authors'] = filtered_collection_df['FirstName2'].apply(lambda x: ',' in x)
-                            if len(filtered_collection_df) == 0:
-                                collaboration_ratio=0
-                            else:
-                                multiple_authored_papers = filtered_collection_df['multiple_authors'].sum()
-                                collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
-                                container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
-
-                            a = f'{selected_collection}_{today}'
-                            container_download.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
-
-                            on = st.toggle('Generate dashboard')
-                            if on and len(filtered_collection_df) > 0: 
-                                st.info(f'Dashboard for {selected_collection}')
-                                collection_df = filtered_collection_df.copy()
-                                
-                                publications_by_type = collection_df['Publication type'].value_counts()
-                                fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                            labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                            title=f'Publications by Type ({selected_collection})')
-                                st.plotly_chart(fig)
-
-                                collection_df = filtered_collection_df.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                                publications_by_year = collection_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year ({selected_collection})')
-                                st.plotly_chart(fig_year_bar)
-                            
-                                collection_author_df = filtered_collection_df.copy()
-                                collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                                collection_author_df = collection_author_df.explode('Author_name')
-                                collection_author_df.reset_index(drop=True, inplace=True)
-                                collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
-                                collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                                fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count ({selected_collection})',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
+                                selected_journal_df['multiple_authors'] = selected_journal_df['FirstName2'].apply(
+                                    lambda x: isinstance(x, str) and ',' in x
                                 )
-                                st.plotly_chart(fig) 
+                                multiple_authored_papers = selected_journal_df['multiple_authors'].sum()
+                                if multiple_authored_papers == 0:
+                                    collaboration_ratio = 0
+                                else:
+                                    collaboration_ratio = round(multiple_authored_papers/num_items_collections*100, 1)
+                                container_collaboration_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
 
-                                author_citation_df = filtered_collection_df.copy()
-                                author_citation_df['Author_name'] = author_citation_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                                author_citation_df = author_citation_df.explode('Author_name')
-                                name_replacements = {}  # Assuming name_replacements is defined elsewhere in your code
-                                author_citation_df['Author_name'] = author_citation_df['Author_name'].map(name_replacements).fillna(author_citation_df['Author_name'])
-                                author_citations = author_citation_df.groupby('Author_name')['Citation'].sum().reset_index()
-                                author_citations = author_citations.sort_values(by='Citation', ascending=False)
-                                fig = px.bar(author_citations.head(10), x='Author_name', y='Citation',
-                                            title=f'Top 10 Authors by Citation Count ({selected_collection})',
-                                            labels={'Citation': 'Number of Citations', 'Author_name': 'Author'})
-                                fig.update_layout(xaxis_tickangle=-45)
-                                st.plotly_chart(fig)
-
-                                author_df = filtered_collection_df.copy()
-                                def clean_text (text):
-                                    text = text.lower() # lowercasing
-                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                    return text
-                                author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                                author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                def tokenization(text):
-                                    text = re.split('\W+', text)
-                                    return text    
-                                author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                                stopword = nltk.corpus.stopwords.words('english')
-                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                    'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                def remove_stopwords(text):
-                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                    return text
-                                author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                                wn = nltk.WordNetLemmatizer()
-                                def lemmatizer(text):
-                                    text = [wn.lemmatize(word) for word in text]
-                                    return text
-                                author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                                listdf = author_df['lemma_title']
-                                df_list = [item for sublist in listdf for item in sublist]
-                                string = pd.Series(df_list).str.cat(sep=' ')
-                                wordcloud_texts = string
-                                wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                plt.figure(figsize=(20,8))
-                                plt.axis('off')
-                                plt.title(f"Word Cloud for Titles in ({selected_collection})")
-                                plt.imshow(wordcloud)
-                                plt.axis("off")
-                                plt.show()
-                                st.set_option('deprecation.showPyplotGlobalUse', False)
-                                st.pyplot()
-
-                            else:
-                                if not on:
-                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                                    if sort_by == 'Publication date :arrow_down:' or filtered_collection_df['Citation'].sum() == 0:
-                                        filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
-                                        filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                                def split_and_expand(authors):
+                                    # Ensure the input is a string
+                                    if isinstance(authors, str):
+                                        # Split by comma and strip whitespace
+                                        split_authors = [author.strip() for author in authors.split(',')]
+                                        return pd.Series(split_authors)
                                     else:
-                                        filtered_collection_df = filtered_collection_df.sort_values(by=['Citation'], ascending=False)
-                                        filtered_collection_df = filtered_collection_df.reset_index(drop=True)
+                                        # Return the original author if it's not a string
+                                        return pd.Series([authors])
+                                expanded_authors_types = selected_journal_df['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+                                expanded_authors_types = expanded_authors_types.reset_index(name='Author')
+                                author_no = len(expanded_authors_types)
+                                if author_no == 0:
+                                    author_pub_ratio=0.0
+                                else:
+                                    author_pub_ratio = round(author_no/num_items_collections, 2)
+                                container_author_number.metric(label='Number of authors', value=int(author_no))
+                                container_author_ratio.metric(
+                                    label='Author/publication ratio', 
+                                    value=author_pub_ratio, 
+                                    help='The average author number per publication.'
+                                )
+
+                                a = f'selected_journal_{today}'
+                                container_download.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+
+                                on = st.toggle('Generate dashboard')
+                                if on and len (selected_journal_df) > 0:
+                                    st.info(f'Dashboard for {journals}')
+                                    
+                                    if non_nan_id !=0:
+
+                                        colcite1, colcite2, colcite3 = st.columns(3)
+
+                                        with colcite1:
+                                            st.metric(label=f"Citation average", value=round((citation_count)/(num_items_collections)), label_visibility='visible', 
+                                            help=f'''This is for items at least with 1 citation.
+                                            Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
+                                            ''')
+                                        with colcite2:
+                                            mean_citation = selected_journal_df['Citation'].median()
+                                            st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
+                                            help=f'''This is for items at least with 1 citation.
+                                            ''')
+                                        with colcite3:
+                                            mean_first_citaion = selected_journal_df['Year_difference'].mean()
+                                            st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
+                                            help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
+                                            ''')
+                                    else:
+                                        st.write('No citation found for selected journal(s)!')
+
+                                    type_df = selected_journal_df.copy()
+                                    collection_df = type_df.copy()
+                                    collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                    publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                    fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                        labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                        title=f'Publications by Year for selected journal(s)')
+                                    st.plotly_chart(fig_year_bar)
+
+                                    publications_by_year = collection_df.groupby(['Year', 'Journal']).size().unstack().fillna(0)
+                                    publications_by_year = publications_by_year.cumsum(axis=0)
+
+                                    if len(journal_citations) >1:
+                                        journal_citations = journal_citations.reset_index()
+                                        journal_citations = journal_citations[journal_citations['Citation'] > 0]
+                                        journal_citations = journal_citations.sort_values(by='Citation', ascending=False)
+                                        fig = px.bar(journal_citations, x='Journal', y='Citation', title='Citations per Journal')
+                                        st.plotly_chart(fig, use_container_width = True)
+
+                                    fig_cumsum_line = px.line(publications_by_year, x=publications_by_year.index,
+                                                            y=publications_by_year.columns,
+                                                            labels={'x': 'Publication Year', 'y': 'Cumulative Publications'},
+                                                            title='Cumulative Publications Over Years for selected journal(s)')
+                                    st.plotly_chart(fig_cumsum_line, use_container_width = True)
+
+                                    fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
+                                                        title=f'Top Publication Themes ({journals})')
+                                    fig.update_traces(fill='toself')
+                                    st.plotly_chart(fig, use_container_width = True)
+
+                                    collection_author_df = type_df.copy()
+                                    collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                                    collection_author_df = collection_author_df.explode('Author_name')
+                                    collection_author_df.reset_index(drop=True, inplace=True)
+                                    collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
+                                    collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
+                                    fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
+                                    fig.update_layout(
+                                        title=f'Top 10 Authors by Publication Count for selected journal(s)',
+                                        xaxis_title='Author',
+                                        yaxis_title='Number of Publications',
+                                        xaxis_tickangle=-45,
+                                    )
+                                    st.plotly_chart(fig)
+
+                                    author_df = type_df.copy()
+                                    def clean_text (text):
+                                        text = text.lower() # lowercasing
+                                        text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                        text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                        text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                        return text
+                                    author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                                    author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                                    def tokenization(text):
+                                        text = re.split('\W+', text)
+                                        return text    
+                                    author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                                    stopword = nltk.corpus.stopwords.words('english')
+                                    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                        'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                        'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                        'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                        'examines', 'become', 'used', 'journal', 'london', 'review']
+                                    stopword.extend(SW)
+                                    def remove_stopwords(text):
+                                        text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                        text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                        return text
+                                    author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                                    wn = nltk.WordNetLemmatizer()
+                                    def lemmatizer(text):
+                                        text = [wn.lemmatize(word) for word in text]
+                                        return text
+                                    author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                                    listdf = author_df['lemma_title']
+                                    df_list = [item for sublist in listdf for item in sublist]
+                                    string = pd.Series(df_list).str.cat(sep=' ')
+                                    wordcloud_texts = string
+                                    wordcloud_texts_str = str(wordcloud_texts)
+                                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                    plt.figure(figsize=(20,8))
+                                    plt.axis('off')
+                                    plt.title(f"Word Cloud for Titles published in selected journal(s)")
+                                    plt.imshow(wordcloud)
+                                    plt.axis("off")
+                                    plt.show()
+                                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                                    st.pyplot()
+
+                                else:
+                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                    if sort_by == 'Publication date :arrow_down:' or selected_journal_df['Citation'].sum() == 0:
+                                        selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
+                                        selected_journal_df = selected_journal_df.reset_index(drop=True)
+                                    if sort_by=='Citation':
+                                        selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
+                                        selected_journal_df = selected_journal_df.reset_index(drop=True)
+                                    if sort_by == 'Date added :arrow_down:':
+                                        selected_journal_df = selected_journal_df.sort_values(by=['Date added'], ascending=False)
+                                        selected_journal_df = selected_journal_df.reset_index(drop=True)
+
                                     if num_items_collections > 20:
                                         show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
                                         if show_first_20:
-                                            filtered_collection_df = filtered_collection_df.head(20)
-
+                                            selected_journal_df = selected_journal_df.head(20)                            
                                     if view == 'Basic list':
                                         articles_list = []  # Store articles in a list
-                                        for index, row in filtered_collection_df.iterrows():
+                                        for index, row in selected_journal_df.iterrows():
                                             formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                                            articles_list.append(formatted_entry)    
+                                            articles_list.append(formatted_entry)                     
                                         
-                                        for index, row in filtered_collection_df.iterrows():
+                                        for index, row in selected_journal_df.iterrows():
                                             publication_type = row['Publication type']
                                             title = row['Title']
                                             authors = row['FirstName2']
-                                            date_published = row['Date published']
+                                            date_published = row['Date published'] 
                                             link_to_publication = row['Link to publication']
                                             zotero_link = row['Zotero link']
                                             citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
@@ -1535,14 +2388,14 @@ with st.spinner('Retrieving data...'):
                                             formatted_entry = format_entry(row)
                                             st.write(f"{index + 1}) {formatted_entry}")
                                     if view == 'Table':
-                                        df_table_view = filtered_collection_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
+                                        df_table_view = selected_journal_df[['Publication type','Title', 'Journal', 'Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
                                         df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                                         df_table_view
-                                    if view == 'Bibliography':
-                                        filtered_collection_df['zotero_item_key'] = filtered_collection_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                    if view =='Bibliography':
+                                        selected_journal_df['zotero_item_key'] = selected_journal_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
                                         df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-                                        filtered_collection_df = pd.merge(filtered_collection_df, df_zotero_id, on='zotero_item_key', how='left')
-                                        df_zotero_id = filtered_collection_df[['zotero_item_key']]
+                                        selected_journal_df = pd.merge(selected_journal_df, df_zotero_id, on='zotero_item_key', how='left')
+                                        df_zotero_id = selected_journal_df[['zotero_item_key']]
 
                                         def display_bibliographies2(df):
                                             all_bibliographies = ""
@@ -1555,134 +2408,125 @@ with st.spinner('Retrieving data...'):
                                                 all_bibliographies += row['bibliography']
 
                                             st.markdown(all_bibliographies, unsafe_allow_html=True)
-                                        display_bibliographies2(filtered_collection_df)
-                                else:  # If toggle is on but no publications are available
-                                    st.write("No publication type selected.")
+                                        display_bibliographies2(selected_journal_df)
+                    search_journal()
                 
-                    # search_collection()
-
-                elif search_option == "Publication types": 
+                elif search_option == "Publication year": 
                     st.query_params.clear()
-                    st.subheader('Publication types', anchor=False, divider='blue') 
-                    # @st.experimental_fragment
-                    # def type_selection():
-                    df_csv_types = df_dedup.copy()
-                    unique_types = [''] + list(df_authors['Publication type'].unique())
-                    # unique_types =  list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option The following bit was at the front [''] +
-                    selected_type = st.selectbox('Select a publication type', unique_types)
+                    st.subheader('Items by publication year', anchor=False, divider='blue')
 
-                    if not selected_type or selected_type == '':
-                        st.write('Pick a publication type to see items')
-                    else:
-                        filtered_collection_df_authors = df_csv_types[df_csv_types['Publication type']== selected_type]
-                        filtered_collection_df_authors_items = filtered_collection_df_authors[['Zotero link']]
+                    @st.experimental_fragment
+                    def search_pub_year():
+                        with st.expander('Click to expand', expanded=True):                    
+                            df_all = df_dedup.copy()
+                            df_all['Date published2'] = (
+                                df_all['Date published']
+                                .str.strip()
+                                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            )
+                            # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                            # df_all
+                            df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
+                            df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
+                            numeric_years = df_all['Date year'].dropna()
+                            current_year = date.today().year
+                            min_y = numeric_years.min()
+                            max_y = numeric_years.max()
 
-                        filtered_type_df = df_csv_types[df_csv_types['Publication type']==selected_type]
-                        # filtered_collection_df = filtered_collection_df.sort_values(by='Date published', ascending=False).reset_index(drop=True)
+                            df_all['Date published'] = (
+                                df_all['Date published']
+                                .str.strip()
+                                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            )
+                            # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                            df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
+                            df_all['Date published'] = df_all['Date published'].fillna('')
+                            df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
+                            df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                            df_all = df_all.sort_values(by=['Date published'], ascending=False)
 
-                        # filtered_type_df['Date published'] = pd.to_datetime(filtered_type_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                        filtered_type_df['Date published'] = (
-                            filtered_type_df['Date published']
-                            .str.strip()
-                            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                        )
-                        filtered_type_df['Date published'] = filtered_type_df['Date published'].dt.strftime('%Y-%m-%d')
-                        filtered_type_df['Date published'] = filtered_type_df['Date published'].fillna('')
-                        filtered_type_df['No date flag'] = filtered_type_df['Date published'].isnull().astype(np.uint8)
-                        filtered_type_df = filtered_type_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                            current_year = date.today().year 
+                            years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
 
-                        # publications_by_type = filtered_collection_df['Publication type'].value_counts()
-                        
-                        with st.expander('Click to expand', expanded=True):
-                            st.subheader('Publication type: ' + selected_type, anchor=False, divider='blue')
-                            if selected_type == 'Thesis':
-                                st.warning('Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).')
-                            coltype1, coltype2, coltype3, coltype4 = st.columns(4)
-                            with coltype1:
+                            filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
+                            df_all = df_all.loc[filter]
+
+                            # if years[0] == years[1] or years[0]==current_year:
+                            #     st.markdown(f'#### Items published in **{int(years[0])}**')
+                            # else:
+                            #     st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
+
+                            coly1, coly2, coly3, coly4 = st.columns(4)
+                            with coly1:
                                 container_metric = st.container()
-                            with coltype2:
+                            with coly2:
                                 with st.popover('More metrics'):
                                     container_citation = st.container()
+                                    container_citation_average = st.container()
                                     container_oa = st.container()
-                                    container_collaboration_ratio = st.container()
-                                    container_author_number  = st.container()
-                                    container_author_ratio = st.container()
-                            with coltype3:
-                                with st.popover('Relevant themes'):
-                                    st.markdown(f'##### Top relevant publication themes')
-                                    filtered_df_for_collections =  df_duplicated.copy()
-                                    filtered_df_for_collections = pd.merge(filtered_df_for_collections, filtered_collection_df_authors_items, on='Zotero link')
-                                    filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
-                                    filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(10)
-                                    filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
-                                    filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
-                                    def remove_numbers(name):
-                                        return re.sub(r'^\d+(\.\d+)*\s*', '', name)
-                                    filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
-                                    row_nu = len(filtered_df_for_collections)
-                                    formatted_rows = []
-                                    for i in range(row_nu):
-                                        collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
-                                        number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
-                                        zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
-                                        formatted_row = (
-                                            f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
-                                            f"{number_of_items} items"
-                                        )
-                                        formatted_rows.append(f"{i+1}) " + formatted_row)
-
-                                    # Use st.write to print each row
-                                    for row in formatted_rows:
-                                        st.caption(row)
-                            with coltype4:
+                                    container_type = st.container()
+                                    container_author_no = st.container()
+                                    container_author_pub_ratio = st.container()
+                                    container_publication_ratio = st.container()
+                            with coly3:
+                                with st.popover('Releveant themes'):
+                                    st.markdown(f'##### Top relevant themes')
+                                    container_themes = st.container()
+                            with coly4:
                                 with st.popover('Filters and more'):
-                                    container_download_types = st.container()
-                                    if selected_type=='Thesis':
-                                        unique_thesis_types = [''] + list(filtered_type_df['Thesis_type'].unique())
-                                        selected_thesis_type = st.selectbox('Select a thesis type', unique_thesis_types)
-
-                                        if selected_thesis_type:
-                                            filtered_type_df = filtered_type_df[filtered_type_df['Thesis_type']==selected_thesis_type]
-                                            
-                                        unique_universities = [''] + sorted(list(map(str, filtered_type_df['University'].unique())))
-                                        selected_thesis_uni = st.selectbox('Select a university', unique_universities)
-
-                                        if not selected_thesis_uni == '':
-                                            filtered_type_df = filtered_type_df[filtered_type_df['University']==selected_thesis_uni]
+                                    st.warning('Items without a publication date are not listed here!')
+                                    pub_types = df_all['Publication type'].unique()
+                                    selected_type = st.multiselect("Filter by publication type:", pub_types)
+                                    if selected_type:
+                                        df_all = df_all[df_all['Publication type'].isin(selected_type)]
+                                    df_all = df_all.reset_index(drop=True)
+                                    container_download = st.container()
                                     view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
-                                        
-                            download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                            download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
-                            download_types = download_types.reset_index(drop=True)
 
-                            def convert_df(download_types):
-                                return download_types.to_csv(index=False).encode('utf-8-sig')
+                            df_all_download = df_all.copy()
+                            df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
+                            df_all_download['Abstract'] = df_all_download['Abstract'].str.replace('\n', ' ')
+                            df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
+                            def convert_df(df_all_download):
+                                return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                            csv_selected = convert_df(df_all_download)
+                            # csv = df_download
+                            # # st.caption(collection_name)
+                            a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
+                            container_download.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                            number_of_items = len(df_all)
 
-                            csv = convert_df(download_types)
-                            today = datetime.date.today().isoformat()
+                            publications_by_type = df_all['Publication type'].value_counts()
+                            breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
 
-                            num_items_collections = len(filtered_type_df)
-                            # st.write(f"**{num_items_collections}** sources found")
-                            container_metric.metric(label="Number of items", value=int(num_items_collections))
+                            citation_count = df_all['Citation'].sum()
+                            total_rows = len(df_all)
+                            nan_count_citation = df_all['Citation_list'].isna().sum()
+                            non_nan_count_citation = total_rows - nan_count_citation
+                            non_nan_cited_df_dedup = df_all.dropna(subset=['Citation_list'])
+                            non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
+                            citation_mean = non_nan_cited_df_dedup['Citation'].mean()
+                            citation_median = non_nan_cited_df_dedup['Citation'].median()
+                            container_citation.metric(
+                                label="Number of citations", 
+                                value=int(citation_count), 
+                                )
 
-                            true_count = filtered_type_df[filtered_type_df['Publication type']=='Journal article']['OA status'].sum()
-                            total_count = len(filtered_type_df[filtered_type_df['Publication type']=='Journal article'])
-                            if total_count == 0:
-                                oa_ratio = 0.0
-                            else:
-                                oa_ratio = true_count / total_count * 100
-                            container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
+                            outlier_detector = (df_all['Citation'] > 1000).any()
+                            if outlier_detector == True:
+                                outlier_count = (df_all['Citation'] > 1000).sum()
+                                citation_average = df_all[df_all['Citation'] < 1000]
+                                citation_average = round(citation_average['Citation'].mean(), 2)
+                                citation_average_with_outliers = round(df_all['Citation'].mean(), 2)
+                                container_citation_average.metric(
+                                    label="Average citation", 
+                                    value=citation_average, 
+                                    help=f'**{outlier_count}** item(s) passed the threshold of 1000 citations. With the outliers, the average citation count is **{citation_average_with_outliers}**.'
+                                    )
+                            citation_average = round(df_all['Citation'].mean(), 2)
+                            container_citation_average.metric(label="Average citation", value=citation_average)
 
-                            filtered_type_df['multiple_authors'] = filtered_type_df['FirstName2'].apply(
-                                lambda x: isinstance(x, str) and ',' in x
-                            )
-                            multiple_authored_papers = filtered_type_df['multiple_authors'].sum()
-                            if multiple_authored_papers == 0:
-                                collaboration_ratio = 0
-                            else:
-                                collaboration_ratio = round(multiple_authored_papers/num_items_collections*100, 1)
-                            container_collaboration_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
-
+                            num_items_collections = len(df_all)
                             def split_and_expand(authors):
                                 # Ensure the input is a string
                                 if isinstance(authors, str):
@@ -1692,199 +2536,251 @@ with st.spinner('Retrieving data...'):
                                 else:
                                     # Return the original author if it's not a string
                                     return pd.Series([authors])
-                            expanded_authors_types = filtered_type_df['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
-                            expanded_authors_types = expanded_authors_types.reset_index(name='Author')
-                            author_no = len(expanded_authors_types)
-                            if author_no == 0:
+                            if len(df_all) == 0:
                                 author_pub_ratio=0.0
+                                author_no=0
                             else:
+                                expanded_authors_years = df_all['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+                                expanded_authors_years = expanded_authors_years.reset_index(name='Author')
+                                author_no = len(expanded_authors_years)
                                 author_pub_ratio = round(author_no/num_items_collections, 2)
-                            container_author_number.metric(label='Number of authors', value=int(author_no))
-                            container_author_ratio.metric(
-                                label='Author/publication ratio', 
-                                value=author_pub_ratio, 
-                                help='The average author number per publication.'
-                            )
+                            container_author_no.metric(label='Number of authors', value=int(author_no))
+                            container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
 
-                            citation_count = filtered_type_df['Citation'].sum()
-                            citation_mean = non_nan_cited_df_dedup['Citation'].mean()
-                            citation_median = non_nan_cited_df_dedup['Citation'].median()
-                            # st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
-                            container_citation.metric(
-                                label="Number of citations", 
-                                value=int(citation_count), 
-                                help=f'''Not all papers are tracked for citation. 
-                                Citation per publication: **{round(citation_mean, 1)}**, 
-                                Citation median: **{round(citation_median, 1)}**'''
+                            true_count = len(df_all[df_all['OA status']==True])
+                            total_count = df_all[['OA status']]
+                            total_count = total_count.dropna().reset_index(drop=True)
+                            total_count = len(total_count)
+                            if total_count == 0:
+                                oa_ratio = 0.0
+                            else:
+                                oa_ratio = true_count / total_count * 100
+                            container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help=f'Not all items are measured for OA.')
+
+                            item_type_no = df_all['Publication type'].nunique()
+                            container_type.metric(label='Number of publication types', value=int(item_type_no))
+
+                            df_all['FirstName2'] = df_all['FirstName2'].astype(str)
+                            df_all['multiple_authors'] = df_all['FirstName2'].apply(lambda x: ',' in x)
+                            if len(df_all) == 0:
+                                collaboration_ratio=0
+                            else:
+                                multiple_authored_papers = df_all['multiple_authors'].sum()
+                                collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
+                                container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+
+                            if years[0] == years[1] or years[0]==current_year:
+                                colyear1, colyear2 = st.columns([2,3])
+                                with colyear1:
+                                    container_metric.metric(label=f"#Sources published in **{int(years[0])}**", value=f'{number_of_items}', label_visibility='visible', 
+                                    help=f'({breakdown_string})')
+                                with colyear2: 
+                                    total_count = df_all[['OA status']]
+                                    total_count = total_count.dropna().reset_index(drop=True)
+                                    total_count = len(total_count)
+                                    true_count = len(df_all[df_all['OA status']==True])
+                                    # total_count = len(df_all[df_all['Publication type']=='Journal article'])
+                                    if total_count == 0:
+                                        oa_ratio = 0.0
+                                    else:
+                                        oa_ratio = true_count / total_count * 100
+
+                                    # container_metric.metric(label=f"Open access coverage", value=f"{int(oa_ratio)}%", label_visibility='visible', 
+                                    # help=f'Journal articles only')                           
+                            else:
+                                colyear11, colyear22 = st.columns([2,3])
+                                with colyear11:
+                                    container_metric.metric(label=f"#Sources published between **{int(years[0])}** - **{int(years[1])}**", value=f'{number_of_items}', label_visibility='visible', 
+                                    help=f'({breakdown_string})')    
+                                with colyear22:
+                                    total_count = df_all[['OA status']]
+                                    total_count = total_count.dropna().reset_index(drop=True)
+                                    total_count = len(total_count)
+                                    true_count = len(df_all[df_all['OA status']==True])
+                                    if total_count == 0:
+                                        oa_ratio = 0.0
+                                    else:
+                                        oa_ratio = true_count / total_count * 100  
+
+                            filtered_collection_df_journals = df_all.copy()
+                            filtered_collection_df_journals_items = filtered_collection_df_journals[['Zotero link']]
+
+                            filtered_df_for_collections =  df_duplicated.copy()
+                            filtered_df_for_collections = pd.merge(filtered_df_for_collections, filtered_collection_df_journals_items, on='Zotero link')
+                            filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
+                            filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(10)
+                            filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
+                            filtered_df_for_collections_2 = filtered_df_for_collections_2[filtered_df_for_collections_2['Collection_Name']!='01 Intelligence history']
+                            filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
+                            def remove_numbers(name):
+                                return re.sub(r'^\d+(\.\d+)*\s*', '', name)
+                            filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
+                            row_nu = len(filtered_df_for_collections)
+                            formatted_rows = []
+                            for i in range(row_nu):
+                                collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
+                                number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
+                                zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
+                                formatted_row = (
+                                    f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
+                                    f"{number_of_items} items"
                                 )
+                                formatted_rows.append(f"{i+1}) " + formatted_row)
 
-                            a = f'{selected_type}_{today}'
-                            container_download_types.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                            # Use st.write to print each row
+                            for row in formatted_rows:
+                                container_themes.caption(row)                
 
-                            on = st.toggle('Generate dashboard')
-                            if on and len (filtered_type_df) > 0:
-                                st.info(f'Dashboard for {selected_type}')
-                                type_df = filtered_type_df.copy()
-                                collection_df = type_df.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                                publications_by_year = collection_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year ({selected_type})')
-                                st.plotly_chart(fig_year_bar)
+                            dashboard_all = st.toggle('Generate dashboard')
+                            if dashboard_all:
+                                if dashboard_all and len(df_all) > 0: 
+                                    if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                        st.info(f'Dashboard for items published between {int(years[0])} and {int(years[1])}')
+                                    else:
+                                        st.info(f'Dashboard for items published in {int(years[0])}')
+                                    collection_df = df_all.copy()
+                                    
+                                    publications_by_type = collection_df['Publication type'].value_counts()
+                                    if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                        fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                                    labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
+                                    else:
+                                        fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
+                                                    labels={'x': 'Publication Type', 'y': 'Number of Publications'},
+                                                    title=f'Publications by Type in {int(years[0])}')
+                                    st.plotly_chart(fig)
 
-                                fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
-                                                    title=f'Top Publication Themes ({selected_type})')
-                                fig.update_traces(fill='toself')
-                                st.plotly_chart(fig, use_container_width = True)
+                                    if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                        collection_df = df_all.copy()
+                                        collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                        publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                        fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                            labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                            title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
+                                        st.plotly_chart(fig_year_bar)
+                                    else:
+                                        collection_df = df_all.copy()
+                                        collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
+                                        publications_by_year = collection_df['Month'].value_counts().sort_index()
+                                        fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                            labels={'x': 'Publication Month', 'y': 'Number of Publications'},
+                                                            title=f'Publications by Month in {int(years[0])}')
+                                        st.plotly_chart(fig_year_bar)
 
-                                if selected_type != 'Thesis':
-                                    collection_author_df = type_df.copy()
+                                    if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                        fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
+                                                            title=f'Top Publication Themes between {int(years[0])} and {int(years[1])}')
+                                        fig.update_traces(fill='toself')
+                                        st.plotly_chart(fig, use_container_width = True)
+                                    else:
+                                        fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
+                                                            title=f'Top Publication Themes in {int(years[0])}')
+                                        fig.update_traces(fill='toself')
+                                        st.plotly_chart(fig, use_container_width = True)
+
+                                    collection_author_df = df_all.copy()
                                     collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
                                     collection_author_df = collection_author_df.explode('Author_name')
                                     collection_author_df.reset_index(drop=True, inplace=True)
                                     collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
                                     collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
                                     fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                                    fig.update_layout(
-                                        title=f'Top 10 Authors by Publication Count ({selected_type})',
-                                        xaxis_title='Author',
-                                        yaxis_title='Number of Publications',
-                                        xaxis_tickangle=-45,
-                                    )
+                                    if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                        fig.update_layout(
+                                            title=f'Top 10 Authors by Publication Count between {int(years[0])} and {int(years[1])}',
+                                            xaxis_title='Author',
+                                            yaxis_title='Number of Publications',
+                                            xaxis_tickangle=-45,
+                                        )
+                                    else:
+                                        fig.update_layout(
+                                            title=f'Top 10 Authors by Publication Count in {int(years[0])}',
+                                            xaxis_title='Author',
+                                            yaxis_title='Number of Publications',
+                                            xaxis_tickangle=-45,
+                                        )
                                     st.plotly_chart(fig)
 
-                                if selected_type == 'Thesis':
-                                    col1, col2 = st.columns([2,3])
-                                    with col1:
-                                        thesis_types = type_df['Thesis_type'].value_counts().reset_index()
-                                        thesis_types.columns = ['Thesis Type', 'Number of Theses']
-
-                                        # Create the pie chart
-                                        fig = px.pie(thesis_types, names='Thesis Type', values='Number of Theses', 
-                                                    title='Theses by Type')
-                                        st.plotly_chart(fig)
-                                    with col2:
-                                        thesis_counts = type_df.groupby(['University', 'Thesis_type']).size().reset_index(name='Number of Theses')
-
-                                        # Calculate the total number of theses for each university
-                                        total_theses_per_university = thesis_counts.groupby('University')['Number of Theses'].sum().reset_index()
-
-                                        # Filter to get the top 10 universities by the total number of theses
-                                        top_universities = total_theses_per_university.nlargest(10, 'Number of Theses')['University']
-                                        # Filter the thesis_counts DataFrame to include only these top 10 universities
-                                        thesis_counts_top = thesis_counts[thesis_counts['University'].isin(top_universities)]
-                                        # Merge the total counts to retain the ordering
-                                        thesis_counts_top = thesis_counts_top.merge(total_theses_per_university, on='University', suffixes=('', '_total'))
-                                        # Order the universities by the total number of theses
-                                        thesis_counts_top = thesis_counts_top.sort_values('Number of Theses_total', ascending=False).reset_index(drop=True)
-
-                                        fig = px.bar(thesis_counts_top, x='University', y='Number of Theses', color='Thesis_type',
-                                                    labels={'x': 'University', 'y': 'Number of Theses', 'color': 'Thesis Type'},
-                                                    title='Theses by Institution and Type')
-                                        # Display the bar chart in the Streamlit app
-                                        st.plotly_chart(fig)
-
-                                author_df = type_df.copy()
-                                def clean_text (text):
-                                    text = text.lower() # lowercasing
-                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                    return text
-                                author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                                author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                def tokenization(text):
-                                    text = re.split('\W+', text)
-                                    return text    
-                                author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                                stopword = nltk.corpus.stopwords.words('english')
-                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                    'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                def remove_stopwords(text):
-                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                    return text
-                                author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                                wn = nltk.WordNetLemmatizer()
-                                def lemmatizer(text):
-                                    text = [wn.lemmatize(word) for word in text]
-                                    return text
-                                author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                                listdf = author_df['lemma_title']
-                                df_list = [item for sublist in listdf for item in sublist]
-                                string = pd.Series(df_list).str.cat(sep=' ')
-                                wordcloud_texts = string
-                                wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                plt.figure(figsize=(20,8))
-                                plt.axis('off')
-                                plt.title(f"Word Cloud for Titles in ({selected_type})")
-                                plt.imshow(wordcloud)
-                                plt.axis("off")
-                                plt.show()
-                                st.set_option('deprecation.showPyplotGlobalUse', False)
-                                st.pyplot()
-                            else: 
+                                    author_df = df_all.copy()
+                                    def clean_text (text):
+                                        text = text.lower() # lowercasing
+                                        text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                        text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                        text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                        return text
+                                    author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                                    author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                                    def tokenization(text):
+                                        text = re.split('\W+', text)
+                                        return text    
+                                    author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                                    stopword = nltk.corpus.stopwords.words('english')
+                                    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                        'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                        'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                        'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                        'examines', 'become', 'used', 'journal', 'london', 'review']
+                                    stopword.extend(SW)
+                                    def remove_stopwords(text):
+                                        text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                        text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                        return text
+                                    author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                                    wn = nltk.WordNetLemmatizer()
+                                    def lemmatizer(text):
+                                        text = [wn.lemmatize(word) for word in text]
+                                        return text
+                                    author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                                    listdf = author_df['lemma_title']
+                                    df_list = [item for sublist in listdf for item in sublist]
+                                    string = pd.Series(df_list).str.cat(sep=' ')
+                                    wordcloud_texts = string
+                                    wordcloud_texts_str = str(wordcloud_texts)
+                                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                    plt.figure(figsize=(20,8))
+                                    plt.axis('off')
+                                    if abs(years[1]-years[0])>0 and years[0]<current_year:
+                                        plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
+                                    else:
+                                        plt.title(f"Word Cloud for Titles in {int(years[0])}")
+                                    plt.imshow(wordcloud)
+                                    plt.axis("off")
+                                    plt.show()
+                                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                                    st.pyplot()
+                            else:
                                 sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                                if sort_by == 'Publication date :arrow_down:' or filtered_type_df['Citation'].sum() == 0:
-                                    filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
-                                    filtered_type_df = filtered_type_df.reset_index(drop=True)
+                                if sort_by == 'Publication date :arrow_down:' or df_all['Citation'].sum() == 0:
+                                    df_all = df_all.sort_values(by=['Date published'], ascending=False)
+                                    df_all = df_all.reset_index(drop=True)
                                 else:
-                                    filtered_type_df = filtered_type_df.sort_values(by=['Citation'], ascending=False)
-                                    filtered_type_df = filtered_type_df.reset_index(drop=True)
-                                if num_items_collections > 20:
-                                    show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+                                    df_all = df_all.sort_values(by=['Citation'], ascending=False)
+                                    df_all = df_all.reset_index(drop=True)
+                                if number_of_items > 20:
+                                    show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True, key='all_items')
                                     if show_first_20:
-                                        filtered_type_df = filtered_type_df.head(20) 
-
-                                if view =='Basic list':
+                                        df_all = df_all.head(20)
+                                if view == 'Basic list':
                                     articles_list = []  # Store articles in a list
-                                    for index, row in filtered_type_df.iterrows():
-                                        formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                                        articles_list.append(formatted_entry)                     
-                                    
-                                    for index, row in filtered_type_df.iterrows():
-                                        publication_type = row['Publication type']
-                                        title = row['Title']
-                                        authors = row['FirstName2']
-                                        date_published = row['Date published'] 
-                                        link_to_publication = row['Link to publication']
-                                        zotero_link = row['Zotero link']
-                                        citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
-                                        citation = int(float(citation))
-                                        citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
-                                        citation_link = citation_link.replace('api.', '')
-
-                                        published_by_or_in_dict = {
-                                            'Journal article': 'Published in',
-                                            'Magazine article': 'Published in',
-                                            'Newspaper article': 'Published in',
-                                            'Book': 'Published by',
-                                        }
-
-                                        publication_type = row['Publication type']
-
-                                        published_by_or_in = published_by_or_in_dict.get(publication_type, '')
-                                        published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                                        if publication_type == 'Book':
-                                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-
+                                    abstracts_list = [] #Store abstracts in a list
+                                    for index, row in df_all.iterrows():
                                         formatted_entry = format_entry(row)
-                                        st.write(f"{index + 1}) {formatted_entry}")
-                                if view =='Table':
-                                    df_table_view = filtered_type_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
+                                        articles_list.append(formatted_entry)  # Append formatted entry to the list
+                                        abstract = row['Abstract']
+                                        abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                                    for i, article in enumerate(articles_list, start=1):
+                                        # Display the article with highlighted search terms
+                                        st.markdown(f"{i}. {article}", unsafe_allow_html=True)
+                                if view == 'Table':
+                                    df_table_view = df_all[['Publication type','Title','Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
                                     df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                                     df_table_view
-                                if view =='Bibliography':
-                                    filtered_type_df['zotero_item_key'] = filtered_type_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                if view == 'Bibliography':
+                                    df_all['zotero_item_key'] = df_all['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
                                     df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-                                    filtered_type_df = pd.merge(filtered_type_df, df_zotero_id, on='zotero_item_key', how='left')
-                                    df_zotero_id = filtered_type_df[['zotero_item_key']]
+                                    df_all = pd.merge(df_all, df_zotero_id, on='zotero_item_key', how='left')
+                                    df_zotero_id = df_all[['zotero_item_key']]
 
                                     def display_bibliographies2(df):
                                         all_bibliographies = ""
@@ -1897,149 +2793,192 @@ with st.spinner('Retrieving data...'):
                                             all_bibliographies += row['bibliography']
 
                                         st.markdown(all_bibliographies, unsafe_allow_html=True)
-                                    display_bibliographies2(filtered_type_df)
+                                    display_bibliographies2(df_all)
+                    
+                    search_pub_year()
                 
-                    # type_selection()
-                
-                elif search_option == "Search journal":
+                elif search_option == "Cited papers":
                     st.query_params.clear()
-                    st.subheader('Search journal', anchor=False, divider='blue')
-
-                    # @st.experimental_fragment
-                    # def search_journal():
-                    df_csv = df_dedup.copy()
-                    df_csv = df_csv[df_csv['Publication type']=='Journal article']
-                    journal_counts = df_csv['Journal'].value_counts()
-                    unique_journals_sorted = journal_counts.index.tolist()
-                    journals = st.multiselect('Select a journal', unique_journals_sorted)
-
-                    if not journals:
-                        st.write('Pick a journal name to see items')
-                    else:
-                        selected_journal_df = df_csv[df_csv['Journal'].isin(journals)]
-
-                        filtered_collection_df_journals = selected_journal_df.copy()
-                        filtered_collection_df_journals_items = filtered_collection_df_journals[['Zotero link']]
-
-                        selected_journal_df['Date published'] = (
-                            selected_journal_df['Date published']
-                            .str.strip()
-                            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                        )
-                        # selected_journal_df['Date published'] = pd.to_datetime(selected_journal_df['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                        selected_journal_df['Date published'] = selected_journal_df['Date published'].dt.strftime('%Y-%m-%d')
-                        selected_journal_df['Date published'] = selected_journal_df['Date published'].fillna('')
-                        selected_journal_df['No date flag'] = selected_journal_df['Date published'].isnull().astype(np.uint8)
-                        selected_journal_df = selected_journal_df.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-
-                        # publications_by_type = filtered_collection_df['Publication type'].value_counts()
-                        
+                    st.subheader('Cited items in the library', anchor=False, divider='blue')
+                    
+                    @st.experimental_fragment
+                    def search_cited_papers():
                         with st.expander('Click to expand', expanded=True):
-                            if len(selected_journal_df['Journal'].drop_duplicates())==1:
-                                st.markdown('#### Selected Journal: ' + str(journals[0]))
-                            else:
-                                st.markdown('#### Selected Journals: ')
-                                items_string = ', '.join(journals)
-                                st.write(items_string)
+                            container_markdown = st.container()              
+                            df_cited = df_dedup.copy()
+                            df_cited_for_mean = df_dedup.copy()
+                            non_nan_id = df_cited['ID'].count()
+                            df_cited = df_cited[(df_cited['Citation'].notna())]# & (df_cited['Citation'] != 0)]
+                            df_cited = df_cited.reset_index(drop=True)
 
-                            coljournal1, coljournal2, coljournal3, coljournal4 = st.columns(4)
-                            with coljournal1:
+                            colcite1, colcite2, colcite3 = st.columns(3)
+                            with colcite1:
                                 container_metric = st.container()
-                            with coljournal2:
+                            with colcite2:
                                 with st.popover('More metrics'):
                                     container_citation = st.container()
+                                    container_citation_average = st.container()
                                     container_oa = st.container()
-                                    container_collaboration_ratio = st.container()
-                                    container_author_number  = st.container()
-                                    container_author_ratio = st.container()
-                                    container_dataframe = st.container()
-                            with coljournal3:
-                                with st.popover('Relevant themes'):
-                                    st.markdown(f'##### Top 5 relevant themes')
-                                    filtered_df_for_collections =  df_duplicated.copy()
-                                    filtered_df_for_collections = pd.merge(filtered_df_for_collections, filtered_collection_df_journals_items, on='Zotero link')
-                                    filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
-                                    filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(10)
-                                    filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
-                                    filtered_df_for_collections_2 = filtered_df_for_collections_2[filtered_df_for_collections_2['Collection_Name']!='01 Intelligence history']
-                                    filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
-                                    def remove_numbers(name):
-                                        return re.sub(r'^\d+(\.\d+)*\s*', '', name)
-                                    filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
-                                    row_nu = len(filtered_df_for_collections)
-                                    formatted_rows = []
-                                    for i in range(row_nu):
-                                        collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
-                                        number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
-                                        zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
-                                        formatted_row = (
-                                            f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
-                                            f"{number_of_items} items"
-                                        )
-                                        formatted_rows.append(f"{i+1}) " + formatted_row)
-
-                                    # Use st.write to print each row
-                                    for row in formatted_rows:
-                                        st.caption(row)
-                            with coljournal4:
+                                    container_author_no = st.container()
+                                    container_author_pub_ratio = st.container()
+                                    container_publication_ratio = st.container()
+                            with colcite3:
                                 with st.popover('Filters and more'):
+                                    st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
+                                    citation_type = st.radio('Select:', ('All citations', 'Trends', 'Citations without outliers'))
+                                    if citation_type=='All citations':
+                                        df_cited = df_cited.reset_index(drop=True)
+                                    elif citation_type=='Trends':
+                                        current_year = datetime.datetime.now().year
+                                        df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
+                                        df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
+                                        note = (f'''
+                                        The trends section shows the citations occured in the last two years 
+                                        ({current_year - 1}-{current_year}) to the papers published in the same period. 
+                                        ''')
+                                    elif citation_type == 'Citations without outliers':
+                                        outlier_detector = (df_cited['Citation'] > 1000).any()
+                                        outlier_count = (df_cited['Citation'] > 1000).sum()
+                                        df_cited = df_cited[df_cited['Citation'] < 1000]
+                                        df_cited_for_mean =df_cited_for_mean[df_cited_for_mean['Citation'] < 1000]
+
+                                    container_markdown.markdown(f'#### {citation_type}')
+                                    container_slider = st.container()
                                     container_download = st.container()
                                     view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
-                            non_nan_id = selected_journal_df['ID'].count()
 
-                            download_journal = selected_journal_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                            download_journal['Abstract'] = download_journal['Abstract'].str.replace('\n', ' ')
-                            download_journal = download_journal.reset_index(drop=True)
-                            def convert_df(download_journal):
-                                return download_journal.to_csv(index=False).encode('utf-8-sig')
+                            max_value = int(df_cited['Citation'].max())
+                            min_value = 1
+                            selected_range = container_slider.slider('Select a citation range:', min_value, max_value, (min_value, max_value), key='')
+                            filter = (df_cited['Citation'] >= selected_range[0]) & (df_cited['Citation'] <= selected_range[1])
+                            df_cited = df_cited.loc[filter]
 
-                            csv = convert_df(download_journal)
-                            today = datetime.date.today().isoformat()
-                            num_items_collections = len(selected_journal_df)
-                            citation_count = selected_journal_df['Citation'].sum()
+                            df_cited['Date published2'] = (
+                                df_cited['Date published']
+                                .str.strip()
+                                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            )
+                            df_cited['Date year'] = df_cited['Date published2'].dt.strftime('%Y')
+                            df_cited['Date year'] = pd.to_numeric(df_cited['Date year'], errors='coerce', downcast='integer')
 
-                            true_count = selected_journal_df['OA status'].sum()
-                            total_count = len(selected_journal_df['OA status'])
+                            df_cited['Date published'] = (
+                                df_cited['Date published']
+                                .str.strip()
+                                .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                            )
+                            df_cited['Date published'] = df_cited['Date published'].dt.strftime('%Y-%m-%d')
+                            df_cited['Date published'] = df_cited['Date published'].fillna('')
+                            df_cited['No date flag'] = df_cited['Date published'].isnull().astype(np.uint8)
+                            df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
+                            df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
+
+                            # pub_types = df_cited['Publication type'].unique()
+                            # selected_type = st.multiselect("Filter by publication type:", pub_types)
+                            # if selected_type:
+                            #     df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
+                            
+                            df_cited = df_cited.reset_index(drop=True)
+
+                            df_cited_download = df_cited.copy()
+                            df_cited_download = df_cited_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
+                            df_cited_download['Abstract'] = df_cited_download['Abstract'].str.replace('\n', ' ')
+                            df_cited_download = df_cited_download.rename(columns={'FirstName2':'Author(s)'})
+                            def convert_df(df_cited_download):
+                                return df_cited_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                            csv_selected = convert_df(df_cited_download)
+                            # csv = df_download
+                            # # st.caption(collection_name)
+                            a = 'cited-items-'
+                            container_download.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                            number_of_items = len(df_cited)
+                            container_metric.metric(label=f'Number of cited publications', value=number_of_items)
+
+                            if citation_type=='Trends':
+                                # outlier_detector = (df_cited['Citation'] > 1000).any()
+                                # if outlier_detector == True:
+                                #     outlier_count = (df_cited['Citation'] > 1000).sum()
+                                #     citation_average = df_cited[df_cited['Citation'] < 1000]
+                                #     citation_average = round(citation_average['Citation'].mean(), 2)
+                                #     citation_median = df_cited[df_cited['Citation'] < 1000]
+                                #     citation_median = round(citation_median['Citation'].median(), 2)
+                                #     citation_average_with_outliers = round(df_cited['Citation'].mean(), 2)
+                                #     container_citation_average.metric(
+                                #         label="Average citation", 
+                                #         value=citation_average, 
+                                #         help=f'''                                
+                                #         **{outlier_count}** item(s) passed the threshold of 1000 citations. 
+                                #         With the outliers, the average citation count is **{citation_average_with_outliers}**.
+                                #         '''
+                                #         )
+                                # else:
+                                df_cited_for_mean = df_cited.copy()
+                                citation_average = round(df_cited_for_mean['Citation'].mean(), 2)
+                                citation_median = round(df_cited_for_mean['Citation'].median(), 2)
+                                container_citation_average.metric(label="Average citation", value=citation_average)
+                            elif citation_type=='Citations without outliers':
+                                # outlier_detector = (df_cited['Citation'] > 1000).any()
+                                # if outlier_detector == True:
+                                #     outlier_count = (df_cited['Citation'] > 1000).sum()
+                                #     citation_average = df_cited[df_cited['Citation'] < 1000]
+                                #     citation_average = round(citation_average['Citation'].mean(), 2)
+                                #     citation_median = df_cited[df_cited['Citation'] < 1000]
+                                #     citation_median = round(citation_median['Citation'].median(), 2)
+                                #     citation_average_with_outliers = round(df_cited['Citation'].mean(), 2)
+                                #     container_citation_average.metric(
+                                #         label="Average citation", 
+                                #         value=citation_average, 
+                                #         help=f'''                                
+                                #         **{outlier_count}** item(s) passed the threshold of 1000 citations. 
+                                #         With the outliers, the average citation count is **{citation_average_with_outliers}**.
+                                #         '''
+                                #         )
+                                # else:
+                                citation_average = round(df_cited_for_mean['Citation'].mean(), 2)
+                                citation_median = round(df_cited_for_mean['Citation'].median(), 2)
+                                container_citation_average.metric(label="Average citation", value=citation_average)
+                            else:
+                                outlier_detector = (df_cited['Citation'] > 1000).any()
+                                outlier_count = (df_cited_for_mean['Citation'] > 1000).sum()
+                                citation_average_wo_outliers = df_cited_for_mean[df_cited_for_mean['Citation'] < 1000]                                
+                                citation_average_wo_outliers = round(citation_average_wo_outliers['Citation'].mean(), 2)
+                                # citation_median = df_cited_for_mean[df_cited_for_mean['Citation'] < 1000]
+                                # citation_median = round(citation_median['Citation'].median(), 2)
+                                citation_average_with_outliers = round(df_cited_for_mean['Citation'].mean(), 2)
+                                # container_citation_average.metric(
+                                #     label="Average citation", 
+                                #     value=citation_average, 
+                                #     help=f'''                                
+                                #     **{outlier_count}** item(s) passed the threshold of 1000 citations. 
+                                #     With the outliers, the average citation count is **{citation_average_with_outliers}**.
+                                #     '''
+                                #     )
+                                citation_average = round(df_cited_for_mean['Citation'].mean(), 2)
+                                container_citation_average.metric(
+                                    label="Average citation", 
+                                    value=citation_average,
+                                    help=f'''**{outlier_count}** outliers detected that have more than 1000 citations. 
+                                    The citation count without outliers is **{citation_average_wo_outliers}**.
+                                    '''
+                                )
+                                citation_median = round(df_cited_for_mean['Citation'].median(), 2)
+
+                            citation_count = df_cited['Citation'].sum()
+                            publications_by_type = df_cited['Publication type'].value_counts()
+                            breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
+                            container_citation.metric(label=f"The number of citations for **{number_of_items}** items", value=int(citation_count), label_visibility='visible', 
+                            help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
+                            ''')
+
+                            total_count = df_cited[['OA status']]
+                            total_count = total_count.dropna().reset_index(drop=True)
+                            total_count = len(total_count)
+                            true_count = len(df_cited[df_cited['OA status']==True])
                             if total_count == 0:
                                 oa_ratio = 0.0
                             else:
                                 oa_ratio = true_count / total_count * 100
-                            container_metric.metric(label="Number of items", value=int(num_items_collections))
-                            container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help='Journal articles only')
-                            
-                            journal_citations = selected_journal_df.groupby('Journal')['Citation'].sum()
-                            if len(journal_citations) >1:
-                                container_dataframe.dataframe(journal_citations)
 
-                            citation_count = selected_journal_df['Citation'].sum()
-
-                            citation_count = selected_journal_df['Citation'].sum()
-                            total_rows = len(selected_journal_df)
-                            nan_count_citation = selected_journal_df['Citation_list'].isna().sum()
-                            non_nan_count_citation = total_rows - nan_count_citation
-                            non_nan_cited_df_dedup = selected_journal_df.dropna(subset=['Citation_list'])
-                            non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
-
-                            citation_mean = non_nan_cited_df_dedup['Citation'].mean()
-                            citation_median = non_nan_cited_df_dedup['Citation'].median()
-                            # st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
-                            container_citation.metric(
-                                label="Number of citations", 
-                                value=int(citation_count), 
-                                help=f'''Not all papers are tracked for citation. 
-                                Citation per publication: **{round(citation_mean, 1)}**, 
-                                Citation median: **{round(citation_median, 1)}**'''
-                                )
-
-                            selected_journal_df['multiple_authors'] = selected_journal_df['FirstName2'].apply(
-                                lambda x: isinstance(x, str) and ',' in x
-                            )
-                            multiple_authored_papers = selected_journal_df['multiple_authors'].sum()
-                            if multiple_authored_papers == 0:
-                                collaboration_ratio = 0
-                            else:
-                                collaboration_ratio = round(multiple_authored_papers/num_items_collections*100, 1)
-                            container_collaboration_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
+                            container_oa.metric(label=f"Open access coverage", value=f"{int(oa_ratio)}%", label_visibility='visible') 
 
                             def split_and_expand(authors):
                                 # Ensure the input is a string
@@ -2050,192 +2989,194 @@ with st.spinner('Retrieving data...'):
                                 else:
                                     # Return the original author if it's not a string
                                     return pd.Series([authors])
-                            expanded_authors_types = selected_journal_df['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
-                            expanded_authors_types = expanded_authors_types.reset_index(name='Author')
-                            author_no = len(expanded_authors_types)
-                            if author_no == 0:
+                            if len(df_cited) == 0:
                                 author_pub_ratio=0.0
+                                author_no=0
                             else:
-                                author_pub_ratio = round(author_no/num_items_collections, 2)
-                            container_author_number.metric(label='Number of authors', value=int(author_no))
-                            container_author_ratio.metric(
-                                label='Author/publication ratio', 
-                                value=author_pub_ratio, 
-                                help='The average author number per publication.'
-                            )
+                                expanded_authors_cited = df_cited['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
+                                expanded_authors_cited = expanded_authors_cited.reset_index(name='Author')
+                                author_no = len(expanded_authors_cited)
+                                author_pub_ratio = round(author_no/number_of_items, 2)
+                            container_author_no.metric(label='Number of authors', value=int(author_no))
+                            container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
 
-                            a = f'selected_journal_{today}'
-                            container_download.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
-
-                            on = st.toggle('Generate dashboard')
-                            if on and len (selected_journal_df) > 0:
-                                st.info(f'Dashboard for {journals}')
+                            df_cited['FirstName2'] = df_cited['FirstName2'].astype(str)
+                            df_cited['multiple_authors'] = df_cited['FirstName2'].apply(lambda x: ',' in x)
+                            if len(df_cited) == 0:
+                                collaboration_ratio=0
+                            else:
+                                multiple_authored_papers = df_cited['multiple_authors'].sum()
+                                collaboration_ratio = round(multiple_authored_papers / number_of_items * 100, 1)
+                                container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
                                 
-                                if non_nan_id !=0:
+                            if citation_type=='Trends':
+                                st.info(f'''
+                                        The trends section shows the citations occured in the last two years 
+                                        ({current_year - 1}-{current_year}) to the papers published in the same period. 
+                                        ''')
+                            if citation_type == 'Citations without outliers':
+                                st.info(f'**{outlier_count}** items are removed here that have more than 1000 citations.')
 
-                                    colcite1, colcite2, colcite3 = st.columns(3)
+                            dashboard_all = st.toggle('Generate dashboard')
+                            if dashboard_all:
+                                if dashboard_all and len(df_cited) > 0: 
+                                    st.markdown(f'#### Dashboard for cited items in the library')
+
+                                    colcite1, colcite2, colcite3 = st.columns(3) 
 
                                     with colcite1:
-                                        st.metric(label=f"Citation average", value=round((citation_count)/(num_items_collections)), label_visibility='visible', 
-                                        help=f'''This is for items at least with 1 citation.
-                                        Average citation (for all measured items): **{round((citation_count)/(non_nan_id))}**
-                                        ''')
+                                        st.metric(label=f"Citation average", value=citation_average, label_visibility='visible')
                                     with colcite2:
-                                        mean_citation = selected_journal_df['Citation'].median()
-                                        st.metric(label=f"Citation median", value=round(mean_citation), label_visibility='visible', 
-                                        help=f'''This is for items at least with 1 citation.
-                                        ''')
-                                    with colcite3:
-                                        mean_first_citaion = selected_journal_df['Year_difference'].mean()
+                                        st.metric(label=f"Citation median", value=citation_median, label_visibility='visible')
+                                    with colcite3: 
+                                        mean_first_citaion = df_cited['Year_difference'].mean()
                                         st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
                                         help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
                                         ''')
-                                else:
-                                    st.write('No citation found for selected journal(s)!')
 
-                                type_df = selected_journal_df.copy()
-                                collection_df = type_df.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                                publications_by_year = collection_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications by Year for selected journal(s)')
-                                st.plotly_chart(fig_year_bar)
+                                    citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
+                                    citation_distribution.columns = ['Number of Citations', 'Number of Articles']
 
-                                publications_by_year = collection_df.groupby(['Year', 'Journal']).size().unstack().fillna(0)
-                                publications_by_year = publications_by_year.cumsum(axis=0)
+                                    fig = px.scatter(citation_distribution, x='Number of Citations', y='Number of Articles', 
+                                                    title='Distribution of Citations Across Articles', 
+                                                    labels={'Number of Citations': 'Number of Citations', 'Number of Articles': 'Number of Articles'})
 
-                                if len(journal_citations) >1:
-                                    journal_citations = journal_citations.reset_index()
-                                    journal_citations = journal_citations[journal_citations['Citation'] > 0]
-                                    journal_citations = journal_citations.sort_values(by='Citation', ascending=False)
-                                    fig = px.bar(journal_citations, x='Journal', y='Citation', title='Citations per Journal')
-                                    st.plotly_chart(fig, use_container_width = True)
+                                    # Optional: You can customize scatter plot appearance using various parameters
+                                    # For example:
+                                    fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
+                                    st.plotly_chart(fig)
 
-                                fig_cumsum_line = px.line(publications_by_year, x=publications_by_year.index,
-                                                        y=publications_by_year.columns,
-                                                        labels={'x': 'Publication Year', 'y': 'Cumulative Publications'},
-                                                        title='Cumulative Publications Over Years for selected journal(s)')
-                                st.plotly_chart(fig_cumsum_line, use_container_width = True)
+                                    fig = go.Figure(data=go.Scatter(x=df_cited['Year_difference'], y=[0] * len(df_cited['Year_difference']), mode='markers'))
+                                    # Customize layout
+                                    fig.update_layout(
+                                        title='First citation occurence (first citation occurs after years)',
+                                        xaxis_title='Year Difference',
+                                        yaxis_title='',                            )
 
-                                fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
-                                                    title=f'Top Publication Themes ({journals})')
-                                fig.update_traces(fill='toself')
-                                st.plotly_chart(fig, use_container_width = True)
+                                    # Display the Plotly chart using Streamlit
+                                    st.plotly_chart(fig)
 
-                                collection_author_df = type_df.copy()
-                                collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                                collection_author_df = collection_author_df.explode('Author_name')
-                                collection_author_df.reset_index(drop=True, inplace=True)
-                                collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
-                                collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                                fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count for selected journal(s)',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
-                                )
-                                st.plotly_chart(fig)
+                                    collection_df = df_cited.copy()
+                                    collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
+                                    publications_by_year = collection_df['Year'].value_counts().sort_index()
+                                    fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
+                                                        labels={'x': 'Publication Year', 'y': 'Number of Publications'},
+                                                        title=f'Publications over time')
+                                    st.plotly_chart(fig_year_bar)
 
-                                author_df = type_df.copy()
-                                def clean_text (text):
-                                    text = text.lower() # lowercasing
-                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                    return text
-                                author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                                author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                def tokenization(text):
-                                    text = re.split('\W+', text)
-                                    return text    
-                                author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                                stopword = nltk.corpus.stopwords.words('english')
-                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                    'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                def remove_stopwords(text):
-                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                    return text
-                                author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                                wn = nltk.WordNetLemmatizer()
-                                def lemmatizer(text):
-                                    text = [wn.lemmatize(word) for word in text]
-                                    return text
-                                author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                                listdf = author_df['lemma_title']
-                                df_list = [item for sublist in listdf for item in sublist]
-                                string = pd.Series(df_list).str.cat(sep=' ')
-                                wordcloud_texts = string
-                                wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                plt.figure(figsize=(20,8))
-                                plt.axis('off')
-                                plt.title(f"Word Cloud for Titles published in selected journal(s)")
-                                plt.imshow(wordcloud)
-                                plt.axis("off")
-                                plt.show()
-                                st.set_option('deprecation.showPyplotGlobalUse', False)
-                                st.pyplot()
+                                    collection_df['Author_name'] = collection_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                                    collection_df = collection_df.explode('Author_name')
+                                    collection_df.reset_index(drop=True, inplace=True)
+                                    collection_df['Author_name'] = collection_df['Author_name'].map(name_replacements).fillna(collection_df['Author_name'])
+                                    collection_df = collection_df['Author_name'].value_counts().head(10)
+                                    fig = px.bar(collection_df, x=collection_df.index, y=collection_df.values)
+                                    fig.update_layout(
+                                        title=f'Top 10 Authors by Publication Count',
+                                        xaxis_title='Author',
+                                        yaxis_title='Number of Publications',
+                                        xaxis_tickangle=-45,
+                                    )
+                                    st.plotly_chart(fig)
 
+                                    collection_df = df_cited.copy()
+                                    collection_df['Author_name'] = collection_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                                    collection_df = collection_df.explode('Author_name')
+                                    name_replacements = {}  # Assuming name_replacements is defined elsewhere in your code
+                                    collection_df['Author_name'] = collection_df['Author_name'].map(name_replacements).fillna(collection_df['Author_name'])
+                                    author_citations = collection_df.groupby('Author_name')['Citation'].sum().reset_index()
+                                    author_citations = author_citations.sort_values(by='Citation', ascending=False)
+                                    fig = px.bar(author_citations.head(20), x='Author_name', y='Citation',
+                                                title=f'Top 20 Authors by Citation Count',
+                                                labels={'Citation': 'Number of Citations', 'Author_name': 'Author'})
+                                    fig.update_layout(xaxis_tickangle=-45)
+                                    st.plotly_chart(fig)
+            
+                                    author_df = df_cited.copy()
+                                    def clean_text (text):
+                                        text = text.lower() # lowercasing
+                                        text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
+                                        text = re.sub('[0-9_]', ' ', text) # this removes numbers
+                                        text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
+                                        return text
+                                    author_df['clean_title'] = author_df['Title'].apply(clean_text)
+                                    author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
+                                    def tokenization(text):
+                                        text = re.split('\W+', text)
+                                        return text    
+                                    author_df['token_title']=author_df['clean_title'].apply(tokenization)
+                                    stopword = nltk.corpus.stopwords.words('english')
+                                    SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
+                                        'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
+                                        'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
+                                        'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
+                                        'examines', 'become', 'used', 'journal', 'london', 'review']
+                                    stopword.extend(SW)
+                                    def remove_stopwords(text):
+                                        text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
+                                        text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
+                                        return text
+                                    author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
+                                    wn = nltk.WordNetLemmatizer()
+                                    def lemmatizer(text):
+                                        text = [wn.lemmatize(word) for word in text]
+                                        return text
+                                    author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
+                                    listdf = author_df['lemma_title']
+                                    df_list = [item for sublist in listdf for item in sublist]
+                                    string = pd.Series(df_list).str.cat(sep=' ')
+                                    wordcloud_texts = string
+                                    wordcloud_texts_str = str(wordcloud_texts)
+                                    wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
+                                    plt.figure(figsize=(20,8))
+                                    plt.axis('off')
+                                    plt.title(f"Word Cloud for cited papers")
+                                    plt.imshow(wordcloud)
+                                    plt.axis("off")
+                                    plt.show()
+                                    st.set_option('deprecation.showPyplotGlobalUse', False)
+                                    st.pyplot()
                             else:
-                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                                if sort_by == 'Publication date :arrow_down:' or selected_journal_df['Citation'].sum() == 0:
-                                    selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
-                                    selected_journal_df = selected_journal_df.reset_index(drop=True)
-                                else:
-                                    selected_journal_df = selected_journal_df.sort_values(by=['Citation'], ascending=False)
-                                    selected_journal_df = selected_journal_df.reset_index(drop=True)
-                                if num_items_collections > 20:
-                                    show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
+                                    df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
+                                    df_cited = df_cited.reset_index(drop=True)
+                                if sort_by=='Citation':
+                                    df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
+                                    df_cited = df_cited.reset_index(drop=True)
+                                if sort_by == 'Date added :arrow_down:':
+                                    df_cited = df_cited.sort_values(by=['Date added'], ascending=False)
+                                    df_cited = df_cited.reset_index(drop=True)
+
+                                if number_of_items > 20:
+                                    show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True, key='all_items')
                                     if show_first_20:
-                                        selected_journal_df = selected_journal_df.head(20)                            
+                                        df_cited = df_cited.head(20)
                                 if view == 'Basic list':
+                                    st.markdown(f'##### {view} view')
                                     articles_list = []  # Store articles in a list
-                                    for index, row in selected_journal_df.iterrows():
-                                        formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
-                                        articles_list.append(formatted_entry)                     
-                                    
-                                    for index, row in selected_journal_df.iterrows():
-                                        publication_type = row['Publication type']
-                                        title = row['Title']
-                                        authors = row['FirstName2']
-                                        date_published = row['Date published'] 
-                                        link_to_publication = row['Link to publication']
-                                        zotero_link = row['Zotero link']
-                                        citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
-                                        citation = int(float(citation))
-                                        citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
-                                        citation_link = citation_link.replace('api.', '')
-
-                                        if publication_type == 'Journal article':
-                                            published_by_or_in = 'Published in'
-                                            published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-                                        elif publication_type == 'Book':
-                                            published_by_or_in = 'Published by'
-                                            published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-                                        else:
-                                            published_by_or_in = ''
-                                            published_source = ''
-
+                                    abstracts_list = [] #Store abstracts in a list
+                                    for index, row in df_cited.iterrows():
                                         formatted_entry = format_entry(row)
-                                        st.write(f"{index + 1}) {formatted_entry}")
+                                        articles_list.append(formatted_entry)  # Append formatted entry to the list
+                                        abstract = row['Abstract']
+                                        abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                                    for i, article in enumerate(articles_list, start=1):
+                                        # Display the article with highlighted search terms
+                                        st.markdown(f"{i}. {article}", unsafe_allow_html=True) 
                                 if view == 'Table':
-                                    df_table_view = selected_journal_df[['Publication type','Title', 'Journal', 'Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
+                                    st.markdown(f'##### {view} view')
+                                    df_table_view = df_cited[['Publication type','Title','Date published','FirstName2', 'Abstract','Journal','Link to publication','Zotero link', 'Citation']]
                                     df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                                     df_table_view
-                                if view =='Bibliography':
-                                    selected_journal_df['zotero_item_key'] = selected_journal_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                if view == 'Bibliography':
+                                    st.markdown(f'##### {view} view')
+                                    df_cited['zotero_item_key'] = df_cited['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
                                     df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-                                    selected_journal_df = pd.merge(selected_journal_df, df_zotero_id, on='zotero_item_key', how='left')
-                                    df_zotero_id = selected_journal_df[['zotero_item_key']]
+                                    df_cited = pd.merge(df_cited, df_zotero_id, on='zotero_item_key', how='left')
+                                    df_zotero_id = df_cited[['zotero_item_key']]
 
-                                    def display_bibliographies2(df):
+                                    def display_bibliographies(df):
+                                        df['bibliography'] = df['bibliography'].fillna('').astype(str)
                                         all_bibliographies = ""
                                         for index, row in df.iterrows():
                                             # Add a horizontal line between bibliographies
@@ -2246,784 +3187,9 @@ with st.spinner('Retrieving data...'):
                                             all_bibliographies += row['bibliography']
 
                                         st.markdown(all_bibliographies, unsafe_allow_html=True)
-                                    display_bibliographies2(selected_journal_df)
-                    # search_journal()
-                
-                elif search_option == "Publication year": 
-                    st.query_params.clear()
-                    st.subheader('Items by publication year', anchor=False, divider='blue')
+                                    display_bibliographies(df_cited)
 
-                    # @st.experimental_fragment
-                    # def search_pub_year():
-                    with st.expander('Click to expand', expanded=True):                    
-                        df_all = df_dedup.copy()
-                        df_all['Date published2'] = (
-                            df_all['Date published']
-                            .str.strip()
-                            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                        )
-                        # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                        # df_all
-                        df_all['Date year'] = df_all['Date published2'].dt.strftime('%Y')
-                        df_all['Date year'] = pd.to_numeric(df_all['Date year'], errors='coerce', downcast='integer')
-                        numeric_years = df_all['Date year'].dropna()
-                        current_year = date.today().year
-                        min_y = numeric_years.min()
-                        max_y = numeric_years.max()
-
-                        df_all['Date published'] = (
-                            df_all['Date published']
-                            .str.strip()
-                            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                        )
-                        # df_all['Date published'] = pd.to_datetime(df_all['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
-                        df_all['Date published'] = df_all['Date published'].dt.strftime('%Y-%m-%d')
-                        df_all['Date published'] = df_all['Date published'].fillna('')
-                        df_all['No date flag'] = df_all['Date published'].isnull().astype(np.uint8)
-                        df_all = df_all.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                        df_all = df_all.sort_values(by=['Date published'], ascending=False)
-
-                        current_year = date.today().year 
-                        years = st.slider('Publication years between:', int(min(numeric_years)), int(max_y), (current_year, current_year+1), key='years')
-
-                        filter = (df_all['Date year'] >= years[0]) & (df_all['Date year'] <= years[1])
-                        df_all = df_all.loc[filter]
-
-                        # if years[0] == years[1] or years[0]==current_year:
-                        #     st.markdown(f'#### Items published in **{int(years[0])}**')
-                        # else:
-                        #     st.markdown(f'#### Items published between **{int(years[0])}** and **{int(years[1])}**')
-
-                        coly1, coly2, coly3, coly4 = st.columns(4)
-                        with coly1:
-                            container_metric = st.container()
-                        with coly2:
-                            with st.popover('More metrics'):
-                                container_citation = st.container()
-                                container_citation_average = st.container()
-                                container_oa = st.container()
-                                container_type = st.container()
-                                container_author_no = st.container()
-                                container_author_pub_ratio = st.container()
-                                container_publication_ratio = st.container()
-                        with coly3:
-                            with st.popover('Releveant themes'):
-                                st.markdown(f'##### Top relevant themes')
-                                container_themes = st.container()
-                        with coly4:
-                            with st.popover('Filters and more'):
-                                st.warning('Items without a publication date are not listed here!')
-                                pub_types = df_all['Publication type'].unique()
-                                selected_type = st.multiselect("Filter by publication type:", pub_types)
-                                if selected_type:
-                                    df_all = df_all[df_all['Publication type'].isin(selected_type)]
-                                df_all = df_all.reset_index(drop=True)
-                                container_download = st.container()
-                                view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
-
-                        df_all_download = df_all.copy()
-                        df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
-                        df_all_download['Abstract'] = df_all_download['Abstract'].str.replace('\n', ' ')
-                        df_all_download = df_all_download.rename(columns={'FirstName2':'Author(s)'})
-                        def convert_df(df_all_download):
-                            return df_all_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                        csv_selected = convert_df(df_all_download)
-                        # csv = df_download
-                        # # st.caption(collection_name)
-                        a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
-                        container_download.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
-                        number_of_items = len(df_all)
-
-                        publications_by_type = df_all['Publication type'].value_counts()
-                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-
-                        citation_count = df_all['Citation'].sum()
-                        total_rows = len(df_all)
-                        nan_count_citation = df_all['Citation_list'].isna().sum()
-                        non_nan_count_citation = total_rows - nan_count_citation
-                        non_nan_cited_df_dedup = df_all.dropna(subset=['Citation_list'])
-                        non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
-                        citation_mean = non_nan_cited_df_dedup['Citation'].mean()
-                        citation_median = non_nan_cited_df_dedup['Citation'].median()
-                        container_citation.metric(
-                            label="Number of citations", 
-                            value=int(citation_count), 
-                            )
-
-                        outlier_detector = (df_all['Citation'] > 1000).any()
-                        if outlier_detector == True:
-                            outlier_count = (df_all['Citation'] > 1000).sum()
-                            citation_average = df_all[df_all['Citation'] < 1000]
-                            citation_average = round(citation_average['Citation'].mean(), 2)
-                            citation_average_with_outliers = round(df_all['Citation'].mean(), 2)
-                            container_citation_average.metric(
-                                label="Average citation", 
-                                value=citation_average, 
-                                help=f'**{outlier_count}** item(s) passed the threshold of 1000 citations. With the outliers, the average citation count is **{citation_average_with_outliers}**.'
-                                )
-                        citation_average = round(df_all['Citation'].mean(), 2)
-                        container_citation_average.metric(label="Average citation", value=citation_average)
-
-                        num_items_collections = len(df_all)
-                        def split_and_expand(authors):
-                            # Ensure the input is a string
-                            if isinstance(authors, str):
-                                # Split by comma and strip whitespace
-                                split_authors = [author.strip() for author in authors.split(',')]
-                                return pd.Series(split_authors)
-                            else:
-                                # Return the original author if it's not a string
-                                return pd.Series([authors])
-                        if len(df_all) == 0:
-                            author_pub_ratio=0.0
-                            author_no=0
-                        else:
-                            expanded_authors_years = df_all['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
-                            expanded_authors_years = expanded_authors_years.reset_index(name='Author')
-                            author_no = len(expanded_authors_years)
-                            author_pub_ratio = round(author_no/num_items_collections, 2)
-                        container_author_no.metric(label='Number of authors', value=int(author_no))
-                        container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
-
-                        true_count = len(df_all[df_all['OA status']==True])
-                        total_count = df_all[['OA status']]
-                        total_count = total_count.dropna().reset_index(drop=True)
-                        total_count = len(total_count)
-                        if total_count == 0:
-                            oa_ratio = 0.0
-                        else:
-                            oa_ratio = true_count / total_count * 100
-                        container_oa.metric(label="Open access coverage", value=f'{int(oa_ratio)}%', help=f'Not all items are measured for OA.')
-
-                        item_type_no = df_all['Publication type'].nunique()
-                        container_type.metric(label='Number of publication types', value=int(item_type_no))
-
-                        df_all['FirstName2'] = df_all['FirstName2'].astype(str)
-                        df_all['multiple_authors'] = df_all['FirstName2'].apply(lambda x: ',' in x)
-                        if len(df_all) == 0:
-                            collaboration_ratio=0
-                        else:
-                            multiple_authored_papers = df_all['multiple_authors'].sum()
-                            collaboration_ratio = round(multiple_authored_papers / num_items_collections * 100, 1)
-                            container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
-
-                        if years[0] == years[1] or years[0]==current_year:
-                            colyear1, colyear2 = st.columns([2,3])
-                            with colyear1:
-                                container_metric.metric(label=f"#Sources published in **{int(years[0])}**", value=f'{number_of_items}', label_visibility='visible', 
-                                help=f'({breakdown_string})')
-                            with colyear2: 
-                                total_count = df_all[['OA status']]
-                                total_count = total_count.dropna().reset_index(drop=True)
-                                total_count = len(total_count)
-                                true_count = len(df_all[df_all['OA status']==True])
-                                # total_count = len(df_all[df_all['Publication type']=='Journal article'])
-                                if total_count == 0:
-                                    oa_ratio = 0.0
-                                else:
-                                    oa_ratio = true_count / total_count * 100
-
-                                # container_metric.metric(label=f"Open access coverage", value=f"{int(oa_ratio)}%", label_visibility='visible', 
-                                # help=f'Journal articles only')                           
-                        else:
-                            colyear11, colyear22 = st.columns([2,3])
-                            with colyear11:
-                                container_metric.metric(label=f"#Sources published between **{int(years[0])}** - **{int(years[1])}**", value=f'{number_of_items}', label_visibility='visible', 
-                                help=f'({breakdown_string})')    
-                            with colyear22:
-                                total_count = df_all[['OA status']]
-                                total_count = total_count.dropna().reset_index(drop=True)
-                                total_count = len(total_count)
-                                true_count = len(df_all[df_all['OA status']==True])
-                                if total_count == 0:
-                                    oa_ratio = 0.0
-                                else:
-                                    oa_ratio = true_count / total_count * 100  
-
-                        filtered_collection_df_journals = df_all.copy()
-                        filtered_collection_df_journals_items = filtered_collection_df_journals[['Zotero link']]
-
-                        filtered_df_for_collections =  df_duplicated.copy()
-                        filtered_df_for_collections = pd.merge(filtered_df_for_collections, filtered_collection_df_journals_items, on='Zotero link')
-                        filtered_df_for_collections = filtered_df_for_collections[['Zotero link', 'Collection_Key', 'Collection_Name', 'Collection_Link']].reset_index(drop=True)
-                        filtered_df_for_collections_2 = filtered_df_for_collections['Collection_Name'].value_counts().reset_index().head(10)
-                        filtered_df_for_collections_2.columns = ['Collection_Name', 'Number_of_Items']
-                        filtered_df_for_collections_2 = filtered_df_for_collections_2[filtered_df_for_collections_2['Collection_Name']!='01 Intelligence history']
-                        filtered_df_for_collections = pd.merge(filtered_df_for_collections_2, filtered_df_for_collections, on='Collection_Name', how='left').drop_duplicates(subset='Collection_Name').reset_index(drop=True)
-                        def remove_numbers(name):
-                            return re.sub(r'^\d+(\.\d+)*\s*', '', name)
-                        filtered_df_for_collections['Collection_Name'] = filtered_df_for_collections['Collection_Name'].apply(remove_numbers)
-                        row_nu = len(filtered_df_for_collections)
-                        formatted_rows = []
-                        for i in range(row_nu):
-                            collection_name = filtered_df_for_collections['Collection_Name'].iloc[i]
-                            number_of_items = filtered_df_for_collections['Number_of_Items'].iloc[i]
-                            zotero_collection_link = filtered_df_for_collections['Collection_Link'].iloc[i]
-                            formatted_row = (
-                                f"[{collection_name}]({zotero_collection_link}) "  # Hyperlink format in markdown
-                                f"{number_of_items} items"
-                            )
-                            formatted_rows.append(f"{i+1}) " + formatted_row)
-
-                        # Use st.write to print each row
-                        for row in formatted_rows:
-                            container_themes.caption(row)                
-
-                        dashboard_all = st.toggle('Generate dashboard')
-                        if dashboard_all:
-                            if dashboard_all and len(df_all) > 0: 
-                                if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                    st.info(f'Dashboard for items published between {int(years[0])} and {int(years[1])}')
-                                else:
-                                    st.info(f'Dashboard for items published in {int(years[0])}')
-                                collection_df = df_all.copy()
-                                
-                                publications_by_type = collection_df['Publication type'].value_counts()
-                                if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                    fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                                labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                                title=f'Publications by Type between {int(years[0])} and {int(years[1])}')
-                                else:
-                                    fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
-                                                labels={'x': 'Publication Type', 'y': 'Number of Publications'},
-                                                title=f'Publications by Type in {int(years[0])}')
-                                st.plotly_chart(fig)
-
-                                if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                    collection_df = df_all.copy()
-                                    collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                                    publications_by_year = collection_df['Year'].value_counts().sort_index()
-                                    fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                        labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                        title=f'Publications by Year between {int(years[0])} and {int(years[1])}')
-                                    st.plotly_chart(fig_year_bar)
-                                else:
-                                    collection_df = df_all.copy()
-                                    collection_df['Month'] = pd.to_datetime(collection_df['Date published']).dt.month
-                                    publications_by_year = collection_df['Month'].value_counts().sort_index()
-                                    fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                        labels={'x': 'Publication Month', 'y': 'Number of Publications'},
-                                                        title=f'Publications by Month in {int(years[0])}')
-                                    st.plotly_chart(fig_year_bar)
-
-                                if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                    fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
-                                                        title=f'Top Publication Themes between {int(years[0])} and {int(years[1])}')
-                                    fig.update_traces(fill='toself')
-                                    st.plotly_chart(fig, use_container_width = True)
-                                else:
-                                    fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
-                                                        title=f'Top Publication Themes in {int(years[0])}')
-                                    fig.update_traces(fill='toself')
-                                    st.plotly_chart(fig, use_container_width = True)
-
-                                collection_author_df = df_all.copy()
-                                collection_author_df['Author_name'] = collection_author_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                                collection_author_df = collection_author_df.explode('Author_name')
-                                collection_author_df.reset_index(drop=True, inplace=True)
-                                collection_author_df['Author_name'] = collection_author_df['Author_name'].map(name_replacements).fillna(collection_author_df['Author_name'])
-                                collection_author_df = collection_author_df['Author_name'].value_counts().head(10)
-                                fig = px.bar(collection_author_df, x=collection_author_df.index, y=collection_author_df.values)
-                                if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                    fig.update_layout(
-                                        title=f'Top 10 Authors by Publication Count between {int(years[0])} and {int(years[1])}',
-                                        xaxis_title='Author',
-                                        yaxis_title='Number of Publications',
-                                        xaxis_tickangle=-45,
-                                    )
-                                else:
-                                    fig.update_layout(
-                                        title=f'Top 10 Authors by Publication Count in {int(years[0])}',
-                                        xaxis_title='Author',
-                                        yaxis_title='Number of Publications',
-                                        xaxis_tickangle=-45,
-                                    )
-                                st.plotly_chart(fig)
-
-                                author_df = df_all.copy()
-                                def clean_text (text):
-                                    text = text.lower() # lowercasing
-                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                    return text
-                                author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                                author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                def tokenization(text):
-                                    text = re.split('\W+', text)
-                                    return text    
-                                author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                                stopword = nltk.corpus.stopwords.words('english')
-                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                    'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                def remove_stopwords(text):
-                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                    return text
-                                author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                                wn = nltk.WordNetLemmatizer()
-                                def lemmatizer(text):
-                                    text = [wn.lemmatize(word) for word in text]
-                                    return text
-                                author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                                listdf = author_df['lemma_title']
-                                df_list = [item for sublist in listdf for item in sublist]
-                                string = pd.Series(df_list).str.cat(sep=' ')
-                                wordcloud_texts = string
-                                wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                plt.figure(figsize=(20,8))
-                                plt.axis('off')
-                                if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                    plt.title(f"Word Cloud for Titles between {int(years[0])} and {int(years[1])}")
-                                else:
-                                    plt.title(f"Word Cloud for Titles in {int(years[0])}")
-                                plt.imshow(wordcloud)
-                                plt.axis("off")
-                                plt.show()
-                                st.set_option('deprecation.showPyplotGlobalUse', False)
-                                st.pyplot()
-                        else:
-                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                            if sort_by == 'Publication date :arrow_down:' or df_all['Citation'].sum() == 0:
-                                df_all = df_all.sort_values(by=['Date published'], ascending=False)
-                                df_all = df_all.reset_index(drop=True)
-                            else:
-                                df_all = df_all.sort_values(by=['Citation'], ascending=False)
-                                df_all = df_all.reset_index(drop=True)
-                            if number_of_items > 20:
-                                show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True, key='all_items')
-                                if show_first_20:
-                                    df_all = df_all.head(20)
-                            if view == 'Basic list':
-                                articles_list = []  # Store articles in a list
-                                abstracts_list = [] #Store abstracts in a list
-                                for index, row in df_all.iterrows():
-                                    formatted_entry = format_entry(row)
-                                    articles_list.append(formatted_entry)  # Append formatted entry to the list
-                                    abstract = row['Abstract']
-                                    abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                                for i, article in enumerate(articles_list, start=1):
-                                    # Display the article with highlighted search terms
-                                    st.markdown(f"{i}. {article}", unsafe_allow_html=True)
-                            if view == 'Table':
-                                df_table_view = df_all[['Publication type','Title','Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
-                                df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
-                                df_table_view
-                            if view == 'Bibliography':
-                                df_all['zotero_item_key'] = df_all['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
-                                df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-                                df_all = pd.merge(df_all, df_zotero_id, on='zotero_item_key', how='left')
-                                df_zotero_id = df_all[['zotero_item_key']]
-
-                                def display_bibliographies2(df):
-                                    all_bibliographies = ""
-                                    for index, row in df.iterrows():
-                                        # Add a horizontal line between bibliographies
-                                        if index > 0:
-                                            all_bibliographies += '<p><p>'
-                                        
-                                        # Display bibliography
-                                        all_bibliographies += row['bibliography']
-
-                                    st.markdown(all_bibliographies, unsafe_allow_html=True)
-                                display_bibliographies2(df_all)
-                
-                    # search_pub_year()
-                
-                elif search_option == "Cited papers":
-                    st.query_params.clear()
-                    st.subheader('Cited items in the library', anchor=False, divider='blue')
-                    
-                    # @st.experimental_fragment
-                    # def search_cited_papers():
-                    with st.expander('Click to expand', expanded=True):
-                        container_markdown = st.container()              
-                        df_cited = df_dedup.copy()
-                        df_cited_for_mean = df_dedup.copy()
-                        non_nan_id = df_cited['ID'].count()
-                        df_cited = df_cited[(df_cited['Citation'].notna())]# & (df_cited['Citation'] != 0)]
-                        df_cited = df_cited.reset_index(drop=True)
-
-                        colcite1, colcite2, colcite3 = st.columns(3)
-                        with colcite1:
-                            container_metric = st.container()
-                        with colcite2:
-                            with st.popover('More metrics'):
-                                container_citation = st.container()
-                                container_citation_average = st.container()
-                                container_oa = st.container()
-                                container_author_no = st.container()
-                                container_author_pub_ratio = st.container()
-                                container_publication_ratio = st.container()
-                        with colcite3:
-                            with st.popover('Filters and more'):
-                                st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
-                                citation_type = st.radio('Select:', ('All citations', 'Trends', 'Citations without outliers'))
-                                if citation_type=='All citations':
-                                    df_cited = df_cited.reset_index(drop=True)
-                                elif citation_type=='Trends':
-                                    current_year = datetime.datetime.now().year
-                                    df_cited = df_cited[(df_cited['Last_citation_year'] == current_year) | (df_cited['Last_citation_year'] == current_year - 1)]
-                                    df_cited = df_cited[(df_cited['Publication_year'] == current_year) | (df_cited['Publication_year'] == current_year - 1)]
-                                    note = (f'''
-                                    The trends section shows the citations occured in the last two years 
-                                    ({current_year - 1}-{current_year}) to the papers published in the same period. 
-                                    ''')
-                                elif citation_type == 'Citations without outliers':
-                                    outlier_detector = (df_cited['Citation'] > 1000).any()
-                                    outlier_count = (df_cited['Citation'] > 1000).sum()
-                                    df_cited = df_cited[df_cited['Citation'] < 1000]
-                                    df_cited_for_mean =df_cited_for_mean[df_cited_for_mean['Citation'] < 1000]
-
-                                container_markdown.markdown(f'#### {citation_type}')
-                                container_slider = st.container()
-                                container_download = st.container()
-                                view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
-
-                        max_value = int(df_cited['Citation'].max())
-                        min_value = 1
-                        selected_range = container_slider.slider('Select a citation range:', min_value, max_value, (min_value, max_value), key='')
-                        filter = (df_cited['Citation'] >= selected_range[0]) & (df_cited['Citation'] <= selected_range[1])
-                        df_cited = df_cited.loc[filter]
-
-                        df_cited['Date published2'] = (
-                            df_cited['Date published']
-                            .str.strip()
-                            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                        )
-                        df_cited['Date year'] = df_cited['Date published2'].dt.strftime('%Y')
-                        df_cited['Date year'] = pd.to_numeric(df_cited['Date year'], errors='coerce', downcast='integer')
-
-                        df_cited['Date published'] = (
-                            df_cited['Date published']
-                            .str.strip()
-                            .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                        )
-                        df_cited['Date published'] = df_cited['Date published'].dt.strftime('%Y-%m-%d')
-                        df_cited['Date published'] = df_cited['Date published'].fillna('')
-                        df_cited['No date flag'] = df_cited['Date published'].isnull().astype(np.uint8)
-                        df_cited = df_cited.sort_values(by=['No date flag', 'Date published'], ascending=[True, True])
-                        df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
-
-                        # pub_types = df_cited['Publication type'].unique()
-                        # selected_type = st.multiselect("Filter by publication type:", pub_types)
-                        # if selected_type:
-                        #     df_cited = df_cited[df_cited['Publication type'].isin(selected_type)]
-                        
-                        df_cited = df_cited.reset_index(drop=True)
-
-                        df_cited_download = df_cited.copy()
-                        df_cited_download = df_cited_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
-                        df_cited_download['Abstract'] = df_cited_download['Abstract'].str.replace('\n', ' ')
-                        df_cited_download = df_cited_download.rename(columns={'FirstName2':'Author(s)'})
-                        def convert_df(df_cited_download):
-                            return df_cited_download.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                        csv_selected = convert_df(df_cited_download)
-                        # csv = df_download
-                        # # st.caption(collection_name)
-                        a = 'cited-items-'
-                        container_download.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
-                        number_of_items = len(df_cited)
-                        container_metric.metric(label=f'Number of cited publications', value=number_of_items)
-
-                        if citation_type=='Trends':
-                            # outlier_detector = (df_cited['Citation'] > 1000).any()
-                            # if outlier_detector == True:
-                            #     outlier_count = (df_cited['Citation'] > 1000).sum()
-                            #     citation_average = df_cited[df_cited['Citation'] < 1000]
-                            #     citation_average = round(citation_average['Citation'].mean(), 2)
-                            #     citation_median = df_cited[df_cited['Citation'] < 1000]
-                            #     citation_median = round(citation_median['Citation'].median(), 2)
-                            #     citation_average_with_outliers = round(df_cited['Citation'].mean(), 2)
-                            #     container_citation_average.metric(
-                            #         label="Average citation", 
-                            #         value=citation_average, 
-                            #         help=f'''                                
-                            #         **{outlier_count}** item(s) passed the threshold of 1000 citations. 
-                            #         With the outliers, the average citation count is **{citation_average_with_outliers}**.
-                            #         '''
-                            #         )
-                            # else:
-                            df_cited_for_mean = df_cited.copy()
-                            citation_average = round(df_cited_for_mean['Citation'].mean(), 2)
-                            citation_median = round(df_cited_for_mean['Citation'].median(), 2)
-                            container_citation_average.metric(label="Average citation", value=citation_average)
-                        elif citation_type=='Citations without outliers':
-                            # outlier_detector = (df_cited['Citation'] > 1000).any()
-                            # if outlier_detector == True:
-                            #     outlier_count = (df_cited['Citation'] > 1000).sum()
-                            #     citation_average = df_cited[df_cited['Citation'] < 1000]
-                            #     citation_average = round(citation_average['Citation'].mean(), 2)
-                            #     citation_median = df_cited[df_cited['Citation'] < 1000]
-                            #     citation_median = round(citation_median['Citation'].median(), 2)
-                            #     citation_average_with_outliers = round(df_cited['Citation'].mean(), 2)
-                            #     container_citation_average.metric(
-                            #         label="Average citation", 
-                            #         value=citation_average, 
-                            #         help=f'''                                
-                            #         **{outlier_count}** item(s) passed the threshold of 1000 citations. 
-                            #         With the outliers, the average citation count is **{citation_average_with_outliers}**.
-                            #         '''
-                            #         )
-                            # else:
-                            citation_average = round(df_cited_for_mean['Citation'].mean(), 2)
-                            citation_median = round(df_cited_for_mean['Citation'].median(), 2)
-                            container_citation_average.metric(label="Average citation", value=citation_average)
-                        else:
-                            outlier_detector = (df_cited['Citation'] > 1000).any()
-                            outlier_count = (df_cited_for_mean['Citation'] > 1000).sum()
-                            citation_average_wo_outliers = df_cited_for_mean[df_cited_for_mean['Citation'] < 1000]                                
-                            citation_average_wo_outliers = round(citation_average_wo_outliers['Citation'].mean(), 2)
-                            # citation_median = df_cited_for_mean[df_cited_for_mean['Citation'] < 1000]
-                            # citation_median = round(citation_median['Citation'].median(), 2)
-                            citation_average_with_outliers = round(df_cited_for_mean['Citation'].mean(), 2)
-                            # container_citation_average.metric(
-                            #     label="Average citation", 
-                            #     value=citation_average, 
-                            #     help=f'''                                
-                            #     **{outlier_count}** item(s) passed the threshold of 1000 citations. 
-                            #     With the outliers, the average citation count is **{citation_average_with_outliers}**.
-                            #     '''
-                            #     )
-                            citation_average = round(df_cited_for_mean['Citation'].mean(), 2)
-                            container_citation_average.metric(
-                                label="Average citation", 
-                                value=citation_average,
-                                help=f'''**{outlier_count}** outliers detected that have more than 1000 citations. 
-                                The citation count without outliers is **{citation_average_wo_outliers}**.
-                                '''
-                            )
-                            citation_median = round(df_cited_for_mean['Citation'].median(), 2)
-
-                        citation_count = df_cited['Citation'].sum()
-                        publications_by_type = df_cited['Publication type'].value_counts()
-                        breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
-                        container_citation.metric(label=f"The number of citations for **{number_of_items}** items", value=int(citation_count), label_visibility='visible', 
-                        help=f'''Out of the **{non_nan_id}** items measured for citations, **{number_of_items}** received at least 1 citation.
-                        ''')
-
-                        total_count = df_cited[['OA status']]
-                        total_count = total_count.dropna().reset_index(drop=True)
-                        total_count = len(total_count)
-                        true_count = len(df_cited[df_cited['OA status']==True])
-                        if total_count == 0:
-                            oa_ratio = 0.0
-                        else:
-                            oa_ratio = true_count / total_count * 100
-
-                        container_oa.metric(label=f"Open access coverage", value=f"{int(oa_ratio)}%", label_visibility='visible') 
-
-                        def split_and_expand(authors):
-                            # Ensure the input is a string
-                            if isinstance(authors, str):
-                                # Split by comma and strip whitespace
-                                split_authors = [author.strip() for author in authors.split(',')]
-                                return pd.Series(split_authors)
-                            else:
-                                # Return the original author if it's not a string
-                                return pd.Series([authors])
-                        if len(df_cited) == 0:
-                            author_pub_ratio=0.0
-                            author_no=0
-                        else:
-                            expanded_authors_cited = df_cited['FirstName2'].apply(split_and_expand).stack().reset_index(level=1, drop=True)
-                            expanded_authors_cited = expanded_authors_cited.reset_index(name='Author')
-                            author_no = len(expanded_authors_cited)
-                            author_pub_ratio = round(author_no/number_of_items, 2)
-                        container_author_no.metric(label='Number of authors', value=int(author_no))
-                        container_author_pub_ratio.metric(label='Author/publication ratio', value=author_pub_ratio, help='The average author number per publication')
-
-                        df_cited['FirstName2'] = df_cited['FirstName2'].astype(str)
-                        df_cited['multiple_authors'] = df_cited['FirstName2'].apply(lambda x: ',' in x)
-                        if len(df_cited) == 0:
-                            collaboration_ratio=0
-                        else:
-                            multiple_authored_papers = df_cited['multiple_authors'].sum()
-                            collaboration_ratio = round(multiple_authored_papers / number_of_items * 100, 1)
-                            container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
-                            
-                        if citation_type=='Trends':
-                            st.info(f'''
-                                    The trends section shows the citations occured in the last two years 
-                                    ({current_year - 1}-{current_year}) to the papers published in the same period. 
-                                    ''')
-                        if citation_type == 'Citations without outliers':
-                            st.info(f'**{outlier_count}** items are removed here that have more than 1000 citations.')
-
-                        dashboard_all = st.toggle('Generate dashboard')
-                        if dashboard_all:
-                            if dashboard_all and len(df_cited) > 0: 
-                                st.markdown(f'#### Dashboard for cited items in the library')
-
-                                colcite1, colcite2, colcite3 = st.columns(3) 
-
-                                with colcite1:
-                                    st.metric(label=f"Citation average", value=citation_average, label_visibility='visible')
-                                with colcite2:
-                                    st.metric(label=f"Citation median", value=citation_median, label_visibility='visible')
-                                with colcite3: 
-                                    mean_first_citaion = df_cited['Year_difference'].mean()
-                                    st.metric(label=f"First citation occurence (average in year)", value=round(mean_first_citaion), label_visibility='visible', 
-                                    help=f'''First citation usually occurs **{round(mean_first_citaion)}** years after publication.
-                                    ''')
-
-                                citation_distribution = df_cited['Citation'].value_counts().sort_index().reset_index()
-                                citation_distribution.columns = ['Number of Citations', 'Number of Articles']
-
-                                fig = px.scatter(citation_distribution, x='Number of Citations', y='Number of Articles', 
-                                                title='Distribution of Citations Across Articles', 
-                                                labels={'Number of Citations': 'Number of Citations', 'Number of Articles': 'Number of Articles'})
-
-                                # Optional: You can customize scatter plot appearance using various parameters
-                                # For example:
-                                fig.update_traces(marker=dict(color='red', size=7, opacity=0.5), selector=dict(mode='markers'))
-                                st.plotly_chart(fig)
-
-                                fig = go.Figure(data=go.Scatter(x=df_cited['Year_difference'], y=[0] * len(df_cited['Year_difference']), mode='markers'))
-                                # Customize layout
-                                fig.update_layout(
-                                    title='First citation occurence (first citation occurs after years)',
-                                    xaxis_title='Year Difference',
-                                    yaxis_title='',                            )
-
-                                # Display the Plotly chart using Streamlit
-                                st.plotly_chart(fig)
-
-                                collection_df = df_cited.copy()
-                                collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
-                                publications_by_year = collection_df['Year'].value_counts().sort_index()
-                                fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
-                                                    labels={'x': 'Publication Year', 'y': 'Number of Publications'},
-                                                    title=f'Publications over time')
-                                st.plotly_chart(fig_year_bar)
-
-                                collection_df['Author_name'] = collection_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                                collection_df = collection_df.explode('Author_name')
-                                collection_df.reset_index(drop=True, inplace=True)
-                                collection_df['Author_name'] = collection_df['Author_name'].map(name_replacements).fillna(collection_df['Author_name'])
-                                collection_df = collection_df['Author_name'].value_counts().head(10)
-                                fig = px.bar(collection_df, x=collection_df.index, y=collection_df.values)
-                                fig.update_layout(
-                                    title=f'Top 10 Authors by Publication Count',
-                                    xaxis_title='Author',
-                                    yaxis_title='Number of Publications',
-                                    xaxis_tickangle=-45,
-                                )
-                                st.plotly_chart(fig)
-
-                                collection_df = df_cited.copy()
-                                collection_df['Author_name'] = collection_df['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-                                collection_df = collection_df.explode('Author_name')
-                                name_replacements = {}  # Assuming name_replacements is defined elsewhere in your code
-                                collection_df['Author_name'] = collection_df['Author_name'].map(name_replacements).fillna(collection_df['Author_name'])
-                                author_citations = collection_df.groupby('Author_name')['Citation'].sum().reset_index()
-                                author_citations = author_citations.sort_values(by='Citation', ascending=False)
-                                fig = px.bar(author_citations.head(20), x='Author_name', y='Citation',
-                                            title=f'Top 20 Authors by Citation Count',
-                                            labels={'Citation': 'Number of Citations', 'Author_name': 'Author'})
-                                fig.update_layout(xaxis_tickangle=-45)
-                                st.plotly_chart(fig)
-        
-                                author_df = df_cited.copy()
-                                def clean_text (text):
-                                    text = text.lower() # lowercasing
-                                    text = re.sub(r'[^\w\s]', ' ', text) # this removes punctuation
-                                    text = re.sub('[0-9_]', ' ', text) # this removes numbers
-                                    text = re.sub('[^a-z_]', ' ', text) # removing all characters except lowercase letters
-                                    return text
-                                author_df['clean_title'] = author_df['Title'].apply(clean_text)
-                                author_df['clean_title'] = author_df['clean_title'].apply(lambda x: ' '.join ([w for w in x.split() if len (w)>2])) # this function removes words less than 2 words
-                                def tokenization(text):
-                                    text = re.split('\W+', text)
-                                    return text    
-                                author_df['token_title']=author_df['clean_title'].apply(tokenization)
-                                stopword = nltk.corpus.stopwords.words('english')
-                                SW = ['york', 'intelligence', 'security', 'pp', 'war','world', 'article', 'twitter', 'nan',
-                                    'new', 'isbn', 'book', 'also', 'yet', 'matter', 'erratum', 'commentary', 'studies',
-                                    'volume', 'paper', 'study', 'question', 'editorial', 'welcome', 'introduction', 'editorial', 'reader',
-                                    'university', 'followed', 'particular', 'based', 'press', 'examine', 'show', 'may', 'result', 'explore',
-                                    'examines', 'become', 'used', 'journal', 'london', 'review']
-                                stopword.extend(SW)
-                                def remove_stopwords(text):
-                                    text = [i for i in text if i] # this part deals with getting rid of spaces as it treads as a string
-                                    text = [word for word in text if word not in stopword] #keep the word if it is not in stopword
-                                    return text
-                                author_df['stopword']=author_df['token_title'].apply(remove_stopwords)
-                                wn = nltk.WordNetLemmatizer()
-                                def lemmatizer(text):
-                                    text = [wn.lemmatize(word) for word in text]
-                                    return text
-                                author_df['lemma_title'] = author_df['stopword'].apply(lemmatizer)
-                                listdf = author_df['lemma_title']
-                                df_list = [item for sublist in listdf for item in sublist]
-                                string = pd.Series(df_list).str.cat(sep=' ')
-                                wordcloud_texts = string
-                                wordcloud_texts_str = str(wordcloud_texts)
-                                wordcloud = WordCloud(stopwords=stopword, width=1500, height=750, background_color='white', collocations=False, colormap='magma').generate(wordcloud_texts_str)
-                                plt.figure(figsize=(20,8))
-                                plt.axis('off')
-                                plt.title(f"Word Cloud for cited papers")
-                                plt.imshow(wordcloud)
-                                plt.axis("off")
-                                plt.show()
-                                st.set_option('deprecation.showPyplotGlobalUse', False)
-                                st.pyplot()
-                        else: 
-                            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
-                            if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
-                                df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
-                                df_cited = df_cited.reset_index(drop=True)
-                            else:  
-                                df_cited = df_cited.sort_values(by=['Citation'], ascending=False)
-                                df_cited = df_cited.reset_index(drop=True)
-                            if number_of_items > 20:
-                                show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True, key='all_items')
-                                if show_first_20:
-                                    df_cited = df_cited.head(20)
-                            if view == 'Basic list':
-                                st.markdown(f'##### {view} view')
-                                articles_list = []  # Store articles in a list
-                                abstracts_list = [] #Store abstracts in a list
-                                for index, row in df_cited.iterrows():
-                                    formatted_entry = format_entry(row)
-                                    articles_list.append(formatted_entry)  # Append formatted entry to the list
-                                    abstract = row['Abstract']
-                                    abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
-                                for i, article in enumerate(articles_list, start=1):
-                                    # Display the article with highlighted search terms
-                                    st.markdown(f"{i}. {article}", unsafe_allow_html=True) 
-                            if view == 'Table':
-                                st.markdown(f'##### {view} view')
-                                df_table_view = df_cited[['Publication type','Title','Date published','FirstName2', 'Abstract','Journal','Link to publication','Zotero link', 'Citation']]
-                                df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
-                                df_table_view
-                            if view == 'Bibliography':
-                                st.markdown(f'##### {view} view')
-                                df_cited['zotero_item_key'] = df_cited['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
-                                df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-                                df_cited = pd.merge(df_cited, df_zotero_id, on='zotero_item_key', how='left')
-                                df_zotero_id = df_cited[['zotero_item_key']]
-
-                                def display_bibliographies(df):
-                                    df['bibliography'] = df['bibliography'].fillna('').astype(str)
-                                    all_bibliographies = ""
-                                    for index, row in df.iterrows():
-                                        # Add a horizontal line between bibliographies
-                                        if index > 0:
-                                            all_bibliographies += '<p><p>'
-                                        
-                                        # Display bibliography
-                                        all_bibliographies += row['bibliography']
-
-                                    st.markdown(all_bibliographies, unsafe_allow_html=True)
-                                display_bibliographies(df_cited)
-
-                    # search_cited_papers()
+                    search_cited_papers()
                 
             search_options_main_menu()
 
@@ -3563,19 +3729,32 @@ with st.spinner('Retrieving data...'):
                             fig.update_layout(title={'text':'Item types',  'yanchor':'top'})
                             st.plotly_chart(fig, use_container_width = True)
                     with col2:
-                        df_year['Publication year'] = df_year['Publication year'].astype(int)
-                        max_y = int(df_year['Publication year'].max())
-                        min_y = int(df_year['Publication year'].min())
-                        years = st.slider('Publication years between:', min_y, max_y, (min_y,max_y), key='years3')
-                        df_year_updated = df_year[(df_year['Publication year'] >= years[0]) & (df_year['Publication year'] <= years[1])]
+                        coly1, coly2 = st.columns(2)
+
+                        with coly1:
+                            df_year['Publication year'] = df_year['Publication year'].astype(int)
+                            last_10_years = st.checkbox('Limit to last 10 years', value=False)
+                            if last_10_years:
+                                current_year = datetime.datetime.now().year
+                                min_y = current_year - 9
+                                max_y = current_year
+                            else:
+                                min_y = int(df_year['Publication year'].min())
+                                max_y = int(df_year['Publication year'].max())
+
+                        with coly2:
+                            years = st.slider('Publication years between:', min_y, max_y, (min_y, max_y), key='years3')
+                            df_year_updated = df_year[(df_year['Publication year'] >= years[0]) & (df_year['Publication year'] <= years[1])]
+
                         fig = px.bar(df_year_updated, x='Publication year', y='Count')
                         fig.update_xaxes(tickangle=-70)
                         fig.update_layout(
                             autosize=False,
                             width=1200,
-                            height=600,)
-                        fig.update_layout(title={'text':'All items in the library by publication year', 'yanchor':'top'})
-                        st.plotly_chart(fig, use_container_width = True)
+                            height=600,
+                        ) 
+                        fig.update_layout(title={'text': f'All items in the library by publication year {years[0]} - {years[1]}', 'yanchor': 'top'})
+                        st.plotly_chart(fig, use_container_width=True)
                 types_pubyears()
 
                 st.divider()
