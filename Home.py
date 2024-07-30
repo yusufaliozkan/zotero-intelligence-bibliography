@@ -3850,6 +3850,7 @@ with st.spinner('Retrieving data...'):
                             else:
                                 st.markdown(f'###### Top {num_authors} Authors by Publication Count (all items)')
                                 df_authors.columns = ['Author name', 'Publication count']
+                                df_authors
                     with col2:
                             colauthor11, colauthor12 = st.columns(2)
                             with colauthor11:
