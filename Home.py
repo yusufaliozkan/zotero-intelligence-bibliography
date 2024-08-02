@@ -3638,16 +3638,30 @@ with st.spinner('Retrieving data...'):
                 @st.experimental_fragment
                 def collection_chart():
                     df_collections_21 = df_collections_2.copy()
+
                     df_collections_21 = df_collections_21['Collection_Name'].value_counts().reset_index()
                     df_collections_21.columns = ['Collection_Name', 'Number_of_Items']
-                    number0 = st.slider('Select a number collections', 3,30,15, key='slider01')
+                    
                     col1, col2 = st.columns(2)
                     with col1:
-                        collection_bar_legend_check = st.checkbox('Show legend', key='collection_bar_legend_check')
-                        if collection_bar_legend_check:
-                            collection_bar_legend=True
-                        else:
-                            collection_bar_legend=False
+                        colallcol1, colallcol2 = st.columns([2,3])
+                        with colallcol1:
+                            collection_bar_legend_check = st.checkbox('Show legend', key='collection_bar_legend_check')
+                            if collection_bar_legend_check:
+                                collection_bar_legend=True
+                            else:
+                                collection_bar_legend=False
+                            last_5_year = st.checkbox('Limit to last 5 years', key='last5yearscollections')
+                            if last_5_year:
+                                df_collections_21 = df_collections_2.copy()
+                                df_collections_21 = df_collections_21[df_collections_21['Date year'] != 'No date']
+                                df_collections_21['Date year'] = df_collections_21['Date year'].astype(int)
+                                current_year = datetime.datetime.now().year
+                                df_collections_21 = df_collections_21[df_collections_21['Date year'] > (current_year - 5)]
+                                df_collections_21 = df_collections_21['Collection_Name'].value_counts().reset_index()
+                                df_collections_21.columns = ['Collection_Name', 'Number_of_Items']
+                        with colallcol2:
+                            number0 = st.slider('Select a number collections', 3,len(df_collections_21),10, key='slider01')
                         plot= df_collections_21.head(number0+1)
                         plot = plot[plot['Collection_Name']!='01 Intelligence history']
                         fig = px.bar(plot, x='Collection_Name', y='Number_of_Items', color='Collection_Name')
@@ -3659,27 +3673,39 @@ with st.spinner('Retrieving data...'):
                         fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
                         st.plotly_chart(fig, use_container_width = True)
                     with col2:
-                        collection_line_legend_check = st.checkbox('Show legend', key='collection_line_legend_check')
-                        if collection_line_legend_check:
-                            collection_line_legend=True
-                        else:
-                            collection_line_legend=False
+                        colcum1, colcum2, colcum3 = st.columns(3)
+                        with colcum1:
+                            collection_line_legend_check = st.checkbox('Hide legend', key='collection_line_legend_check')
+                        with colcum2:
+                            last_5_year = st.checkbox('Limit to last 5 years', key='last5yearscollectioncummulative')
+                        with colcum3:
+                            top_5_collections = st.checkbox('Show top 5 collections', key='top5collections')
+                        
+                        collection_line_legend = not collection_line_legend_check
+
                         df_collections_22 = df_collections_2.copy()
+                        if last_5_year:
+                            df_collections_22 = df_collections_22[df_collections_22['Date year'] != 'No date']
+                            df_collections_22['Date year'] = df_collections_22['Date year'].astype(int)
+                            current_year = datetime.datetime.now().year
+                            df_collections_22 = df_collections_22[df_collections_22['Date year'] > (current_year - 5)]
+                        
                         collection_counts = df_collections_22.groupby(['Date year', 'Collection_Name']).size().unstack().fillna(0)
                         collection_counts = collection_counts.reset_index()
                         collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
 
-                        selected_collections = df_collections_21.head(number0 + 1)['Collection_Name'].tolist()
-                        collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
-                        column_to_exclude = '01 Intelligence history'
-                        if column_to_exclude in selected_collections:
-                            selected_collections.remove(column_to_exclude)
-                        collection_counts_filtered = collection_counts[['Date year'] + selected_collections]
+                        # Determine the top 5 collections if the checkbox is checked
+                        if top_5_collections:
+                            top_5 = df_collections_22['Collection_Name'].value_counts().head(5).index.tolist()
+                        else:
+                            top_5 = df_collections_22['Collection_Name'].unique().tolist()
+                        
+                        collection_counts_filtered = collection_counts[['Date year'] + top_5]
                         collection_counts_filtered['Date year'] = pd.to_numeric(collection_counts_filtered['Date year'], errors='coerce')
-                        collection_counts_filtered = collection_counts_filtered.sort_values(by=['Date year'] + selected_collections, ascending=True)
+                        collection_counts_filtered = collection_counts_filtered.sort_values(by=['Date year'] + top_5, ascending=True)
 
                         # Plotting the line graph using Plotly Express
-                        fig = px.line(collection_counts_filtered, x='Date year', y=selected_collections, 
+                        fig = px.line(collection_counts_filtered, x='Date year', y=top_5, 
                                     markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
                                     title='Cumulative changes in collection over years')
                         fig.update_layout(showlegend=collection_line_legend)
@@ -3701,11 +3727,30 @@ with st.spinner('Retrieving data...'):
                     # TEMP SOLUTION ENDS
 
                     chart_type = st.radio('Choose visual type', ['Bar chart', 'Pie chart'])
+
                     col1, col2 = st.columns(2)
                     with col1:
+                        coltype1, coltype2 = st.columns(2)
+                        with coltype1:
+                            last_5_year = st.checkbox('Limit to last 5 years', key='last5yearsitemtypes')
+                        with coltype2:
+                            if chart_type == 'Pie chart':
+                                log0 = st.checkbox('Show in log scale', key='log0', disabled=True)
+                            else:
+                                log0 = st.checkbox('Show in log scale', key='log0')
+                        if last_5_year:
+                            df_csv_2 = df_csv[df_csv['Date year'] != 'No date']
+                            df_csv_2['Date year'] = df_csv_2['Date year'].astype(int)
+                            current_year = datetime.datetime.now().year
+                            df_csv_2 = df_csv_2[df_csv_2['Date year'] > (current_year - 5)]
+                            df_types = pd.DataFrame(df_csv_2['Publication type'].value_counts())
+                            df_types = df_types.sort_values(['Publication type'], ascending=[False])
+                            df_types=df_types.reset_index()
+                            df_types = df_types.rename(columns={'index':'Publication type','Publication type':'Count'})
+                            # TEMPORARY SOLUTION FOR COLUMN NAME CHANGE ERROR
+                            df_types.columns = ['Publication type', 'Count']
+                            # TEMP SOLUTION ENDS
                         if chart_type == 'Bar chart':
-                            log0 = st.checkbox('Show in log scale', key='log0')
-
                             if log0:
                                 fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type', log_y=True)
                                 fig.update_layout(
@@ -3772,7 +3817,21 @@ with st.spinner('Retrieving data...'):
                     num_authors = st.slider('Select number of authors to display:', 5, min(30, max_authors), 20, key='author2')
                     col1, col2 = st.columns(2)
                     with col1:
-                            table_view = st.radio('Choose visual type', ['Bar chart', 'Table view'], key='author')
+                            colauthor1, colauthor2 = st.columns(2)
+                            with colauthor1:
+                                table_view = st.radio('Choose visual type', ['Bar chart', 'Table view'], key='author')
+                            with colauthor2:
+                                last_5_year = st.checkbox('Limit to last 5 years', key='last5yearsauthorsall')
+                            if last_5_year:
+                                df_authors = df_csv.copy()
+                                df_authors2 = df_csv.copy()
+                                df_authors = df_authors[df_authors['Date year'] != 'No date']
+                                df_authors['Date year'] = df_authors['Date year'].astype(int)
+                                current_year = datetime.datetime.now().year
+                                df_authors = df_authors[df_authors['Date year'] > (current_year - 5)]
+                                df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+                                df_authors = df_authors.explode('Author_name')
+                                df_authors.reset_index(drop=True)
                             df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
                             df_authors = df_authors[df_authors['Author_name'] != 'nan']
                             df_authors = df_authors['Author_name'].value_counts().head(num_authors)
@@ -3793,8 +3852,19 @@ with st.spinner('Retrieving data...'):
                                 df_authors.columns = ['Author name', 'Publication count']
                                 df_authors
                     with col2:
-                            selected_type = st.radio('Select a publication type', ['Journal article', 'Book', 'Book chapter'])
-                            df_authors = df_csv.copy()              
+                            colauthor11, colauthor12 = st.columns(2)
+                            with colauthor11:
+                                selected_type = st.radio('Select a publication type', ['Journal article', 'Book', 'Book chapter'])
+                            with colauthor12:
+                                last_5_year = st.checkbox('Limit to last 5 years', key='last5yearsauthorsallspecified')
+                            if last_5_year:
+                                df_authors = df_csv.copy()
+                                df_authors = df_authors[df_authors['Date year'] != 'No date']
+                                df_authors['Date year'] = df_authors['Date year'].astype(int)
+                                current_year = datetime.datetime.now().year
+                                df_authors = df_authors[df_authors['Date year'] > (current_year - 5)]
+                            else:
+                                df_authors = df_csv.copy()              
                             df_authors = df_authors[df_authors['Publication type']==selected_type]
                             if len(df_authors) == 0:
                                 st.write('No data to visualize')
