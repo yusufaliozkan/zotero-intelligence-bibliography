@@ -23,6 +23,7 @@ from sidebar_content import sidebar_content
 import time
 from format_entry import format_entry
 from events import evens_conferences
+from st_keyup import st_keyup
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence studies network',
@@ -193,6 +194,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
     st.divider()
 
     st.subheader(f"{selected_country}")
+
+    # name = st.text_input("Enter keywords to search in title", key='name', placeholder='Search keyword(s)')#, debounce=250, key='name')
+    name = st_keyup("Enter keywords to search in title", key='name', placeholder='Search keyword(s)', debounce=500)#, debounce=250, key='name')
+    if name:
+        df_collections = df_collections[df_collections.Title.str.lower().str.contains(name.lower(), na=False)]
+        df_countries = df_countries[df_countries.Title.str.lower().str.contains(name.lower(), na=False)]
+
     if selected_country!='':
         col1, col2, col3 = st.columns([2,2,2])
         with col1:
@@ -313,7 +321,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
 
                     # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
-                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:',))
                     display2 = container_abstract.checkbox('Display abstracts', key='type_count2')
 
                     if view == 'Basic list':
@@ -372,7 +380,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 count_by_type[current_type] += 1
                                 if display2:
                                     st.caption(row['Abstract'])
-                        else:
+                        elif sort_by == 'Citation':
                             df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
                             count = 1
                             for index, row in df_collections.iterrows():
@@ -381,6 +389,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 count += 1
                                 if display2:
                                     st.caption(row['Abstract']) 
+                        else:
+                            df_collections = df_collections.sort_values(by=['Date added'], ascending=False)
+                            count = 1
+                            for index, row in df_collections.iterrows():
+                                formatted_entry = format_entry(row)
+                                st.write(f"{count}) {formatted_entry}")
+                                count += 1
+                                if display2:
+                                    st.caption(row['Abstract']) 
+
                     elif view == 'Table':
                         df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal', 'Citation', 'Collection_Name','Link to publication','Zotero link']]
                         df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
@@ -442,7 +460,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     num_items_collections = len(df_countries)
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type_country.items()])                    
 
-                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:',))
                     display2 = container_abstract.checkbox('Display abstracts', key='type_country_2')
 
                     articles_list = []  # Store articles in a list
@@ -564,10 +582,19 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 count_by_type[current_type] += 1
                                 if display2:
                                     st.caption(row['Abstract'])
-                        else:
+                        elif sort_by == 'Citation':
                             df_countries = df_countries.sort_values(by=['Citation'], ascending=False)
                             count = 1
                             for index, row in df_countries.iterrows():
+                                formatted_entry = format_entry(row)
+                                st.write(f"{count}) {formatted_entry}")
+                                count += 1
+                                if display2:
+                                    st.caption(row['Abstract']) 
+                        else:
+                            df_countries = df_countries.sort_values(by=['Date added'], ascending=False)
+                            count = 1
+                            for index, row in df_collections.iterrows():
                                 formatted_entry = format_entry(row)
                                 st.write(f"{count}) {formatted_entry}")
                                 count += 1
