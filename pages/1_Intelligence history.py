@@ -27,6 +27,7 @@ from copyright import display_custom_license
 from events import evens_conferences
 from streamlit_dynamic_filters import DynamicFilters
 import requests
+from st_keyup import st_keyup
 
 st.set_page_config(layout = "wide", 
                     page_title='Intelligence history',
@@ -79,9 +80,11 @@ with st.spinner('Retrieving data & updating dashboard...'):
     container = st.container()
 
     unique_collections = list(df_collections['Collection_Name'].unique())
-
+    def clear_search():
+        st.session_state['name'] = ""
     def update_params():
         st.query_params.from_dict({'collection_id': collection_mapping[st.session_state.qp]})
+        clear_search()
 
     query_params = st.query_params
     ix = 0
@@ -94,34 +97,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
         except (ValueError, KeyError):
             pass
 
+
     radio = container.radio('Select a collection', unique_collections, index=ix, key="qp", on_change=update_params)
     query_params = st.query_params.to_dict()
 
     collection_name = radio
     collection_key = collection_mapping[collection_name]
-    
-    # query_params = st.query_params.to_dict()
-    # selected_collection_key  = query_params.get("collection_id", None)
-
-    # unique_collections = list(df_collections['Collection_Name'].unique())
-
-    # selected_collection_name = reverse_collection_mapping.get(selected_collection_key, None)
-
-    # if selected_collection_name in unique_collections:
-    #     # Set the default value to the selected collection from the query params
-    #     radio = container.radio('Select a collection', unique_collections, index=unique_collections.index(selected_collection_name))
-    # else:
-    #     radio = container.radio('Select a collection', unique_collections)
-
-    # # radio = container.radio('Select a collection', unique_collections)
-    # # collection_name = st.selectbox('Select a collection:', clist)
-    # collection_name = radio
-    # collection_key = collection_mapping[collection_name]
-    # # if collection_name:
-    # st.query_params.from_dict({"collection_id": collection_key})
-
-    # if collection_name:
-#    st.query_params.from_dict({"collection_id": collection_key})
 
     df_collections = df_collections.loc[df_collections['Collection_Name']==collection_name]
 
@@ -144,6 +125,12 @@ with st.spinner('Retrieving data & updating dashboard...'):
     collection_link = df_collections[df_collections['Collection_Name'] == collection_name]['Collection_Link'].iloc[0]
 
     st.markdown('#### Collection theme: ' + collection_name)
+
+    # name = st.text_input("Enter keywords to search in title", key='name', placeholder='Search keyword(s)')#, debounce=250, key='name')
+    name = st_keyup("Enter keywords to search in title", key='name', placeholder='Search keyword(s)', debounce=500)#, debounce=250, key='name')
+    if name:
+        df_collections = df_collections[df_collections.Title.str.lower().str.contains(name.lower(), na=False)]
+
     col1, col2, col3 = st.columns([1,2,4])
     with col1:
         container_metric = st.container()
@@ -253,7 +240,24 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
             # st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
             # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
-            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation'))
+            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:'))
+
+            if sort_by == 'Publication date :arrow_down:': # or df_collections['Citation'].sum() == 0:
+                df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
+                df_collections = df_collections.reset_index()
+
+            elif sort_by == 'Publication type': # or df_collections['Citation'].sum() == 0:
+                df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
+                df_collections = df_collections.reset_index()
+
+            elif sort_by =='Citation':
+                df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
+                df_collections = df_collections.reset_index()
+
+            else: #elif sort_by == 'Date added :arrow_down:':
+                df_collections = df_collections.sort_values(by=['Date added'], ascending=False)
+                df_collections = df_collections.reset_index()
+
             if view == 'Basic list':
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
@@ -312,7 +316,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             count_by_type[current_type] += 1
                             if display2:
                                 st.caption(row['Abstract'])
-                    else:
+                    elif sort_by =='Citation':
                         if df_collections['Citation'].sum() == 0:
                             count = 1
                             for index, row in df_collections.iterrows():
@@ -329,7 +333,16 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 st.write(f"{count}) {formatted_entry}")
                                 count += 1
                                 if display2:
-                                    st.caption(row['Abstract']) 
+                                    st.caption(row['Abstract'])
+                    else: #elif sort_by == 'Date added :arrow_down:':
+                        df_collections = df_collections.sort_values(by=['Date added'], ascending=False)
+                        count = 1
+                        for index, row in df_collections.iterrows():
+                            formatted_entry = format_entry(row)
+                            st.write(f"{count}) {formatted_entry}")
+                            count += 1
+                            if display2:
+                                st.caption(row['Abstract']) 
             elif view == 'Table':
                 df_table_view = df_collections[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal', 'Citation', 'Collection_Name','Link to publication','Zotero link']]
                 df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
@@ -342,10 +355,6 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with st.expander('**Table view**', expanded=True):
                     df_table_view
             else:
-                if sort_by == 'Publication type':
-                    df_collections = df_collections.sort_values(by=['Publication type'], ascending=True)
-                elif sort_by == 'Citation':
-                    df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
                 with st.expander('**Bibliographic listing**', expanded=True):
                     df_collections['zotero_item_key'] = df_collections['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
                     df_zotero_id = pd.read_csv('zotero_citation_format.csv')
