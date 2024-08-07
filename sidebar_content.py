@@ -4,8 +4,14 @@ from copyright import display_custom_license, cc_by_licence_image
 
 def sidebar_content():
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
+    
     with st.sidebar:
         st.image(image, width=150)
+        st.logo(
+            image=image,
+            icon_image=image,
+            link='https://intelligence.streamlit.app/'
+            )
         st.sidebar.markdown("# Intelligence studies network")
         with st.expander('About'):
             st.write('''This website lists secondary sources on intelligence studies and intelligence history.
@@ -37,7 +43,7 @@ def sidebar_content():
             st.write('''
             Join our [mailing list](https://groups.google.com/g/intelligence-studies-network) to receive updates about the website.
 
-            Contact [Yusuf Ozkan](https://linktr.ee/yusufozkan).
+            Contact [me](https://kcsi.uk/members/yusuf-ozkan).
 
             Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).            
             ''')
