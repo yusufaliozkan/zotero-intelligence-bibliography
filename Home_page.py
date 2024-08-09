@@ -224,7 +224,9 @@ Therefore, this bibliography offers a carefully curated selection of publication
 Join our Google Groups to get updates and learn  new features about the website and the database. 
 You can also ask questions or make suggestions. (https://groups.google.com/g/intelligence-studies-network)
 
-Check out the following guides for a quick intoduction about the website:
+Resources about the website:
+
+Ozkan, Yusuf A. “‘Intelligence Studies Network’: A Human-Curated Database for Indexing Resources with Open-Source Tools.” arXiv, August 7, 2024. https://doi.org/10.48550/arXiv.2408.03868.
 
 Ozkan, Yusuf Ali. “Introduction to ‘Intelligence Studies Bibliography.’” Medium (blog), December 26, 2023. https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353.
 
@@ -3434,22 +3436,74 @@ with st.spinner('Retrieving data...'):
                     
 
         with col2:
-            st.info('Join the [mailing list](https://groups.google.com/g/intelligence-studies-network)')
-            with st.expander('Collections', expanded=True):
-                st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
-                st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
-                st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
-                st.caption('[Intelligence organisations](https://intelligence.streamlit.app/Intelligence_organisations)')
-                st.caption('[Intelligence failures](https://intelligence.streamlit.app/Intelligence_failures)')
-                st.caption('[Intelligence oversight and ethics](https://intelligence.streamlit.app/Intelligence_oversight_and_ethics)')
-                st.caption('[Intelligence collection](https://intelligence.streamlit.app/Intelligence_collection)')
-                st.caption('[Counterintelligence](https://intelligence.streamlit.app/Counterintelligence)')
-                st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
-                st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
-                st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
-                st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
-                st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
 
+            st.info('Join the [mailing list](https://groups.google.com/g/intelligence-studies-network)')
+            @st.experimental_fragment
+            def events():
+                with st.expander('Collections', expanded=True):
+                    if st.button(
+                        'Intelligence history',
+                    ):
+                        st.switch_page('pages/1_Intelligence history.py')
+                    if st.button(
+                        'Intelligence studies',
+                    ):
+                        st.switch_page('pages/2_Intelligence studies.py')
+                    if st.button(
+                        'Intelligence analysis',
+                    ):
+                        st.switch_page('pages/3_Intelligence analysis.py')
+                    if st.button(
+                        'Intelligence organisations',
+                    ):
+                        st.switch_page('pages/4_Intelligence organisations.py')
+                    if st.button(
+                        'Intelligence failures',
+                    ):
+                        st.switch_page('pages/5_Intelligence failures.py')
+                    if st.button(
+                        'Intelligence oversight and ethics',
+                    ):
+                        st.switch_page('pages/6_Intelligence oversight and ethics.py')
+                    if st.button(
+                        'Intelligence collection',
+                    ):
+                        st.switch_page('pages/7_Intelligence collection.py')
+                    if st.button(
+                        'Counterintelligence',
+                    ):
+                        st.switch_page('pages/8_Counterintelligence.py')
+                    if st.button(
+                        'Covert action',
+                    ):
+                        st.switch_page('pages/9_Covert action.py')
+                    if st.button(
+                        'Intelligence and cybersphere',
+                    ):
+                        st.switch_page('pages/10_Intelligence and cybersphere.py')
+                    if st.button(
+                        'Global intelligence',
+                    ):
+                        st.switch_page('pages/11_Global intelligence.py')
+                    if st.button(
+                        'Special collections',
+                    ):
+                        st.switch_page('pages/12_Special collections.py')
+
+                    # st.caption('[Intelligence history](https://intelligence.streamlit.app/Intelligence_history)')
+                    # st.caption('[Intelligence studies](https://intelligence.streamlit.app/Intelligence_studies)')
+                    # st.caption('[Intelligence analysis](https://intelligence.streamlit.app/Intelligence_analysis)')
+                    # st.caption('[Intelligence organisations](https://intelligence.streamlit.app/Intelligence_organisations)')
+                    # st.caption('[Intelligence failures](https://intelligence.streamlit.app/Intelligence_failures)')
+                    # st.caption('[Intelligence oversight and ethics](https://intelligence.streamlit.app/Intelligence_oversight_and_ethics)')
+                    # st.caption('[Intelligence collection](https://intelligence.streamlit.app/Intelligence_collection)')
+                    # st.caption('[Counterintelligence](https://intelligence.streamlit.app/Counterintelligence)')
+                    # st.caption('[Covert action](https://intelligence.streamlit.app/Covert_action)')
+                    # st.caption('[Intelligence and cybersphere](https://intelligence.streamlit.app/Intelligence_and_cybersphere)')
+                    # st.caption('[Global intelligence](https://intelligence.streamlit.app/Global_intelligence)')
+                    # st.caption('[AI and intelligence](https://intelligence.streamlit.app/AI_and_intelligence)')
+                    # st.caption('[Special collections](https://intelligence.streamlit.app/Special_collections)')
+            events()
             with st.expander('Events & conferences', expanded=True):
                 st.markdown('##### Next event')
 
