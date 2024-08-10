@@ -332,7 +332,7 @@ with col1:
 
 
             st.write('**Other resources**')
-            
+
             def fetch_rss_data(url, label):
                 response = requests.get(url)
                 rss_content = response.content
@@ -378,6 +378,7 @@ with col1:
 
             # Adding a column to df with the most similar title from df_titles
             df['Similar_Title'] = df['Title'].apply(lambda x: find_similar_title(x, df_titles['Title'], threshold=80))
+            df
 
             # Performing the merge based on the similar titles
             df_not = df.merge(df_titles[['Title']], left_on='Similar_Title', right_on='Title', how='left', indicator=True)
