@@ -330,58 +330,62 @@ with col1:
                 items_not_in_df_item_magazines        
             status.update(label="Search complete!", state="complete", expanded=True)
 
-            # st.write('**Institutional repositories**')
 
-            # def fetch_rss_data(url, label):
-            #     response = requests.get(url)
-            #     rss_content = response.content
-            #     root = ET.fromstring(rss_content)
-            #     items = root.findall('.//item')[1:]
-            #     data = []
-            #     for item in items:
-            #         title = item.find('title').text
-            #         link = item.find('link').text
-            #         data.append({'title': title, 'link': link, 'label': label})
-            #     return data
+            st.write('**Other resources**')
 
-            # # URLs of the RSS feeds with their respective labels
-            # feeds = [
-            #     {"url": "https://rss.app/feeds/uBBTAmA7a9rMr7JA.xml", "label": "Brunel University"},
-            #     {"url": "https://rss.app/feeds/S566whCCjTbiXmns.xml", "label": "Leiden University"}
-            # ]
+            def fetch_rss_data(url, label):
+                response = requests.get(url)
+                rss_content = response.content
+                root = ET.fromstring(rss_content)
+                items = root.findall('.//item')[1:]
+                data = []
+                for item in items:
+                    title = item.find('title').text
+                    link = item.find('link').text
+                    pub_date = item.find('pubDate').text  # Extracting the pubDate
+                    data.append({'title': title, 'link': link, 'label': label, 'pubDate': pub_date})  # Adding pubDate to the data dictionary
+                return data
 
-            # # Fetch and combine data from both RSS feeds
-            # all_data = []
-            # for feed in feeds:
-            #     all_data.extend(fetch_rss_data(feed["url"], feed["label"]))
+            # URLs of the RSS feeds with their respective labels
+            feeds = [
+                {"url":"https://www.aspistrategist.org.au/feed/", "label":"Australian Strategic Policy Institute"}
+            ]
 
-            # # Create a DataFrame
-            # df = pd.DataFrame(all_data)
-            # words_to_filter = ["intelligence", "espionage", "spy", "oversight"]
-            # pattern = '|'.join(words_to_filter)
+            # Fetch and combine data from both RSS feeds
+            all_data = []
+            for feed in feeds:
+                all_data.extend(fetch_rss_data(feed["url"], feed["label"]))
 
-            # df = df[df['title'].str.contains(pattern, case=False, na=False)].reset_index(drop=True)
-            # df['title'] = df['title'].str.replace('Brunel University Research Archive:', '', regex=False)
-            # df = df.rename(columns={'title':'Title'})
-            # df['Title'] = df['Title'].str.upper()
-            # df_titles['Title'] = df_titles['Title'].str.upper()
+            # Create a DataFrame
+            df = pd.DataFrame(all_data)
 
-            # def find_similar_title(title, titles, threshold=80):
-            #     for t in titles:
-            #         similarity = fuzz.ratio(title, t)
-            #         if similarity >= threshold:
-            #             return t
-            #     return None
+            # The rest of your code remains unchanged
 
-            # # Adding a column to df with the most similar title from df_titles
-            # df['Similar_Title'] = df['Title'].apply(lambda x: find_similar_title(x, df_titles['Title'], threshold=80))
+            words_to_filter = ["intelligence", "espionage", "spy", "oversight"]
+            pattern = '|'.join(words_to_filter)
 
-            # # Performing the merge based on the similar titles
-            # df_not = df.merge(df_titles[['Title']], left_on='Similar_Title', right_on='Title', how='left', indicator=True)
-            # df_not = df_not[df_not['_merge'] == 'left_only']
-            # df_not.drop(['_merge', 'Similar_Title'], axis=1, inplace=True)
-            # df_not = df_not.reset_index(drop=True)
-            # df_not
+            df = df[df['title'].str.contains(pattern, case=False, na=False)].reset_index(drop=True)
+            df = df.rename(columns={'title':'Title'})
+            df['Title'] = df['Title'].str.upper()
+            df_titles['Title'] = df_titles['Title'].str.upper()
+
+            def find_similar_title(title, titles, threshold=80):
+                for t in titles:
+                    similarity = fuzz.ratio(title, t)
+                    if similarity >= threshold:
+                        return t
+                return None
+
+            # Adding a column to df with the most similar title from df_titles
+            df['Similar_Title'] = df['Title'].apply(lambda x: find_similar_title(x, df_titles['Title'], threshold=80))
+            df
+
+            # Performing the merge based on the similar titles
+            df_not = df.merge(df_titles[['Title']], left_on='Similar_Title', right_on='Title', how='left', indicator=True)
+            df_not = df_not[df_not['_merge'] == 'left_only']
+            df_not.drop(['_merge', 'Similar_Title'], axis=1, inplace=True)
+            df_not = df_not.reset_index(drop=True)
+            df_not
 
 with col2:
     with st.expander('Collections', expanded=True):
