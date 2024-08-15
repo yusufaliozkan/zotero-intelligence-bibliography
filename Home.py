@@ -18,10 +18,10 @@ intelligence_cybersphere = st.Page('pages/10_Intelligence and cybersphere.py')
 global_intelligence = st.Page('pages/11_Global intelligence.py')
 special_collections = st.Page('pages/12_Special collections.py')
 
-events = st.Page('pages/14_Events.py')
-digest = st.Page('pages/15_Digest.py')
-institutions = st.Page('pages/16_Institutions.py')
-item_monitoring = st.Page('pages/17_Item monitoring.py')
+events = st.Page('pages/13_Events.py')
+digest = st.Page('pages/14_Digest.py')
+institutions = st.Page('pages/15_Institutions.py')
+item_monitoring = st.Page('pages/16_Item monitoring.py')
 
 pg = st.navigation(
     {
