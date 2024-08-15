@@ -229,6 +229,8 @@ Resources about the website:
 
 Ozkan, Yusuf A. “‘Intelligence Studies Network’: A Human-Curated Database for Indexing Resources with Open-Source Tools.” arXiv, August 7, 2024. https://doi.org/10.48550/arXiv.2408.03868.
 
+Ozkan, Yusuf A. ‘Intelligence Studies Network Dataset’. Zenodo, 15 August 2024. https://doi.org/10.5281/zenodo.13325699.
+
 Ozkan, Yusuf Ali. “Introduction to ‘Intelligence Studies Bibliography.’” Medium (blog), December 26, 2023. https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353.
 
 Ozkan, Yusuf Ali. ‘Enhancing the “Intelligence Studies Network” Website’. Medium (blog), 20 January 2024. https://medium.com/@yaliozkan/enhancing-the-intelligence-studies-network-website-13aa0c80f7f4.
