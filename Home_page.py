@@ -118,7 +118,8 @@ type_map = {
     'audioRecording' : 'Podcast',
     'preprint':'Preprint',
     'document':'Document',
-    'computerProgram':'Computer program'
+    'computerProgram':'Computer program',
+    'dataset':'Dataset'
 }
 
 mapping_thesis_type ={
