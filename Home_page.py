@@ -287,7 +287,7 @@ with st.spinner('Retrieving data...'):
                 label="Average citation", 
                 value=citation_average,
                 help=f'''**{outlier_count}** outliers detected that have more than 1000 citations. 
-                The citation count without outliers is **{citation_average_wo_outliers}**.
+                The average citation count without outliers is **{citation_average_wo_outliers}**.
                 Citation median: **{round(citation_median, 1)}**.
                 '''
             )
