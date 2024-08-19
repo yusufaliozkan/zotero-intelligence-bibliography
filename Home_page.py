@@ -118,7 +118,8 @@ type_map = {
     'audioRecording' : 'Podcast',
     'preprint':'Preprint',
     'document':'Document',
-    'computerProgram':'Computer program'
+    'computerProgram':'Computer program',
+    'dataset':'Dataset'
 }
 
 mapping_thesis_type ={
@@ -228,6 +229,8 @@ Resources about the website:
 
 Ozkan, Yusuf A. “‘Intelligence Studies Network’: A Human-Curated Database for Indexing Resources with Open-Source Tools.” arXiv, August 7, 2024. https://doi.org/10.48550/arXiv.2408.03868.
 
+Ozkan, Yusuf A. ‘Intelligence Studies Network Dataset’. Zenodo, 15 August 2024. https://doi.org/10.5281/zenodo.13325699.
+
 Ozkan, Yusuf Ali. “Introduction to ‘Intelligence Studies Bibliography.’” Medium (blog), December 26, 2023. https://medium.com/@yaliozkan/introduction-to-intelligence-studies-network-ed63461d1353.
 
 Ozkan, Yusuf Ali. ‘Enhancing the “Intelligence Studies Network” Website’. Medium (blog), 20 January 2024. https://medium.com/@yaliozkan/enhancing-the-intelligence-studies-network-website-13aa0c80f7f4.
@@ -287,7 +290,7 @@ with st.spinner('Retrieving data...'):
                 label="Average citation", 
                 value=citation_average,
                 help=f'''**{outlier_count}** outliers detected that have more than 1000 citations. 
-                The citation count without outliers is **{citation_average_wo_outliers}**.
+                The average citation count without outliers is **{citation_average_wo_outliers}**.
                 Citation median: **{round(citation_median, 1)}**.
                 '''
             )
@@ -3387,22 +3390,27 @@ with st.spinner('Retrieving data...'):
             overview()
             st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
-                df_all_items = df_dedup.copy()
-                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                # df_all_items = df_dedup.copy()
+                # df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
 
-                download_all = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                download_all['Abstract'] = download_all['Abstract'].str.replace('\n', ' ')
-                download_all = download_all.reset_index(drop=True)
-                def convert_df(download_all):
-                    return download_all.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv = convert_df(download_all)
-                # csv = df_download
-                # # st.caption(collection_name)
-                today = datetime.date.today().isoformat()
-                a = 'intelligence-bibliography-all-' + today
-                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
-                df_all_items
+                # download_all = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                # download_all['Abstract'] = download_all['Abstract'].str.replace('\n', ' ')
+                # download_all = download_all.reset_index(drop=True)
+                # def convert_df(download_all):
+                #     return download_all.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                # csv = convert_df(download_all)
+                # # csv = df_download
+                # # # st.caption(collection_name)
+                # today = datetime.date.today().isoformat()
+                # a = 'intelligence-bibliography-all-' + today
+                # st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
+                # df_all_items
+                st.write('''
+                The entire dataset containing the metadata of publications within the Intelligence Studies Network database is available on Zenodo. 
+                The dataset will be updated quarterly. You can access the dataset from the following link:
 
+                Ozkan, Yusuf A. “Intelligence Studies Network Dataset.” Zenodo, August 15, 2024. https://doi.org/10.5281/zenodo.13325699.
+                ''')
                 df_added = df_dedup.copy()
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
