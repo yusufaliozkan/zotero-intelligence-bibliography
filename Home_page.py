@@ -3390,22 +3390,27 @@ with st.spinner('Retrieving data...'):
             overview()
             st.header('All items in database', anchor=False)
             with st.expander('Click to expand', expanded=False):
-                df_all_items = df_dedup.copy()
-                df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                # df_all_items = df_dedup.copy()
+                # df_all_items = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
 
-                download_all = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
-                download_all['Abstract'] = download_all['Abstract'].str.replace('\n', ' ')
-                download_all = download_all.reset_index(drop=True)
-                def convert_df(download_all):
-                    return download_all.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
-                csv = convert_df(download_all)
-                # csv = df_download
-                # # st.caption(collection_name)
-                today = datetime.date.today().isoformat()
-                a = 'intelligence-bibliography-all-' + today
-                st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
-                df_all_items
+                # download_all = df_all_items[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
+                # download_all['Abstract'] = download_all['Abstract'].str.replace('\n', ' ')
+                # download_all = download_all.reset_index(drop=True)
+                # def convert_df(download_all):
+                #     return download_all.to_csv(index=False).encode('utf-8-sig') # not utf-8 because of the weird character,  Â cp1252
+                # csv = convert_df(download_all)
+                # # csv = df_download
+                # # # st.caption(collection_name)
+                # today = datetime.date.today().isoformat()
+                # a = 'intelligence-bibliography-all-' + today
+                # st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
+                # df_all_items
+                st.write('''
+                The entire dataset containing the metadata of publications within the Intelligence Studies Network database is available on Zenodo. 
+                The dataset will be updated quarterly. You can access the dataset from the following link:
 
+                Ozkan, Yusuf A. “Intelligence Studies Network Dataset.” Zenodo, August 15, 2024. https://doi.org/10.5281/zenodo.13325699.
+                ''')
                 df_added = df_dedup.copy()
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
                 df_added['YearMonth'] = df_added['Date added'].dt.to_period('M').astype(str)
