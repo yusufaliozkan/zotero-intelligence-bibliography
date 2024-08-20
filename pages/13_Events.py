@@ -48,17 +48,23 @@ with st.popover('Download events data'):
 # Create a connection object.
 conn = st.connection("gsheets", type=GSheetsConnection)
 df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
+df_gs['organiser'] = df_gs['organiser'].replace('North American Society for Intelligence History (NASIH)', 'The Society for Intelligence History (SIH)')
 
 df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
 df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+df_forms['organiser'] = df_forms['organiser'].replace('North American Society for Intelligence History (NASIH)','The Society for Intelligence History (SIH)')
 
 tab1, tab2, tab3 = st.tabs(['Events', 'Conferences','Call for papers'])
 with tab1:
     st.header('Events')
 
     # Convert and format dates in df_gs
+
     df_gs['date'] = pd.to_datetime(df_gs['date'])
     df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
+    df_gs['month'] = df_gs['date'].dt.strftime('%m')
+    df_gs['year'] = df_gs['date'].dt.strftime('%Y')
+    df_gs['month_year'] = df_gs['date'].dt.strftime('%Y-%m')
 
     # Convert and format dates in df_forms
     df_forms['date'] = pd.to_datetime(df_forms['date'])
