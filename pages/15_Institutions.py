@@ -203,6 +203,14 @@ with col1:
 
                     display_numbered_list(type_programs, prog_type, show_country=False if prog_type != 'Academic' else False)
 
+    with st.popover('Download events data'):
+        st.write('''
+        The data for this page is available on Zenodo. 
+        Use the following link to access the dataset:
+
+        Ozkan, Yusuf A. ‘Intelligence Studies Network Dataset’. Zenodo, 15 August 2024. https://doi.org/10.5281/zenodo.13325698.
+        ''')
+
     df_plot = df_plot[df_plot['Type'] != 'Government institutions']
     df_plot = df_plot.groupby(['Country', 'Type']).size().reset_index(name='Count')
     country_totals = df_plot.groupby('Country')['Count'].sum().reset_index(name='Total_Count')
