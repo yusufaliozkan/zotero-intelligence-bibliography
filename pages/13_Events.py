@@ -37,21 +37,34 @@ today = dt.date.today()
 today2 = dt.date.today().strftime('%d/%m/%Y')
 st.write('Today is: '+ str(today2))
 container = st.container()
+with st.popover('Download events data'):
+    st.write('''
+    The data for all events, conferences, and calls for papers is available on Zenodo. 
+    Use the following link to access the dataset:
+
+    Ozkan, Yusuf A. ‘Intelligence Studies Network Dataset’. Zenodo, 15 August 2024. https://doi.org/10.5281/zenodo.13325698.
+    ''')
 
 # Create a connection object.
 conn = st.connection("gsheets", type=GSheetsConnection)
 df_gs = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=0')
+df_gs['organiser'] = df_gs['organiser'].replace('North American Society for Intelligence History (NASIH)', 'The Society for Intelligence History (SIH)')
 
 df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
 df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+df_forms['organiser'] = df_forms['organiser'].replace('North American Society for Intelligence History (NASIH)','The Society for Intelligence History (SIH)')
 
 tab1, tab2, tab3 = st.tabs(['Events', 'Conferences','Call for papers'])
 with tab1:
     st.header('Events')
 
     # Convert and format dates in df_gs
+
     df_gs['date'] = pd.to_datetime(df_gs['date'])
     df_gs['date_new'] = df_gs['date'].dt.strftime('%Y-%m-%d')
+    df_gs['month'] = df_gs['date'].dt.strftime('%m')
+    df_gs['year'] = df_gs['date'].dt.strftime('%Y')
+    df_gs['month_year'] = df_gs['date'].dt.strftime('%Y-%m')
 
     # Convert and format dates in df_forms
     df_forms['date'] = pd.to_datetime(df_forms['date'])
@@ -62,15 +75,18 @@ with tab1:
     df_forms.sort_values(by='date', ascending=True, inplace=True)
     df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
     df_forms2 = df_forms.copy()
+    df_forms2.sort_values(by='date_new', ascending = False, inplace=True)
+    df_forms2['Timestamp'] = pd.to_datetime(df_forms2['Timestamp'], format='%m/%d/%Y %H:%M:%S')
+    df_forms2['Timestamp'] = df_forms2['Timestamp'].dt.strftime('%d-%m-%Y %H:%M')
+    container.write('The events page last updated on ' + '**'+ df_forms2.iloc[0]['Timestamp']+'**')
     
-    container.write('The events page last updated on ' + '**'+ df_forms2.loc[0]['date_new']+'**')
-
     df_forms['date_new'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
     df_forms['month'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%m')
     df_forms['year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y')
     df_forms['month_year'] = pd.to_datetime(df_forms['date'], dayfirst = True).dt.strftime('%Y-%m')
     df_forms.sort_values(by='date', ascending = True, inplace=True)
     df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+ 
     
     df_forms['details'] = df_forms['details'].fillna('No details')
     df_forms = df_forms.fillna('')
@@ -177,8 +193,8 @@ with tab1:
 
     st.header('Past events')
     with st.expander('Expand to see the list'):
-        df_gs2['year'] = df_gs2['date'].dt.strftime('%Y')
-        years = sorted(df_gs2['year'].unique(), reverse=True)
+        st.warning('Some of the event links may not be working anymore.')
+        years = df_gs2['year'].unique()[::-1]
         for year in years:
             if st.checkbox(f"Events in {year}", key=year):
                 if year in df_gs2['year'].values:
@@ -197,17 +213,16 @@ with tab1:
     selector = st.checkbox('Select a year')
     year = st.checkbox('Show years only')
     if selector:
-        max_year = int(df_gs2['year'].max())
-        min_year = int(df_gs2['year'].min())
+        max_year = df_gs['date'].dt.year.max()
+        min_year = df_gs['date'].dt.year.min()
         current_year = pd.Timestamp.now().year
 
-        slider = st.slider('Select a year', min_year, max_year, current_year, key='key888')
+        slider = st.slider('Select a year', 2024, max_year, current_year)
         slider = str(slider)
         df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]
         ap = ' (in ' + slider+')'
     
     if year:
-        df_gs_plot['year'] = df_gs_plot['date'].dt.strftime('%Y')
         date_plot=df_gs_plot['year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Year','year':'Count'})
@@ -222,9 +237,6 @@ with tab1:
         fig.update_layout(title={'text':'Events over time' +ap, 'y':0.95, 'x':0.5, 'yanchor':'top'})
         st.plotly_chart(fig, use_container_width = True)
     else:
-        df_gs_plot['month'] = df_gs_plot['date'].dt.strftime('%m')
-        df_gs_plot['year'] = df_gs_plot['date'].dt.strftime('%Y')
-        df_gs_plot['month_year'] = df_gs_plot['date'].dt.strftime('%Y-%m')
         date_plot=df_gs_plot['month_year'].value_counts()
         date_plot=date_plot.reset_index()
         date_plot=date_plot.rename(columns={'index':'Date','month_year':'Count'})

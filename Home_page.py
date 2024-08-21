@@ -3409,7 +3409,7 @@ with st.spinner('Retrieving data...'):
                 The entire dataset containing the metadata of publications within the Intelligence Studies Network database is available on Zenodo. 
                 The dataset will be updated quarterly. You can access the dataset from the following link:
 
-                Ozkan, Yusuf A. “Intelligence Studies Network Dataset.” Zenodo, August 15, 2024. https://doi.org/10.5281/zenodo.13325699.
+                Ozkan, Yusuf A. ‘Intelligence Studies Network Dataset’. Zenodo, 15 August 2024. https://doi.org/10.5281/zenodo.13325698.
                 ''')
                 df_added = df_dedup.copy()
                 df_added['Date added'] = pd.to_datetime(df_added['Date added'])
