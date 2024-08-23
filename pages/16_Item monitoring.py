@@ -470,10 +470,21 @@ else:
                 df_con['date_new'] = pd.to_datetime(df_con['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
                 df_con = df_con[df_con['date_new'] >= pd.to_datetime('today').strftime('%Y-%m-%d')]
                 df_con = df_con.reset_index(drop=True)
+
+                df_con_2 = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=312814443')
+                df_con_2['date'] = pd.to_datetime(df_con_2['date'])
+                df_con_2['date_new'] = df_con_2['date'].dt.strftime('%Y-%m-%d')
+                df_con_2['date_new'] = pd.to_datetime(df_con_2['date'], dayfirst = True).dt.strftime('%Y-%m-%d')
+                df_con_2 = df_con_2[df_con_2['date_new'] >= pd.to_datetime('today').strftime('%Y-%m-%d')]
+                df_con_2 = df_con_2.drop('Timestamp', axis=1)
+                df_con_2 = df_con_2.reset_index(drop=True)
+                df_con = pd.concat([df_con, df_con_2])
+
                 df_con['Include?'] = False
                 last_column = df_con.columns[-1]
                 df_con = df_con[[last_column] + list(df_con.columns[:-1])]
                 df_con.sort_values(by='date_new', ascending=True, inplace=True)
+                df_con = df_con.reset_index(drop=True)
                 st.markdown('##### Conferences')
                 st.write('''
                 Pick item(s) from the 'Include?' column.
@@ -491,11 +502,20 @@ else:
                 df_cfp['deadline'] = df_cfp['deadline'].dt.strftime('%Y-%m-%d')
                 df_cfp['deadline'] = pd.to_datetime(df_cfp['deadline'], dayfirst = True).dt.strftime('%Y-%m-%d')
                 df_cfp = df_cfp[df_cfp['deadline'] >= pd.to_datetime('today').strftime('%Y-%m-%d')]
-                df_cfp = df_cfp.reset_index(drop=True)
+
+                df_cfp_2 = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1589739166') 
+                df_cfp_2['deadline'] = pd.to_datetime(df_cfp_2['deadline'])
+                df_cfp_2['deadline'] = df_cfp_2['deadline'].dt.strftime('%Y-%m-%d')
+                df_cfp_2['deadline'] = pd.to_datetime(df_cfp_2['deadline'], dayfirst = True).dt.strftime('%Y-%m-%d')
+                df_cfp_2 = df_cfp_2[df_cfp_2['deadline'] >= pd.to_datetime('today').strftime('%Y-%m-%d')]
+                df_cfp_2 = df_cfp_2.drop('Timestamp', axis=1)
+                df_cfp = pd.concat([df_cfp, df_cfp_2])
+
                 df_cfp['Include?'] = False
                 last_column = df_cfp.columns[-1]
                 df_cfp = df_cfp[[last_column] + list(df_cfp.columns[:-1])]
                 df_cfp.sort_values(by='deadline', ascending=True, inplace=True)
+                df_cfp = df_cfp.reset_index(drop=True)
                 df_cfp['venue'] = 'Call for Papers'
                 st.markdown('##### Call for Papers')
                 st.write('''
