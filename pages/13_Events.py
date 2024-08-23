@@ -342,14 +342,20 @@ with tab2:
 with tab3:
     st.subheader('Call for papers')
     df_cfp = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=135096406') 
-
     df_cfp['deadline'] = pd.to_datetime(df_cfp['deadline'])
     df_cfp['deadline_new'] = df_cfp['deadline'].dt.strftime('%Y-%m-%d')
     df_cfp.sort_values(by='deadline', ascending = True, inplace=True)
-
     df_cfp['details'] = df_cfp['details'].fillna('No details')
     df_cfp = df_cfp.fillna('')
 
+    df_cfp_v2 = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1589739166')
+    df_cfp_v2['deadline'] = pd.to_datetime(df_cfp_v2['deadline'])
+    df_cfp_v2['deadline_new'] = df_cfp_v2['deadline'].dt.strftime('%Y-%m-%d')
+    df_cfp_v2.sort_values(by='deadline', ascending = True, inplace=True)
+    df_cfp_v2['details'] = df_cfp_v2['details'].fillna('No details')
+    df_cfp_v2 = df_cfp_v2.fillna('')
+
+    df_cfp = pd.concat([df_cfp, df_cfp_v2])
     df_cfp = df_cfp.drop_duplicates(subset=['name', 'link', 'deadline'], keep='first')
     
     display = st.checkbox('Show details', key='cfp')
