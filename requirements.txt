@@ -17,3 +17,7 @@ st-gsheets-connection==0.0.4
 shillelagh==1.2.19
 streamlit_dynamic_filters
 fuzzywuzzy==0.18.0
+pyparsing==3.1.2
+beautifulsoup4==4.12.3
+atproto==0.0.49
+grapheme==0.6.0
