@@ -72,6 +72,21 @@ def evens_conferences():
     df_con['location'] = df_con['location'].fillna('No details')
     df_con = df_con.fillna('')
     df_con['date_end'] = pd.to_datetime(df_con['date'], dayfirst=True)     
+
+    df_con_v2 = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=312814443')
+    df_con_v2['date'] = pd.to_datetime(df_con_v2['date'])
+    # df_con_v2['date'] = df_con_v2['date'].dt.strftime('%Y-%m-%d')
+    df_con_v2['date_new'] = pd.to_datetime(df_con_v2['date'], dayfirst = True).dt.strftime('%d/%m/%Y')
+    df_con_v2['date_end'] = pd.to_datetime(df_con_v2['date_end'])
+    # df_con_v2['date_end'] = df_con_v2['date_end'].dt.strftime('%Y-%m-%d')
+    df_con_v2['date_new_end'] = pd.to_datetime(df_con_v2['date_end'], dayfirst = True).dt.strftime('%d/%m/%Y')
+    df_con_v2 = df_con_v2.drop('Timestamp', axis=1)
+    df_con_v2.sort_values(by='date', ascending = True, inplace=True)
+    df_con_v2['details'] = df_con_v2['details'].fillna('No details')
+    df_con_v2['location'] = df_con_v2['location'].fillna('No details')
+    df_con_v2 = df_con_v2.fillna('')
+    df_con = pd.concat([df_con, df_con_v2])
+
     filter = df_con['date_end']>=pd.to_datetime(today)
     df_con = df_con.loc[filter]
     df_con = df_con.head(1)
