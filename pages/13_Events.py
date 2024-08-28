@@ -307,6 +307,7 @@ with tab2:
     df_con_v2 = df_con_v2.fillna('')
 
     df_con = pd.concat([df_con, df_con_v2])
+    df_con = df_con.drop_duplicates(subset='link')
     df_con.sort_values(by='date', ascending = True, inplace=True)
     
     col1, col2 = st.columns(2)
