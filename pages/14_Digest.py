@@ -540,7 +540,7 @@ with st.spinner('Preparing digest...'):
                     plt.show()
                     # st.set_option('deprecation.showPyplotGlobalUse', False)
                     st.pyplot() 
-        elif options=='Recently cited':
+        elif options=='Recently cited': 
             current_year = datetime.datetime.now().year
             df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
             df_cited = df_cited.reset_index(drop=True)
