@@ -308,7 +308,11 @@ with st.spinner('Preparing digest...'):
                     plt.imshow(wordcloud)
                     plt.axis("off")
                     plt.show()
+<<<<<<< HEAD
+                    # # st.set_option('deprecation.showPyplotGlobalUse', False)
+=======
                     # # # st.set_option('deprecation.showPyplotGlobalUse', False)
+>>>>>>> b90b1bb53b901bf962b874ebddbbe400106bec4a
                     st.pyplot() 
         elif options=='Recently published':
             previous_10 = today - dt.timedelta(days=10)
@@ -534,7 +538,7 @@ with st.spinner('Preparing digest...'):
                     plt.imshow(wordcloud)
                     plt.axis("off")
                     plt.show()
-                    # # st.set_option('deprecation.showPyplotGlobalUse', False)
+                    # st.set_option('deprecation.showPyplotGlobalUse', False)
                     st.pyplot() 
         elif options=='Recently cited':
             current_year = datetime.datetime.now().year
