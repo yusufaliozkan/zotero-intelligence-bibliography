@@ -70,7 +70,7 @@ with st.sidebar:
 ### Bluesky posting functions start here
 client = Client(base_url='https://bsky.social')
 bluesky_password = st.secrets["bluesky_password"]
-client.login('intelbase.bsky.social', bluesky_password)
+client.login('intelarchive.bsky.social', bluesky_password)
 
 def fetch_link_metadata(url: str) -> Dict:
     response = requests.get(url)
