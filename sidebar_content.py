@@ -12,7 +12,7 @@ def sidebar_content():
             icon_image=image,
             link='https://intelligence.streamlit.app/'
             )
-        st.sidebar.markdown("# Intelligence studies network")
+        st.sidebar.markdown("# IntelArchive")
         with st.expander('About'):
             st.write('''This website lists secondary sources on intelligence studies and intelligence history.
             The sources are originally listed in the [Intelligence bibliography Zotero library](https://www.zotero.org/groups/2514686/intelligence_bibliography).
@@ -50,3 +50,18 @@ def sidebar_content():
         st.write('Check the digest [here](https://intelligence.streamlit.app/Digest)')
         st.toast('Join our [mailing list](https://groups.google.com/g/intelligence-studies-network) to receive updates.')
 
+def set_page_config():
+    st.set_page_config(
+        layout="wide",
+        page_title="IntelArchive",
+        page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
+        initial_sidebar_state="auto"
+    )
+
+def set_page_config_centered():
+    st.set_page_config(
+        layout="centered",
+        page_title="IntelArchive",
+        page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
+        initial_sidebar_state="auto"
+    )
