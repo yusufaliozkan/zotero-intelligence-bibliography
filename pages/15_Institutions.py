@@ -21,6 +21,8 @@ import base64
 from sidebar_content import sidebar_content, set_page_config
 from streamlit_gsheets import GSheetsConnection
 from events import evens_conferences
+from copyright import display_custom_license
+
 
 set_page_config()
 
