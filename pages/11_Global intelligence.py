@@ -15,6 +15,7 @@ nltk.download('all')
 from nltk.corpus import stopwords
 nltk.download('stopwords')
 from wordcloud import WordCloud
+from copyright import display_custom_license
 #import datetime as dt     
 # import random
 from authors_dict import df_authors, name_replacements
