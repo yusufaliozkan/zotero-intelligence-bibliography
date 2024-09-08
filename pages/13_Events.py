@@ -20,6 +20,8 @@ import datetime as dt
 from urllib.parse import urlparse
 from sidebar_content import sidebar_content, set_page_config
 from streamlit_gsheets import GSheetsConnection
+from copyright import display_custom_license
+
 
 set_page_config()
 
