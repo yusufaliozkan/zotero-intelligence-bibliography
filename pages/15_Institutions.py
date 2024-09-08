@@ -18,18 +18,14 @@ nltk.download('stopwords')
 from wordcloud import WordCloud
 import datetime as dt
 import base64
-from sidebar_content import sidebar_content
+from sidebar_content import sidebar_content, set_page_config
 from streamlit_gsheets import GSheetsConnection
 from events import evens_conferences
 
+set_page_config()
 
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
-
-st.title("Intelligence studies network")
-st.header('Resources on intelligence studies')
+st.title("IntelArchive", anchor=False)
+st.header('Resources on intelligence studies', anchor=False)
 st.info('''
         This page lists institutions, academic programs, and  other resources on intelligence studies. 
         **Please note that this list may not be complete. If you have suggestions, please [get in touch](https://forms.gle/qjWwpysJpTWCJh1c7)!**

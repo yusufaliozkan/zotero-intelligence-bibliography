@@ -19,17 +19,14 @@ from wordcloud import WordCloud
 # import random
 from authors_dict import df_authors, name_replacements
 from countries_dict import country_names, replacements, df_countries, df_continent
-from sidebar_content import sidebar_content
+from sidebar_content import sidebar_content, set_page_config
 import time
 from format_entry import format_entry
 from events import evens_conferences
 from st_keyup import st_keyup
 
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
-st.title("Global intelligence") 
+set_page_config()
+st.title("Global intelligence", anchor=False) 
 
 with st.spinner('Retrieving data & updating dashboard...'):
     sidebar_content()

@@ -31,7 +31,7 @@ from authors_dict import df_authors, name_replacements
 from authors_dict import name_replacements
 
 from copyright import display_custom_license
-from sidebar_content import sidebar_content
+from sidebar_content import sidebar_content, set_page_config
 import plotly.graph_objs as go
 import feedparser
 import requests
@@ -51,10 +51,7 @@ api_key = '' # api_key is only needed for private groups and libraries
 # Bringing recently changed items
 
 
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
+set_page_config()
 pd.set_option('display.max_colwidth', None)
 
 zot = zotero.Zotero(library_id, library_type)
@@ -210,18 +207,18 @@ df = df.fillna('')
 
 # Streamlit app
 
-st.title("Intelligence studies network", anchor=False)
-st.header('Intelligence studies bibliography', anchor=False)
+st.title("IntelArchive", anchor=False)
+st.subheader('Intelligence Studies Database', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
 # cite_today = datetime.date.today().isoformat()
 cite_today = datetime.date.today().strftime("%d %B %Y")
 
 into = f'''
-Welcome to **Intelligence studies bibliography**.
-The Intelligence studies bibliography is one of the most comprehensive databases listing sources on intelligence studies and history. 
+Welcome to **IntelArchive**.
+The IntelArchive is one of the most comprehensive databases listing sources on intelligence studies and history. 
 Finding sources on intelligence can sometimes be challening because of various reasons. 
-Therefore, this bibliography offers a carefully curated selection of publications, serving as an invaluable research assistant to guide you through exploring various sources.
+Therefore, IntelArchive offers a carefully curated selection of publications, serving as an invaluable research assistant to guide you through exploring various sources.
 
 Join our Google Groups to get updates and learn  new features about the website and the database. 
 You can also ask questions or make suggestions. (https://groups.google.com/g/intelligence-studies-network)
@@ -3407,7 +3404,7 @@ with st.spinner('Retrieving data...'):
                 # st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
                 # df_all_items
                 st.write('''
-                The entire dataset containing the metadata of publications within the Intelligence Studies Network database is available on Zenodo. 
+                The entire dataset containing the metadata of publications within the IntelArchive database is available on Zenodo. 
                 The dataset will be updated quarterly. You can access the dataset from the following link:
 
                 Ozkan, Yusuf A. ‘Intelligence Studies Network Dataset’. Zenodo, 15 August 2024. https://doi.org/10.5281/zenodo.13325698.

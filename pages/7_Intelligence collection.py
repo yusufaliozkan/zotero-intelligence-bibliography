@@ -21,19 +21,15 @@ from streamlit_gsheets import GSheetsConnection
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
-from sidebar_content import sidebar_content 
+from sidebar_content import sidebar_content, set_page_config
 from format_entry import format_entry
 from copyright import display_custom_license
 from events import evens_conferences
 from st_keyup import st_keyup
 
+set_page_config()
 
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
-
-st.title("Intelligence collection")
+st.title("Intelligence collection", anchor=False)
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
@@ -745,7 +741,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 plt.imshow(wordcloud)
                 plt.axis("off")
                 plt.show()
-                # st.set_option('deprecation.showPyplotGlobalUse', False)
+                # # st.set_option('deprecation.showPyplotGlobalUse', False)
                 st.pyplot() 
             else:
                 st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative.')
@@ -760,7 +756,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 plt.imshow(wordcloud)
                 plt.axis("off")
                 plt.show()
-                # st.set_option('deprecation.showPyplotGlobalUse', False)
+                # # st.set_option('deprecation.showPyplotGlobalUse', False)
                 st.pyplot() 
         else:
             st.info('Toggle to see the dashboard!')
