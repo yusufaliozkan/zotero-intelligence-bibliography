@@ -28,7 +28,6 @@ from events import evens_conferences
 from streamlit_dynamic_filters import DynamicFilters
 import requests
 from st_keyup import st_keyup
-from collection_template import collection_template 
 
 set_page_config()
 
