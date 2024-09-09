@@ -22,7 +22,7 @@ from st_keyup import st_keyup
 from streamlit_gsheets import GSheetsConnection
 import gspread
 from copyright import display_custom_license
-
+from urllib.parse import quote
 
 st.set_page_config(layout = "wide", 
                     page_title='IntelArchive',
@@ -46,7 +46,9 @@ bluesky_password = st.secrets["bluesky_password"]
 client.login('intelarchive.app', bluesky_password)
 
 def fetch_link_metadata(url: str) -> Dict:
-    response = requests.get(url)
+    # URL Encode the URL to handle special characters properly
+    encoded_url = quote(url, safe=':/')
+    response = requests.get(encoded_url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     title = soup.find("meta", property="og:title")
@@ -57,7 +59,7 @@ def fetch_link_metadata(url: str) -> Dict:
         "title": title["content"] if title else "",
         "description": description["content"] if description else "",
         "image": image["content"] if image else "",
-        "url": url,
+        "url": url,  # Use the original URL for display purposes
     }
     return metadata
 
@@ -75,6 +77,7 @@ def upload_image_to_bluesky(client, image_url: str) -> str:
 
 
 def create_link_card_embed(client, url: str) -> Dict:
+    # Use encoded URL when fetching metadata
     metadata = fetch_link_metadata(url)
     
     # Check if the image URL is valid
@@ -90,7 +93,7 @@ def create_link_card_embed(client, url: str) -> Dict:
     embed = {
         '$type': 'app.bsky.embed.external',
         'external': {
-            'uri': metadata['url'],
+            'uri': metadata['url'],  # Use the original URL here
             'title': metadata['title'],
             'description': metadata['description'],
             'thumb': image_blob,  # This can be None if the image was invalid
@@ -112,15 +115,19 @@ def parse_mentions(text: str) -> List[Dict]:
 
 def parse_urls(text: str) -> List[Dict]:
     spans = []
-    url_regex = rb"[$|\W](https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*[-a-zA-Z0-9@%_\+~#//=])?)"
+    # Updated regex to capture URLs with commas and other special characters
+    url_regex = rb"(https?://[^\s]+)"
     text_bytes = text.encode("UTF-8")
     for m in re.finditer(url_regex, text_bytes):
+        url = m.group(1).decode("UTF-8")
+        encoded_url = quote(url, safe=':/')  # Encode the URL properly
         spans.append({
             "start": m.start(1),
             "end": m.end(1),
-            "url": m.group(1).decode("UTF-8"),
+            "url": encoded_url,  # Use the encoded URL
         })
     return spans
+
 
 def parse_facets(text: str) -> List[Dict]:
     facets = []
