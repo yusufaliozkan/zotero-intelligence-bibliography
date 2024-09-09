@@ -10,7 +10,6 @@ from grapheme import length as grapheme_length
 from datetime import datetime, timedelta
 import pytz
 import re 
-from urllib.parse import quote
 
 client = Client(base_url='https://bsky.social')
 bluesky_password = os.getenv("BLUESKY_PASSWORD")
@@ -19,9 +18,7 @@ client.login('intelarchive.app', bluesky_password)
 ### POST ITEMS
 
 def fetch_link_metadata(url: str) -> Dict:
-    # URL Encode the URL to handle special characters properly
-    encoded_url = quote(url, safe=':/')
-    response = requests.get(encoded_url)
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     title = soup.find("meta", property="og:title")
@@ -32,7 +29,7 @@ def fetch_link_metadata(url: str) -> Dict:
         "title": title["content"] if title else "",
         "description": description["content"] if description else "",
         "image": image["content"] if image else "",
-        "url": url,  # Use the original URL for display purposes
+        "url": url,
     }
     return metadata
 
@@ -50,7 +47,6 @@ def upload_image_to_bluesky(client, image_url: str) -> str:
 
 
 def create_link_card_embed(client, url: str) -> Dict:
-    # Use encoded URL when fetching metadata
     metadata = fetch_link_metadata(url)
     
     # Check if the image URL is valid
@@ -66,7 +62,7 @@ def create_link_card_embed(client, url: str) -> Dict:
     embed = {
         '$type': 'app.bsky.embed.external',
         'external': {
-            'uri': metadata['url'],  # Use the original URL here
+            'uri': metadata['url'],
             'title': metadata['title'],
             'description': metadata['description'],
             'thumb': image_blob,  # This can be None if the image was invalid
@@ -88,19 +84,15 @@ def parse_mentions(text: str) -> List[Dict]:
 
 def parse_urls(text: str) -> List[Dict]:
     spans = []
-    # Updated regex to capture URLs with commas and other special characters
-    url_regex = rb"(https?://[^\s]+)"
+    url_regex = rb"[$|\W](https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*[-a-zA-Z0-9@%_\+~#//=])?)"
     text_bytes = text.encode("UTF-8")
     for m in re.finditer(url_regex, text_bytes):
-        url = m.group(1).decode("UTF-8")
-        encoded_url = quote(url, safe=':/')  # Encode the URL properly
         spans.append({
             "start": m.start(1),
             "end": m.end(1),
-            "url": encoded_url,  # Use the encoded URL
+            "url": m.group(1).decode("UTF-8"),
         })
     return spans
-
 
 def parse_facets(text: str) -> List[Dict]:
     facets = []
@@ -156,59 +148,135 @@ def truncate_text(text: str, max_length: int) -> str:
     else:
         return text[:max_length-3] + "..."  # Reserve space for the ellipsis
 
-events_sheet_url = "https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/export?format=csv&gid=1941981997"
+library_id = '2514686'
+library_type = 'group'
+api_key = '' # api_key is only needed for private groups and libraries
 
-# Read the Google Sheet into a DataFrame
-df_forms = pd.read_csv(events_sheet_url)
+zot = zotero.Zotero(library_id, library_type)
+def zotero_data(library_id, library_type):
+    items = zot.top(limit=50)
+    items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
+    data=[]
+    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue', 'Book_title', 'Thesis_type', 'University']
 
-df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
-df_forms['date'] = pd.to_datetime(df_forms['date'])
-df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
-# Calculate the date range: today + 2 days
-start_date = pd.to_datetime('today').normalize()
-end_date = start_date + pd.Timedelta(days=2)
-end_date
+    for item in items:
+        creators = item['data']['creators']
+        creators_str = ", ".join([
+            creator.get('firstName', '') + ' ' + creator.get('lastName', '')
+            if 'firstName' in creator and 'lastName' in creator
+            else creator.get('name', '') 
+            for creator in creators
+        ])
+        data.append((item['data']['title'], 
+        item['data']['itemType'], 
+        item['data']['url'], 
+        item['data']['abstractNote'], 
+        item['links']['alternate']['href'],
+        item['data']['dateAdded'],
+        item['data'].get('date'), 
+        item['data']['dateModified'],
+        item['data']['collections'],
+        creators_str,
+        item['data'].get('publicationTitle'),
+        item['data'].get('bookTitle'),
+        item['data'].get('thesisType', ''),
+        item['data'].get('university', '')
+        ))
+    df = pd.DataFrame(data, columns=columns)
+    return df
+df = zotero_data(library_id, library_type)
+df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
+df['Abstract'] = df['Abstract'].fillna('No abstract')
 
-# Filter the DataFrame to include only events within the date range
-# df_forms = df_forms[(df_forms['date'] >= start_date) & (df_forms['date'] <= end_date)]
-df_forms = df_forms[df_forms['date'] == end_date]
-df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+split_df= pd.DataFrame(df['Col key'].tolist())
+df = pd.concat([df, split_df], axis=1)
+df['Authors'] = df['Authors'].fillna('null')  
 
-conf_sheet_url_1 = "https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/export?format=csv&gid=939232836"
-df_con = pd.read_csv(conf_sheet_url_1)
-df_con['date'] = pd.to_datetime(df_con['date'], errors='coerce')
-df_con['date_new'] = df_con['date'].dt.strftime('%Y-%m-%d')
-df_con = df_con[df_con['date'] == end_date]
-df_con = df_con.rename(columns={'conference_name':'event_name'})
+# Change type name
+type_map = {
+    'thesis': 'Thesis',
+    'journalArticle': 'Journal article',
+    'book': 'Book',
+    'bookSection': 'Book chapter',
+    'blogPost': 'Blog post',
+    'videoRecording': 'Video',
+    'podcast': 'Podcast',
+    'magazineArticle': 'Magazine article',
+    'webpage': 'Webpage',
+    'newspaperArticle': 'Newspaper article',
+    'report': 'Report',
+    'forumPost': 'Forum post',
+    'conferencePaper' : 'Conference paper',
+    'audioRecording' : 'Podcast',
+    'preprint':'Preprint',
+    'document':'Document',
+    'computerProgram':'Computer program',
+    'dataset':'Dataset'
+}
 
-conf_sheet_url_1 = "https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/export?format=csv&gid=312814443"
-df_con_2 = pd.read_csv(conf_sheet_url_1)
-df_con_2['date'] = pd.to_datetime(df_con_2['date'], errors='coerce')
-df_con_2['date_new'] = df_con_2['date'].dt.strftime('%Y-%m-%d')
-df_con_2 = df_con_2[df_con_2['date'] == end_date]
-df_con_2 = df_con_2.rename(columns={'conference_name':'event_name'})
-df_con = pd.concat([df_con, df_con_2])
-df_con = df_con.drop_duplicates(subset='link')
+mapping_thesis_type ={
+    "MA Thesis": "Master's Thesis",
+    "PhD Thesis": "PhD Thesis",
+    "Master Thesis": "Master's Thesis",
+    "Thesis": "Master's Thesis",  # Assuming 'Thesis' refers to Master's Thesis here, adjust if necessary
+    "Ph.D.": "PhD Thesis",
+    "Master's Dissertation": "Master's Thesis",
+    "Undergraduate Theses": "Undergraduate Thesis",
+    "MPhil": "MPhil Thesis",
+    "A.L.M.": "Master's Thesis",  # Assuming A.L.M. (Master of Liberal Arts) maps to Master's Thesis
+    "doctoralThesis": "PhD Thesis",
+    "PhD": "PhD Thesis",
+    "Masters": "Master's Thesis",
+    "PhD thesis": "PhD Thesis",
+    "phd": "PhD Thesis",
+    "doctoral": "PhD Thesis",
+    "Doctoral": "PhD Thesis",
+    "Master of Arts Dissertation": "Master's Thesis",
+    "":'Unclassified'
+}
+df['Thesis_type'] = df['Thesis_type'].replace(mapping_thesis_type)
+df['Publication type'] = df['Publication type'].replace(type_map)
+df['Date published'] = (
+    df['Date published']
+    .str.strip()
+    .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+)
+df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
+df['Date published'] = df['Date published'].fillna('No date')
+# df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
 
-# df_con = df_con[['conference_name', 'organiser', 'link', 'venue', 'date_new']]
-# df_con = df_con.rename(columns={'conference_name':'event_name'})
+# df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
+# df['Date added'] = df['Date added'].dt.strftime('%d-%m-%Y')
+df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce', utc=True)
 
-df_forms = pd.concat([df_forms, df_con])
+# df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
+# df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
 
+# today = datetime.now(pytz.UTC).date()
+# days_ago = today - timedelta(days=3)
 
-for index, row in df_forms.iterrows():
-    event_name = row['event_name']
-    organiser = row['organiser']
-    event_date = row['date_new']
-    link = row['link']
-    venue = row['venue']  # Extract the author name
+# df = df[df['Date added'].dt.date >= days_ago]
 
-    post_text = f"{venue}\n\n{event_name} by {organiser} (on {event_date})\n\n{link}"
+now = datetime.now(pytz.UTC)
+last_hours = now - timedelta(hours=1)
+df = df[df['Date added'] >= last_hours]
+df = df[['Title', 'Publication type', 'Link to publication', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Authors']]
+
+header='New addition\n\n'
+
+for index, row in df.iterrows():
+    publication_type = row['Publication type']
+    title = row['Title']
+    publication_date = row['Date published']
+    link = row['Link to publication']
+    author_name = row['Authors']  # Extract the author name
+
+    post_text = f"{header}{publication_type}: {title} by {author_name} (published {publication_date})\n\n{link}"
 
     if len(post_text) > 300:
-        max_title_length = 300 - len(f"{venue}: \n{link}") - len(f" (on {event_date})")
-        truncated_title = truncate_text(event_name, max_title_length)
-        post_text = f"{venue}\n\n{event_name} (on {event_date})\n{link}"
+        max_title_length = 300 - len(f"{publication_type}: \n{link}") - len(f" (published {publication_date})")
+        truncated_title = truncate_text(title, max_title_length)
+        post_text = f"{header}{publication_type}: {truncated_title} (published {publication_date})\n{link}"
 
     # Make sure the entire post_text fits within 300 graphemes
     post_text = truncate_text(post_text, 300)
