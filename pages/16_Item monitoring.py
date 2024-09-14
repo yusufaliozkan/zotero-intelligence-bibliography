@@ -1,32 +1,3 @@
-# from pyzotero import zotero
-# import pandas as pd
-# import streamlit as st
-# from IPython.display import HTML
-# import streamlit.components.v1 as components
-# import numpy as np
-# # import altair as alt
-# # from pandas.io.json import json_normalize
-# from datetime import date, timedelta  
-# from datetime import datetime
-# import datetime 
-# import datetime as dt
-# # import plotly.express as px
-# # import numpy as np
-# import re
-# # from fpdf import FPDF
-# # import base64
-# from sidebar_content import sidebar_content
-# import requests
-# from rss_feed import df_podcast, df_magazines
-# from events import evens_conferences
-# import xml.etree.ElementTree as ET
-# from fuzzywuzzy import fuzz
-
-# from atproto import Client
-# import os
-# from bs4 import BeautifulSoup
-# from grapheme import length as grapheme_length
-# import pytz
 from pyzotero import zotero
 import pandas as pd
 import streamlit as st
@@ -49,15 +20,17 @@ from grapheme import length as grapheme_length
 from typing import List, Dict
 from st_keyup import st_keyup
 from streamlit_gsheets import GSheetsConnection
-
+import gspread
+from copyright import display_custom_license
+from urllib.parse import quote
 
 st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network',
+                    page_title='IntelArchive',
                     page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
                     initial_sidebar_state="auto") 
 
-st.title("Intelligence studies network")
-st.header('Item monitoring')
+st.title("IntelArchive", anchor=False)
+st.header('Item monitoring', anchor=False)
 
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
@@ -70,10 +43,12 @@ with st.sidebar:
 ### Bluesky posting functions start here
 client = Client(base_url='https://bsky.social')
 bluesky_password = st.secrets["bluesky_password"]
-client.login('intelarchive.bsky.social', bluesky_password)
+client.login('intelarchive.app', bluesky_password)
 
 def fetch_link_metadata(url: str) -> Dict:
-    response = requests.get(url)
+    # URL Encode the URL to handle special characters properly
+    encoded_url = quote(url, safe=':/')
+    response = requests.get(encoded_url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     title = soup.find("meta", property="og:title")
@@ -84,7 +59,7 @@ def fetch_link_metadata(url: str) -> Dict:
         "title": title["content"] if title else "",
         "description": description["content"] if description else "",
         "image": image["content"] if image else "",
-        "url": url,
+        "url": url,  # Use the original URL for display purposes
     }
     return metadata
 
@@ -102,6 +77,7 @@ def upload_image_to_bluesky(client, image_url: str) -> str:
 
 
 def create_link_card_embed(client, url: str) -> Dict:
+    # Use encoded URL when fetching metadata
     metadata = fetch_link_metadata(url)
     
     # Check if the image URL is valid
@@ -117,7 +93,7 @@ def create_link_card_embed(client, url: str) -> Dict:
     embed = {
         '$type': 'app.bsky.embed.external',
         'external': {
-            'uri': metadata['url'],
+            'uri': metadata['url'],  # Use the original URL here
             'title': metadata['title'],
             'description': metadata['description'],
             'thumb': image_blob,  # This can be None if the image was invalid
@@ -139,15 +115,19 @@ def parse_mentions(text: str) -> List[Dict]:
 
 def parse_urls(text: str) -> List[Dict]:
     spans = []
-    url_regex = rb"[$|\W](https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*[-a-zA-Z0-9@%_\+~#//=])?)"
+    # Updated regex to capture URLs with commas and other special characters
+    url_regex = rb"(https?://[^\s]+)"
     text_bytes = text.encode("UTF-8")
     for m in re.finditer(url_regex, text_bytes):
+        url = m.group(1).decode("UTF-8")
+        encoded_url = quote(url, safe=':/')  # Encode the URL properly
         spans.append({
             "start": m.start(1),
             "end": m.end(1),
-            "url": m.group(1).decode("UTF-8"),
+            "url": encoded_url,  # Use the encoded URL
         })
     return spans
+
 
 def parse_facets(text: str) -> List[Dict]:
     facets = []
@@ -435,11 +415,41 @@ else:
                             print(f"Failed to post: {e}")
             post_pubs()
         elif admin_task=='Post events':
+
             @st.experimental_fragment
             def post_events():
                 st.subheader('Post events on Bluesky', anchor=False)
                 conn = st.connection("gsheets", type=GSheetsConnection)
                 df_forms = conn.read(spreadsheet='https://docs.google.com/spreadsheets/d/10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI/edit#gid=1941981997')
+                
+                
+                # df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
+                # df_forms['date'] = pd.to_datetime(df_forms['date'])
+                # df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
+                # # Calculate the date range: today + 4 days
+                # start_date = pd.to_datetime('today').normalize()
+                # end_date = start_date + pd.Timedelta(days=2)
+                # end_date
+                # # Filter the DataFrame to include only events within the date range
+                # # df_forms = df_forms[(df_forms['date'] >= start_date) & (df_forms['date'] <= end_date)]
+                # df_forms = df_forms[df_forms['date'] == end_date]
+                # df_forms['month'] = df_forms['date'].dt.strftime('%m')
+                # df_forms['year'] = df_forms['date'].dt.strftime('%Y')
+                # df_forms['month_year'] = df_forms['date'].dt.strftime('%Y-%m')
+                # df_forms.sort_values(by='date', ascending=True, inplace=True)
+                # df_forms = df_forms.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+                # df_forms = df_forms.reset_index(drop=True)
+                # df_forms['Include?'] = False
+                # last_column = df_forms.columns[-1]
+                # df_forms = df_forms[[last_column] + list(df_forms.columns[:-1])]
+                # st.markdown('##### Events')
+                # st.write('''
+                # Pick item(s) from the 'Include?' column.
+                # The selected items will appear in the 'Items to be posted' table below.
+                # ''')
+                # df_forms = st.data_editor(df_forms)              
+                
+                
                 df_forms = df_forms.rename(columns={'Event name':'event_name', 'Event organiser':'organiser','Link to the event':'link','Date of event':'date', 'Event venue':'venue', 'Details':'details'})
                 df_forms['date'] = pd.to_datetime(df_forms['date'])
                 df_forms['date_new'] = df_forms['date'].dt.strftime('%Y-%m-%d')
@@ -917,10 +927,4 @@ else:
         st.error('Incorrect passcode')
 st.write('---')
 
-components.html(
-"""
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
-src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-© 2024 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-"""
-)
+display_custom_license()

@@ -1,0 +1,29 @@
+name: Post events to Bluesky
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Runs every day at noon UTC
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  post_to_bluesky:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas numpy pyzotero requests beautifulsoup4 grapheme pytz atproto
+
+      - name: Run Python Script
+        env:
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+        run: |
+          python bluesky_posts/bluesky_events_bot.py

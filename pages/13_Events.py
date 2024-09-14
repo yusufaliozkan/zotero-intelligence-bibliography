@@ -18,16 +18,15 @@ nltk.download('stopwords')
 from wordcloud import WordCloud
 import datetime as dt
 from urllib.parse import urlparse
-from sidebar_content import sidebar_content
+from sidebar_content import sidebar_content, set_page_config
 from streamlit_gsheets import GSheetsConnection
+from copyright import display_custom_license
 
-st.set_page_config(layout = "centered", 
-                    page_title='Intelligence studies network',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
 
-st.title("Intelligence studies network")
-st.header("Events on intelligence")
+set_page_config()
+
+st.title("IntelArchive", anchor=False)
+st.header("Events on intelligence", anchor=False)
 image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
 
 
@@ -56,7 +55,7 @@ df_forms['organiser'] = df_forms['organiser'].replace('North American Society fo
 
 tab1, tab2, tab3 = st.tabs(['Events', 'Conferences','Call for papers'])
 with tab1:
-    st.header('Events')
+    st.header('Events', anchor=False)
 
     # Convert and format dates in df_gs
 
@@ -191,7 +190,7 @@ with tab1:
         #             if display:
         #                 st.caption(f"Details:\n{df_mon.iloc[i]['details']}")
 
-    st.header('Past events')
+    st.header('Past events', anchor=False)
     with st.expander('Expand to see the list'):
         st.warning('Some of the event links may not be working anymore.')
         years = df_gs2['year'].unique()[::-1]
@@ -206,7 +205,7 @@ with tab1:
                     for i, event_str in enumerate(event_strs):
                         st.write(f"{i+1}) {event_str}")
     
-    st.header('Event visuals')
+    st.header('Event visuals', anchor=False)
     ap = ''
     ap2 = ''
     ap3 = ''
@@ -376,10 +375,5 @@ with tab3:
             st.caption('Details:'+'\n '+ df_cfp['details'].iloc[i])
 
 st.write('---')
-components.html(
-"""
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
-src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-© 2024 All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-"""
-)
+display_custom_license()
+

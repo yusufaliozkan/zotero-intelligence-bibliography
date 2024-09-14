@@ -21,7 +21,7 @@ from streamlit_gsheets import GSheetsConnection
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
-from sidebar_content import sidebar_content 
+from sidebar_content import sidebar_content, set_page_config
 from format_entry import format_entry
 from copyright import display_custom_license
 from events import evens_conferences
@@ -29,12 +29,9 @@ from streamlit_dynamic_filters import DynamicFilters
 import requests
 from st_keyup import st_keyup
 
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence history',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
+set_page_config()
 
-st.title("Intelligence history")
+st.title("Intelligence history", anchor=False)
 
 with st.spinner('Retrieving data & updating dashboard...'):
 

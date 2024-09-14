@@ -21,19 +21,16 @@ from streamlit_gsheets import GSheetsConnection
 import datetime as dt     
 import random
 from authors_dict import df_authors, name_replacements
-from sidebar_content import sidebar_content 
+from sidebar_content import sidebar_content, set_page_config
 from format_entry import format_entry
 from copyright import display_custom_license
 from events import evens_conferences
 from st_keyup import st_keyup
 
 
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
+set_page_config()
 
-st.title("Intelligence oversight and ethics")
+st.title("Intelligence oversight and ethics", anchor=False)
 
 with st.spinner('Retrieving data & updating dashboard...'):
 
@@ -738,10 +735,4 @@ with st.spinner('Retrieving data & updating dashboard...'):
         else:
             st.info('Toggle to see the dashboard!')
 
-    components.html(
-    """
-    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
-    src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-    © 2024 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-    """
-    )
+    display_custom_license()

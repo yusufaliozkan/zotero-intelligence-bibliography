@@ -8,8 +8,8 @@ df_authors.reset_index(drop=True, inplace=True)
 df_authors = df_authors.dropna(subset=['FirstName2'])
 name_replacements = {
     'David Gioe': 'David V. Gioe',
+    'David V Gioe':'David V. Gioe',
     'David Vincent Gioe': 'David V. Gioe',
-    'David V Gioe': 'David V. Gioe',
     'Michael Goodman': 'Michael S. Goodman',
     'Michael S Goodman': 'Michael S. Goodman',
     'Michael Simon Goodman': 'Michael S. Goodman',
@@ -64,5 +64,7 @@ name_replacements = {
     'Kevin Riehle':'Kevin P. Riehle',
     'James Wirtz':'James J. Wirtz',
     'James J Wirtz':'James J. Wirtz',
+    'Philip HJ Davies':'Philip H. J. Davies',
+    'Jeff Rogg':'Jeffrey P. Rogg'
 }
 df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name']) 

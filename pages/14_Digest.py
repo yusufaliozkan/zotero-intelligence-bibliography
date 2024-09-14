@@ -18,18 +18,15 @@ nltk.download('stopwords')
 from wordcloud import WordCloud
 import datetime as dt
 import base64
-from sidebar_content import sidebar_content
+from sidebar_content import sidebar_content, set_page_config_centered
 from format_entry import format_entry
 from streamlit_gsheets import GSheetsConnection
+from copyright import display_custom_license
 
+set_page_config_centered()
 
-st.set_page_config(layout = "centered", 
-                    page_title='Intelligence studies network',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
-
-st.title("Intelligence studies network")
-st.header('Digest')
+st.title("IntelArchive", anchor=False)
+st.header('Digest', anchor=False)
 
 with st.spinner('Preparing digest...'):
 
@@ -536,7 +533,7 @@ with st.spinner('Preparing digest...'):
                     plt.show()
                     # st.set_option('deprecation.showPyplotGlobalUse', False)
                     st.pyplot() 
-        elif options=='Recently cited': 
+        elif options=='Recently cited':
             current_year = datetime.datetime.now().year
             df_cited = df_cited[(df_cited['Citation'].notna()) & (df_cited['Citation'] != 0)]
             df_cited = df_cited.reset_index(drop=True)
@@ -599,7 +596,7 @@ with st.spinner('Preparing digest...'):
                         count += 1
                         if display2:
                             st.caption(row['Abstract']) 
-        st.caption('[Go to top](#intelligence-studies-network-digest)')
+        st.caption('[Go to top](#contents)')
 
     with st.expander('Events:', expanded=False):
         today = dt.date.today()
@@ -659,7 +656,7 @@ with st.spinner('Preparing digest...'):
         st.write('Visit the [Events on intelligence](https://intelligence.streamlit.app/Events) page to see more!')
 
 
-        st.caption('[Go to top](#intelligence-studies-network-digest)')
+        st.caption('[Go to top](#contents)')
 
     with st.expander('Conferences:', expanded=ex):
         st.header('Conferences')
@@ -707,7 +704,7 @@ with st.spinner('Preparing digest...'):
                 st.caption('Conference place:'+'\n '+ df_con['location'].iloc[i])
                 st.caption('Details:'+'\n '+ df_con['details'].iloc[i])
 
-        st.caption('[Go to top](#intelligence-studies-network-digest)')
+        st.caption('[Go to top](#contents)')
 
     with st.expander('Call for papers:', expanded=ex):
         st.header('Call for papers')
@@ -737,14 +734,9 @@ with st.spinner('Preparing digest...'):
             if display:
                 st.caption('Details:'+'\n '+ df_cfp['details'].iloc[i])
 
-    st.caption('[Go to top](#intelligence-studies-network-digest)')
+    st.caption('[Go to top](#contents)')
 
     st.write('---')
 
-    components.html(
-    """
-    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
-    src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-    © 2024 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-    """
-    ) 
+    display_custom_license()
+

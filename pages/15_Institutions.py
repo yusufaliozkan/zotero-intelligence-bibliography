@@ -18,18 +18,16 @@ nltk.download('stopwords')
 from wordcloud import WordCloud
 import datetime as dt
 import base64
-from sidebar_content import sidebar_content
+from sidebar_content import sidebar_content, set_page_config
 from streamlit_gsheets import GSheetsConnection
 from events import evens_conferences
+from copyright import display_custom_license
 
 
-st.set_page_config(layout = "wide", 
-                    page_title='Intelligence studies network',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
+set_page_config()
 
-st.title("Intelligence studies network")
-st.header('Resources on intelligence studies')
+st.title("IntelArchive", anchor=False)
+st.header('Resources on intelligence studies', anchor=False)
 st.info('''
         This page lists institutions, academic programs, and  other resources on intelligence studies. 
         **Please note that this list may not be complete. If you have suggestions, please [get in touch](https://forms.gle/qjWwpysJpTWCJh1c7)!**
@@ -314,10 +312,5 @@ with col2:
         st.write('See our dynamic [digest](https://intelligence.streamlit.app/Digest) for the latest updates on intelligence!')
 st.write('---')
 
-components.html(
-"""
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0" 
-src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />
-© 2024 Yusuf Ozkan. All rights reserved. This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-"""
-)
+display_custom_license()
+
