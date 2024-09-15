@@ -1,4 +1,4 @@
-name: Update Zotero Data
+name: Update Database
 
 # Schedule the workflow to run once a day
 on:
