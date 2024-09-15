@@ -247,7 +247,11 @@
 245,https://www.zotero.org/groups/intelligence_bibliography/items/6N7ZKZYL,10.1080/0161-118791861938,https://openalex.org/W2032320435,4,False,https://api.openalex.org/works?filter=cites:W2032320435,2012,2018,1987,,25
 246,https://www.zotero.org/groups/intelligence_bibliography/items/FYI2U9ZR,10.1080/0161-118791862063,https://openalex.org/W1964383819,18,False,https://api.openalex.org/works?filter=cites:W1964383819,2012,2023,1987,,25
 247,https://www.zotero.org/groups/intelligence_bibliography/items/LQ69NKP6,10.1080/0161-118791862054,https://openalex.org/W2059836832,3,False,https://api.openalex.org/works?filter=cites:W2059836832,2013,2021,1987,,26
+<<<<<<< HEAD
 248,https://www.zotero.org/groups/intelligence_bibliography/items/BXM7GTT3,10.1080/0161-118891862837,https://openalex.org/W1981523162,2,False,https://api.openalex.org/works?filter=cites:W1981523162,2015,2021,1988,,27
+=======
+248,https://www.zotero.org/groups/intelligence_bibliography/items/BXM7GTT3,10.1080/0161-118891862837,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 249,https://www.zotero.org/groups/intelligence_bibliography/items/VLAUH73U,10.1080/0161-118891862828,https://openalex.org/W1996121190,1,False,https://api.openalex.org/works?filter=cites:W1996121190,2015,2015,1988,,27
 250,https://www.zotero.org/groups/intelligence_bibliography/items/MYINTSX8,10.1080/0161-118891862927,https://openalex.org/W1979753045,2,False,https://api.openalex.org/works?filter=cites:W1979753045,2013,2021,1988,,25
 251,https://www.zotero.org/groups/intelligence_bibliography/items/DAAGC5M4,10.1080/0161-118991863899,https://openalex.org/W2030747612,0,False,https://api.openalex.org/works?filter=cites:W2030747612,,,1989,,
@@ -308,7 +312,7 @@
 306,https://www.zotero.org/groups/intelligence_bibliography/items/7UNPID3M,10.1080/0161-110291890740,https://openalex.org/W2140357103,4,False,https://api.openalex.org/works?filter=cites:W2140357103,2015,2024,2002,,13
 307,https://www.zotero.org/groups/intelligence_bibliography/items/GEVV33GS,10.1080/0161-110291890786,https://openalex.org/W2056324704,1,False,https://api.openalex.org/works?filter=cites:W2056324704,2015,2015,2002,,13
 308,https://www.zotero.org/groups/intelligence_bibliography/items/B9NRGCXW,10.1080/0161-110391891748,https://openalex.org/W2030737075,0,False,https://api.openalex.org/works?filter=cites:W2030737075,,,2003,,
-309,https://www.zotero.org/groups/intelligence_bibliography/items/DC5LUL4N,10.1080/0161-110391891739,https://openalex.org/W2023628245,11,False,https://api.openalex.org/works?filter=cites:W2023628245,2013,2024,2003,,10
+309,https://www.zotero.org/groups/intelligence_bibliography/items/DC5LUL4N,10.1080/0161-110391891739,,,,,,,,,
 310,https://www.zotero.org/groups/intelligence_bibliography/items/CVWEL79Q,10.1080/0161-110391891829,https://openalex.org/W2090657917,3,False,https://api.openalex.org/works?filter=cites:W2090657917,2015,2023,2003,,12
 311,https://www.zotero.org/groups/intelligence_bibliography/items/B39ZM2BY,10.1080/0161-110391891801,https://openalex.org/W1964713634,6,False,https://api.openalex.org/works?filter=cites:W1964713634,2015,2024,2003,,12
 312,https://www.zotero.org/groups/intelligence_bibliography/items/38WIILJN,10.1080/0161-110391891793,https://openalex.org/W2052945409,7,False,https://api.openalex.org/works?filter=cites:W2052945409,2015,2024,2003,,12
@@ -387,7 +391,7 @@
 385,https://www.zotero.org/groups/intelligence_bibliography/items/DA5SN3Y8,10.1080/01611194.2022.2064200,https://openalex.org/W4292061453,1,False,https://api.openalex.org/works?filter=cites:W4292061453,2024,2024,2022,,2
 386,https://www.zotero.org/groups/intelligence_bibliography/items/587PB2Z3,10.1080/01611194.2021.1996484,https://openalex.org/W4206247520,1,True,https://api.openalex.org/works?filter=cites:W4206247520,2022,2022,2022,https://doi.org/10.1080/01611194.2021.1996484,0
 387,https://www.zotero.org/groups/intelligence_bibliography/items/6NZE8U4H,10.1080/01611194.2022.2158448,https://openalex.org/W4321452011,1,False,https://api.openalex.org/works?filter=cites:W4321452011,2024,2024,2023,,1
-388,https://www.zotero.org/groups/intelligence_bibliography/items/4HIV9L8N,10.1080/01611194.2023.2259376,https://openalex.org/W4387542100,0,False,https://api.openalex.org/works?filter=cites:W4387542100,,,2023,,
+388,https://www.zotero.org/groups/intelligence_bibliography/items/4HIV9L8N,10.1080/01611194.2023.2259376,,,,,,,,,
 389,https://www.zotero.org/groups/intelligence_bibliography/items/D3EPEAGZ,10.1080/01611194.2023.2258877,https://openalex.org/W4388232580,0,False,https://api.openalex.org/works?filter=cites:W4388232580,,,2023,,
 390,https://www.zotero.org/groups/intelligence_bibliography/items/B3Z6SG2M,10.1080/01611194.2023.2277276,https://openalex.org/W4391356405,0,False,https://api.openalex.org/works?filter=cites:W4391356405,,,2024,,
 391,https://www.zotero.org/groups/intelligence_bibliography/items/JGU4DPMV,10.1080/01611194.2023.2263001,https://openalex.org/W4391539569,0,False,https://api.openalex.org/works?filter=cites:W4391539569,,,2024,,
@@ -487,7 +491,11 @@
 485,https://www.zotero.org/groups/intelligence_bibliography/items/G8IBSFDJ,10.1080/14682745.2021.1923697,https://openalex.org/W3175575837,1,False,https://api.openalex.org/works?filter=cites:W3175575837,2022,2022,2021,,1
 486,https://www.zotero.org/groups/intelligence_bibliography/items/WNN7IXWY,10.1080/14682745.2020.1724101,https://openalex.org/W3017150019,1,False,https://api.openalex.org/works?filter=cites:W3017150019,2022,2022,2020,,2
 487,https://www.zotero.org/groups/intelligence_bibliography/items/22M9MHD8,10.1080/14682745.2018.1539079,https://openalex.org/W2901635241,2,False,https://api.openalex.org/works?filter=cites:W2901635241,2019,2022,2018,,1
+<<<<<<< HEAD
 488,https://www.zotero.org/groups/intelligence_bibliography/items/8TZ5BKB2,10.1080/14682745.2019.1575367,https://openalex.org/W2925925819,2,False,https://api.openalex.org/works?filter=cites:W2925925819,2022,2023,2019,,3
+=======
+488,https://www.zotero.org/groups/intelligence_bibliography/items/8TZ5BKB2,10.1080/14682745.2019.1575367,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 489,https://www.zotero.org/groups/intelligence_bibliography/items/JF9BWDBL,10.1080/14682745.2016.1205587,https://openalex.org/W2506579478,1,False,https://api.openalex.org/works?filter=cites:W2506579478,2018,2018,2016,,2
 490,https://www.zotero.org/groups/intelligence_bibliography/items/ZTJFJICC,10.1080/14682745.2014.950248,https://openalex.org/W2044368590,7,False,https://api.openalex.org/works?filter=cites:W2044368590,2019,2022,2014,,5
 491,https://www.zotero.org/groups/intelligence_bibliography/items/GB8Q32Z5,10.1080/14682745.2020.1724963,https://openalex.org/W3007379229,1,False,https://api.openalex.org/works?filter=cites:W3007379229,2022,2022,2020,,2
@@ -557,7 +565,7 @@
 555,https://www.zotero.org/groups/intelligence_bibliography/items/JNX7CGBI,10.1080/16161262.2020.1826812,https://openalex.org/W3092025124,0,False,https://api.openalex.org/works?filter=cites:W3092025124,,,2020,,
 556,https://www.zotero.org/groups/intelligence_bibliography/items/LZWAQZFU,10.1080/16161262.2022.2141977,https://openalex.org/W4309293741,1,False,https://api.openalex.org/works?filter=cites:W4309293741,2023,2023,2022,,1
 557,https://www.zotero.org/groups/intelligence_bibliography/items/GN9BYFCD,10.1080/16161262.2020.1826808,https://openalex.org/W3092073919,0,False,https://api.openalex.org/works?filter=cites:W3092073919,,,2020,,
-558,https://www.zotero.org/groups/intelligence_bibliography/items/K4IGRYCH,10.1080/16161262.2020.1826805,https://openalex.org/W3092620470,0,False,https://api.openalex.org/works?filter=cites:W3092620470,,,2020,,
+558,https://www.zotero.org/groups/intelligence_bibliography/items/K4IGRYCH,10.1080/16161262.2020.1826805,,,,,,,,,
 559,https://www.zotero.org/groups/intelligence_bibliography/items/94FJJF59,10.1080/16161262.2020.1746144,https://openalex.org/W3094624146,5,True,https://api.openalex.org/works?filter=cites:W3094624146,2023,2024,2020,https://www.tandfonline.com/doi/pdf/10.1080/16161262.2020.1746144?needAccess=true,3
 560,https://www.zotero.org/groups/intelligence_bibliography/items/DGBSQ3IU,10.1080/16161262.2020.1746143,https://openalex.org/W3015330612,2,False,https://api.openalex.org/works?filter=cites:W3015330612,2022,2023,2020,,2
 561,https://www.zotero.org/groups/intelligence_bibliography/items/KL654LWH,10.1080/16161262.2020.1774232,https://openalex.org/W3034505443,0,True,https://api.openalex.org/works?filter=cites:W3034505443,,,2020,https://www.tandfonline.com/doi/pdf/10.1080/16161262.2020.1774232?needAccess=true,
@@ -588,7 +596,11 @@
 586,https://www.zotero.org/groups/intelligence_bibliography/items/FG92IY3A,10.1080/16161262.2017.1334355,https://openalex.org/W2621797976,0,False,https://api.openalex.org/works?filter=cites:W2621797976,,,2017,,
 587,https://www.zotero.org/groups/intelligence_bibliography/items/QS7PJ6UK,10.1080/16161262.2017.1333695,https://openalex.org/W2624085146,0,False,https://api.openalex.org/works?filter=cites:W2624085146,,,2017,,
 588,https://www.zotero.org/groups/intelligence_bibliography/items/S2RF8E5G,10.1080/16161262.2017.1333690,https://openalex.org/W2623797050,8,False,https://api.openalex.org/works?filter=cites:W2623797050,2018,2023,2017,,1
+<<<<<<< HEAD
 589,https://www.zotero.org/groups/intelligence_bibliography/items/8SLUARY4,10.1080/16161262.2017.1333688,https://openalex.org/W2625570895,1,False,https://api.openalex.org/works?filter=cites:W2625570895,2019,2019,2017,,2
+=======
+589,https://www.zotero.org/groups/intelligence_bibliography/items/8SLUARY4,10.1080/16161262.2017.1333688,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 590,https://www.zotero.org/groups/intelligence_bibliography/items/L85II5DA,10.1080/16161262.2017.1333687,https://openalex.org/W2621917146,2,False,https://api.openalex.org/works?filter=cites:W2621917146,2020,2020,2017,,3
 591,https://www.zotero.org/groups/intelligence_bibliography/items/RDQTI4L8,10.1080/16161262.2017.1333685,https://openalex.org/W2621706411,1,False,https://api.openalex.org/works?filter=cites:W2621706411,2020,2020,2017,,3
 592,https://www.zotero.org/groups/intelligence_bibliography/items/YT544W6F,10.1080/16161262.2017.1335978,https://openalex.org/W2704842664,3,False,https://api.openalex.org/works?filter=cites:W2704842664,2021,2022,2017,,4
@@ -725,7 +737,11 @@
 723,https://www.zotero.org/groups/intelligence_bibliography/items/7EAF3RAY,10.1080/02684527.2022.2142352,https://openalex.org/W4309746204,1,False,https://api.openalex.org/works?filter=cites:W4309746204,2024,2024,2022,,2
 724,https://www.zotero.org/groups/intelligence_bibliography/items/FXG2JXGZ,10.1080/02684527.2022.2123935,https://openalex.org/W4296641488,0,True,https://api.openalex.org/works?filter=cites:W4296641488,,,2022,https://www.tandfonline.com/doi/pdf/10.1080/02684527.2022.2123935?needAccess=true,
 725,https://www.zotero.org/groups/intelligence_bibliography/items/FQWRVY9I,10.1080/02684527.2022.2104507,https://openalex.org/W4292454312,0,False,https://api.openalex.org/works?filter=cites:W4292454312,,,2022,,
+<<<<<<< HEAD
 726,https://www.zotero.org/groups/intelligence_bibliography/items/B5N8KMS9,10.1080/02684527.2022.2110653,https://openalex.org/W4293113687,0,False,https://api.openalex.org/works?filter=cites:W4293113687,,,2022,,
+=======
+726,https://www.zotero.org/groups/intelligence_bibliography/items/B5N8KMS9,10.1080/02684527.2022.2110653,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 727,https://www.zotero.org/groups/intelligence_bibliography/items/3A9WK3YS,10.1080/02684527.2022.2113679,https://openalex.org/W4295990904,5,True,https://api.openalex.org/works?filter=cites:W4295990904,2022,2024,2022,https://doi.org/10.1080/02684527.2022.2113679,0
 728,https://www.zotero.org/groups/intelligence_bibliography/items/NYVX9IWL,10.1080/02684527.2022.2151755,https://openalex.org/W4313204046,2,True,https://api.openalex.org/works?filter=cites:W4313204046,2023,2023,2022,https://doi.org/10.1080/02684527.2022.2151755,1
 729,https://www.zotero.org/groups/intelligence_bibliography/items/D3ID6YS9,10.1080/02684527.2020.1818922,https://openalex.org/W3083551561,0,False,https://api.openalex.org/works?filter=cites:W3083551561,,,2020,,
@@ -835,7 +851,11 @@
 833,https://www.zotero.org/groups/intelligence_bibliography/items/GWEU5GA5,10.1080/02684527.2020.1750820,https://openalex.org/W3016404147,1,False,https://api.openalex.org/works?filter=cites:W3016404147,2022,2022,2020,,2
 834,https://www.zotero.org/groups/intelligence_bibliography/items/SRXQ2RL5,10.1080/02684527.2020.1740387,https://openalex.org/W3013954964,3,False,https://api.openalex.org/works?filter=cites:W3013954964,2021,2024,2020,,1
 835,https://www.zotero.org/groups/intelligence_bibliography/items/NLDMY64Y,10.1080/02684527.2020.1747004,https://openalex.org/W3016134270,15,False,https://api.openalex.org/works?filter=cites:W3016134270,2020,2024,2020,,0
+<<<<<<< HEAD
 836,https://www.zotero.org/groups/intelligence_bibliography/items/DK8J2J2P,10.1080/02684527.2019.1681135,https://openalex.org/W2982279257,8,False,https://api.openalex.org/works?filter=cites:W2982279257,2020,2024,2019,,1
+=======
+836,https://www.zotero.org/groups/intelligence_bibliography/items/DK8J2J2P,10.1080/02684527.2019.1681135,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 837,https://www.zotero.org/groups/intelligence_bibliography/items/JFY38VTG,10.1080/02684527.2019.1703487,https://openalex.org/W2996729972,5,False,https://api.openalex.org/works?filter=cites:W2996729972,2020,2023,2019,,1
 838,https://www.zotero.org/groups/intelligence_bibliography/items/SV4SJGRL,10.1080/02684527.2019.1704384,https://openalex.org/W2993934730,5,True,https://api.openalex.org/works?filter=cites:W2993934730,2020,2024,2020,https://www.tandfonline.com/doi/pdf/10.1080/02684527.2019.1704384?needAccess=true,0
 839,https://www.zotero.org/groups/intelligence_bibliography/items/DL5RVQQ7,10.1080/02684527.2019.1700454,https://openalex.org/W2993677459,1,False,https://api.openalex.org/works?filter=cites:W2993677459,2020,2020,2019,,1
@@ -1512,7 +1532,11 @@
 1510,https://www.zotero.org/groups/intelligence_bibliography/items/6ITY9BGE,10.1080/02684529508432297,https://openalex.org/W2043911624,10,False,https://api.openalex.org/works?filter=cites:W2043911624,2014,2021,1995,,19
 1511,https://www.zotero.org/groups/intelligence_bibliography/items/FE2L7ILX,10.1080/02684529508432292,https://openalex.org/W1983806588,1,False,https://api.openalex.org/works?filter=cites:W1983806588,,,1995,,
 1512,https://www.zotero.org/groups/intelligence_bibliography/items/FIYHBSCC,10.1080/02684529508432291,https://openalex.org/W2008295407,1,False,https://api.openalex.org/works?filter=cites:W2008295407,,,1995,,
+<<<<<<< HEAD
 1513,https://www.zotero.org/groups/intelligence_bibliography/items/YUC36M59,10.1080/02684529508432290,https://openalex.org/W2051976231,0,False,https://api.openalex.org/works?filter=cites:W2051976231,,,1995,,
+=======
+1513,https://www.zotero.org/groups/intelligence_bibliography/items/YUC36M59,10.1080/02684529508432290,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 1514,https://www.zotero.org/groups/intelligence_bibliography/items/MAECKK8I,10.1080/02684529508432289,https://openalex.org/W2151024122,3,False,https://api.openalex.org/works?filter=cites:W2151024122,2016,2016,1995,,21
 1515,https://www.zotero.org/groups/intelligence_bibliography/items/FRR8G4G6,10.1080/02684529508432288,https://openalex.org/W2091009296,4,False,https://api.openalex.org/works?filter=cites:W2091009296,,,1995,,
 1516,https://www.zotero.org/groups/intelligence_bibliography/items/SWYV98KM,10.1080/02684529508432287,https://openalex.org/W1989275721,1,False,https://api.openalex.org/works?filter=cites:W1989275721,,,1995,,
@@ -1746,7 +1770,11 @@
 1744,https://www.zotero.org/groups/intelligence_bibliography/items/WU9EQQIY,10.1080/08850607.2021.2005996,https://openalex.org/W4210809866,1,True,https://api.openalex.org/works?filter=cites:W4210809866,2023,2023,2022,https://www.tandfonline.com/doi/pdf/10.1080/08850607.2021.2005996?needAccess=true,1
 1745,https://www.zotero.org/groups/intelligence_bibliography/items/6TYE7YYQ,10.1080/08850607.2021.1952816,https://openalex.org/W3198652354,0,False,https://api.openalex.org/works?filter=cites:W3198652354,,,2021,,
 1746,https://www.zotero.org/groups/intelligence_bibliography/items/3EXAT46G,10.1080/08850607.2021.1960252,https://openalex.org/W3196782625,0,False,https://api.openalex.org/works?filter=cites:W3196782625,,,2021,,
+<<<<<<< HEAD
 1747,https://www.zotero.org/groups/intelligence_bibliography/items/LGUY799D,10.1080/08850607.2020.1838902,https://openalex.org/W3123171385,1,True,https://api.openalex.org/works?filter=cites:W3123171385,2022,2022,2021,https://www.tandfonline.com/doi/pdf/10.1080/08850607.2020.1838902?needAccess=true,1
+=======
+1747,https://www.zotero.org/groups/intelligence_bibliography/items/LGUY799D,10.1080/08850607.2020.1838902,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 1748,https://www.zotero.org/groups/intelligence_bibliography/items/FUWWJCNG,10.1080/08850607.2020.1798153,https://openalex.org/W3083518302,3,False,https://api.openalex.org/works?filter=cites:W3083518302,2023,2024,2020,,3
 1749,https://www.zotero.org/groups/intelligence_bibliography/items/2EFKANWT,10.1080/08850607.2020.1750093,https://openalex.org/W3029404435,2,False,https://api.openalex.org/works?filter=cites:W3029404435,2023,2023,2020,,3
 1750,https://www.zotero.org/groups/intelligence_bibliography/items/YK4DCT4T,10.1080/08850607.2020.1783620,https://openalex.org/W3049304054,7,False,https://api.openalex.org/works?filter=cites:W3049304054,2021,2024,2020,,1
@@ -2001,7 +2029,11 @@
 1999,https://www.zotero.org/groups/intelligence_bibliography/items/CZHAGQVY,10.1080/08850600802698234,https://openalex.org/W2095171609,2,False,https://api.openalex.org/works?filter=cites:W2095171609,2016,2016,2009,,7
 2000,https://www.zotero.org/groups/intelligence_bibliography/items/KLAQRM8Z,10.1080/08850600802698192,https://openalex.org/W2019413849,4,False,https://api.openalex.org/works?filter=cites:W2019413849,2015,2018,2009,,6
 2001,https://www.zotero.org/groups/intelligence_bibliography/items/CLAWG4M7,10.1080/08850600802486986,https://openalex.org/W2010111862,40,True,https://api.openalex.org/works?filter=cites:W2010111862,2013,2024,2008,https://www.tandfonline.com/doi/pdf/10.1080/08850600802486986?needAccess=true&role=button,5
+<<<<<<< HEAD
 2002,https://www.zotero.org/groups/intelligence_bibliography/items/ZGHFCERP,10.1080/08850600802486960,https://openalex.org/W2020294470,32,False,https://api.openalex.org/works?filter=cites:W2020294470,2013,2023,2008,,5
+=======
+2002,https://www.zotero.org/groups/intelligence_bibliography/items/ZGHFCERP,10.1080/08850600802486960,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 2003,https://www.zotero.org/groups/intelligence_bibliography/items/VPIBSPVC,10.1080/08850600802486937,https://openalex.org/W1970901192,5,False,https://api.openalex.org/works?filter=cites:W1970901192,2012,2022,2008,,4
 2004,https://www.zotero.org/groups/intelligence_bibliography/items/XXEX4844,10.1080/08850600802254822,https://openalex.org/W2056341040,3,False,https://api.openalex.org/works?filter=cites:W2056341040,2013,2021,2008,,5
 2005,https://www.zotero.org/groups/intelligence_bibliography/items/VURGKNWV,10.1080/08850600802486911,https://openalex.org/W2040188144,0,False,https://api.openalex.org/works?filter=cites:W2040188144,,,2008,,
@@ -2121,7 +2153,7 @@
 2119,https://www.zotero.org/groups/intelligence_bibliography/items/P2M9FXU8,10.1080/08850600390198841,https://openalex.org/W2059987789,2,False,https://api.openalex.org/works?filter=cites:W2059987789,2018,2022,2003,,15
 2120,https://www.zotero.org/groups/intelligence_bibliography/items/WKDHMDXB,10.1080/08850600390198706,https://openalex.org/W1993755056,8,False,https://api.openalex.org/works?filter=cites:W1993755056,2018,2023,2003,,15
 2121,https://www.zotero.org/groups/intelligence_bibliography/items/WFKRL8RN,10.1080/08850600290101776,https://openalex.org/W1966251107,2,False,https://api.openalex.org/works?filter=cites:W1966251107,2014,2017,2002,,12
-2122,https://www.zotero.org/groups/intelligence_bibliography/items/V7LEXGS4,10.1080/08850600290101758,https://openalex.org/W2001340375,4,False,https://api.openalex.org/works?filter=cites:W2001340375,2020,2020,2002,,18
+2122,https://www.zotero.org/groups/intelligence_bibliography/items/V7LEXGS4,10.1080/08850600290101758,,,,,,,,,
 2123,https://www.zotero.org/groups/intelligence_bibliography/items/4V4GCJM2,10.1080/08850600290101749,https://openalex.org/W2045821398,2,False,https://api.openalex.org/works?filter=cites:W2045821398,2017,2017,2002,,15
 2124,https://www.zotero.org/groups/intelligence_bibliography/items/7FBEPT4T,10.1080/08850600290101730,https://openalex.org/W2023454690,0,False,https://api.openalex.org/works?filter=cites:W2023454690,,,2002,,
 2125,https://www.zotero.org/groups/intelligence_bibliography/items/H2Y7I2ZI,10.1080/08850600290101721,https://openalex.org/W1971095811,0,False,https://api.openalex.org/works?filter=cites:W1971095811,,,2002,,
@@ -2299,7 +2331,7 @@
 2297,https://www.zotero.org/groups/intelligence_bibliography/items/ERN9D3VV,10.1080/08850609108435192,https://openalex.org/W1803994628,0,False,https://api.openalex.org/works?filter=cites:W1803994628,,,1991,,
 2298,https://www.zotero.org/groups/intelligence_bibliography/items/KLC2CPD9,10.1080/08850609108435190,https://openalex.org/W2026332639,2,False,https://api.openalex.org/works?filter=cites:W2026332639,,,1991,,
 2299,https://www.zotero.org/groups/intelligence_bibliography/items/M9MNEU8G,10.1080/08850609108435185,https://openalex.org/W1964127238,3,False,https://api.openalex.org/works?filter=cites:W1964127238,,,1991,,
-2300,https://www.zotero.org/groups/intelligence_bibliography/items/3RYPKEW9,10.1080/08850609108435184,https://openalex.org/W2004694711,0,False,https://api.openalex.org/works?filter=cites:W2004694711,,,1991,,
+2300,https://www.zotero.org/groups/intelligence_bibliography/items/3RYPKEW9,10.1080/08850609108435184,,,,,,,,,
 2301,https://www.zotero.org/groups/intelligence_bibliography/items/WVBBJ8XG,10.1080/08850609108435182,https://openalex.org/W2015530116,4,False,https://api.openalex.org/works?filter=cites:W2015530116,2012,2016,1991,,21
 2302,https://www.zotero.org/groups/intelligence_bibliography/items/DQCU6NPA,10.1080/08850609108435178,https://openalex.org/W2066799593,8,False,https://api.openalex.org/works?filter=cites:W2066799593,2014,2014,1991,,23
 2303,https://www.zotero.org/groups/intelligence_bibliography/items/A2X5BVFS,10.1080/08850609108435177,https://openalex.org/W1998217035,4,False,https://api.openalex.org/works?filter=cites:W1998217035,,,1991,,
@@ -3007,7 +3039,7 @@
 3005,https://www.zotero.org/groups/intelligence_bibliography/items/P69D7N9N,10.1080/02684529808432494,https://openalex.org/W2065579388,6,False,https://api.openalex.org/works?filter=cites:W2065579388,2015,2024,1998,,17
 3006,https://www.zotero.org/groups/intelligence_bibliography/items/U763F7KC,10.1080/08850607.2021.1945372,https://openalex.org/W3185337544,0,False,https://api.openalex.org/works?filter=cites:W3185337544,,,2021,,
 3007,https://www.zotero.org/groups/intelligence_bibliography/items/BRPMLD4R,10.1080/16161262.2021.1889278,https://openalex.org/W3139478677,0,True,https://api.openalex.org/works?filter=cites:W3139478677,,,2021,https://doi.org/10.1080/16161262.2021.1889278,
-3008,https://www.zotero.org/groups/intelligence_bibliography/items/QZQIKGHX,10.1080/16161262.2022.2099189,https://openalex.org/W4285013501,0,True,https://api.openalex.org/works?filter=cites:W4285013501,,,2022,https://www.tandfonline.com/doi/pdf/10.1080/16161262.2022.2099189?needAccess=true,
+3008,https://www.zotero.org/groups/intelligence_bibliography/items/QZQIKGHX,10.1080/16161262.2022.2099189,,,,,,,,,
 3009,https://www.zotero.org/groups/intelligence_bibliography/items/7RPPQTTG,10.1080/16161262.2022.2041870,https://openalex.org/W4213262203,0,False,https://api.openalex.org/works?filter=cites:W4213262203,,,2022,,
 3010,https://www.zotero.org/groups/intelligence_bibliography/items/KMSRXISF,10.1080/16161262.2022.2116861,https://openalex.org/W4295353267,0,True,https://api.openalex.org/works?filter=cites:W4295353267,,,2022,https://doi.org/10.1080/16161262.2022.2116861,
 3011,https://www.zotero.org/groups/intelligence_bibliography/items/3B9VRFNW,10.1080/08850607.2021.1961454,https://openalex.org/W3196340354,0,False,https://api.openalex.org/works?filter=cites:W3196340354,,,2021,,
@@ -3117,7 +3149,11 @@
 3115,https://www.zotero.org/groups/intelligence_bibliography/items/JQS7S6BL,10.1080/08850607.2022.2081048,https://openalex.org/W4287509850,0,True,https://api.openalex.org/works?filter=cites:W4287509850,,,2022,https://www.tandfonline.com/doi/pdf/10.1080/08850607.2022.2081048?needAccess=true,
 3116,https://www.zotero.org/groups/intelligence_bibliography/items/E9B4LRP6,10.1080/08850607.2022.2104569,https://openalex.org/W4293805369,0,False,https://api.openalex.org/works?filter=cites:W4293805369,,,2022,,
 3117,https://www.zotero.org/groups/intelligence_bibliography/items/CADM3M6L,10.1080/02684527.2021.1965096,https://openalex.org/W3194525809,1,False,https://api.openalex.org/works?filter=cites:W3194525809,2023,2023,2021,,2
+<<<<<<< HEAD
 3118,https://www.zotero.org/groups/intelligence_bibliography/items/UGIYRNKU,10.1080/02684527.2022.2039350,https://openalex.org/W4214931430,0,True,https://api.openalex.org/works?filter=cites:W4214931430,,,2022,https://www.tandfonline.com/doi/pdf/10.1080/02684527.2022.2039350?needAccess=true,
+=======
+3118,https://www.zotero.org/groups/intelligence_bibliography/items/UGIYRNKU,10.1080/02684527.2022.2039350,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 3119,https://www.zotero.org/groups/intelligence_bibliography/items/DJMMJ9X8,10.1080/08850607.2020.1822100,https://openalex.org/W3112536832,3,False,https://api.openalex.org/works?filter=cites:W3112536832,2022,2024,2020,,2
 3120,https://www.zotero.org/groups/intelligence_bibliography/items/C36VVUUW,10.1080/08850607.2022.2047533,https://openalex.org/W4281628965,0,False,https://api.openalex.org/works?filter=cites:W4281628965,,,2022,,
 3121,https://www.zotero.org/groups/intelligence_bibliography/items/3YY9ILDB,10.1080/02684527.2021.1947555,https://openalex.org/W3182126570,7,True,https://api.openalex.org/works?filter=cites:W3182126570,2022,2024,2021,https://www.tandfonline.com/doi/pdf/10.1080/02684527.2021.1947555?needAccess=true,1
@@ -3668,7 +3704,11 @@
 3666,https://www.zotero.org/groups/intelligence_bibliography/items/LMCUFGPM,10.1080/08850607.2015.1051411,https://openalex.org/W1616045761,6,False,https://api.openalex.org/works?filter=cites:W1616045761,2017,2022,2015,,2
 3667,https://www.zotero.org/groups/intelligence_bibliography/items/YREMN675,10.1080/02684520802449476,https://openalex.org/W2204900173,13,False,https://api.openalex.org/works?filter=cites:W2204900173,2013,2020,2008,,5
 3668,https://www.zotero.org/groups/intelligence_bibliography/items/U4ECWUPD,10.1080/02684527.2014.946242,https://openalex.org/W2063675913,18,True,https://api.openalex.org/works?filter=cites:W2063675913,2016,2024,2014,http://wrap.warwick.ac.uk/78351/8/WRAP_1073563-pais-300316-snowdenspecialforum.pdf,2
+<<<<<<< HEAD
 3669,https://www.zotero.org/groups/intelligence_bibliography/items/BMD59SVR,10.1080/02684529608432359,https://openalex.org/W2042431573,21,False,https://api.openalex.org/works?filter=cites:W2042431573,2012,2023,1996,,16
+=======
+3669,https://www.zotero.org/groups/intelligence_bibliography/items/BMD59SVR,10.1080/02684529608432359,,,,,,,,,
+>>>>>>> c78403b16472c4164dfd6b2f9297c887559328c3
 3670,https://www.zotero.org/groups/intelligence_bibliography/items/68LRM32I,10.1080/02684529108432098,https://openalex.org/W2140221287,8,False,https://api.openalex.org/works?filter=cites:W2140221287,2016,2022,1991,,25
 3671,https://www.zotero.org/groups/intelligence_bibliography/items/VVY3VI9S,10.1080/0268452042000302047,https://openalex.org/W2116689500,21,False,https://api.openalex.org/works?filter=cites:W2116689500,2012,2022,2004,,8
 3672,https://www.zotero.org/groups/intelligence_bibliography/items/L5RJDBMY,10.1080/0268452042000302976,https://openalex.org/W2019878913,5,False,https://api.openalex.org/works?filter=cites:W2019878913,2017,2022,2004,,13
