@@ -1,10 +1,10 @@
-name: Update Database
+name: Update Citation Formats
 
 # Schedule the workflow to run once a day
 on:
   workflow_dispatch: 
   schedule:
-    - cron: '0 3 * * *'  # Runs at 3 am UTC every day
+    - cron: '0 4 * * *'  # Runs at 4 am UTC every day
 
 jobs:
   update_csv:
@@ -28,12 +28,11 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install jupyter nbconvert
 
-      # Run the Jupyter Notebook
-      - name: Run Jupyter Notebook
+      # Run the Python Script
+      - name: Run Run Python Script
         run: |
-          jupyter nbconvert --to notebook --execute all_items.ipynb
+          python database_update/all_items_citation_format_retrieval.py  # Execute the Python script
 
       # Pull, commit, and push changes to CSV files
       - name: Pull, commit, and push changes
