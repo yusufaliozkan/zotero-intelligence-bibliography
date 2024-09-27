@@ -26,7 +26,7 @@ items = zot.everything(zot.top())
 df_zotero_id = pd.read_csv('zotero_citation_format.csv')
 df_all = pd.read_csv('all_items.csv')
 df_all = df_all[['Zotero link']]
-df_all['zotero_item_key'] = df_all['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+df_all['zotero_item_key'] = df_all['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
 df_all = df_all.drop_duplicates()
 df_not_zotero_id = df_all[~df_all['zotero_item_key'].isin(df_zotero_id['zotero_item_key'])]
 df_not_zotero_id = df_not_zotero_id[['zotero_item_key']].reset_index(drop=True)
