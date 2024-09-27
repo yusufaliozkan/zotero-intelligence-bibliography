@@ -762,7 +762,6 @@ else:
                     ## DOI based filtering
                     df_dedup = pd.read_csv('all_items.csv')
                     df_dois = df_dedup.copy() 
-                    df_dois
                     df_dois.dropna(subset=['DOI'], inplace=True) 
                     column_to_keep = 'DOI'
                     df_dois = df_dois[[column_to_keep]]
