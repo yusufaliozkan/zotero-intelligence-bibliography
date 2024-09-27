@@ -505,7 +505,7 @@ with st.spinner('Retrieving data...'):
             #             if display == 'Bibliographic list':
 
             #                 df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-            #                 df_quick_search_titles['zotero_item_key'] = df_quick_search_titles['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+            #                 df_quick_search_titles['zotero_item_key'] = df_quick_search_titles['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
             #                 df_quick_search_titles = pd.merge(df_quick_search_titles, df_zotero_id, on='zotero_item_key', how='left')
 
             #                 def display_bibliographies(df):
@@ -1049,7 +1049,7 @@ with st.spinner('Retrieving data...'):
                                             elif sort_by == 'Citation':
                                                 filtered_df = filtered_df.sort_values(by=['Citation'], ascending=False)
                                             df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-                                            filtered_df['zotero_item_key'] = filtered_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                            filtered_df['zotero_item_key'] = filtered_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
                                             filtered_df = pd.merge(filtered_df, df_zotero_id, on='zotero_item_key', how='left')
 
                                             def display_bibliographies(df):
@@ -1370,7 +1370,7 @@ with st.spinner('Retrieving data...'):
                                                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Publication type'], ascending=True)
                                             elif sort_by == 'Citation':
                                                 filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Citation'], ascending=False)
-                                            filtered_collection_df_authors['zotero_item_key'] = filtered_collection_df_authors['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                            filtered_collection_df_authors['zotero_item_key'] = filtered_collection_df_authors['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
                                             df_zotero_id = pd.read_csv('zotero_citation_format.csv')
                                             filtered_collection_df_authors = pd.merge(filtered_collection_df_authors, df_zotero_id, on='zotero_item_key', how='left')
                                             df_zotero_id = filtered_collection_df_authors[['zotero_item_key']]
@@ -1697,7 +1697,7 @@ with st.spinner('Retrieving data...'):
                                             df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                                             df_table_view
                                         if view == 'Bibliography':
-                                            filtered_collection_df['zotero_item_key'] = filtered_collection_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                            filtered_collection_df['zotero_item_key'] = filtered_collection_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
                                             df_zotero_id = pd.read_csv('zotero_citation_format.csv')
                                             filtered_collection_df = pd.merge(filtered_collection_df, df_zotero_id, on='zotero_item_key', how='left')
                                             df_zotero_id = filtered_collection_df[['zotero_item_key']]
@@ -2043,7 +2043,7 @@ with st.spinner('Retrieving data...'):
                                         df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                                         df_table_view
                                     if view =='Bibliography':
-                                        filtered_type_df['zotero_item_key'] = filtered_type_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                        filtered_type_df['zotero_item_key'] = filtered_type_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
                                         df_zotero_id = pd.read_csv('zotero_citation_format.csv')
                                         filtered_type_df = pd.merge(filtered_type_df, df_zotero_id, on='zotero_item_key', how='left')
                                         df_zotero_id = filtered_type_df[['zotero_item_key']]
@@ -2396,7 +2396,7 @@ with st.spinner('Retrieving data...'):
                                         df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                                         df_table_view
                                     if view =='Bibliography':
-                                        selected_journal_df['zotero_item_key'] = selected_journal_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                        selected_journal_df['zotero_item_key'] = selected_journal_df['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
                                         df_zotero_id = pd.read_csv('zotero_citation_format.csv')
                                         selected_journal_df = pd.merge(selected_journal_df, df_zotero_id, on='zotero_item_key', how='left')
                                         df_zotero_id = selected_journal_df[['zotero_item_key']]
@@ -2781,7 +2781,7 @@ with st.spinner('Retrieving data...'):
                                     df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
                                     df_table_view
                                 if view == 'Bibliography':
-                                    df_all['zotero_item_key'] = df_all['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                    df_all['zotero_item_key'] = df_all['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
                                     df_zotero_id = pd.read_csv('zotero_citation_format.csv')
                                     df_all = pd.merge(df_all, df_zotero_id, on='zotero_item_key', how='left')
                                     df_zotero_id = df_all[['zotero_item_key']]
@@ -3174,7 +3174,7 @@ with st.spinner('Retrieving data...'):
                                     df_table_view
                                 if view == 'Bibliography':
                                     st.markdown(f'##### {view} view')
-                                    df_cited['zotero_item_key'] = df_cited['Zotero link'].str.replace('https://www.zotero.org/groups/intelligence_bibliography/items/', '')
+                                    df_cited['zotero_item_key'] = df_cited['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
                                     df_zotero_id = pd.read_csv('zotero_citation_format.csv')
                                     df_cited = pd.merge(df_cited, df_zotero_id, on='zotero_item_key', how='left')
                                     df_zotero_id = df_cited[['zotero_item_key']]
