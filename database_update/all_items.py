@@ -441,8 +441,9 @@ for index, row in df_doi.iterrows():
 df_doi['Year_difference'] = df_doi['First_citation_year'] - df_doi['Publication_year']
 df_doi.to_csv('citations.csv')
 
-df = pd.merge(df, df_doi, on=['Zotero link', 'DOI'], how='left')
-duplicated_df = pd.merge(duplicated_df, df_doi, on=['Zotero link', 'DOI'], how='left')
+df_doi = df_doi.drop(columns=['DOI'])
+df = pd.merge(df, df_doi, on='Zotero link', how='left')
+duplicated_df = pd.merge(duplicated_df, df_doi, on='Zotero link', how='left')
 
 df.to_csv('all_items.csv')
 duplicated_df.to_csv('all_items_duplicated.csv')
