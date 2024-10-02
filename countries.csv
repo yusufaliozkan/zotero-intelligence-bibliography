@@ -1,4 +1,6 @@
 Country,Count
+Germany,88
+South Africa,25
 Mexico,9
 Ukraine,131
 Israel,161
@@ -6,7 +8,6 @@ Spain,18
 UK,484
 Iraq,69
 Japan,114
-Germany,87
 China,83
 France,51
 Russia,170
@@ -75,7 +76,6 @@ Zambia,1
 Tunisia,4
 Togo,1
 South Sudan,4
-South Africa,24
 Sierra Leone,1
 Seychelles,1
 Senegal,1
