@@ -13,7 +13,7 @@ import re
 
 client = Client(base_url='https://bsky.social')
 bluesky_password = os.getenv("BLUESKY_PASSWORD")
-client.login('intelarchive.app', bluesky_password)
+client.login('intelarchive.io', bluesky_password)
 
 ### POST ITEMS
 
