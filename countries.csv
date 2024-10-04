@@ -1,5 +1,7 @@
 Country,Count
-Israel,162
+United States,714
+Israel,163
+Lebanon,10
 Ukraine,132
 Germany,88
 South Africa,25
@@ -20,7 +22,6 @@ Denmark,10
 Sweden,14
 Hong Kong,5
 New Zealand,21
-United States,712
 Austria,13
 Kenya,7
 Niger,6
@@ -105,7 +106,6 @@ Benin,1
 Algeria,7
 Angola,2
 Croatia,1
-Lebanon,9
 Kuwait,2
 Thailand,5
 Lithuania,3
