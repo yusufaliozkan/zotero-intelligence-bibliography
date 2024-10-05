@@ -43,7 +43,7 @@ with st.sidebar:
 ### Bluesky posting functions start here
 client = Client(base_url='https://bsky.social')
 bluesky_password = st.secrets["bluesky_password"]
-client.login('intelarchive.app', bluesky_password)
+client.login('intelarchive.io', bluesky_password)
 
 def fetch_link_metadata(url: str) -> Dict:
     # URL Encode the URL to handle special characters properly
