@@ -451,4 +451,5 @@ df_countries.to_csv('countries.csv',index=False)
 
 df_citations = df[['Citation']]
 citation_count = df_citations.sum()
+print(citation_count)
 citation_count
