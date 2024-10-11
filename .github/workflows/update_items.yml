@@ -3,8 +3,8 @@ name: Update Database
 # Schedule the workflow to run once a day
 on:
   workflow_dispatch: 
-  schedule:
-    - cron: '30 15 * * *'  # Runs at 15:30 UTC every day
+  # schedule:
+  #   - cron: '30 15 * * *'  # Runs at 15:30 UTC every day
 
 jobs:
   update_csv:
