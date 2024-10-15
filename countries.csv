@@ -1,12 +1,17 @@
 Country,Count
+India,65
+China,84
+Ukraine,134
+Israel,166
+Afghanistan,22
+United States,715
+Kuwait,3
+Slovakia,14
 Sweden,15
 Niger,8
 Nigeria,7
-Israel,165
-Russia,172
-United States,714
+Russia,171
 Lebanon,10
-Ukraine,132
 Germany,88
 South Africa,25
 Mexico,9
@@ -14,9 +19,7 @@ Spain,18
 UK,484
 Iraq,69
 Japan,114
-China,83
 France,51
-India,64
 Belarus,1
 Estonia,2
 Ireland,38
@@ -35,7 +38,6 @@ Oman,75
 Romania,32
 Poland,13
 Bahamas,2
-Slovakia,13
 Bulgaria,6
 Norway,13
 Portugal,6
@@ -52,7 +54,6 @@ Ecuador,4
 Brazil,30
 Hungary,4
 United Kingdom,21
-Afghanistan,21
 Cuba,42
 Armenia,1
 Morocco,5
@@ -106,7 +107,6 @@ Benin,1
 Algeria,7
 Angola,2
 Croatia,1
-Kuwait,2
 Thailand,5
 Lithuania,3
 Albania,10
