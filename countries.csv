@@ -1,4 +1,6 @@
 Country,Count
+United Kingdom,22
+Slovakia,15
 China,85
 Oman,76
 Germany,87
@@ -8,7 +10,6 @@ Israel,166
 Afghanistan,22
 United States,715
 Kuwait,3
-Slovakia,14
 Sweden,15
 Niger,8
 Nigeria,7
@@ -53,7 +54,6 @@ Peru,7
 Ecuador,4
 Brazil,30
 Hungary,4
-United Kingdom,21
 Cuba,42
 Armenia,1
 Morocco,5
