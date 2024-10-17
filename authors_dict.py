@@ -1,18 +1,12 @@
-import pandas as pd 
+import pandas as pd
 
-df_authors = pd.read_csv('all_items.csv')
-# df_authors['FirstName2'].fillna('', inplace=True)
-df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
-df_authors = df_authors.explode('Author_name')
-df_authors.reset_index(drop=True, inplace=True)
-df_authors = df_authors.dropna(subset=['FirstName2'])
 name_replacements = {
     'David Gioe': 'David V. Gioe',
     'David V Gioe':'David V. Gioe',
     'David Vincent Gioe': 'David V. Gioe',
     'Michael Goodman': 'Michael S. Goodman',
     'Michael S Goodman': 'Michael S. Goodman',
-    'Michael Simon Goodman': 'Michael S. Goodman',
+    'Michael Simon Goodman': 'Michael S. Gacoodman',
     'Thomas Maguire':'Thomas J. Maguire',
     'Thomas Joseph Maguire':'Thomas J. Maguire',
     'Huw John Davies':'Huw J. Davies',
@@ -70,4 +64,12 @@ name_replacements = {
     'Celia Parker-Vincent':'Celia G. Parker-Vincent',
     'G. H. Bennett':'Gill Bennett'
 }
-df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name']) 
+
+def get_df_authors():
+    df_authors = pd.read_csv('all_items.csv')
+    df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+    df_authors = df_authors.explode('Author_name')
+    df_authors.reset_index(drop=True, inplace=True)
+    df_authors = df_authors.dropna(subset=['FirstName2'])
+    df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
+    return df_authors
