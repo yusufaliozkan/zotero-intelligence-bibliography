@@ -20,7 +20,7 @@ from wordcloud import WordCloud
 from streamlit_gsheets import GSheetsConnection
 import datetime as dt     
 import random
-from authors_dict import df_authors, name_replacements
+from authors_dict import get_df_authors, name_replacements
 from sidebar_content import sidebar_content, set_page_config
 from format_entry import format_entry
 from copyright import display_custom_license
