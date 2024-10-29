@@ -25,3 +25,4 @@ grapheme==0.6.0
 gspread
 pycountry==24.6.1
 spacy
+countryinfo==0.1.2
