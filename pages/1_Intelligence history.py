@@ -56,6 +56,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
     #     return df_collections
     # df_collections = zotero_collections(library_id, library_type)
 
+    df_authors = get_df_authors()
     df_collections = pd.read_csv('all_items_duplicated.csv')
     # df_collections = df_collections[~df_collections['Collection_Name'].str.contains('01.98')]
     df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
@@ -95,7 +96,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             pass
 
 
-    radio = container.radio('Select a collection', unique_collections, index=ix, key="qp", on_change=update_params)
+    radio = container.radio('Select a collection', unique_collections, index=ix, key="qp", on_change=update_params, horizontal=True)
     query_params = st.query_params.to_dict()
 
     collection_name = radio
@@ -150,7 +151,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 only_citation = st.checkbox('Show cited items only')
                 if only_citation:
                     df_collections = df_collections[(df_collections['Citation'].notna()) & (df_collections['Citation'] != 0)]
-            view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+            view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
 
             types = st.multiselect('Publication type', df_collections['Publication type'].unique(),df_collections['Publication type'].unique(), key='original')
             df_collections = df_collections[df_collections['Publication type'].isin(types)]
@@ -196,7 +197,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
 
             a = f'{collection_name}_{today}'
-            st.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+            st.download_button('Download collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4', icon=":material/download:")
 
     container_metric.metric(label="Items found", value=num_items_collections, help=breakdown_string)
     container_citation.metric(label="Number of citations", value=int(citation_count))
@@ -237,7 +238,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             # st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
             # st.write(f'Number of citations: **{int(citation_count)}**, Open access coverage (journal articles only): **{int(oa_ratio)}%**')
             # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
-            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:'))
+            sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:'), horizontal=True)
 
             if sort_by == 'Publication date :arrow_down:': # or df_collections['Citation'].sum() == 0:
                 df_collections = df_collections.sort_values(by=['Date published'], ascending=False)
@@ -355,6 +356,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 with st.expander('**Bibliographic listing**', expanded=True):
                     df_collections['zotero_item_key'] = df_collections['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
                     df_zotero_id = pd.read_csv('zotero_citation_format.csv')
+                    df_zotero_id.drop(columns=['Unnamed: 0'], errors='ignore', inplace=True)
                     df_collections = pd.merge(df_collections, df_zotero_id, on='zotero_item_key', how='left')
                     df_zotero_id = df_collections[['zotero_item_key']]
 
@@ -747,7 +749,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             listdf_abstract = df['lemma_abstract']
 
             st.markdown('## Wordcloud')
-            wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+            wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'), horizontal=True)
             if wordcloud_opt=='Titles':
                 df_list = [item for sublist in listdf for item in sublist]
                 string = pd.Series(df_list).str.cat(sep=' ')
