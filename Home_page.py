@@ -39,6 +39,8 @@ from format_entry import format_entry
 from st_keyup import st_keyup
 from pyparsing import infixNotation, opAssoc, Keyword, Word, alphanums
 from events import evens_conferences
+import pydeck as pdk
+from countryinfo import CountryInfo
 
 
 # Connecting Zotero with API 
@@ -258,7 +260,7 @@ with st.spinner('Retrieving data...'):
     df_dedup_oa = df_dedup[df_dedup['OA status'] == True].reset_index(drop=True)
 
     with col2:
-        with st.popover('More metrics'):
+        with st.popover('More metrics'): 
             citation_count = df_dedup['Citation'].sum()
             
             total_rows = len(df_dedup)
@@ -553,12 +555,12 @@ with st.spinner('Retrieving data...'):
                 non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
                 citation_mean = non_nan_cited_df_dedup['Citation'].mean()
                 citation_median = non_nan_cited_df_dedup['Citation'].median()
-                search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"))
+                search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"), horizontal=True)
                 if search_option == "Search keywords":
                     st.subheader('Search keywords', anchor=False, divider='blue')
                     @st.experimental_fragment
                     def search_keyword(): 
-                        @st.experimental_dialog("Search guide")
+                        @st.dialog("Search guide")
                         def guide(item):
                             st.write('''
                                 The Intelligence Studies Bibliography supports basic-level searches with Boolean operators.
@@ -756,7 +758,7 @@ with st.spinner('Retrieving data...'):
                                         if only_citation:
                                             filtered_df = filtered_df[(filtered_df['Citation'].notna()) & (filtered_df['Citation'] != 0)]
 
-                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
                                         # with col114:
                                         #     table_view = st.checkbox('See results in table')
 
@@ -846,10 +848,10 @@ with st.spinner('Retrieving data...'):
                                     csv = convert_df(download_filtered)
                                     today = datetime.date.today().isoformat()
                                     a = 'search-result-' + today
-                                    container_download_button.download_button('💾 Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1')
+                                    container_download_button.download_button('Download search', csv, (a+'.csv'), mime="text/csv", key='download-csv-1', icon=":material/download:",)
 
 
-                                    on = st.toggle('Generate dashboard')
+                                    on = st.toggle(':material/monitoring: Generate report', help='See publications with visuals')
 
                                     if on and len(filtered_df) > 0:
                                         st.info(f'Dashboard for search terms: {search_term}')
@@ -938,7 +940,7 @@ with st.spinner('Retrieving data...'):
                                         st.pyplot()
 
                                     else:
-                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'), horizontal=True)
                                         if sort_by == 'Publication date :arrow_down:' or filtered_df['Citation'].sum() == 0:
                                             filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
                                             filtered_df = filtered_df.reset_index(drop=True)
@@ -1169,7 +1171,7 @@ with st.spinner('Retrieving data...'):
                                     with st.popover('Filters and more'):
                                         container_types = st.container()
                                         container_download = st.container()
-                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
 
                                 st.write('*Please note that this database **may not show** all research outputs of the author.*')
                                 types = container_types.multiselect('Publication type', filtered_collection_df_authors['Publication type'].unique(), filtered_collection_df_authors['Publication type'].unique(), key='original_authors')
@@ -1231,11 +1233,11 @@ with st.spinner('Retrieving data...'):
                     
                                 today = datetime.date.today().isoformat()
                                 a = f'{selected_author}_{today}'
-                                container_download.download_button('💾 Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors')
+                                container_download.download_button('Download publications', csv, (a+'.csv'), mime="text/csv", key='download-csv-authors', icon=":material/download:")
 
-                                on = st.toggle('Generate dashboard')
+                                on = st.toggle(':material/monitoring: Generate report', help='See publications with visuals')
                                 if on and len(filtered_collection_df_authors) > 0: 
-                                    st.info(f'Publications dashboard for {selected_author}')
+                                    st.info(f'Publications report for {selected_author}')
                                     author_df = filtered_collection_df_authors
                                     publications_by_type = author_df['Publication type'].value_counts()
                                     fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
@@ -1302,7 +1304,7 @@ with st.spinner('Retrieving data...'):
                                     st.pyplot()
                                 else:
                                     if not on:  # If the toggle is off, display the publications
-                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'), horizontal=True)
                                         if sort_by == 'Publication date :arrow_down:' or filtered_collection_df_authors['Citation'].sum() == 0:
                                             filtered_collection_df_authors = filtered_collection_df_authors.sort_values(by=['Date published'], ascending=False)
                                             filtered_collection_df_authors = filtered_collection_df_authors.reset_index(drop=True)
@@ -1458,7 +1460,7 @@ with st.spinner('Retrieving data...'):
                                         container_info = st.container()
                                         container_filter = st.container()
                                         container_download = st.container()
-                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
                                 container_info.info(f"See the collection in [Zotero]({collection_link})")
                                 types = container_filter.multiselect('Publication type', filtered_collection_df['Publication type'].unique(),filtered_collection_df['Publication type'].unique(), key='original')
                                 filtered_collection_df = filtered_collection_df[filtered_collection_df['Publication type'].isin(types)]
@@ -1547,11 +1549,11 @@ with st.spinner('Retrieving data...'):
                                     container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
 
                                 a = f'{selected_collection}_{today}'
-                                container_download.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                                container_download.download_button('Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4', icon=":material/download:")
 
-                                on = st.toggle('Generate dashboard')
+                                on = st.toggle(':material/monitoring: Generate report', help='See publications with visuals')
                                 if on and len(filtered_collection_df) > 0: 
-                                    st.info(f'Dashboard for {selected_collection}')
+                                    st.info(f'Report for {selected_collection}')
                                     collection_df = filtered_collection_df.copy()
                                     
                                     publications_by_type = collection_df['Publication type'].value_counts()
@@ -1644,7 +1646,7 @@ with st.spinner('Retrieving data...'):
 
                                 else:
                                     if not on:
-                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                        sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'), horizontal=True)
                                         if sort_by == 'Publication date :arrow_down:' or filtered_collection_df['Citation'].sum() == 0:
                                             filtered_collection_df = filtered_collection_df.sort_values(by=['Date published'], ascending=False)
                                             filtered_collection_df = filtered_collection_df.reset_index(drop=True)
@@ -1805,7 +1807,7 @@ with st.spinner('Retrieving data...'):
 
                                             if not selected_thesis_uni == '':
                                                 filtered_type_df = filtered_type_df[filtered_type_df['University']==selected_thesis_uni]
-                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
                                             
                                 download_types = filtered_type_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
                                 download_types['Abstract'] = download_types['Abstract'].str.replace('\n', ' ')
@@ -1875,11 +1877,11 @@ with st.spinner('Retrieving data...'):
                                     )
 
                                 a = f'{selected_type}_{today}'
-                                container_download_types.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                                container_download_types.download_button('Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4', icon=":material/download:")
 
-                                on = st.toggle('Generate dashboard')
+                                on = st.toggle(':material/monitoring: Generate report', help='See publications with visuals')
                                 if on and len (filtered_type_df) > 0:
-                                    st.info(f'Dashboard for {selected_type}')
+                                    st.info(f'Report for {selected_type}')
                                     type_df = filtered_type_df.copy()
                                     collection_df = type_df.copy()
                                     collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
@@ -1986,7 +1988,7 @@ with st.spinner('Retrieving data...'):
                                     # # st.set_option('deprecation.showPyplotGlobalUse', False)
                                     st.pyplot()
                                 else:
-                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'), horizontal=True)
                                     if sort_by == 'Publication date :arrow_down:' or filtered_type_df['Citation'].sum() == 0:
                                         filtered_type_df = filtered_type_df.sort_values(by=['Date published'], ascending=False)
                                         filtered_type_df = filtered_type_df.reset_index(drop=True)
@@ -2144,7 +2146,7 @@ with st.spinner('Retrieving data...'):
                                 with coljournal4:
                                     with st.popover('Filters and more'):
                                         container_download = st.container()
-                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                        view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
                                 non_nan_id = selected_journal_df['ID'].count()
 
                                 download_journal = selected_journal_df[['Publication type', 'Title', 'Abstract', 'Date published', 'Publisher', 'Journal', 'Link to publication', 'Zotero link', 'Citation']]
@@ -2225,11 +2227,11 @@ with st.spinner('Retrieving data...'):
                                 )
 
                                 a = f'selected_journal_{today}'
-                                container_download.download_button('💾 Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                                container_download.download_button('Download', csv, (a+'.csv'), mime="text/csv", key='download-csv-4', icon=":material/download:")
 
-                                on = st.toggle('Generate dashboard')
+                                on = st.toggle(':material/monitoring: Generate report', help='See publications with visuals')
                                 if on and len (selected_journal_df) > 0:
-                                    st.info(f'Dashboard for {journals}')
+                                    st.info(f'Report for {journals}')
                                     
                                     if non_nan_id !=0:
 
@@ -2344,7 +2346,7 @@ with st.spinner('Retrieving data...'):
                                     st.pyplot()
 
                                 else:
-                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'), horizontal=True)
                                     if sort_by == 'Publication date :arrow_down:' or selected_journal_df['Citation'].sum() == 0:
                                         selected_journal_df = selected_journal_df.sort_values(by=['Date published'], ascending=False)
                                         selected_journal_df = selected_journal_df.reset_index(drop=True)
@@ -2483,7 +2485,7 @@ with st.spinner('Retrieving data...'):
                                         df_all = df_all[df_all['Publication type'].isin(selected_type)]
                                     df_all = df_all.reset_index(drop=True)
                                     container_download = st.container()
-                                    view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                    view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
 
                             df_all_download = df_all.copy()
                             df_all_download = df_all_download[['Publication type', 'Title', 'Abstract', 'FirstName2', 'Link to publication', 'Zotero link', 'Date published', 'Citation']]
@@ -2495,7 +2497,7 @@ with st.spinner('Retrieving data...'):
                             # csv = df_download
                             # # st.caption(collection_name)
                             a = 'intelligence-bibliography-items-between-' + str(years[0]) + '-' + str(years[1])
-                            container_download.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                            container_download.download_button('Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3', icon=":material/download:")
                             number_of_items = len(df_all)
 
                             publications_by_type = df_all['Publication type'].value_counts()
@@ -2633,13 +2635,13 @@ with st.spinner('Retrieving data...'):
                             for row in formatted_rows:
                                 container_themes.caption(row)                
 
-                            dashboard_all = st.toggle('Generate dashboard')
+                            dashboard_all = st.toggle(':material/monitoring: Generate report', help='See publications with visuals')
                             if dashboard_all:
                                 if dashboard_all and len(df_all) > 0: 
                                     if abs(years[1]-years[0])>0 and years[0]<current_year:
-                                        st.info(f'Dashboard for items published between {int(years[0])} and {int(years[1])}')
+                                        st.info(f'Report for items published between {int(years[0])} and {int(years[1])}')
                                     else:
-                                        st.info(f'Dashboard for items published in {int(years[0])}')
+                                        st.info(f'Report for items published in {int(years[0])}')
                                     collection_df = df_all.copy()
                                     
                                     publications_by_type = collection_df['Publication type'].value_counts()
@@ -2752,7 +2754,7 @@ with st.spinner('Retrieving data...'):
                                     # st.set_option('deprecation.showPyplotGlobalUse', False)
                                     st.pyplot()
                             else:
-                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'))
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'), horizontal=True)
                                 if sort_by == 'Publication date :arrow_down:' or df_all['Citation'].sum() == 0:
                                     df_all = df_all.sort_values(by=['Date published'], ascending=False)
                                     df_all = df_all.reset_index(drop=True)
@@ -2827,7 +2829,7 @@ with st.spinner('Retrieving data...'):
                             with colcite3:
                                 with st.popover('Filters and more'):
                                     st.warning('Items without a citation are not listed here! Citation data comes from [OpenAlex](https://openalex.org/).')
-                                    citation_type = st.radio('Select:', ('All citations', 'Trends', 'Citations without outliers'))
+                                    citation_type = st.radio('Select:', ('All citations', 'Trends', 'Citations without outliers'), horizontal=True)
                                     if citation_type=='All citations':
                                         df_cited = df_cited.reset_index(drop=True)
                                     elif citation_type=='Trends':
@@ -2847,7 +2849,7 @@ with st.spinner('Retrieving data...'):
                                     container_markdown.markdown(f'#### {citation_type}')
                                     container_slider = st.container()
                                     container_download = st.container()
-                                    view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                                    view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
 
                             max_value = int(df_cited['Citation'].max())
                             min_value = 1
@@ -2891,7 +2893,7 @@ with st.spinner('Retrieving data...'):
                             # csv = df_download
                             # # st.caption(collection_name)
                             a = 'cited-items-'
-                            container_download.download_button('💾 Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                            container_download.download_button('Download selected items ', csv_selected, (a+'.csv'), mime="text/csv", key='download-csv-3', icon=":material/download:")
                             number_of_items = len(df_cited)
                             container_metric.metric(label=f'Number of cited publications', value=number_of_items)
 
@@ -3019,10 +3021,10 @@ with st.spinner('Retrieving data...'):
                             if citation_type == 'Citations without outliers':
                                 st.info(f'**{outlier_count}** items are removed here that have more than 1000 citations.')
 
-                            dashboard_all = st.toggle('Generate dashboard')
+                            dashboard_all = st.toggle(':material/monitoring: Generate report', help='See publications with visuals')
                             if dashboard_all:
                                 if dashboard_all and len(df_cited) > 0: 
-                                    st.markdown(f'#### Dashboard for cited items in the library')
+                                    st.markdown(f'#### Report for cited items in the library')
 
                                     colcite1, colcite2, colcite3 = st.columns(3) 
 
@@ -3138,7 +3140,7 @@ with st.spinner('Retrieving data...'):
                                     # # st.set_option('deprecation.showPyplotGlobalUse', False)
                                     st.pyplot()
                             else:
-                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'))
+                                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'), horizontal=True)
                                 if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                                     df_cited = df_cited.sort_values(by=['Date published'], ascending=False)
                                     df_cited = df_cited.reset_index(drop=True)
@@ -3214,7 +3216,7 @@ with st.spinner('Retrieving data...'):
                     # # # st.caption(collection_name)
                     # today = datetime.date.today().isoformat()
                     # a = 'recently-added-' + today
-                    # st.download_button('💾 Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
+                    # st.download_button(' Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     
                     display = st.checkbox('Display theme and abstract')
 
@@ -3399,7 +3401,7 @@ with st.spinner('Retrieving data...'):
                 # # # st.caption(collection_name)
                 # today = datetime.date.today().isoformat()
                 # a = 'intelligence-bibliography-all-' + today
-                # st.download_button('💾 Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
+                # st.download_button('Download all items', csv, (a+'.csv'), mime="text/csv", key='download-csv-2')
                 # df_all_items
                 st.write('''
                 The entire dataset containing the metadata of publications within the IntelArchive database is available on Zenodo. 
@@ -3518,7 +3520,7 @@ with st.spinner('Retrieving data...'):
 
     with tab2:
         st.header('Dashboard', anchor=False)
-        on_main_dashboard = st.toggle('Display dashboard')
+        on_main_dashboard = st.toggle(':material/dashboard: Display dashboard')
         
         if on_main_dashboard:
 
@@ -3712,7 +3714,7 @@ with st.spinner('Retrieving data...'):
                     df_types.columns = ['Publication type', 'Count']
                     # TEMP SOLUTION ENDS
 
-                    chart_type = st.radio('Choose visual type', ['Bar chart', 'Pie chart'])
+                    chart_type = st.radio('Choose visual type', ['Bar chart', 'Pie chart'], horizontal=True)
 
                     col1, col2 = st.columns(2)
                     with col1:
@@ -3805,7 +3807,7 @@ with st.spinner('Retrieving data...'):
                     with col1:
                             colauthor1, colauthor2 = st.columns(2)
                             with colauthor1:
-                                table_view = st.radio('Choose visual type', ['Bar chart', 'Table view'], key='author')
+                                table_view = st.radio('Choose visual type', ['Bar chart', 'Table view'], key='author', horizontal=True)
                             with colauthor2:
                                 last_5_year = st.checkbox('Limit to last 5 years', key='last5yearsauthorsall')
                             if last_5_year:
@@ -3840,7 +3842,7 @@ with st.spinner('Retrieving data...'):
                     with col2:
                             colauthor11, colauthor12 = st.columns(2)
                             with colauthor11:
-                                selected_type = st.radio('Select a publication type', ['Journal article', 'Book', 'Book chapter'])
+                                selected_type = st.radio('Select a publication type', ['Journal article', 'Book', 'Book chapter'], horizontal=True)
                             with colauthor12:
                                 last_5_year = st.checkbox('Limit to last 5 years', key='last5yearsauthorsallspecified')
                             if last_5_year:
@@ -4405,19 +4407,78 @@ with st.spinner('Retrieving data...'):
 
                 st.divider()
                 st.subheader('Country mentions in titles', anchor=False, divider='blue')
-                col1, col2 = st.columns([7,2])
+
+
+                # Load your country data with counts
+                df_countries = pd.read_csv('countries.csv')
+                df_countries['Country'] = df_countries['Country'].replace("UK", "United Kingdom")
+                df_countries = df_countries.groupby('Country', as_index=False).sum()
+
+                # Function to get coordinates
+                def get_coordinates(country_name):
+                    try:
+                        country = CountryInfo(country_name)
+                        return country.info().get('latlng', (None, None))
+                    except KeyError:
+                        return None, None
+
+                # Apply the function to each country to get latitude and longitude
+                df_countries[['Latitude', 'Longitude']] = df_countries['Country'].apply(lambda x: pd.Series(get_coordinates(x)))
+
+                # Set a scaling factor and minimum radius to make circles larger
+                scaling_factor = 500  # Adjust this to control the overall size of the circles
+                minimum_radius = 100000  # Minimum radius for visibility of all points
+
+                # Calculate the circle size based on `Count`
+                df_countries['size'] = df_countries['Count'] * scaling_factor + minimum_radius
+
+                # Filter out rows where coordinates were not found
+                df_countries = df_countries.dropna(subset=['Latitude', 'Longitude'])
+
+                # ScatterplotLayer to show countries and their mentions count
+                scatterplot_layer = pdk.Layer(
+                    "ScatterplotLayer",
+                    data=df_countries,
+                    get_position=["Longitude", "Latitude"],
+                    get_radius="size",
+                    get_fill_color="[255, 140, 0, 160]",  # Adjusted color with opacity
+                    pickable=True,
+                    auto_highlight=True,
+                    id="country-mentions-layer",
+                )
+
+                # Define the view state of the map
+                view_state = pdk.ViewState(
+                    latitude=20, longitude=0, zoom=1, pitch=30
+                )
+
+                # Create the Deck with the layer, view state, and map style
+                chart = pdk.Deck(
+                    layers=[scatterplot_layer],
+                    initial_view_state=view_state,
+                    tooltip={"text": "{Country}\nMentions: {Count}"},
+                    map_style="mapbox://styles/mapbox/light-v9"  # Use a light map style
+                )
+
+                # Display the Pydeck chart in Streamlit
+
+                col1, col2 = st.columns([8,2])
                 with col1:
                     df_countries = pd.read_csv('countries.csv')
-                    fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='Count', 
+                    df_countries['Country'] = df_countries['Country'].replace("UK", "United Kingdom")
+                    df_countries = df_countries.groupby('Country', as_index=False).sum()
+                    df_countries = df_countries.sort_values(by='Count', ascending=False).reset_index(drop=True)
+                    df_countries = df_countries.rename(columns={'Count': '# Mentions'})
+                    fig = px.choropleth(df_countries, locations='Country', locationmode='country names', color='# Mentions', 
                                 title='Country mentions in titles', color_continuous_scale='Viridis',
                                 width=900, height=700) # Adjust the size of the map here
-                    # Display the map
-                    fig.show()
-                    st.plotly_chart(fig, use_container_width=True) 
+                    # # Display the map
+                    # fig.show()
+                    # st.plotly_chart(fig, use_container_width=True) 
+                    st.pydeck_chart(chart, use_container_width=True)
                 with col2:
-                    st.markdown('##### Top 15 country names mentioned in titles')
-                    fig = px.bar(df_countries.head(15), x='Count', y='Country', orientation='h', height=600)
-                    col2.plotly_chart(fig, use_container_width=True)
+                    fig = px.bar(df_countries.head(15).iloc[::-1], x='# Mentions', y='Country', orientation='h', height=600)
+                    st.dataframe(df_countries, height=500, hide_index=True, use_container_width=True)
                 
                 st.divider()
                 st.subheader('Locations, People, and Organisations', anchor=False, divider='blue')
@@ -4489,7 +4550,7 @@ with st.spinner('Retrieving data...'):
                 listdf_abstract = df['lemma_abstract']
 
                 st.subheader('Wordcloud', anchor=False, divider='blue')
-                wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+                wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'), horizontal=True)
                 if wordcloud_opt=='Titles':
                     df_list = [item for sublist in listdf for item in sublist]
                     string = pd.Series(df_list).str.cat(sep=' ')
