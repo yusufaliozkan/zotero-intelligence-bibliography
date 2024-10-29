@@ -105,7 +105,7 @@ with tab1:
         display = st.checkbox('Show details')      
     
     with col2:
-        sort_by = st.radio('Sort by', ['Date', 'Most recently added', 'Organiser'])
+        sort_by = st.radio('Sort by', ['Date', 'Most recently added', 'Organiser'], horizontal=True)
         
     st.write('See [📊 Event visuals](#event-visuals)')
 
@@ -215,7 +215,6 @@ with tab1:
         max_year = df_gs_plot['date'].dt.year.max()
         min_year = df_gs_plot['date'].dt.year.min()
         current_year = pd.Timestamp.now().year
-
         slider = st.slider('Select a year', current_year, min_year, current_year)
         slider = str(slider)
         df_gs_plot =df_gs_plot[df_gs_plot['year']==slider]

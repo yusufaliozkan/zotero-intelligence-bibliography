@@ -23,6 +23,7 @@ from format_entry import format_entry
 from streamlit_gsheets import GSheetsConnection
 from copyright import display_custom_license
 
+
 set_page_config_centered()
 
 st.title("IntelArchive", anchor=False)
@@ -65,7 +66,7 @@ with st.spinner('Preparing digest...'):
 
     with st.expander('Publications:', expanded=ex):
         st.header('Publications')
-        options = st.radio('Select an option', ('Recently added', 'Recently published', 'Recently cited'))
+        options = st.radio('Select an option', ('Recently added', 'Recently published', 'Recently cited'), horizontal=True)
 
         if options=='Recently added':
             previous_7 = today - dt.timedelta(days=7)
@@ -86,7 +87,7 @@ with st.spinner('Preparing digest...'):
                 start_last_month = dt.date(current_year, 12, 1)
                 end_last_month = dt.date(current_year, 12, 31)
 
-            range_day = st.radio('Show sources added to the database in the last:', ('7 days','30 days', 'Custom (select date)'), key='days_recently_added')
+            range_day = st.radio('Show sources added to the database in the last:', ('7 days','30 days', 'Custom (select date)'), key='days_recently_added', horizontal=True)
             if range_day == '7 days':
                 rg = previous_7
                 a='7 days'
@@ -317,7 +318,7 @@ with st.spinner('Preparing digest...'):
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 
-            range_day = st.radio('Show sources published in the last:', ('10 days','30 days', '3 months', 'Custom (days)', 'Custom (select date)'), key='days')
+            range_day = st.radio('Show sources published in the last:', ('10 days','30 days', '3 months', 'Custom (days)', 'Custom (select date)'), key='days', horizontal=True)
             if range_day == '10 days':
                 rg = previous_10
                 a='10 days'
@@ -576,7 +577,7 @@ with st.spinner('Preparing digest...'):
                         '[[Publication link]](' + str(link_to_publication) + ') ' +
                         '[[Zotero link]](' + str(zotero_link) + ')'
                     )
-                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'), key=123)
+                sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation'), key=123, horizontal=True)
                 display2 = st.checkbox('Display abstracts', key=1234)
                 if sort_by == 'Publication date :arrow_down:' or df_cited['Citation'].sum() == 0:
                     count = 1
@@ -627,7 +628,7 @@ with st.spinner('Preparing digest...'):
         next_30 = today_datetime + dt.timedelta(days=30)
         rg2 = next_10
         aa = '10 days'
-        range_day = st.radio('Show events in the next:', ('10 days', '20 days', '30 days'), key='events')
+        range_day = st.radio('Show events in the next:', ('10 days', '20 days', '30 days'), key='events', horizontal=True)
         
         if range_day == '10 days':
             rg2 = next_10
@@ -676,7 +677,7 @@ with st.spinner('Preparing digest...'):
         next_6mo = today_datetime  + dt.timedelta(days=180)
         rg3 = next_3mo
 
-        range_day = st.radio('Show conferences in the next: ', ('1 month', '3 months', '6 months'), key='conferences')
+        range_day = st.radio('Show conferences in the next: ', ('1 month', '3 months', '6 months'), key='conferences', horizontal=True)
         if range_day == '1 month':
             rg3 = next_1mo
             aaa = '1 month'

@@ -25,6 +25,8 @@ import time
 from format_entry import format_entry
 from events import evens_conferences
 from st_keyup import st_keyup
+from countryinfo import CountryInfo
+import pydeck as pdk
 
 set_page_config()
 st.title("Global intelligence", anchor=False) 
@@ -220,7 +222,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     container_abstract = st.container()
                 with col32:
                     container_cited_items = st.container()
-                view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'))
+                view = st.radio('View as:', ('Basic list', 'Table',  'Bibliography'), horizontal=True)
                 container_pub_types = st.container()
                 container_download = st.container()
 
@@ -254,7 +256,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     num_items_collections = len(df_collections)
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type.items()])
                     a = f'{collection_name}_{today}'
-                    container_download.download_button('💾 Download the collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4')
+                    container_download.download_button('Download collection', csv, (a+'.csv'), mime="text/csv", key='download-csv-4', icon=":material/download:")
 
                     # st.write(f"**{num_items_collections}** sources found ({breakdown_string})")
                     true_count = df_collections[df_collections['Publication type']=='Journal article']['OA status'].sum()
@@ -319,7 +321,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         container_publication_ratio.metric(label='Collaboration ratio', value=f'{(collaboration_ratio)}%', help='Ratio of multiple-authored papers')
 
                     # THIS WAS THE PLACE WHERE FORMAT_ENTRY WAS LOCATED
-                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:',))
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:',), horizontal=True)
                     display2 = container_abstract.checkbox('Display abstracts', key='type_count2')
 
                     if view == 'Basic list':
@@ -452,13 +454,13 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     csv = convert_df(df_download)
                     today = datetime.date.today().isoformat()
                     a = f'{selected_country}_{today}'
-                    container_download.download_button('💾 Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5')
+                    container_download.download_button('Download items', csv, (a+'.csv'), mime="text/csv", key='download-csv-5', icon=":material/download:")
 
                     publications_by_type_country = df_countries['Publication type'].value_counts()
                     num_items_collections = len(df_countries)
                     breakdown_string = ', '.join([f"{key}: {value}" for key, value in publications_by_type_country.items()])                    
 
-                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:',))
+                    sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Publication type',  'Citation', 'Date added :arrow_down:',), horizontal=True)
                     display2 = container_abstract.checkbox('Display abstracts', key='type_country_2')
 
                     articles_list = []  # Store articles in a list
@@ -778,63 +780,119 @@ with st.spinner('Retrieving data & updating dashboard...'):
             #                 if display2:
             #                     st.caption(row['Abstract']) 
 
-            st.subheader('Countries overview')
-            col11, col12 = st.columns([3,2])
-            with col11:                
-                df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
-                country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
-                all_countries_df = pd.DataFrame({'Country': country_pub_counts.index, 'Publications': country_pub_counts.values})
-                num_countries = st.slider("Select the number of countries to display", min_value=1, max_value=len(all_countries_df), value=10)
-                top_countries = all_countries_df.head(num_countries).sort_values(by='Publications', ascending=True)
-                fig = px.bar(top_countries, x='Publications', y='Country', orientation='h')
-                fig.update_layout(title=f'Top {num_countries} Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
-                col11.plotly_chart(fig, use_container_width=True)
+            st.subheader('Countries overview', anchor=False)
 
-            with col12:
-                df_continent_chart = df_continent_chart[df_continent_chart['Continent'] != 'Unknown']
-                country_pub_counts = df_continent_chart['Continent'].value_counts().sort_values(ascending=False)
-                top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
-                top_10_df = pd.DataFrame({'Continent': top_10_countries.index, 'Publications': top_10_countries.values})
-                fig = px.pie(top_10_df, values='Publications', names='Continent', title='Number of Publications by Continent')
-                fig.update_layout(title='Number of Publications by continent', xaxis_title='Number of Publications', yaxis_title='Continent')
-                col12.plotly_chart(fig, use_container_width = True)
+            df_countries_chart = df_countries_chart[df_countries_chart['Country'] != 'Country not known']
+            country_pub_counts = df_countries_chart['Country'].value_counts().sort_values(ascending=False)
+            all_countries_df = pd.DataFrame({'Country': country_pub_counts.index, 'Publications': country_pub_counts.values})
 
-            def compute_cumulative_graph(df, num_countries):
-                df['Date published'] = (
-                    df['Date published']
-                    .str.strip()
-                    .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-                )
-                df['Date year'] = df['Date published'].dt.strftime('%Y')
-                collection_counts = df.groupby(['Date year', 'Country']).size().unstack().fillna(0)
-                collection_counts = collection_counts.reset_index()
-                collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
+            # Function to get coordinates
+            def get_coordinates(country_name):
+                try:
+                    country = CountryInfo(country_name)
+                    return country.info().get('latlng', (None, None))
+                except KeyError:
+                    return None, None
 
-                # Select only the top countries based on the slider value
-                selected_countries = top_countries['Country'].tolist()
-                selected_countries = [country for country in selected_countries if country in collection_counts.columns] 
+            # Apply the function to each country to get latitude and longitude
+            all_countries_df[['Latitude', 'Longitude']] = all_countries_df['Country'].apply(lambda x: pd.Series(get_coordinates(x)))
 
-                # Check if there are still countries to display
-                if not selected_countries:
-                    st.warning("No data available for the selected countries.")
-                else:
-                    selected_columns = ['Date year'] + selected_countries
-                    cumulative_selected_countries = collection_counts[selected_columns]
+            # Set a scaling factor and minimum radius to make circles larger
+            scaling_factor = 1000  # Adjust this to control the overall size of the circles
+            minimum_radius = 100000  # Minimum radius for visibility of all points
 
-                    # Display the cumulative sum of publications per country
-                    fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=cumulative_selected_countries.columns[1:],
-                                                        markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
-                                                        title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
+            # Calculate the circle size based on `Count`
+            all_countries_df['size'] = all_countries_df['Publications'] * scaling_factor + minimum_radius
 
-                    # Reverse the legend order
-                    fig_cumulative_countries.update_layout(legend_traceorder='reversed')
+            # Filter out rows where coordinates were not found
+            all_countries_df = all_countries_df.dropna(subset=['Latitude', 'Longitude'])
 
-                return fig_cumulative_countries
+            # ScatterplotLayer to show countries and their mentions count
+            scatterplot_layer = pdk.Layer(
+                "ScatterplotLayer",
+                data=all_countries_df,
+                get_position=["Longitude", "Latitude"],
+                get_radius="size",
+                get_fill_color="[255, 140, 0, 160]",  # Adjusted color with opacity
+                pickable=True,
+                auto_highlight=True,
+                id="country-mentions-layer",
+            )
 
-            # Display the cumulative line graph based on the selected number of countries
-            fig_cumulative_countries = compute_cumulative_graph(df_countries_chart, num_countries)
-            st.plotly_chart(fig_cumulative_countries, use_container_width=True)
+            # Define the view state of the map
+            view_state = pdk.ViewState(
+                latitude=20, longitude=0, zoom=1, pitch=30
+            )
 
+            # Create the Deck with the layer, view state, and map style
+            chart = pdk.Deck(
+                layers=[scatterplot_layer],
+                initial_view_state=view_state,
+                tooltip={"text": "{Country}\nMentions: {Publications}"},
+                map_style="mapbox://styles/mapbox/light-v9"  # Use a light map style
+            )
+            st.pydeck_chart(chart, use_container_width=True)
+            @st.experimental_fragment
+            def bar_chart():
+                col11, col12 = st.columns([3,2])
+                with col11:
+                    num_countries = st.slider("Select the number of countries to display", min_value=1, max_value=len(all_countries_df), value=10)
+                    top_countries = all_countries_df.head(num_countries).sort_values(by='Publications', ascending=True)
+                    fig = px.bar(top_countries, x='Publications', y='Country', orientation='h')
+                    fig.update_layout(title=f'Top {num_countries} Countries by Number of Publications', xaxis_title='Number of Publications', yaxis_title='Country')
+                    col11.plotly_chart(fig, use_container_width=True)
+
+                with col12:
+                    from countries_dict import df_continent
+                    df_continent = df_continent.copy()
+                    df_continent_chart = df_continent.copy() 
+                    df_continent_chart = df_continent_chart[df_continent_chart['Continent'] != 'Unknown']
+                    country_pub_counts = df_continent_chart['Continent'].value_counts().sort_values(ascending=False)
+                    top_10_countries = country_pub_counts.head(10).sort_values(ascending=True)
+                    top_10_df = pd.DataFrame({'Continent': top_10_countries.index, 'Publications': top_10_countries.values})
+                    fig = px.pie(top_10_df, values='Publications', names='Continent', title='Number of Publications by Continent')
+                    fig.update_layout(title='Number of Publications by continent', xaxis_title='Number of Publications', yaxis_title='Continent')
+                    col12.plotly_chart(fig, use_container_width = True)
+
+                def compute_cumulative_graph(df, num_countries):
+
+                    df['Date published'] = df['Date published'].astype(str).str.strip()
+                    df['Date published'] = pd.to_datetime(df['Date published'], utc=True, errors='coerce').dt.tz_convert('Europe/London')
+                    # df['Date published'] = (
+                    #     df['Date published']
+                    #     .str.strip()
+                    #     .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    # )
+                    df['Date year'] = df['Date published'].dt.strftime('%Y')
+                    collection_counts = df.groupby(['Date year', 'Country']).size().unstack().fillna(0)
+                    collection_counts = collection_counts.reset_index()
+                    collection_counts.iloc[:, 1:] = collection_counts.iloc[:, 1:].cumsum()
+
+                    # Select only the top countries based on the slider value
+                    selected_countries = top_countries['Country'].tolist()
+                    selected_countries = [country for country in selected_countries if country in collection_counts.columns] 
+
+                    # Check if there are still countries to display
+                    if not selected_countries:
+                        st.warning("No data available for the selected countries.")
+                    else:
+                        selected_columns = ['Date year'] + selected_countries
+                        cumulative_selected_countries = collection_counts[selected_columns]
+
+                        # Display the cumulative sum of publications per country
+                        fig_cumulative_countries = px.line(cumulative_selected_countries, x='Date year', y=cumulative_selected_countries.columns[1:],
+                                                            markers=True, line_shape='linear', labels={'value': 'Cumulative Count'},
+                                                            title=f'Cumulative Publications per Country Over Years (Top {num_countries} Countries)')
+
+                        # Reverse the legend order
+                        fig_cumulative_countries.update_layout(legend_traceorder='reversed')
+
+                    return fig_cumulative_countries
+
+                # Display the cumulative line graph based on the selected number of countries
+                fig_cumulative_countries = compute_cumulative_graph(df_countries_chart, num_countries)
+                st.plotly_chart(fig_cumulative_countries, use_container_width=True)
+            bar_chart()
 #UNTIL HERE
         with col2:
             @st.experimental_fragment
@@ -1195,7 +1253,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 listdf_abstract = df['lemma_abstract']
 
                 st.markdown('## Wordcloud')
-                wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'))
+                wordcloud_opt = st.radio('Wordcloud of:', ('Titles', 'Abstracts'), horizontal=True)
                 if wordcloud_opt=='Titles':
                     df_list = [item for sublist in listdf for item in sublist]
                     string = pd.Series(df_list).str.cat(sep=' ')
