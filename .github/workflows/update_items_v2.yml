@@ -1,0 +1,54 @@
+name: Update Database v2
+
+# Schedule the workflow to run once a day
+on:
+  workflow_dispatch: 
+  schedule:
+    - cron: '0 3 * * *'  # Runs at 3 am UTC every day
+    # - cron: '0 * * * *'  # Runs at the start of every hour (UTC)
+
+jobs:
+  update_csv:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Grant write permissions to push changes
+    steps:
+      # Checkout the repository
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: true  # Ensure Git credentials persist
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'  # Specify the Python version you need
+
+      # Install necessary dependencies, including Jupyter and ipykernel
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install nbconvert ipykernel  # Install ipykernel for Python3
+
+      # Install the Python 3 kernel
+      - name: Install Jupyter Kernel
+        run: |
+          python -m ipykernel install --user
+
+      # Convert and Run the Jupyter Notebook
+      - name: Convert and Run Jupyter Notebook
+        run: |
+          jupyter nbconvert --to notebook --execute --inplace all_items.ipynb  # Run the notebook
+
+      # Pull, commit, and push changes to CSV files
+      - name: Pull, commit, and push changes
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git pull origin main  # Pull the latest changes from the remote repository
+          git add *.csv  # Add all CSV files in the repository
+          git diff-index --quiet HEAD || git commit -m "Update Zotero data"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
