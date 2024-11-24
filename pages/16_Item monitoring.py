@@ -465,18 +465,21 @@ else:
                         link = row['Link to publication']
                         author_name = row['Authors']  # Extract the author name
 
-                        post_text = f"{header}{publication_type}: {title} by {author_name} (published {publication_date})\n\n{link}"
+                        # Calculate maximum title length without truncating the link or additional info
+                        max_title_length = 300 - len(header) - len(f"{publication_type}: (published {publication_date})\n\n{link}") - len(author_name) - 10  # Reserve space for formatting
+                        truncated_title = truncate_text(title, max_title_length)
 
+                        # Assemble the post text
+                        post_text = f"{header}{publication_type}: {truncated_title} by {author_name} (published {publication_date})\n\n{link}"
+
+                        # Ensure the final text fits within 300 characters
                         if len(post_text) > 300:
-                            max_title_length = 300 - len(f"{publication_type}: \n{link}") - len(f" (published {publication_date})")
-                            truncated_title = truncate_text(title, max_title_length)
-                            post_text = f"{header}{publication_type}: {truncated_title} (published {publication_date})\n{link}"
+                            print(f"Post text exceeded 300 characters after adjustments: {post_text}")
+                            post_text = post_text[:300]  # This should rarely happen now
 
-                        # Make sure the entire post_text fits within 300 graphemes
-                        post_text = truncate_text(post_text, 300)
-
+                        # Parse facets and embed
                         parsed = parse_facets_and_embed(post_text, client)
-                        
+
                         post_payload = {
                             "$type": "app.bsky.feed.post",
                             "text": post_text,
@@ -487,8 +490,8 @@ else:
 
                         try:
                             post = client.send_post(
-                                text=post_payload["text"],  
-                                facets=post_payload["facets"],  
+                                text=post_payload["text"],
+                                facets=post_payload["facets"],
                                 embed=post_payload.get("embed"),  # Pass the embed if it exists
                             )
                         except Exception as e:
