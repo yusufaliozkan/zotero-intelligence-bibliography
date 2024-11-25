@@ -1,16 +1,16 @@
 Country,Count
-United States,721
+United States,724
 UK,488
-Russia,175
-Israel,170
+Russia,176
+Israel,171
 Ukraine,135
 Japan,114
 Australia,101
 Germany,90
 China,86
 Oman,78
-Iraq,69
 Canada,69
+Iraq,69
 India,66
 France,53
 Cuba,43
@@ -19,109 +19,117 @@ Romania,33
 Brazil,31
 Egypt,28
 South Africa,26
-United Kingdom,22
 Afghanistan,22
+United Kingdom,22
 New Zealand,21
-Spain,18
 Pakistan,18
+Spain,18
 Netherlands,16
-Bangladesh,15
 Slovakia,15
+Bangladesh,15
 Sweden,15
+Poland,14
 Indonesia,14
 Italy,14
-Poland,14
+Greece,13
+Mali,13
 Norway,13
 Austria,13
-Mali,13
-Greece,13
 Chile,11
 Colombia,11
-Denmark,10
-Albania,10
 Lebanon,10
+Denmark,10
 Cyprus,10
 Niger,10
+Albania,10
 Congo,9
 Mexico,9
 Nigeria,9
 Sudan,8
-Kenya,7
-Singapore,7
 Switzerland,7
 Peru,7
 Algeria,7
-Jordan,6
-Belgium,6
-Argentina,6
-Finland,6
-Libya,6
-Ghana,6
-Portugal,6
+Kenya,7
+Singapore,7
 Bulgaria,6
-Hong Kong,5
-Morocco,5
-Serbia,5
-Uganda,5
-Yemen,5
+Finland,6
+Argentina,6
+Jordan,6
+Libya,6
+Belgium,6
+Portugal,6
+Ghana,6
 Thailand,5
-Guatemala,4
-Latvia,4
+Hong Kong,5
+Uganda,5
+Morocco,5
+Yemen,5
+Serbia,5
+Saudi Arabia,4
 Tunisia,4
 Bosnia and Herzegovina,4
+Latvia,4
+Guatemala,4
 South Sudan,4
 Guinea,4
-Lithuania,4
-Saudi Arabia,4
 Hungary,4
 Ecuador,4
-Angola,3
-Sri Lanka,3
-Kuwait,3
-Gibraltar,3
+Lithuania,4
 Malaysia,3
-Cambodia,3
+Gibraltar,3
 Somalia,3
+Sri Lanka,3
+Cambodia,3
+Angola,3
 Georgia,3
-Philippines,2
-Haiti,2
-Dominica,2
-Myanmar,2
+Kuwait,3
 Ethiopia,2
-El Salvador,2
-Zimbabwe,2
-Uruguay,2
-Costa Rica,2
-Namibia,2
-Armenia,2
-Estonia,2
+Haiti,2
 Mozambique,2
+Armenia,2
+Myanmar,2
+Zimbabwe,2
+Costa Rica,2
+El Salvador,2
 Rwanda,2
+Estonia,2
+Dominica,2
 Bahamas,2
-Kazakhstan,1
-Paraguay,1
-Jamaica,1
-British Indian Ocean Territory,1
-Tajikistan,1
-Madagascar,1
-Mongolia,1
-Zambia,1
-Nicaragua,1
-Belarus,1
-Türkiye,1
+Uruguay,2
+Namibia,2
+Philippines,2
+Croatia,1
+Benin,1
 Antarctica,1
-North Macedonia,1
-Dominican Republic,1
+Kazakhstan,1
 United Arab Emirates,1
+North Macedonia,1
+Nicaragua,1
 Slovenia,1
-Togo,1
-Lesotho,1
-Sierra Leone,1
+Mongolia,1
+Tajikistan,1
+Dominican Republic,1
+Jamaica,1
+Botswana,1
 Mauritania,1
+Azerbaijan,1
+Maldives,1
+Türkiye,1
+Belarus,1
+British Indian Ocean Territory,1
+Paraguay,1
+Zambia,1
+Togo,1
+Sierra Leone,1
+Seychelles,1
+Senegal,1
+Mauritius,1
+Madagascar,1
+Burundi,1
+Lesotho,1
 Guinea-Bissau,1
 Gambia,1
 Gabon,1
-Mauritius,1
 Eswatini,1
 Eritrea,1
 Equatorial Guinea,1
@@ -130,10 +138,4 @@ Chad,1
 Central African Republic,1
 Cameroon,1
 Cabo Verde,1
-Burundi,1
-Botswana,1
-Benin,1
-Croatia,1
-Senegal,1
-Seychelles,1
 Nepal,1
