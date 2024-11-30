@@ -555,25 +555,8 @@ with st.spinner('Retrieving data...'):
                 non_nan_cited_df_dedup = non_nan_cited_df_dedup.reset_index(drop=True)
                 citation_mean = non_nan_cited_df_dedup['Citation'].mean()
                 citation_median = non_nan_cited_df_dedup['Citation'].median()
-
-                option_map = {
-                    0: "Search keywords",
-                    1: "Search author",
-                    2: "Search collection",
-                    3: "Publication types",
-                    4: "Search journal",
-                    5: "Publication year",
-                    6: "Cited papers"
-                }
-                search_option = st.pills(
-                    "Select search option",
-                    options=list(option_map.keys()),  # Pass the keys as options
-                    format_func=lambda option: option_map[option],  # Map the keys to their labels
-                    selection_mode="single"  # Ensure single selection mode
-                )
-                
-                # search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"), horizontal=True)
-                if search_option == 0:
+                search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"), horizontal=True)
+                if search_option == "Search keywords":
                     st.subheader('Search keywords', anchor=False, divider='blue')
                     @st.experimental_fragment
                     def search_keyword(): 
@@ -1113,7 +1096,7 @@ with st.spinner('Retrieving data...'):
                     search_keyword()
 
                 # SEARCH AUTHORS
-                elif search_option == 1:
+                elif search_option == "Search author":
                     st.query_params.clear()
                     st.subheader('Search author', anchor=False, divider='blue') 
 
@@ -1411,7 +1394,7 @@ with st.spinner('Retrieving data...'):
                     search_author()
 
                 # SEARCH IN COLLECTIONS
-                elif search_option == 2:
+                elif search_option == "Search collection":
                     st.query_params.clear()
                     st.subheader('Search collection', anchor=False, divider='blue')
 
@@ -1736,7 +1719,7 @@ with st.spinner('Retrieving data...'):
                 
                     search_collection()
 
-                elif search_option == 3: 
+                elif search_option == "Publication types": 
                     st.query_params.clear()
                     st.subheader('Publication types', anchor=False, divider='blue') 
                     @st.experimental_fragment
@@ -2080,7 +2063,7 @@ with st.spinner('Retrieving data...'):
                     
                     type_selection()
                 
-                elif search_option == 4:
+                elif search_option == "Search journal":
                     st.query_params.clear()
                     st.subheader('Search journal', anchor=False, divider='blue')
 
@@ -2432,7 +2415,7 @@ with st.spinner('Retrieving data...'):
                                         display_bibliographies2(selected_journal_df)
                     search_journal()
                 
-                elif search_option == 5: 
+                elif search_option == "Publication year": 
                     st.query_params.clear()
                     st.subheader('Items by publication year', anchor=False, divider='blue')
 
@@ -2818,7 +2801,7 @@ with st.spinner('Retrieving data...'):
                     
                     search_pub_year()
                 
-                elif search_option == 6:
+                elif search_option == "Cited papers":
                     st.query_params.clear()
                     st.subheader('Cited items in the library', anchor=False, divider='blue')
                     
@@ -3076,8 +3059,6 @@ with st.spinner('Retrieving data...'):
 
                                     # Display the Plotly chart using Streamlit
                                     st.plotly_chart(fig)
-
-                                    from authors_dict import get_df_authors, name_replacements
 
                                     collection_df = df_cited.copy()
                                     collection_df['Year'] = pd.to_datetime(collection_df['Date published']).dt.year
