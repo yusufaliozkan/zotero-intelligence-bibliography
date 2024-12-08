@@ -3799,7 +3799,7 @@ with st.spinner('Retrieving data...'):
                         with coly2:
                             # Handle cases where min_y == max_y
                             if min_y == max_y:
-                                st.warning(f"The slider is unavailable since all publications are from the year {min_y}.")
+                                st.warning(f"All publications are from the year {min_y}. The slider is unavailable.")
                                 years = (min_y, max_y)  # Use a static range
                             else:
                                 years = st.slider('Publication years between:', min_y, max_y, (min_y, max_y), key='years3')
@@ -4702,7 +4702,7 @@ with st.spinner('Retrieving data...'):
         st.subheader('Acknowledgements', anchor=False)
         st.write('''
         The following sources are used to collate some of the items and events in this website:
-        1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by David Schaefer
+        1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by Kayla Berg
         2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic
         ''')
         st.write('''
