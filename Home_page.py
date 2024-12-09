@@ -220,7 +220,7 @@ Finding sources on intelligence can sometimes be challening because of various r
 Therefore, IntelArchive offers a carefully curated selection of publications, serving as an invaluable research assistant to guide you through exploring various sources.
 
 Join our Google Groups to get updates and learn  new features about the website and the database. 
-You can also ask questions or make suggestions. (https://groups.google.com/g/intelligence-studies-network)
+You can also ask questions or make suggestions. (https://groups.google.com/g/intelarchive)
 
 Resources about the website:
 
