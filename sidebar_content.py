@@ -41,14 +41,14 @@ def sidebar_content():
             ''')
         with st.expander('Contact us'):
             st.write('''
-            Join our [mailing list](https://groups.google.com/g/intelligence-studies-network) to receive updates about the website.
+            Join our [mailing list](https://groups.google.com/g/intelarchive) to receive updates about the website.
 
             Contact [me](https://kcsi.uk/members/yusuf-ozkan).
 
             Report your technical issues or requests [here](https://github.com/YusufAliOzkan/zotero-intelligence-bibliography/issues).            
             ''')
         st.write('Check the digest [here](https://intelligence.streamlit.app/Digest)')
-        st.toast('Join our [mailing list](https://groups.google.com/g/intelligence-studies-network) to receive updates.')
+        st.toast('Join our [mailing list](https://groups.google.com/g/intelarchive) to receive updates.')
 
 def set_page_config():
     st.set_page_config(
