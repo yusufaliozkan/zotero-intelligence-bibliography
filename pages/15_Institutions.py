@@ -233,7 +233,7 @@ with col1:
     st.plotly_chart(fig) 
 
 with col2:
-    @st.experimental_fragment
+    @st.fragment
     def events():
         with st.expander('Collections', expanded=True):
             if st.button(

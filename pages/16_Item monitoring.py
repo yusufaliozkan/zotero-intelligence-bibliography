@@ -275,7 +275,7 @@ else:
         admin_task = st.radio('Select an option', ['Item monitoring', 'Post publications', 'Post events'])
 
         if admin_task=='Post publications':
-            @st.experimental_fragment
+            @st.fragment
             def post_pubs():
                 st.subheader('Post publications on Bluesky', anchor=False)
 
@@ -499,7 +499,7 @@ else:
             post_pubs()
         elif admin_task=='Post events':
 
-            @st.experimental_fragment
+            @st.fragment
             def post_events():
                 st.subheader('Post events on Bluesky', anchor=False)
                 conn = st.connection("gsheets", type=GSheetsConnection)

@@ -832,7 +832,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                 map_style="mapbox://styles/mapbox/light-v9"  # Use a light map style
             )
             st.pydeck_chart(chart, use_container_width=True)
-            @st.experimental_fragment
+            @st.fragment
             def bar_chart():
                 col11, col12 = st.columns([3,2])
                 with col11:
@@ -895,7 +895,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             bar_chart()
 #UNTIL HERE
         with col2:
-            @st.experimental_fragment
+            @st.fragment
             def events():
                 with st.expander('Collections', expanded=True):
                     if st.button(
