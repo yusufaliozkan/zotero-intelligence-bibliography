@@ -12,8 +12,7 @@ import pytz
 import re 
 from urllib.parse import quote
 
-client = Client()
-# client = Client(base_url='https://bsky.social')
+client = Client(base_url='https://bsky.social')
 bluesky_password = os.getenv("BLUESKY_PASSWORD")
 client.login('intelarchive.io', bluesky_password)
 
