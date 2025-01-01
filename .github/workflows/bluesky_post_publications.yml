@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas numpy pyzotero requests beautifulsoup4 grapheme pytz atproto
+          pip install pandas numpy pyzotero requests beautifulsoup4 grapheme pytz atproto==0.0.56
 
       - name: Run Python Script
         env:
