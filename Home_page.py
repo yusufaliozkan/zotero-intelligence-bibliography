@@ -41,6 +41,8 @@ from pyparsing import infixNotation, opAssoc, Keyword, Word, alphanums
 from events import evens_conferences
 import pydeck as pdk
 from countryinfo import CountryInfo
+from streamlit_theme import st_theme
+
 
 
 # Connecting Zotero with API 
@@ -206,7 +208,24 @@ df = merged_df.copy()
 df = df.fillna('')
 
 # Streamlit app
-st.title("IntelArchive", anchor=False)
+# light_mode_image = 'https://github.com/yusufaliozkan/clone-zotero-intelligence-bibliography/blob/main/images/IntelArchive_Digital_Logo_Colour-Positive.png?raw=true'
+# dark_mode_image = 'https://github.com/yusufaliozkan/clone-zotero-intelligence-bibliography/blob/main/images/IntelArchive_Digital_Logo_Colour-Negative.png?raw=true'
+# st.image('https://raw.githubusercontent.com/yusufaliozkan/clone-zotero-intelligence-bibliography/94513743becee1b83c1c368113363fe4f0ef4eba/images/IntelArchive_Digital_Logo_Colour-Positive.svg', width=200)
+# st.image('images/IntelArchive_Digital_Logo_Colour-Positive.svg')
+
+theme = st_theme()
+# Set the image path based on the theme
+if theme and theme.get('base') == 'dark':
+    image_path = 'images/01_logo/IntelArchive_Digital_Logo_Colour-Negative.svg'
+else:
+    image_path = 'images/01_logo/IntelArchive_Digital_Logo_Colour-Positive.svg'
+
+# Read and display the SVG image
+with open(image_path, 'r') as file:
+    svg_content = file.read()
+    st.image(svg_content, width=200)  # Adjust the width as needed
+
+# st.title("IntelArchive", anchor=False)
 st.subheader('Intelligence Studies Database', anchor=False)
 # st.header("[Zotero group library](https://www.zotero.org/groups/2514686/intelligence_bibliography/library)")
 
@@ -884,6 +903,7 @@ with st.spinner('Retrieving data...'):
                                         fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
                                                             title=f'Top Publication Themes ({search_term})')
                                         fig.update_traces(fill='toself')
+                                        fig.update_xaxes(type='category') 
                                         st.plotly_chart(fig, use_container_width = True)
 
                                         search_df = filtered_df.copy()
@@ -892,6 +912,8 @@ with st.spinner('Retrieving data...'):
                                         fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                             labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                             title=f'Publications by Year ({search_term})')
+                                        fig_year_bar.update_layout(xaxis_tickangle=-45)
+                                        fig_year_bar.update_xaxes(type='category') 
                                         st.plotly_chart(fig_year_bar)
                                     
                                         search_df = filtered_df.copy()
@@ -907,6 +929,7 @@ with st.spinner('Retrieving data...'):
                                             yaxis_title='Number of Publications',
                                             xaxis_tickangle=-45,
                                         )
+                                        fig.update_xaxes(type='category') 
                                         st.plotly_chart(fig)
 
                                         search_df = filtered_df.copy()
@@ -1262,11 +1285,13 @@ with st.spinner('Retrieving data...'):
                                     fig = px.bar(publications_by_type, x=publications_by_type.index, y=publications_by_type.values,
                                                 labels={'x': 'Publication Type', 'y': 'Number of Publications'},
                                                 title=f'Publications by Type ({selected_author})')
+                                    fig.update_xaxes(type='category') 
                                     st.plotly_chart(fig)
 
                                     fig = px.line_polar(filtered_df_for_collections, r='Number_of_Items', theta='Collection_Name', line_close=True, 
                                                         title=f'Top Publication Themes ({selected_author})')
                                     fig.update_traces(fill='toself')
+                                    fig.update_xaxes(type='category') 
                                     st.plotly_chart(fig, use_container_width = True)
 
                                     author_df = filtered_collection_df_authors
@@ -1275,6 +1300,8 @@ with st.spinner('Retrieving data...'):
                                     fig_year_bar = px.bar(publications_by_year, x=publications_by_year.index, y=publications_by_year.values,
                                                         labels={'x': 'Publication Year', 'y': 'Number of Publications'},
                                                         title=f'Publications by Year ({selected_author})')
+                                    fig_year_bar.update_xaxes(type='category') 
+                                    fig_year_bar.update_layout(xaxis_tickangle=-45)
                                     st.plotly_chart(fig_year_bar)
 
                                     author_df = filtered_collection_df_authors
@@ -3600,7 +3627,8 @@ with st.spinner('Retrieving data...'):
             
             # df_collections_2['Date published'] = pd.to_datetime(df_collections_2['Date published'],utc=True, errors='coerce').dt.tz_convert('Europe/London')
             df_collections_2['Date year'] = df_collections_2['Date published'].dt.strftime('%Y')
-            df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date') 
+            df_collections_2['Date year'] = df_collections_2['Date year'].fillna('No date')
+
 
             with st.expander('**Select filters**', expanded=False):
                 types = st.multiselect('Publication type', df_csv['Publication type'].unique(), df_csv['Publication type'].unique())
@@ -3787,6 +3815,7 @@ with st.spinner('Retrieving data...'):
 
                         with coly1:
                             df_year['Publication year'] = df_year['Publication year'].astype(int)
+
                             last_10_years = st.checkbox('Limit to last 10 years', value=False)
                             if last_10_years:
                                 current_year = datetime.datetime.now().year
@@ -3811,6 +3840,7 @@ with st.spinner('Retrieving data...'):
                         if not df_year_updated.empty:
                             fig = px.bar(df_year_updated, x='Publication year', y='Count')
                             fig.update_xaxes(tickangle=-70)
+                            fig.update_xaxes(type='category') 
                             fig.update_layout(
                                 autosize=False,
                                 width=1200,
@@ -4702,7 +4732,7 @@ with st.spinner('Retrieving data...'):
         st.subheader('Acknowledgements', anchor=False)
         st.write('''
         The following sources are used to collate some of the items and events in this website:
-        1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by David Schaefer
+        1. [King's Centre for the Study of Intelligence (KCSI) digest](https://kcsi.uk/kcsi-digests) compiled by Kayla Berg
         2. [International Association for Intelligence Education (IAIE) digest](https://www.iafie.org/Login.aspx) compiled by Filip Kovacevic
         ''')
         st.write('''
