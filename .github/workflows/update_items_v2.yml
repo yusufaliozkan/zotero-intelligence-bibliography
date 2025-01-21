@@ -5,7 +5,6 @@ on:
   workflow_dispatch: 
   schedule:
     - cron: '0 12 * * *'  # Runs at 12 PM UTC every day
-    # - cron: '0 * * * *'  # Runs at the start of every hour (UTC)
 
 jobs:
   update_csv:
@@ -13,6 +12,11 @@ jobs:
     permissions:
       contents: write  # Grant write permissions to push changes
     steps:
+      # Record the start time
+      - name: Record start time
+        id: start_time
+        run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+
       # Checkout the repository
       - name: Check out repository
         uses: actions/checkout@v2
@@ -23,32 +27,45 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'  # Specify the Python version you need
+          python-version: '3.9'
 
-      # Install necessary dependencies, including Jupyter and ipykernel
+      # Install necessary dependencies
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install nbconvert ipykernel  # Install ipykernel for Python3
+          pip install nbconvert ipykernel
 
       # Install the Python 3 kernel
       - name: Install Jupyter Kernel
-        run: |
-          python -m ipykernel install --user
+        run: python -m ipykernel install --user
 
       # Convert and Run the Jupyter Notebook
       - name: Convert and Run Jupyter Notebook
-        run: |
-          jupyter nbconvert --to notebook --execute --inplace all_items.ipynb  # Run the notebook
+        run: jupyter nbconvert --to notebook --execute --inplace all_items.ipynb
 
       # Pull, commit, and push changes to CSV files
       - name: Pull, commit, and push changes
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git pull origin main  # Pull the latest changes from the remote repository
-          git add *.csv  # Add all CSV files in the repository
+          git pull origin main
+          git add *.csv
           git diff-index --quiet HEAD || git commit -m "Update Zotero data"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Check remaining time and loop if necessary
+      - name: Ensure Minimum Runtime
+        run: |
+          END_TIME=$(date +%s)
+          ELAPSED=$((END_TIME - START_TIME))
+          MINIMUM_DURATION=1200  # 20 minutes in seconds
+          while [ $ELAPSED -lt $MINIMUM_DURATION ]; do
+            REMAINING=$((MINIMUM_DURATION - ELAPSED))
+            echo "Workflow finished too quickly. Sleeping for $REMAINING seconds."
+            sleep $REMAINING
+            END_TIME=$(date +%s)
+            ELAPSED=$((END_TIME - START_TIME))
+          done
+          echo "Workflow runtime exceeded 20 minutes. Exiting."
