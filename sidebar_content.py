@@ -1,15 +1,39 @@
 import streamlit as st
 import streamlit.components.v1 as components
 from copyright import display_custom_license, cc_by_licence_image
+from streamlit_theme import st_theme
+
 
 def sidebar_content():
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
     
     with st.sidebar:
-        st.image(image, width=150)
+        # with open('images/02_icon/IntelArchive_Digital_Icon_Colour-Positive.svg', 'r') as file:
+        #     svg_content_icon = file.read()
+        # with open('images/01_logo/IntelArchive_Digital_Logo_Colour-Positive.svg', 'r') as file:
+        #     svg_content_logo = file.read()
+
+
+        theme = st_theme(key='sidebar')
+        # Set the image path based on the theme
+        if theme and theme.get('base') == 'dark':
+            image_path_logo = 'images/01_logo/IntelArchive_Digital_Logo_Colour-Negative.svg'
+            image_path_icon = 'images/02_icon/IntelArchive_Digital_Icon_Colour-Negative.svg'
+        else:
+            image_path_logo = 'images/01_logo/IntelArchive_Digital_Logo_Colour-Positive.svg'
+            image_path_icon = 'images/02_icon/IntelArchive_Digital_Icon_Colour-Positive.svg'
+
+        # Read and display the SVG image
+        with open(image_path_logo, 'r') as file:
+            svg_content_logo = file.read()
+            st.image(svg_content_logo, width=150)  # Adjust the width as needed
+        with open(image_path_icon, 'r') as file:
+            svg_content_icon = file.read()
+
+        # st.image(svg_content_logo, width=150)
         st.logo(
-            image=image,
-            icon_image=image,
+            image=svg_content_icon,
+            icon_image=svg_content_icon,
             link='https://intelligence.streamlit.app/'
             )
         st.sidebar.markdown("# IntelArchive")
@@ -50,11 +74,12 @@ def sidebar_content():
         st.write('Check the digest [here](https://intelligence.streamlit.app/Digest)')
         st.toast('Join our [mailing list](https://groups.google.com/g/intelarchive) to receive updates.')
 
+
 def set_page_config():
     st.set_page_config(
         layout="wide",
         page_title="IntelArchive",
-        page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
+        page_icon="https://raw.githubusercontent.com/yusufaliozkan/clone-zotero-intelligence-bibliography/181b55d8cbe066fee0074cbbd9e0e6bfdfbed570/images/02_icon/IntelArchive_Digital_Icon_Colour-Negative.svg",
         initial_sidebar_state="auto"
     )
 
@@ -62,6 +87,6 @@ def set_page_config_centered():
     st.set_page_config(
         layout="centered",
         page_title="IntelArchive",
-        page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
+        page_icon="https://raw.githubusercontent.com/yusufaliozkan/clone-zotero-intelligence-bibliography/181b55d8cbe066fee0074cbbd9e0e6bfdfbed570/images/02_icon/IntelArchive_Digital_Icon_Colour-Negative.svg",
         initial_sidebar_state="auto"
     )
