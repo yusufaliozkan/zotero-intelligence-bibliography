@@ -22,11 +22,23 @@ from sidebar_content import sidebar_content, set_page_config_centered
 from format_entry import format_entry
 from streamlit_gsheets import GSheetsConnection
 from copyright import display_custom_license
+from streamlit_theme import st_theme
 
 
 set_page_config_centered()
 
-st.title("IntelArchive", anchor=False)
+theme = st_theme()
+# Set the image path based on the theme
+if theme and theme.get('base') == 'dark':
+    image_path = 'images/01_logo/IntelArchive_Digital_Logo_Colour-Negative.svg'
+else:
+    image_path = 'images/01_logo/IntelArchive_Digital_Logo_Colour-Positive.svg'
+
+# Read and display the SVG image
+with open(image_path, 'r') as file:
+    svg_content = file.read()
+    st.image(svg_content, width=200)  # Adjust the width as needed
+
 st.header('Digest', anchor=False)
 
 with st.spinner('Preparing digest...'):
