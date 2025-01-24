@@ -23,11 +23,10 @@ from streamlit_gsheets import GSheetsConnection
 import gspread
 from copyright import display_custom_license
 from urllib.parse import quote
+from sidebar_content import sidebar_content, set_page_config
 
-st.set_page_config(layout = "wide", 
-                    page_title='IntelArchive',
-                    page_icon="https://images.pexels.com/photos/315918/pexels-photo-315918.png",
-                    initial_sidebar_state="auto") 
+
+set_page_config()
 
 st.title("IntelArchive", anchor=False)
 st.header('Item monitoring', anchor=False)
@@ -272,7 +271,7 @@ else:
     if password_input == st.secrets['item_monitoring_password']:
         st.success('Wellcome to the admin dashboard')
 
-        admin_task = st.radio('Select an option', ['Item monitoring', 'Post publications', 'Post events'])
+        admin_task = st.radio('Select an option', ['Item monitoring', 'Post publications', 'Post events'], horizontal=True)
 
         if admin_task=='Post publications':
             @st.fragment
@@ -434,7 +433,7 @@ else:
                 df = df.reset_index(drop=True)
                 df
                 
-                item_header = st.radio('Select a header', ['New addition', 'Recently published', 'Custom'])
+                item_header = st.radio('Select a header', ['New addition', 'Recently published', 'Custom'], horizontal=True)
                 if item_header=='New addition':
                     header='New addition\n\n'
                 elif item_header=='Recently published':
@@ -465,21 +464,18 @@ else:
                         link = row['Link to publication']
                         author_name = row['Authors']  # Extract the author name
 
-                        # Calculate maximum title length without truncating the link or additional info
-                        max_title_length = 300 - len(header) - len(f"{publication_type}: (published {publication_date})\n\n{link}") - len(author_name) - 10  # Reserve space for formatting
-                        truncated_title = truncate_text(title, max_title_length)
+                        post_text = f"{header}{publication_type}: {title} by {author_name} (published {publication_date})\n\n{link}"
 
-                        # Assemble the post text
-                        post_text = f"{header}{publication_type}: {truncated_title} by {author_name} (published {publication_date})\n\n{link}"
-
-                        # Ensure the final text fits within 300 characters
                         if len(post_text) > 300:
-                            print(f"Post text exceeded 300 characters after adjustments: {post_text}")
-                            post_text = post_text[:300]  # This should rarely happen now
+                            max_title_length = 300 - len(f"{publication_type}: \n{link}") - len(f" (published {publication_date})")
+                            truncated_title = truncate_text(title, max_title_length)
+                            post_text = f"{header}{publication_type}: {truncated_title} (published {publication_date})\n{link}"
 
-                        # Parse facets and embed
+                        # Make sure the entire post_text fits within 300 graphemes
+                        post_text = truncate_text(post_text, 300)
+
                         parsed = parse_facets_and_embed(post_text, client)
-
+                        
                         post_payload = {
                             "$type": "app.bsky.feed.post",
                             "text": post_text,
@@ -490,8 +486,8 @@ else:
 
                         try:
                             post = client.send_post(
-                                text=post_payload["text"],
-                                facets=post_payload["facets"],
+                                text=post_payload["text"],  
+                                facets=post_payload["facets"],  
                                 embed=post_payload.get("embed"),  # Pass the embed if it exists
                             )
                         except Exception as e:
