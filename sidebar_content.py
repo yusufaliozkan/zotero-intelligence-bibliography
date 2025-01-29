@@ -59,9 +59,9 @@ def sidebar_content():
             This website and the Intelligence bibliography Zotero group library do not list all the sources on intelligence studies. 
             The list is created based on the creator's subjective views.
             ''')
-        with st.expander('Issues'):
-            st.warning('''
-            Links to PhD theses catalouged by the British EThOS may not be working due to the [cyber incident at the British Library](https://www.bl.uk/cyber-incident/).
+        with st.expander('Sponsors'): 
+            st.markdown('''
+            Proudly sponsored by the [King's Centre for the Study of Intelligence](https://kcsi.uk/)
             ''')
         with st.expander('Contact us'):
             st.write('''
