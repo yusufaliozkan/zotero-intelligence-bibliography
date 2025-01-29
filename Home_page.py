@@ -4740,6 +4740,9 @@ with st.spinner('Retrieving data...'):
         1. Daniela Richterove
         2. Steven Wagner
         3. Sophie Duroy
-        ''') 
+        ''')
+        st.write('''
+        Proudly sponsored by the [King's Centre for the Study of Intelligence](https://kcsi.uk/)
+        ''')
 
     display_custom_license()
