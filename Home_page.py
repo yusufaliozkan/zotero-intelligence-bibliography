@@ -267,7 +267,6 @@ with st.spinner('Retrieving data...'):
         with st.expander('Introduction'):
             st.info(into)
     with col1:
-        df_dedup
         df_intro = df_dedup.copy()
         df_intro['Date added'] = pd.to_datetime(df_intro['Date added'])
         current_date = pd.to_datetime('now', utc=True)
