@@ -57,155 +57,6 @@ set_page_config()
 pd.set_option('display.max_colwidth', None)
 
 zot = zotero.Zotero(library_id, library_type)
-# aa = zot.top(limit=10)
-# aa
-@st.cache_data(ttl=600)
-def zotero_data(library_id, library_type):
-    items = zot.top(limit=10)
-    items = sorted(items, key=lambda x: x['data']['dateAdded'], reverse=True)
-    data=[]
-    columns = ['Title','Publication type', 'Link to publication', 'Abstract', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Col key', 'Authors', 'Pub_venue', 'Book_title', 'Thesis_type', 'University']
-
-    for item in items:
-        creators = item['data']['creators']
-        creators_str = ", ".join([
-            creator.get('firstName', '') + ' ' + creator.get('lastName', '')
-            if 'firstName' in creator and 'lastName' in creator
-            else creator.get('name', '') 
-            for creator in creators
-        ])
-        data.append((item['data']['title'], 
-        item['data']['itemType'], 
-        item['data']['url'], 
-        item['data']['abstractNote'], 
-        item['links']['alternate']['href'],
-        item['data']['dateAdded'],
-        item['data'].get('date'), 
-        item['data']['dateModified'],
-        item['data']['collections'],
-        creators_str,
-        item['data'].get('publicationTitle'),
-        item['data'].get('bookTitle'),
-        item['data'].get('thesisType', ''),
-        item['data'].get('university', '')
-        ))
-    df = pd.DataFrame(data, columns=columns)
-    return df
-df = zotero_data(library_id, library_type)
-
-df['Abstract'] = df['Abstract'].replace(r'^\s*$', np.nan, regex=True) # To replace '' with NaN. Otherwise the code below do not understand the value is nan.
-df['Abstract'] = df['Abstract'].fillna('No abstract')
-
-split_df= pd.DataFrame(df['Col key'].tolist())
-df = pd.concat([df, split_df], axis=1)
-df['Authors'] = df['Authors'].fillna('null')  
-
-# Change type name
-type_map = {
-    'thesis': 'Thesis',
-    'journalArticle': 'Journal article',
-    'book': 'Book',
-    'bookSection': 'Book chapter',
-    'blogPost': 'Blog post',
-    'videoRecording': 'Video',
-    'podcast': 'Podcast',
-    'magazineArticle': 'Magazine article',
-    'webpage': 'Webpage',
-    'newspaperArticle': 'Newspaper article',
-    'report': 'Report',
-    'forumPost': 'Forum post',
-    'conferencePaper' : 'Conference paper',
-    'audioRecording' : 'Podcast',
-    'preprint':'Preprint',
-    'document':'Document',
-    'computerProgram':'Computer program',
-    'dataset':'Dataset'
-}
-
-mapping_thesis_type ={
-    "MA Thesis": "Master's Thesis",
-    "PhD Thesis": "PhD Thesis",
-    "Master Thesis": "Master's Thesis",
-    "Thesis": "Master's Thesis",  # Assuming 'Thesis' refers to Master's Thesis here, adjust if necessary
-    "Ph.D.": "PhD Thesis",
-    "Master's Dissertation": "Master's Thesis",
-    "Undergraduate Theses": "Undergraduate Thesis",
-    "MPhil": "MPhil Thesis",
-    "A.L.M.": "Master's Thesis",  # Assuming A.L.M. (Master of Liberal Arts) maps to Master's Thesis
-    "doctoralThesis": "PhD Thesis",
-    "PhD": "PhD Thesis",
-    "Masters": "Master's Thesis",
-    "PhD thesis": "PhD Thesis",
-    "phd": "PhD Thesis",
-    "doctoral": "PhD Thesis",
-    "Doctoral": "PhD Thesis",
-    "Master of Arts Dissertation": "Master's Thesis",
-    "":'Unclassified'
-}
-df['Thesis_type'] = df['Thesis_type'].replace(mapping_thesis_type)
-df['Publication type'] = df['Publication type'].replace(type_map)
-df['Date published'] = (
-    df['Date published']
-    .str.strip()
-    .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
-)
-df['Date published'] = df['Date published'].dt.strftime('%d-%m-%Y')
-df['Date published'] = df['Date published'].fillna('No date')
-# df['Date published'] = df['Date published'].map(lambda x: x.strftime('%d/%m/%Y') if x else 'No date')
-
-df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce')
-df['Date added'] = df['Date added'].dt.strftime('%d/%m/%Y')
-df['Date modified'] = pd.to_datetime(df['Date modified'], errors='coerce')
-df['Date modified'] = df['Date modified'].dt.strftime('%d/%m/%Y, %H:%M')
-
-# Bringing collections
-
-@st.cache_data(ttl=600)
-def zotero_collections2(library_id, library_type):
-    collections = zot.collections()
-    data = [(item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']) for item in collections]
-    df_collections = pd.DataFrame(data, columns=['Key', 'Name', 'Number', 'Link'])
-    return df_collections
-df_collections_2 = zotero_collections2(library_id, library_type)
-
-@st.cache_data
-def zotero_collections(library_id, library_type):
-    collections = zot.collections()
-    data2 = [(item['data']['key'], item['data']['name'], item['links']['alternate']['href']) for item in collections]
-    df_collections = pd.DataFrame(data2, columns=['Key', 'Name', 'Link'])
-    pd.set_option('display.max_colwidth', None)
-    return df_collections.sort_values(by='Name')
-df_collections = zotero_collections(library_id, library_type)
-
-#To be deleted
-if 0 in df:
-    merged_df = pd.merge(
-        left=df,
-        right=df_collections,
-        left_on=0,
-        right_on='Key',
-        how='left'
-    )
-    if 1 in merged_df:
-        merged_df = pd.merge(
-            left=merged_df,
-            right=df_collections,
-            left_on=1,
-            right_on='Key',
-            how='left'
-        )
-        if 2 in merged_df:
-            merged_df = pd.merge(
-                left=merged_df,
-                right=df_collections,
-                left_on=2,
-                right_on='Key',
-                how='left'
-            ) 
-df = merged_df.copy()
-#To be deleted
-
-df = df.fillna('')
 
 # Streamlit app
 # light_mode_image = 'https://github.com/yusufaliozkan/clone-zotero-intelligence-bibliography/blob/main/images/IntelArchive_Digital_Logo_Colour-Positive.png?raw=true'
@@ -256,7 +107,7 @@ Ozkan, Yusuf Ali. ‘Enhancing the “Intelligence Studies Network” Website’
 
 with st.spinner('Retrieving data...'): 
 
-    item_count = zot.num_items() 
+    # item_count = zot.num_items() 
 
     df_dedup = pd.read_csv('all_items.csv')
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
@@ -274,8 +125,8 @@ with st.spinner('Retrieving data...'):
             (df_intro['Date added'].dt.year == current_date.year) & 
             (df_intro['Date added'].dt.month == current_date.month)
         ]        # st.write(f'**{item_count}** items available in this library. **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}.')
-        st.metric(label='Number of items in the library', value=item_count, delta=len(items_added_this_month),label_visibility='visible', help=f' **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}')
-    st.write('The library last updated on ' + '**'+ df.loc[0]['Date modified']+'**')
+        st.metric(label='Number of items in the library', value=len(df_intro), delta=len(items_added_this_month),label_visibility='visible', help=f' **{len(items_added_this_month)}** items added in {current_date.strftime("%B %Y")}')
+    st.write('The library last updated on ' + '**' + df_intro.loc[0]['Date added'].strftime('%d/%m/%Y, %H:%M') + '**')
     df_dedup_oa = df_dedup[df_dedup['OA status'] == True].reset_index(drop=True)
 
     with col2:
@@ -1374,8 +1225,6 @@ with st.spinner('Retrieving data...'):
                                                 title = row['Title']
                                                 authors = row['FirstName2']
                                                 date_published = row['Date published']
-                                                link_to_publication = row['Link to publication']
-                                                zotero_link = row['Zotero link']
                                                 citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
                                                 citation = int(float(citation))
                                                 citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
@@ -1388,12 +1237,13 @@ with st.spinner('Retrieving data...'):
                                                     'Book': 'Published by',
                                                 }
 
-                                                publication_type = row['Publication type']
-
                                                 published_by_or_in = published_by_or_in_dict.get(publication_type, '')
                                                 published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
                                                 if publication_type == 'Book':
                                                     published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
+
+                                                pub_link = f"[:green-badge[Publication link]]({row['Link to publication']})"
+                                                zotero_link = f"[:gray-badge[Zotero link]]({row['Zotero link']})"
 
                                                 formatted_entry = (
                                                     '**' + str(publication_type) + '**' + ': ' +
@@ -1401,10 +1251,10 @@ with st.spinner('Retrieving data...'):
                                                     '(by ' + '*' + str(authors) + '*' + ') ' +
                                                     '(Publication date: ' + str(date_published) + ') ' +
                                                     ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                                    '[[Publication link]](' + str(link_to_publication) + ') ' +
-                                                    '[[Zotero link]](' + str(zotero_link) + ') ' +
+                                                    pub_link + ' ' + zotero_link + ' ' +
                                                     ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
                                                 )
+
                                                 formatted_entry = format_entry(row)
                                                 st.write(f"{index + 1}) {formatted_entry}")
                                         if view == 'Table':
@@ -3252,9 +3102,39 @@ with st.spinner('Retrieving data...'):
                 tab11, tab12, tab13 = st.tabs(['Recently added items', 'Recently published items', 'Top cited items'])
                 with tab11:
                     st.markdown('#### Recently added or updated items')
-                    df['Abstract'] = df['Abstract'].str.strip()
-                    df['Abstract'] = df['Abstract'].fillna('No abstract')
-                    
+                    df_intro = df_dedup.copy()
+                    df_intro = df_intro.sort_values(by='Date added', ascending=False).reset_index(drop=True)
+                    df_intro = df_intro.head(10)
+                    df_intro['Date published'] = (
+                        df_intro['Date published']
+                        .str.strip()
+                        .apply(lambda x: pd.to_datetime(x, utc=True, errors='coerce').tz_convert('Europe/London'))
+                    )
+                    df_intro['Date published'] = df_intro['Date published'].dt.strftime('%d-%m-%Y')
+                    df_intro['Date published'] = df_intro['Date published'].fillna('No date')
+                    # df_intro['Abstract'] = df_intro['Abstract'].str.strip()
+                    df_intro['Abstract'] = df_intro['Abstract'].fillna('No abstract')                
+
+                    # Bringing collections
+
+                    @st.cache_data(ttl=600)
+                    def zotero_collections2(library_id, library_type):
+                        collections = zot.collections()
+                        data = [(item['data']['key'], item['data']['name'], item['meta']['numItems'], item['links']['alternate']['href']) for item in collections]
+                        df_collections = pd.DataFrame(data, columns=['Key', 'Name', 'Number', 'Link'])
+                        return df_collections
+                    df_collections_2 = zotero_collections2(library_id, library_type)
+
+                    @st.cache_data
+                    def zotero_collections(library_id, library_type):
+                        collections = zot.collections()
+                        data2 = [(item['data']['key'], item['data']['name'], item['links']['alternate']['href']) for item in collections]
+                        df_collections = pd.DataFrame(data2, columns=['Key', 'Name', 'Link'])
+                        pd.set_option('display.max_colwidth', None)
+                        return df_collections.sort_values(by='Name')
+                    df_collections = zotero_collections(library_id, library_type)
+
+
                     # df_download = df.iloc[:, [0,1,2,3,4,5,6,9]] 
                     # df_download = df_download[['Title', 'Publication type', 'Authors', 'Abstract', 'Link to publication', 'Zotero link', 'Date published', 'Date added']]
                     # def convert_df(df):
@@ -3266,124 +3146,58 @@ with st.spinner('Retrieving data...'):
                     # a = 'recently-added-' + today
                     # st.download_button(' Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     
-                    display = st.checkbox('Display theme and abstract')
+                    display = st.checkbox("Display abstract")
 
-                    def format_row(row):
-                        if row['Publication type'] == 'Book chapter' and row['Book_title']:
-                            return (
-                                f"**{row['Publication type']}**: "
-                                f"{row['Title']} "
-                                f"(by *{row['Authors']}*)"
-                                f"(Published on: {row['Date published']}"
-                                f"[[Publication link]]({row['Link to publication']})"
-                                f"[[Zotero link]]({row['Zotero link']})"
-                                f"(In: {row['Book_title']})"
+                    for i, row in df_intro.iterrows():
+                        pub_type = row['Publication type']
+                        title = row['Title']
+                        author = row['FirstName2']
+                        date = row['Date published']
+                        pub_link = f"[:blue-badge[Publication link]]({row['Link to publication']})"
+                        zotero_link = f"[:blue-badge[Zotero link]]({row['Zotero link']})" 
+
+                        if pub_type in ["Journal article", "Magazine article", "Newspaper article"]:
+                            journal = row['Journal']
+                            formatted = (
+                                f"**{pub_type}**: {title} "
+                                f"(by *{author}*) "
+                                f"(Published on: {date}) "
+                                f"(Published in: *{journal}*) "
+                                f"{pub_link} {zotero_link}"
                             )
-                        elif row['Publication type'] == 'Thesis':
-                            return (
-                                f"**{row['Publication type']}**: "
-                                f"{row['Title']}, "
-                                f"(by {row['Authors']})"
-                                f"({row['Thesis_type']}: *{row['University']}*) "
-                                f"(Published on: {row['Date published']})"
-                                f"[[Publication link]]({row['Link to publication']})"
-                                f"[[Zotero link]]({row['Zotero link']})"
+                        elif pub_type == "Book chapter":
+                            book_title = row['Book_title']
+                            formatted = (
+                                f"**{pub_type}**: {title} "
+                                f"(in: *{book_title}*) "
+                                f"(by *{author}*) "
+                                f"(Published on: {date}) "
+                                f"{pub_link} {zotero_link}"
                             )
-        
+                        elif pub_type == "Thesis":
+                            thesis_type = row.get("Thesis_type", "")
+                            university = row.get("University", "")
+                            thesis_info = f"{thesis_type}: *{university}*" if thesis_type else f"*{university}*"
+                            formatted = (
+                                f"**{pub_type}**: {title} "
+                                f"({thesis_info}) "
+                                f"(by *{author}*) "
+                                f"(Published on: {date}) "
+                                f"{pub_link} {zotero_link}"
+                            )
                         else:
-                            return (
-                                f"**{row['Publication type']}**: "
-                                f"{row['Title']}, "
-                                f"(by {row['Authors']})"
-                                f"(Published on: {row['Date published']})"
-                                f"[[Publication link]]({row['Link to publication']})"
-                                f"[[Zotero link]]({row['Zotero link']})"
-                            )
-                    df_last = df.apply(format_row, axis=1)
-
-                    # df_last = ('**'+ df['Publication type']+ '**'+ ': ' + df['Title'] +', ' +                        
-                    #             ' (by ' + '*' + df['Authors'] + '*' + ') ' +
-                    #             ' (Published on: ' + df['Date published']+') ' +
-                    #             '[[Publication link]]'+ '('+ df['Link to publication'] + ')' +
-                    #             "[[Zotero link]]" +'('+ df['Zotero link'] + ')' 
-                    #             )
-                    row_nu_1 = len(df_last)
-                    for i in range(row_nu_1):
-                        publication_type = df['Publication type'].iloc[i]
-                        
-                        if publication_type in ["Journal article", "Magazine article", 'Newspaper article']:
-                            formatted_row = (
-                                f"**{df['Publication type'].iloc[i]}**: "
-                                f"{df['Title'].iloc[i]}"
-                                f" (by *{df['Authors'].iloc[i]}*)"
-                                f" (Published on: {df['Date published'].iloc[i]})"
-                                f" (Published in: *{df['Pub_venue'].iloc[i]}*)"
-                                f" [[Publication link]]({df['Link to publication'].iloc[i]})"
-                                f" [[Zotero link]]({df['Zotero link'].iloc[i]})"
+                            formatted = (
+                                f"**{pub_type}**: {title} "
+                                f"(by *{author}*) "
+                                f"(Published on: {date}) "
+                                f"{pub_link} {zotero_link}"
                             )
 
-                            st.write(f"{i+1}) " + formatted_row)
-                        
-                        elif publication_type == 'Book chapter':
-                            formatted_row = (
-                                f"**{df['Publication type'].iloc[i]}**: "
-                                f"{df['Title'].iloc[i]}"
-                                f" (in: *{df['Book_title'].iloc[i]}*)"
-                                f" (by *{df['Authors'].iloc[i]}*)"
-                                f" (Published on: {df['Date published'].iloc[i]})"
-                                f" [[Publication link]]({df['Link to publication'].iloc[i]})"
-                                f" [[Zotero link]]({df['Zotero link'].iloc[i]})"
-                            )
+                        st.markdown(f"{i+1}) {formatted}")
 
-                            st.write(f"{i+1}) " + formatted_row)
+                        if display and row['Abstract']:
+                            st.markdown(f"**Abstract:** {row['Abstract']}")
 
-                        elif publication_type == 'Thesis':
-                            thesis_type = f"{df['Thesis_type'].iloc[i]}: "
-                            formatted_row = (
-                                f"**{df['Publication type'].iloc[i]}**: "
-                                f"{df['Title'].iloc[i]}"
-                                f" ({thesis_type if df['Thesis_type'].iloc[i] != '' else ''}*{df['University'].iloc[i]}*)"
-                                f" (by *{df['Authors'].iloc[i]}*)"
-                                f" (Published on: {df['Date published'].iloc[i]})"
-                                f" [[Publication link]]({df['Link to publication'].iloc[i]})"
-                                f" [[Zotero link]]({df['Zotero link'].iloc[i]})"
-                            )
-
-                            st.write(f"{i+1}) " + formatted_row) 
-                        else:
-                            formatted_row = (
-                                f"**{df['Publication type'].iloc[i]}**: "
-                                f"{df['Title'].iloc[i]}"
-                                f" (by *{df['Authors'].iloc[i]}*)"
-                                f" (Published on: {df['Date published'].iloc[i]})"
-                                f" [[Publication link]]({df['Link to publication'].iloc[i]})"
-                                f" [[Zotero link]]({df['Zotero link'].iloc[i]})"   
-                            )
-
-                            st.write(f"{i+1}) " + formatted_row)
-                        if display:
-                            a = ''
-                            b = ''
-                            c = ''
-                            if 'Name_x' in df:
-                                a = '[' + '[' + df['Name_x'].iloc[i] + ']' + '(' + df['Link_x'].iloc[i] + ')' + ']'
-                                # f"[{[df['Name_x'].iloc[i]](df['Link_x'].iloc[i])}]"
-                                if df['Name_x'].iloc[i] == '':
-                                    a = ''
-                            if 'Name_y' in df:
-                                b = '[' + '[' + df['Name_y'].iloc[i] + ']' + '(' + df['Link_y'].iloc[i] + ')' + ']'
-                                # f"[{[df['Name_y'].iloc[i]](df['Link_y'].iloc[i])}]"
-                                if df['Name_y'].iloc[i] == '':
-                                    b = ''
-                            if 'Name' in df:
-                                c ='[' + '[' + df['Name'].iloc[i] + ']' + '(' + df['Link'].iloc[i] + ')' + ']'
-                                if df['Name'].iloc[i] == '':
-                                    c = ''
-                            st.caption('Theme(s):  \n ' + a + ' ' + b + ' ' + c)
-                            if not any([a, b, c]):
-                                st.caption('No theme to display!')
-                            
-                            st.caption('Abstract: ' + df['Abstract'].iloc[i])
 
                 with tab12:
                     st.markdown('#### Recently published items')
