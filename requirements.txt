@@ -1,4 +1,4 @@
-streamlit==1.40.0
+streamlit==1.44.0
 pandas==1.5.3
 pyzotero==1.5.5
 PyQt6==6.6.1
