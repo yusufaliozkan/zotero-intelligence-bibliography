@@ -38,7 +38,13 @@ def format_entry(row, include_citation=True):
     citation_text = f'Cited by [{citation}]({citation_link})' if citation > 0 else ''
     oa_url = str(row['OA_link']) if pd.notnull(row['OA_link']) else ''
     oa_url_fixed = oa_url.replace(' ', '%20')
-    oa_link_text = f'[[Open access version]({oa_url_fixed})]' if oa_url_fixed else ''
+    oa_link_text = f'[Open access version]({oa_url_fixed})' if oa_url_fixed else ''
+
+    pub_link_badge = f"[:blue-badge[Publication link]]({link_to_publication})" if link_to_publication else ''
+    zotero_link_badge = f"[:blue-badge[Zotero link]]({zotero_link})" if zotero_link else ''
+    oa_link_text = f"[:green-badge[OA version]]({oa_url_fixed})" if oa_url_fixed else ''
+    citation_text = f"[:orange-badge[Cited by {citation}]]({citation_link})" if citation > 0 else ''
+
 
     if publication_type == 'Book chapter':
         return (
@@ -46,19 +52,17 @@ def format_entry(row, include_citation=True):
             f"(in: *{book_title}*) "
             f"(by *{authors}*) "
             f"(Publication date: {date_published}) "
-            f"[[Publication link]]({link_to_publication}) "
-            f"[[Zotero link]]({zotero_link}) "
+            f"{pub_link_badge} {zotero_link_badge} "
             f"{oa_link_text + ' ' if oa_link_text else ''}"
             f"{citation_text if include_citation else ''}"
         )
     elif publication_type == 'Thesis':
-        return(
+        return (
             f"**{publication_type}**: {title} "
-            f" ({thesis_type2 if thesis_type != '' else ''}*{university}*)"
-            f" (by *{authors}*) "
+            f"({thesis_type2 if thesis_type != '' else ''}*{university}*) "
+            f"(by *{authors}*) "
             f"(Publication date: {date_published}) "
-            f"[[Publication link]]({link_to_publication}) "
-            f"[[Zotero link]]({zotero_link}) "
+            f"{pub_link_badge} {zotero_link_badge} "
             f"{oa_link_text + ' ' if oa_link_text else ''}"
             f"{citation_text if include_citation else ''}"
         )
@@ -68,8 +72,7 @@ def format_entry(row, include_citation=True):
             f"(by *{authors}*) "
             f"(Publication date: {date_published}) "
             f"{f'({published_by_or_in}: *{published_source}*) ' if published_by_or_in else ''}"
-            f"[[Publication link]]({link_to_publication}) "
-            f"[[Zotero link]]({zotero_link}) "
+            f"{pub_link_badge} {zotero_link_badge} "
             f"{oa_link_text + ' ' if oa_link_text else ''}"
             f"{citation_text if include_citation else ''}"
         )
