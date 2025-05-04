@@ -62,7 +62,8 @@ name_replacements = {
     'Jeff Rogg':'Jeffrey P. Rogg',
     'Celia G. Parker':'Celia G. Parker-Vincent',
     'Celia Parker-Vincent':'Celia G. Parker-Vincent',
-    'G. H. Bennett':'Gill Bennett'
+    'G. H. Bennett':'Gill Bennett',
+    'Emrah Safa Gürkan':'Emrah Safa Gurkan'
 }
 
 def get_df_authors():
