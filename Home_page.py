@@ -4455,10 +4455,6 @@ with st.spinner('Retrieving data...'):
                     ax.imshow(wordcloud)
                     ax.axis('off')
                     ax.set_title('Top words in title (Intelligence bibliography collection)')
-                    fig, ax = plt.subplots(figsize=(20,8))
-                    ax.imshow(wordcloud)
-                    ax.axis('off')
-                    ax.set_title('Top words in abstract (Intelligence bibliography collection)')
                     st.pyplot(fig)
                 else:
                     st.warning('Please bear in mind that not all items listed in this bibliography have an abstract. Therefore, this wordcloud should not be considered as authoritative. The number of items that have an abstract is ' + str(len(df_abs_no))+'.')
@@ -4474,7 +4470,11 @@ with st.spinner('Retrieving data...'):
                     plt.axis("off")
                     plt.show()
                     # # st.set_option('deprecation.showPyplotGlobalUse', False)
-                    st.pyplot() 
+                    fig, ax = plt.subplots(figsize=(20,8))
+                    ax.imshow(wordcloud)
+                    ax.axis('off')
+                    ax.set_title('Top words in abstract (Intelligence bibliography collection)')
+                    st.pyplot(fig)
 
             st.divider()
             st.subheader('Item inclusion history', anchor=False, divider='blue')
