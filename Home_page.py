@@ -3516,13 +3516,14 @@ with st.spinner('Retrieving data...'):
                         plot= df_collections_21.head(number0+1)
                         plot = plot[plot['Collection_Name']!='01 Intelligence history']
                         fig = px.bar(plot, x='Collection_Name', y='Number_of_Items', color='Collection_Name')
+                        fig.update_traces(width=0.6) 
                         fig.update_layout(
                             autosize=False,
                             width=600,
                             height=600,
                             showlegend=collection_bar_legend)
                         fig.update_layout(title={'text':'Top ' + str(number0) + ' collections in the library', 'y':0.95, 'x':0.4, 'yanchor':'top'})
-                        st.plotly_chart(fig, use_container_width = True)
+                        st.plotly_chart(fig, use_container_width=True)
                     with col2:
                         colcum1, colcum2, colcum3 = st.columns(3)
                         with colcum1:
@@ -3604,6 +3605,7 @@ with st.spinner('Retrieving data...'):
                         if chart_type == 'Bar chart':
                             if log0:
                                 fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type', log_y=True)
+                                fig.update_traces(width=0.6) 
                                 fig.update_layout(
                                     autosize=False,
                                     width=1200,
@@ -3613,6 +3615,7 @@ with st.spinner('Retrieving data...'):
                                 st.plotly_chart(fig, use_container_width = True)
                             else:
                                 fig = px.bar(df_types, x='Publication type', y='Count', color='Publication type')
+                                fig.update_traces(width=0.6) 
                                 fig.update_layout(
                                     autosize=False,
                                     width=1200,
@@ -3901,6 +3904,7 @@ with st.spinner('Retrieving data...'):
                                 if log1:
                                     if leg1:
                                         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
+                                        fig.update_traces(width=0.6) 
                                         fig.update_layout(
                                             autosize=False,
                                             width=1200,
@@ -3911,6 +3915,7 @@ with st.spinner('Retrieving data...'):
                                         st.plotly_chart(fig, use_container_width = True)
                                     else:
                                         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=True)
+                                        fig.update_traces(width=0.6) 
                                         fig.update_layout(
                                             autosize=False,
                                             width=1200,
@@ -3922,6 +3927,7 @@ with st.spinner('Retrieving data...'):
                                 else:
                                     if leg1:
                                         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
+                                        fig.update_traces(width=0.6) 
                                         fig.update_layout(
                                             autosize=False,
                                             width=1200,
@@ -3932,6 +3938,7 @@ with st.spinner('Retrieving data...'):
                                         st.plotly_chart(fig, use_container_width = True)
                                     else:
                                         fig = px.bar(df_publisher, x='Publisher', y='Count', color='Publisher', log_y=False)
+                                        fig.update_traces(width=0.6) 
                                         fig.update_layout(
                                             autosize=False,
                                             width=1200,
@@ -3975,6 +3982,7 @@ with st.spinner('Retrieving data...'):
                                 if log2:
                                     if leg2:
                                         fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
+                                        fig.update_traces(width=0.6) 
                                         fig.update_layout(
                                             autosize=False,
                                             width=1200,
@@ -3985,6 +3993,7 @@ with st.spinner('Retrieving data...'):
                                         st.plotly_chart(fig, use_container_width = True)
                                     else:
                                         fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=True)
+                                        fig.update_traces(width=0.6) 
                                         fig.update_layout(
                                             autosize=False,
                                             width=1200,
@@ -3996,6 +4005,7 @@ with st.spinner('Retrieving data...'):
                                 else:
                                     if leg2:
                                         fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
+                                        fig.update_traces(width=0.6) 
                                         fig.update_layout(
                                             autosize=False,
                                             width=1200,
@@ -4006,6 +4016,7 @@ with st.spinner('Retrieving data...'):
                                         st.plotly_chart(fig, use_container_width = True)
                                     else:
                                         fig = px.bar(df_journal, x='Journal', y='Count', color='Journal', log_y=False)
+                                        fig.update_traces(width=0.6) 
                                         fig.update_layout(
                                             autosize=False,
                                             width=1200,
