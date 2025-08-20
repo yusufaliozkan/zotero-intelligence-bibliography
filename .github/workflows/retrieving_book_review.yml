@@ -1,0 +1,49 @@
+name: Retrieving Book Reviews
+
+on:
+  workflow_run:
+    workflows: ["Update Database v2"]
+    types: [completed]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  export_book_reviews:
+    runs-on: ubuntu-latest
+    # Only run after Update Database v2 succeeds, or when manually dispatched
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      # Wait 2 hours after "Update Database v2" completed
+      - name: Wait 2 hours after upstream workflow
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: sleep 7200
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # (Optional) list files if you're unsure about the script path
+      # - name: List files
+      #   run: ls -R
+
+      - name: Run exporter
+        # If the script is in a subfolder, e.g. scripts/book_reviews.py, adjust the path
+        run: python database_update/book_reviews.py
+
+      - name: Commit CSV
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update book_reviews.csv"
+          file_pattern: book_reviews.csv
