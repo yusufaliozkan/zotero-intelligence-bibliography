@@ -110,8 +110,10 @@ with st.spinner('Retrieving data...'):
     # item_count = zot.num_items() 
 
     df_dedup = pd.read_csv('all_items.csv')
+    df_dedup['parentKey'] = df_dedup['Zotero link'].str.split("/").str[-1]
     df_duplicated = pd.read_csv('all_items_duplicated.csv')
     df_authors = get_df_authors()
+    df_book_reviews = pd.read_csv('book_reviews.csv')
 
     col1, col2, col3 = st.columns([3,5,8])
     with col3:
@@ -310,112 +312,7 @@ with st.spinner('Retrieving data...'):
             st.header('Search in database', anchor=False)
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-            # @st.fragment
-            # def text_search():
-            #     st.subheader('Quick search', anchor=False, divider='blue')
 
-            #     name = st_keyup("Search keyword in title", debounce=500, placeholder='Type your keyword(s)')
-            #     @st.cache_data
-            #     def get_titles():
-            #         df_csv1 = df_dedup.copy()
-            #         return df_csv1
-            #     df_quick_search_titles = get_titles()
-            #     if name:
-            #         with st.status(f'Searching **{name}** in the database...') as status:
-            #             search_pattern = fr'\b{name.lower()}\b'
-            #             df_quick_search_titles = df_quick_search_titles[df_quick_search_titles.Title.str.lower().str.contains(search_pattern.lower(), na=False)]
-            #             df_quick_search_titles = df_quick_search_titles.reset_index(drop=True)
-            #             df_table_view = df_quick_search_titles[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Link to publication','Zotero link']]
-            #             df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
-                        
-            #             display = st.radio('Display as', ['Basic list', 'Table', 'Bibliographic list'])
-            #             if display == 'Basic list':
-            #                 st.write(f'{len(df_quick_search_titles)} result(s) found')
-            #                 for index, row in df_quick_search_titles.iterrows():
-            #                     publication_type = row['Publication type']
-            #                     title = row['Title']
-            #                     authors = row['FirstName2']
-            #                     date_published = row['Date published']
-            #                     link_to_publication = row['Link to publication']
-            #                     zotero_link = row['Zotero link']
-            #                     citation = str(row['Citation']) if pd.notnull(row['Citation']) else '0'  
-            #                     citation = int(float(citation))
-            #                     citation_link = str(row['Citation_list']) if pd.notnull(row['Citation_list']) else ''
-            #                     citation_link = citation_link.replace('api.', '')
-
-            #                     published_by_or_in_dict = {
-            #                         'Journal article': 'Published in',
-            #                         'Magazine article': 'Published in',
-            #                         'Newspaper article': 'Published in',
-            #                         'Book': 'Published by',
-            #                     }
-
-            #                     publication_type = row['Publication type']
-
-            #                     published_by_or_in = published_by_or_in_dict.get(publication_type, '')
-            #                     published_source = str(row['Journal']) if pd.notnull(row['Journal']) else ''
-            #                     if publication_type == 'Book':
-            #                         published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
-
-            #                     formatted_entry = (
-            #                         '**' + str(publication_type) + '**' + ': ' +
-            #                         str(title) + ' ' +
-            #                         '(by ' + '*' + str(authors) + '*' + ') ' +
-            #                         '(Publication date: ' + str(date_published) + ') ' +
-            #                         ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-            #                         '[[Publication link]](' + str(link_to_publication) + ') ' +
-            #                         '[[Zotero link]](' + str(zotero_link) + ') ' +
-            #                         ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
-            #                     )
-            #                     formatted_entry = format_entry(row)
-            #                     st.write(f"{index + 1}) {formatted_entry}")
-            #             if display == 'Table':
-            #                 st.write(f'{len(df_quick_search_titles)} result(s) found')
-            #                 st.dataframe(df_table_view,hide_index=True, use_container_width=True)
-            #             if display == 'Bibliographic list':
-
-            #                 df_zotero_id = pd.read_csv('zotero_citation_format.csv')
-            #                 df_quick_search_titles['zotero_item_key'] = df_quick_search_titles['Zotero link'].str.replace('https://www.zotero.org/groups/intelarchive_intelligence_studies_database/items/', '')
-            #                 df_quick_search_titles = pd.merge(df_quick_search_titles, df_zotero_id, on='zotero_item_key', how='left')
-
-            #                 def display_bibliographies(df):
-            #                     df['bibliography'] = df['bibliography'].fillna('').astype(str)
-            #                     all_bibliographies = ""
-            #                     for index, row in df.iterrows():
-            #                         # Add a horizontal line between bibliographies
-            #                         if index > 0:
-            #                             all_bibliographies += '<p><p>'
-                                    
-            #                         # Display bibliography
-            #                         all_bibliographies += row['bibliography']
-            #                     st.markdown(all_bibliographies, unsafe_allow_html=True)
-
-            #                 num_items = len(df_quick_search_titles)
-
-            #                 if num_items < 20:
-            #                     display_bibliographies(df_quick_search_titles)
-            #                 else:
-            #                     show_first_20 = st.checkbox("Show only first 20 items (untick to see all)", value=True)
-
-            #                     if show_first_20:
-            #                         df_quick_search_titles = df_quick_search_titles.head(20)
-            #                         display_bibliographies(df_quick_search_titles)
-            #                     else:
-            #                         num_tabs = (num_items // 20) + 1
-            #                         tab_titles = [f"Results {i*20+1}-{min((i+1)*20, num_items)}" for i in range(num_tabs)]
-
-            #                         tabs = st.tabs(tab_titles)
-            #                         for tab_index, tab in enumerate(tabs):
-            #                             with tab:
-            #                                 start_idx = tab_index * 20
-            #                                 end_idx = min(start_idx + 20, num_items)
-            #                                 display_bibliographies(df_quick_search_titles.iloc[start_idx:end_idx])
-            #             status.update(label=f'Search complete for **{name}** with **{len(df_quick_search_titles)}** results', state="complete", expanded=True)
-            #     else:
-            #         st.write(f'{zot.num_items()} items in the database')
-            # text_search()
-    
-            # @st.fragment
             def search_options_main_menu():
                 from authors_dict import name_replacements
                 total_rows = len(df_dedup)
@@ -445,10 +342,24 @@ with st.spinner('Retrieving data...'):
                 )
                 
                 # search_option = st.radio("Select search option", ("Search keywords", "Search author", "Search collection", "Publication types", "Search journal", "Publication year", "Cited papers"), horizontal=True)
+                #SEARCH KEYWORDs
                 if search_option == 0:
                     st.subheader('Search keywords', anchor=False, divider='blue')
                     @st.fragment
                     def search_keyword(): 
+
+                        @st.cache_data(ttl=300)
+                        def load_reviews_map():
+                            try:
+                                df_book_reviews = pd.read_csv("book_reviews.csv")
+                                df_br = df_book_reviews.dropna(subset=["parentKey", "url"]).copy()
+                                # keep keys clean to avoid mismatches
+                                df_br["parentKey"] = df_br["parentKey"].astype(str).str.strip()
+                                return df_br.groupby("parentKey")["url"].apply(list).to_dict()
+                            except Exception:
+                                return {}
+                        reviews_map = load_reviews_map()
+
                         @st.dialog("Search guide")
                         def guide(item):
                             st.write('''
@@ -835,22 +746,19 @@ with st.spinner('Retrieving data...'):
                                     else:
                                         sort_by = st.radio('Sort by:', ('Publication date :arrow_down:', 'Citation', 'Date added :arrow_down:'), horizontal=True)
                                         if sort_by == 'Publication date :arrow_down:' or filtered_df['Citation'].sum() == 0:
-                                            filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False)
-                                            filtered_df = filtered_df.reset_index(drop=True)
-                                        if sort_by=='Citation':
-                                            filtered_df = filtered_df.sort_values(by=['Citation'], ascending=False)
-                                            filtered_df = filtered_df.reset_index(drop=True)
+                                            filtered_df = filtered_df.sort_values(by=['Date published'], ascending=False).reset_index(drop=True)
+                                        if sort_by == 'Citation':
+                                            filtered_df = filtered_df.sort_values(by=['Citation'], ascending=False).reset_index(drop=True)
                                         if sort_by == 'Date added :arrow_down:':
-                                            filtered_df = filtered_df.sort_values(by=['Date added'], ascending=False)
-                                            filtered_df = filtered_df.reset_index(drop=True)
+                                            filtered_df = filtered_df.sort_values(by=['Date added'], ascending=False).reset_index(drop=True)
 
                                         articles_list = []  # Store articles in a list
                                         abstracts_list = [] # Store abstracts in a list
-                                        for index, row in filtered_df.iterrows():
-                                            formatted_entry = format_entry(row)
-                                            articles_list.append(formatted_entry)  # Append formatted entry to the list
-                                            abstract = row['Abstract']
-                                            abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
+                                        for _, row in filtered_df.iterrows():
+                                            # CHANGED: pass the reviews_map to format_entry
+                                            formatted_entry = format_entry(row, reviews_map=reviews_map)
+                                            articles_list.append(formatted_entry)
+                                            abstracts_list.append(row['Abstract'] if pd.notnull(row['Abstract']) else 'N/A')
 
                                         def highlight_terms(text, terms):
                                             boolean_operators = {"AND", "OR", "NOT"}
@@ -995,6 +903,19 @@ with st.spinner('Retrieving data...'):
 
                     @st.fragment
                     def search_author():
+
+                        @st.cache_data(ttl=300)
+                        def load_reviews_map():
+                            try:
+                                df_book_reviews = pd.read_csv("book_reviews.csv", dtype=str)
+                                df_br = df_book_reviews.dropna(subset=["parentKey", "url"]).copy()
+                                # normalize keys to avoid mismatches
+                                df_br["parentKey"] = df_br["parentKey"].astype(str).str.strip().str.upper()
+                                return df_br.groupby("parentKey")["url"].apply(list).to_dict()
+                            except Exception:
+                                return {}
+                        reviews_map = load_reviews_map()
+
                         unique_authors = [''] + list(df_authors['Author_name'].unique())
 
                         author_publications = df_authors['Author_name'].value_counts().to_dict()
@@ -1244,6 +1165,24 @@ with st.spinner('Retrieving data...'):
 
                                                 pub_link = f"[:green-badge[Publication link]]({row['Link to publication']})"
                                                 zotero_link = f"[:gray-badge[Zotero link]]({row['Zotero link']})"
+                                            
+                                                zotero_link_url = row["Zotero link"] if pd.notnull(row["Zotero link"]) else ""
+                                                item_key = row.get("zotero_item_key")  # if you already computed it elsewhere
+                                                if not item_key and zotero_link_url:
+                                                    item_key = zotero_link_url.rstrip("/").split("/")[-1]
+
+                                                # normalize to match reviews_map keys
+                                                item_key = (str(item_key).strip().upper() if item_key else "")
+
+                                                # build review badges
+                                                book_reviews_badges = ""
+                                                links = reviews_map.get(item_key, [])
+                                                if len(links) == 1:
+                                                    book_reviews_badges = f"[:violet-badge[Book review]]({links[0]})"
+                                                elif len(links) > 1:
+                                                    book_reviews_badges = " ".join(
+                                                        f"[:violet-badge[Book review {i+1}]]({u})" for i, u in enumerate(links)
+                                                    )
 
                                                 formatted_entry = (
                                                     '**' + str(publication_type) + '**' + ': ' +
@@ -1251,12 +1190,10 @@ with st.spinner('Retrieving data...'):
                                                     '(by ' + '*' + str(authors) + '*' + ') ' +
                                                     '(Publication date: ' + str(date_published) + ') ' +
                                                     ('(' + published_by_or_in + ': ' + '*' + str(published_source) + '*' + ') ' if published_by_or_in else '') +
-                                                    pub_link + ' ' + zotero_link + ' ' +
-                                                    ('Cited by [' + str(citation) + '](' + citation_link + ')' if citation > 0 else '')
+                                                    pub_link + ' ' + zotero_link + ' ' + book_reviews_badges + ' ' +
+                                                    ('[:orange-badge[Cited by ' + str(citation) + ']](' + citation_link + ')' if citation > 0 else '')
                                                 )
-
-                                                formatted_entry = format_entry(row)
-                                                st.write(f"{index + 1}) {formatted_entry}")
+                                                st.write(f"{index + 1}) {formatted_entry}") 
                                         if view == 'Table':
                                             df_table_view = filtered_collection_df_authors[['Publication type','Title','Date published','FirstName2', 'Abstract','Publisher','Journal','Citation', 'Link to publication','Zotero link']]
                                             df_table_view = df_table_view.rename(columns={'FirstName2':'Author(s)','Collection_Name':'Collection','Link to publication':'Publication link'})
@@ -1296,6 +1233,19 @@ with st.spinner('Retrieving data...'):
 
                     @st.fragment
                     def search_collection():
+
+                        @st.cache_data(ttl=300)
+                        def load_reviews_map():
+                            try:
+                                df_book_reviews = pd.read_csv("book_reviews.csv", dtype=str)
+                                df_br = df_book_reviews.dropna(subset=["parentKey", "url"]).copy()
+                                # normalize keys to avoid mismatches
+                                df_br["parentKey"] = df_br["parentKey"].astype(str).str.strip().str.upper()
+                                return df_br.groupby("parentKey")["url"].apply(list).to_dict()
+                            except Exception:
+                                return {}
+                        reviews_map = load_reviews_map()
+
                         df_csv_collections = df_duplicated.copy()
 
                         def remove_numbers(name):
@@ -1561,7 +1511,7 @@ with st.spinner('Retrieving data...'):
                                         if view == 'Basic list':
                                             articles_list = []  # Store articles in a list
                                             for index, row in filtered_collection_df.iterrows():
-                                                formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                                                formatted_entry = format_entry(row, reviews_map=reviews_map) # Assuming format_entry() is a function formatting each row
                                                 articles_list.append(formatted_entry)    
                                             
                                             for index, row in filtered_collection_df.iterrows():
@@ -1586,7 +1536,7 @@ with st.spinner('Retrieving data...'):
                                                     published_by_or_in = ''
                                                     published_source = ''
 
-                                                formatted_entry = format_entry(row)
+                                                formatted_entry = format_entry(row, reviews_map=reviews_map)
                                                 st.write(f"{index + 1}) {formatted_entry}")
                                         if view == 'Table':
                                             df_table_view = filtered_collection_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
@@ -1615,11 +1565,25 @@ with st.spinner('Retrieving data...'):
                 
                     search_collection()
 
+                # SEARCH PUBLICATION TYPES
                 elif search_option == 3: 
                     st.query_params.clear()
                     st.subheader('Publication types', anchor=False, divider='blue') 
                     @st.fragment
                     def type_selection():
+
+                        @st.cache_data(ttl=300)
+                        def load_reviews_map():
+                            try:
+                                df_book_reviews = pd.read_csv("book_reviews.csv", dtype=str)
+                                df_br = df_book_reviews.dropna(subset=["parentKey", "url"]).copy()
+                                # normalize keys to avoid mismatches
+                                df_br["parentKey"] = df_br["parentKey"].astype(str).str.strip().str.upper()
+                                return df_br.groupby("parentKey")["url"].apply(list).to_dict()
+                            except Exception:
+                                return {}
+                        reviews_map = load_reviews_map()
+
                         df_csv_types = df_dedup.copy()
                         unique_types = [''] + list(df_authors['Publication type'].unique())
                         # unique_types =  list(df_csv_types['Publication type'].unique())  # Adding an empty string as the first option The following bit was at the front [''] +
@@ -1903,7 +1867,7 @@ with st.spinner('Retrieving data...'):
                                     if view =='Basic list':
                                         articles_list = []  # Store articles in a list
                                         for index, row in filtered_type_df.iterrows():
-                                            formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                                            formatted_entry = format_entry(row, reviews_map=reviews_map)  # Assuming format_entry() is a function formatting each row
                                             articles_list.append(formatted_entry)                     
                                         
                                         for index, row in filtered_type_df.iterrows():
@@ -1932,7 +1896,7 @@ with st.spinner('Retrieving data...'):
                                             if publication_type == 'Book':
                                                 published_source = str(row['Publisher']) if pd.notnull(row['Publisher']) else ''
 
-                                            formatted_entry = format_entry(row)
+                                            formatted_entry = format_entry(row, reviews_map=reviews_map)
                                             st.write(f"{index + 1}) {formatted_entry}")
                                     if view =='Table':
                                         df_table_view = filtered_type_df[['Publication type','Title','Date published','FirstName2', 'Abstract','Link to publication','Zotero link']]
@@ -1959,6 +1923,7 @@ with st.spinner('Retrieving data...'):
                     
                     type_selection()
                 
+                # SEARCH JOURNAL
                 elif search_option == 4:
                     st.query_params.clear()
                     st.subheader('Search journal', anchor=False, divider='blue')
@@ -2311,12 +2276,26 @@ with st.spinner('Retrieving data...'):
                                         display_bibliographies2(selected_journal_df)
                     search_journal()
                 
+                # SEARCH PUBLICATION YEAR
                 elif search_option == 5: 
                     st.query_params.clear()
                     st.subheader('Items by publication year', anchor=False, divider='blue')
 
                     @st.fragment
                     def search_pub_year():
+
+                        @st.cache_data(ttl=300)
+                        def load_reviews_map():
+                            try:
+                                df_book_reviews = pd.read_csv("book_reviews.csv", dtype=str)
+                                df_br = df_book_reviews.dropna(subset=["parentKey", "url"]).copy()
+                                # normalize keys to avoid mismatches
+                                df_br["parentKey"] = df_br["parentKey"].astype(str).str.strip().str.upper()
+                                return df_br.groupby("parentKey")["url"].apply(list).to_dict()
+                            except Exception:
+                                return {}
+                        reviews_map = load_reviews_map()
+
                         with st.expander('Click to expand', expanded=True):                    
                             df_all = df_dedup.copy()
                             df_all['Date published2'] = (
@@ -2665,7 +2644,7 @@ with st.spinner('Retrieving data...'):
                                     articles_list = []  # Store articles in a list
                                     abstracts_list = [] #Store abstracts in a list
                                     for index, row in df_all.iterrows():
-                                        formatted_entry = format_entry(row)
+                                        formatted_entry = format_entry(row, reviews_map=reviews_map)
                                         articles_list.append(formatted_entry)  # Append formatted entry to the list
                                         abstract = row['Abstract']
                                         abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
@@ -2697,12 +2676,26 @@ with st.spinner('Retrieving data...'):
                     
                     search_pub_year()
                 
+                # SEARCH PUBLICATION YEAR
                 elif search_option == 6:
                     st.query_params.clear()
                     st.subheader('Cited items in the library', anchor=False, divider='blue')
                     
                     @st.fragment
                     def search_cited_papers():
+
+                        @st.cache_data(ttl=300)
+                        def load_reviews_map():
+                            try:
+                                df_book_reviews = pd.read_csv("book_reviews.csv", dtype=str)
+                                df_br = df_book_reviews.dropna(subset=["parentKey", "url"]).copy()
+                                # normalize keys to avoid mismatches
+                                df_br["parentKey"] = df_br["parentKey"].astype(str).str.strip().str.upper()
+                                return df_br.groupby("parentKey")["url"].apply(list).to_dict()
+                            except Exception:
+                                return {}
+                        reviews_map = load_reviews_map()
+
                         with st.expander('Click to expand', expanded=True):
                             container_markdown = st.container()              
                             df_cited = df_dedup.copy()
@@ -3058,7 +3051,7 @@ with st.spinner('Retrieving data...'):
                                     articles_list = []  # Store articles in a list
                                     abstracts_list = [] #Store abstracts in a list
                                     for index, row in df_cited.iterrows():
-                                        formatted_entry = format_entry(row)
+                                        formatted_entry = format_entry(row, reviews_map=reviews_map)
                                         articles_list.append(formatted_entry)  # Append formatted entry to the list
                                         abstract = row['Abstract']
                                         abstracts_list.append(abstract if pd.notnull(abstract) else 'N/A')
@@ -3113,7 +3106,9 @@ with st.spinner('Retrieving data...'):
                     df_intro['Date published'] = df_intro['Date published'].dt.strftime('%d-%m-%Y')
                     df_intro['Date published'] = df_intro['Date published'].fillna('No date')
                     # df_intro['Abstract'] = df_intro['Abstract'].str.strip()
-                    df_intro['Abstract'] = df_intro['Abstract'].fillna('No abstract')                
+                    df_intro['Abstract'] = df_intro['Abstract'].fillna('No abstract')
+
+                    
 
                     # Bringing collections
 
@@ -3146,6 +3141,16 @@ with st.spinner('Retrieving data...'):
                     # a = 'recently-added-' + today
                     # st.download_button(' Download recently added items', csv, (a+'.csv'), mime="text/csv", key='download-csv-3')
                     
+                    # --- Build quick lookups for reviews by parentKey ---
+                    df_br = df_book_reviews.dropna(subset=["parentKey", "url"]).copy()
+
+                    # how many reviews each parent has
+                    review_count_map = df_br.groupby("parentKey").size().to_dict()
+
+                    # a representative URL for each parent (the first one; change to .last() if you prefer)
+                    first_review_url_map = df_br.groupby("parentKey")["url"].first().to_dict()
+
+
                     display = st.checkbox("Display abstract")
 
                     for i, row in df_intro.iterrows():
@@ -3153,8 +3158,28 @@ with st.spinner('Retrieving data...'):
                         title = row['Title']
                         author = row['FirstName2']
                         date = row['Date published']
-                        pub_link = f"[:blue-badge[Publication link]]({row['Link to publication']})"
-                        zotero_link = f"[:blue-badge[Zotero link]]({row['Zotero link']})" 
+
+                        # Safe publication link (skip if NaN)
+                        pub_link = (
+                            f"[:blue-badge[Publication link]]({row['Link to publication']})"
+                            if pd.notna(row.get('Link to publication'))
+                            else ""
+                        )
+                        zotero_link = f"[:blue-badge[Zotero link]]({row['Zotero link']})"
+
+                        # Figure out the parent key (use column if present; otherwise parse from Zotero URL)
+                        parent_key = row.get("parentKey")
+                        if not parent_key and pd.notna(row.get("Zotero link")):
+                            parent_key = row["Zotero link"].rstrip("/").split("/")[-1]
+
+                        # Build a violet badge for Book reviews if we have any
+                        book_reviews_link = ""
+                        rc = review_count_map.get(parent_key, 0)
+                        if rc:
+                            first_url = first_review_url_map.get(parent_key)
+                            label = "Book review" if rc == 1 else f"Book reviews ({rc})"
+                            # change "violet-badge" to "green-badge" / "orange-badge" / "red-badge" if you prefer
+                            book_reviews_link = f" [:violet-badge[{label}]]({first_url})"
 
                         if pub_type in ["Journal article", "Magazine article", "Newspaper article"]:
                             journal = row['Journal']
@@ -3163,7 +3188,7 @@ with st.spinner('Retrieving data...'):
                                 f"(by *{author}*) "
                                 f"(Published on: {date}) "
                                 f"(Published in: *{journal}*) "
-                                f"{pub_link} {zotero_link}"
+                                f"{pub_link} {zotero_link}{book_reviews_link}"
                             )
                         elif pub_type == "Book chapter":
                             book_title = row['Book_title']
@@ -3172,7 +3197,7 @@ with st.spinner('Retrieving data...'):
                                 f"(in: *{book_title}*) "
                                 f"(by *{author}*) "
                                 f"(Published on: {date}) "
-                                f"{pub_link} {zotero_link}"
+                                f"{pub_link} {zotero_link}{book_reviews_link}"
                             )
                         elif pub_type == "Thesis":
                             thesis_type = row.get("Thesis_type", "")
@@ -3183,14 +3208,14 @@ with st.spinner('Retrieving data...'):
                                 f"({thesis_info}) "
                                 f"(by *{author}*) "
                                 f"(Published on: {date}) "
-                                f"{pub_link} {zotero_link}"
+                                f"{pub_link} {zotero_link}{book_reviews_link}"
                             )
                         else:
                             formatted = (
                                 f"**{pub_type}**: {title} "
                                 f"(by *{author}*) "
                                 f"(Published on: {date}) "
-                                f"{pub_link} {zotero_link}"
+                                f"{pub_link} {zotero_link}{book_reviews_link}"
                             )
 
                         st.markdown(f"{i+1}) {formatted}")
