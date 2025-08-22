@@ -56,6 +56,9 @@ with st.spinner('Retrieving data & updating dashboard...'):
 
     df_collections = pd.read_csv('all_items_duplicated.csv')
     df_t = pd.read_csv('all_items.csv')
+    df_book_reviews = pd.read_csv('book_reviews.csv')
+    df_br = df_book_reviews.dropna(subset=["parentKey", "url"]).copy()
+    reviews_map = df_br.groupby("parentKey")["url"].agg(list).to_dict()
     # df_collections = df_collections[~df_collections['Collection_Name'].str.contains('01.98')]
     # df_collections = df_collections[df_collections['Collection_Name'] != '01 Intelligence history']
 
@@ -227,7 +230,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
             if view == 'Basic list':
                 articles_list = []  # Store articles in a list
                 for index, row in df_collections.iterrows():
-                    formatted_entry = format_entry(row)  # Assuming format_entry() is a function formatting each row
+                    formatted_entry = format_entry(row, reviews_map=reviews_map)  # Assuming format_entry() is a function formatting each row
                     articles_list.append(formatted_entry)        
                 
                 for index, row in df_collections.iterrows():
@@ -263,7 +266,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                     if sort_by == 'Publication date :arrow_down:': # or df_collections['Citation'].sum() == 0:
                         count = 1
                         for index, row in df_collections.iterrows():
-                            formatted_entry = format_entry(row)
+                            formatted_entry = format_entry(row, reviews_map=reviews_map)
                             st.write(f"{count}) {formatted_entry}")
                             count += 1
                             if display2:
@@ -277,7 +280,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                                 current_type = row['Publication type']
                                 st.subheader(current_type)
                                 count_by_type[current_type] = 1
-                            formatted_entry = format_entry(row)
+                            formatted_entry = format_entry(row, reviews_map=reviews_map)
                             st.write(f"{count_by_type[current_type]}) {formatted_entry}")
                             count_by_type[current_type] += 1
                             if display2:
@@ -286,7 +289,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         if df_collections['Citation'].sum() == 0:
                             count = 1
                             for index, row in df_collections.iterrows():
-                                formatted_entry = format_entry(row)
+                                formatted_entry = format_entry(row, reviews_map=reviews_map)
                                 st.write(f"{count}) {formatted_entry}")
                                 count += 1
                                 if display2:
@@ -295,7 +298,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                             df_collections = df_collections.sort_values(by=['Citation'], ascending=False)
                             count = 1
                             for index, row in df_collections.iterrows():
-                                formatted_entry = format_entry(row)
+                                formatted_entry = format_entry(row, reviews_map=reviews_map)
                                 st.write(f"{count}) {formatted_entry}")
                                 count += 1
                                 if display2:
@@ -304,7 +307,7 @@ with st.spinner('Retrieving data & updating dashboard...'):
                         df_collections = df_collections.sort_values(by=['Date added'], ascending=False)
                         count = 1
                         for index, row in df_collections.iterrows():
-                            formatted_entry = format_entry(row)
+                            formatted_entry = format_entry(row, reviews_map=reviews_map)
                             st.write(f"{count}) {formatted_entry}")
                             count += 1
                             if display2:
