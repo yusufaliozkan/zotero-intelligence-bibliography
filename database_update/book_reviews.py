@@ -32,4 +32,6 @@ for parent in top_items:
 # Build DataFrame
 df = pd.DataFrame(rows, columns=["attachmentKey", "parentKey", "parentTitle", "linkTitle", "url"])
 
+df = df[df["linkTitle"].str.startswith("Book review", na=False)]
+
 df.to_csv('book_reviews.csv')
