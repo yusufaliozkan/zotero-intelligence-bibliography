@@ -1,4 +1,4 @@
-def format_entry(row, include_citation=False, reviews_map=None, max_reviews_inline=None):
+def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inline=None):
     # Accept Series or dict
     if hasattr(row, "to_dict"):
         row = row.to_dict()
@@ -16,7 +16,10 @@ def format_entry(row, include_citation=False, reviews_map=None, max_reviews_inli
         return s if s else ""
 
     # --- fields ---
-    citation            = row.get("Citation", 0) or row.get("citation_count", 0) or 0
+    try:
+        citation = int(float(row.get("Citation", 0) or row.get("citation_count", 0) or 0))
+    except (ValueError, TypeError):
+        citation = 0
     citation_link       = _clean(row.get("citation_link"))
     link_to_publication = _clean(row.get("Link to publication"))
     zotero_link         = _clean(row.get("Zotero link"))
@@ -25,7 +28,13 @@ def format_entry(row, include_citation=False, reviews_map=None, max_reviews_inli
     pub_link_badge    = f"[:blue-badge[Publication link]]({link_to_publication})" if link_to_publication else ""
     zotero_link_badge = f"[:blue-badge[Zotero link]]({zotero_link})" if zotero_link else ""
     oa_link_text      = f"[:green-badge[OA version]]({oa_url_fixed})" if oa_url_fixed else ""
-    citation_text     = f"[:orange-badge[Cited by {int(citation)}]]({citation_link})" if citation and citation_link else ""
+    if citation > 0:
+        if citation_link:
+            citation_text = f"[:orange-badge[Cited by {citation}]]({citation_link})"
+        else:
+            citation_text = f":orange-badge[Cited by {citation}]"
+    else:
+        citation_text = ""
 
     # --- multiple inline review badges ---
     parent_key = row.get("parentKey")
