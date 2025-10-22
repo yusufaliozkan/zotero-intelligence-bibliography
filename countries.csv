@@ -1,6 +1,6 @@
 Country,Count
-United States,791
-UK,510
+United States,792
+UK,511
 Russia,203
 Israel,185
 Ukraine,159
@@ -14,7 +14,7 @@ Canada,74
 Iraq,73
 France,55
 Cuba,45
-Ireland,39
+Ireland,40
 Romania,35
 Brazil,31
 Egypt,30
@@ -29,11 +29,11 @@ Bangladesh,18
 Slovakia,17
 Sweden,17
 Italy,16
-Niger,16
 Poland,16
-Austria,16
-Mali,16
 Netherlands,16
+Mali,16
+Austria,16
+Niger,16
 Nigeria,15
 Norway,14
 Greece,14
@@ -42,22 +42,22 @@ Albania,12
 Colombia,11
 Chile,11
 Denmark,11
-Cyprus,10
 Lebanon,10
-Congo,9
+Cyprus,10
 Sudan,9
-Singapore,8
+Congo,9
 Yemen,8
-Algeria,7
+Singapore,8
 Bulgaria,7
-Switzerland,7
 Kenya,7
+Algeria,7
+Switzerland,7
 Peru,7
-Jordan,6
-Libya,6
-Ghana,6
-Portugal,6
 Argentina,6
+Libya,6
+Portugal,6
+Ghana,6
+Jordan,6
 Finland,6
 Belgium,6
 Hong Kong,6
