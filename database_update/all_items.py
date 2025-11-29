@@ -400,7 +400,8 @@ def fetch_article_metadata(doi):
                 if data.get('id') 
                 and data.get('cited_by_count', 0) > 0
                 else None
-            ),            'First_citation_year': first_citation_year,
+            ),            
+            'First_citation_year': first_citation_year,
             'Last_citation_year': last_citation_year,
             'Publication_year': data.get('publication_year'),
             'OA_link': data.get('open_access', {}).get('oa_url')
