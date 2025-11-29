@@ -20,7 +20,7 @@ def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inlin
         citation = int(float(row.get("Citation", 0) or row.get("citation_count", 0) or 0))
     except (ValueError, TypeError):
         citation = 0
-    citation_link       = _clean(row.get("citation_link"))
+    citation_link       = _clean(row.get("Citation_list"))
     link_to_publication = _clean(row.get("Link to publication"))
     zotero_link         = _clean(row.get("Zotero link"))
     oa_url_fixed        = _clean(row.get("OA_link")).replace(" ", "%20")
