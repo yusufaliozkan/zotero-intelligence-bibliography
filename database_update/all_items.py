@@ -395,8 +395,12 @@ def fetch_article_metadata(doi):
             'ID': data.get('id'),
             'Citation': data.get('cited_by_count'),
             'OA status': data.get('open_access', {}).get('is_oa'),
-            'Citation_list': data.get('cited_by_api_url'),
-            'First_citation_year': first_citation_year,
+            'Citation_list': (
+                f"https://api.openalex.org/works?filter=cites:{data.get('id','').split('/')[-1].strip()}"
+                if data.get('id') 
+                and data.get('cited_by_count', 0) > 0
+                else None
+            ),            'First_citation_year': first_citation_year,
             'Last_citation_year': last_citation_year,
             'Publication_year': data.get('publication_year'),
             'OA_link': data.get('open_access', {}).get('oa_url')
