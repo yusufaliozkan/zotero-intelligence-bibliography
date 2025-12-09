@@ -276,6 +276,7 @@ with tab1:
         ap3 = ' (top 5) '
     fig = px.bar(organiser_plot, x='Organiser', y='Count', color='Organiser')
     fig.update_xaxes(tickangle=-65)
+    fig.update_traces(width=0.6) 
     fig.update_layout(
         autosize=False,
         width=400,
