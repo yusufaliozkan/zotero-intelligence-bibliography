@@ -264,17 +264,14 @@ df = df[['Title', 'Publication type', 'Link to publication', 'Zotero link', 'Dat
 
 header='New addition\n\n'
 
-def format_authors(authors_raw):
-    if pd.isna(authors_raw) or not authors_raw.strip():
+def format_authors(authors_raw: str, max_authors: int = 2) -> str:
+    if pd.isna(authors_raw) or not str(authors_raw).strip() or str(authors_raw).strip().lower() == "null":
         return ""
 
-    # Split on common separators
-    if ";" in authors_raw:
-        authors = [a.strip() for a in authors_raw.split(";")]
-    else:
-        authors = [a.strip() for a in authors_raw.split(",")]
+    # Your creators_str uses ", " as the separator
+    authors = [a.strip() for a in str(authors_raw).split(",") if a.strip()]
 
-    if len(authors) <= 2:
+    if len(authors) <= max_authors:
         return ", ".join(authors)
     else:
         return f"{authors[0]} et al."
@@ -284,7 +281,7 @@ for index, row in df.iterrows():
     title = row['Title']
     publication_date = row['Date published']
     link = row['Link to publication']
-    author_name = format_authors(row['Authors']) # Extract the author name
+    author_name = format_authors(row['Authors'])  # Extract the author name
 
     # Calculate maximum title length without truncating the link or additional info
     max_title_length = 300 - len(header) - len(f"{publication_type}: (published {publication_date})\n\n{link}") - len(author_name) - 10  # Reserve space for formatting
