@@ -378,7 +378,10 @@ df_doi['DOI'] = df_doi['DOI'].str.replace('https://doi.org/', '')
 
 def fetch_article_metadata(doi):
     base_url = 'https://api.openalex.org/works/https://doi.org/'
-    response = requests.get(base_url + doi)
+    response = requests.get(
+        base_url + doi,
+        params={"api_key": "C5zob6Uhtnu1dqEN54SohR"}
+    )
     if response.status_code == 200:
         data = response.json()
         counts_by_year = data.get('counts_by_year', [])
