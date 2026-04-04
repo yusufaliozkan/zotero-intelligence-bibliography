@@ -80,7 +80,7 @@ def set_page_config():
         layout="wide",
         page_title="IntelArchive",
         page_icon="https://raw.githubusercontent.com/yusufaliozkan/clone-zotero-intelligence-bibliography/181b55d8cbe066fee0074cbbd9e0e6bfdfbed570/images/02_icon/IntelArchive_Digital_Icon_Colour-Negative.svg",
-        initial_sidebar_state="auto"
+        initial_sidebar_state="expanded"
     )
 
 def set_page_config_centered():
@@ -88,5 +88,5 @@ def set_page_config_centered():
         layout="centered",
         page_title="IntelArchive",
         page_icon="https://raw.githubusercontent.com/yusufaliozkan/clone-zotero-intelligence-bibliography/181b55d8cbe066fee0074cbbd9e0e6bfdfbed570/images/02_icon/IntelArchive_Digital_Icon_Colour-Negative.svg",
-        initial_sidebar_state="auto"
+        initial_sidebar_state="expanded"
     )
