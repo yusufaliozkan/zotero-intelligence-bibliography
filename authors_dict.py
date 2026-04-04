@@ -1,4 +1,5 @@
 import pandas as pd
+from rapidfuzz import fuzz, process
 
 name_replacements = {
     'David Gioe': 'David V. Gioe',
@@ -6,7 +7,7 @@ name_replacements = {
     'David Vincent Gioe': 'David V. Gioe',
     'Michael Goodman': 'Michael S. Goodman',
     'Michael S Goodman': 'Michael S. Goodman',
-    'Michael Simon Goodman': 'Michael S. Gacoodman',
+    'Michael Simon Goodman': 'Michael S. Goodman',
     'Thomas Maguire':'Thomas J. Maguire',
     'Thomas Joseph Maguire':'Thomas J. Maguire',
     'Huw John Davies':'Huw J. Davies',
@@ -63,14 +64,43 @@ name_replacements = {
     'Celia G. Parker':'Celia G. Parker-Vincent',
     'Celia Parker-Vincent':'Celia G. Parker-Vincent',
     'G. H. Bennett':'Gill Bennett',
-    'Emrah Safa Gürkan':'Emrah Safa Gurkan'
+    'Emrah Safa Gürkan':'Emrah Safa Gurkan',
+    'Kristian Gustafson':'Kristian C. Gustafson',
+    'Joseph Caddell Jr':'Joseph W. Caddell Jr.',
+    'Joseph W. Caddell JR':'Joseph W. Caddell Jr.'
 }
+
+# def get_df_authors():
+#     df_authors = pd.read_csv('all_items.csv')
+#     df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+#     df_authors = df_authors.explode('Author_name')
+#     df_authors.reset_index(drop=True, inplace=True)
+#     df_authors = df_authors.dropna(subset=['FirstName2'])
+#     df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
+#     return df_authors
 
 def get_df_authors():
     df_authors = pd.read_csv('all_items.csv')
-    df_authors['Author_name'] = df_authors['FirstName2'].apply(lambda x: x.split(', ') if isinstance(x, str) and x else x)
+    df_authors['Author_name'] = df_authors['FirstName2'].apply(
+        lambda x: x.split(', ') if isinstance(x, str) and x else x
+    )
     df_authors = df_authors.explode('Author_name')
     df_authors.reset_index(drop=True, inplace=True)
     df_authors = df_authors.dropna(subset=['FirstName2'])
-    df_authors['Author_name'] = df_authors['Author_name'].map(name_replacements).fillna(df_authors['Author_name'])
+
+    # ── Step 1: Manual replacements ──────────────────────────────────────────
+    df_authors['Author_name'] = df_authors['Author_name'].map(
+        name_replacements
+    ).fillna(df_authors['Author_name'])
+
+    # ── Step 2: Auto replacements from pre-computed CSV ──────────────────────
+    try:
+        auto_df = pd.read_csv("author_auto_replacements.csv")
+        auto_replacements = dict(zip(auto_df["variant"], auto_df["canonical"]))
+        df_authors['Author_name'] = df_authors['Author_name'].map(
+            auto_replacements
+        ).fillna(df_authors['Author_name'])
+    except FileNotFoundError:
+        pass
+
     return df_authors

@@ -1,12 +1,145 @@
-def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inline=None):
+# def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inline=None, base_url="https://intelligence.streamlit.app"):
+#     # Accept Series or dict
+#     if hasattr(row, "to_dict"):
+#         row = row.to_dict()
+
+#     import pandas as pd
+
+#     def _clean(x):
+#         # Return "" for None/NaN/blank; otherwise stripped string
+#         try:
+#             if x is None or pd.isna(x):
+#                 return ""
+#         except Exception:
+#             pass
+#         s = str(x).strip()
+#         return s if s else ""
+
+#     # --- fields ---
+#     try:
+#         citation = int(float(row.get("Citation", 0) or row.get("citation_count", 0) or 0))
+#     except (ValueError, TypeError):
+#         citation = 0
+#     citation_link       = _clean(row.get("Citation_list"))
+#     link_to_publication = _clean(row.get("Link to publication"))
+#     zotero_link         = _clean(row.get("Zotero link"))
+#     oa_url_fixed        = _clean(row.get("OA_link")).replace(" ", "%20")
+
+#     pub_link_badge    = f"[:blue-badge[Publication link]]({link_to_publication})" if link_to_publication else ""
+#     zotero_link_badge = f"[:red-badge[Zotero link]]({zotero_link})" if zotero_link else ""
+#     oa_link_text      = f"[:green-badge[OA version]]({oa_url_fixed})" if oa_url_fixed else ""
+#     if citation > 0:
+#         if citation_link:
+#             citation_text = f"[:orange-badge[Cited by {citation}]]({citation_link})"
+#         else:
+#             citation_text = f":orange-badge[Cited by {citation}]"
+#     else:
+#         citation_text = ""
+
+#     # --- multiple inline review badges ---
+#     parent_key = row.get("parentKey")
+#     if not parent_key and zotero_link:
+#         parent_key = zotero_link.rstrip("/").split("/")[-1]
+
+#     # Publication page badge
+#     BASE_URL = "https://intelligence.streamlit.app"
+#     pub_page_badge = f"[:gray-badge[📄 IntelArchive details]]({BASE_URL}/?item={parent_key})" if parent_key else ""
+
+#     book_review_badges = ""
+#     if reviews_map:
+#         links = reviews_map.get(parent_key) or []
+#         if links:
+#             if len(links) == 1:
+#                 book_review_badges = f"[:violet-badge[Book review]]({links[0]})"
+#             else:
+#                 n = len(links) if max_reviews_inline is None else min(len(links), max_reviews_inline)
+#                 book_review_badges = " ".join(
+#                     f"[:violet-badge[Book review {i+1}]]({links[i]})" for i in range(n)
+#                 )
+#                 if max_reviews_inline is not None and len(links) > n:
+#                     book_review_badges += f" [:violet-badge[+{len(links)-n} more]]({links[0]})"
+
+#     # Build the common badges string ONCE
+#     badges = " ".join(filter(None, [
+#         pub_link_badge,
+#         zotero_link_badge,
+#         book_review_badges,
+#         oa_link_text,
+#         citation_text if include_citation else "",
+#         pub_page_badge,   # ← included here
+#     ]))
+
+#     # --- display fields ---
+#     publication_type = _clean(row.get("Publication type"))
+#     title           = _clean(row.get("Title"))
+#     authors         = _clean(row.get("FirstName2"))
+#     date_published  = _clean(row.get("Date published"))
+#     book_title      = _clean(row.get("Book_title"))
+#     thesis_type     = _clean(row.get("Thesis_type"))
+#     thesis_type2    = f"{thesis_type}: " if thesis_type else ""
+#     university      = _clean(row.get("University"))
+
+#     # NaN-safe journal/publisher logic
+#     j = _clean(row.get("Journal"))
+#     p = _clean(row.get("Publisher"))
+#     if j:
+#         pub_src_segment = f"(Published in: *{j}*) "
+#     elif p:
+#         pub_src_segment = f"(Published by: *{p}*) "
+#     else:
+#         pub_src_segment = ""
+
+#     # --- output ---
+#     if publication_type == "Book chapter":
+#         return (
+#             f"**{publication_type}**: {title} "
+#             f"(in: *{book_title}*) "
+#             f"(by *{authors}*) "
+#             f"(Publication date: {date_published}) "
+#             f"{badges}"
+#         )
+#     elif publication_type == "Thesis":
+#         return (
+#             f"**{publication_type}**: {title} "
+#             f"({thesis_type2}*{university}*) "
+#             f"(by *{authors}*) "
+#             f"(Publication date: {date_published}) "
+#             f"{badges}"
+#         )
+#     else:
+#         # Books and everything else
+#         return (
+#             f"**{publication_type}**: {title} "
+#             f"(by *{authors}*) "
+#             f"(Publication date: {date_published}) "
+#             f"{pub_src_segment}"
+#             f"{badges}"
+#         )
+
+import pandas as pd
+from authors_dict import name_replacements
+
+_auto_replacements = {}
+try:
+    _auto_df = pd.read_csv("author_auto_replacements.csv")
+    _auto_replacements = dict(zip(_auto_df["variant"], _auto_df["canonical"]))
+except FileNotFoundError:
+    pass
+
+def _resolve_author(name):
+    name = name_replacements.get(name, name)
+    name = _auto_replacements.get(name, name)
+    return name
+
+def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inline=None, base_url="https://intelligence.streamlit.app"):
     # Accept Series or dict
     if hasattr(row, "to_dict"):
         row = row.to_dict()
 
     import pandas as pd
+    import re
 
     def _clean(x):
-        # Return "" for None/NaN/blank; otherwise stripped string
         try:
             if x is None or pd.isna(x):
                 return ""
@@ -14,6 +147,22 @@ def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inlin
             pass
         s = str(x).strip()
         return s if s else ""
+
+    def _author_links(authors_str, base_url):
+        """Convert comma-separated author string into hyperlinked author names."""
+        if not authors_str:
+            return ""
+        def to_slug(name):
+            name = name.lower().strip()
+            name = re.sub(r'[^a-z0-9\s-]', '', name)
+            name = re.sub(r'\s+', '-', name)
+            return name
+        parts = [a.strip() for a in authors_str.split(",") if a.strip()]
+        linked = [
+            f"[{a}]({base_url}/?author_profile={to_slug(_resolve_author(a))})"
+            for a in parts
+        ]
+        return ", ".join(linked)
 
     # --- fields ---
     try:
@@ -26,7 +175,7 @@ def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inlin
     oa_url_fixed        = _clean(row.get("OA_link")).replace(" ", "%20")
 
     pub_link_badge    = f"[:blue-badge[Publication link]]({link_to_publication})" if link_to_publication else ""
-    zotero_link_badge = f"[:blue-badge[Zotero link]]({zotero_link})" if zotero_link else ""
+    zotero_link_badge = f"[:red-badge[Zotero link]]({zotero_link})" if zotero_link else ""
     oa_link_text      = f"[:green-badge[OA version]]({oa_url_fixed})" if oa_url_fixed else ""
     if citation > 0:
         if citation_link:
@@ -36,49 +185,47 @@ def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inlin
     else:
         citation_text = ""
 
-    # --- multiple inline review badges ---
     parent_key = row.get("parentKey")
     if not parent_key and zotero_link:
         parent_key = zotero_link.rstrip("/").split("/")[-1]
+
+    BASE_URL = "https://intelligence.streamlit.app"
+    pub_page_badge = f"[:gray-badge[📄 IntelArchive details]]({BASE_URL}/?item={parent_key})" if parent_key else ""
 
     book_review_badges = ""
     if reviews_map:
         links = reviews_map.get(parent_key) or []
         if links:
             if len(links) == 1:
-                # exactly one review: no number
                 book_review_badges = f"[:violet-badge[Book review]]({links[0]})"
             else:
-                # multiple reviews: number them
                 n = len(links) if max_reviews_inline is None else min(len(links), max_reviews_inline)
                 book_review_badges = " ".join(
                     f"[:violet-badge[Book review {i+1}]]({links[i]})" for i in range(n)
                 )
-                # optional "+N more" cap
                 if max_reviews_inline is not None and len(links) > n:
-                    # assumes links[0] is newest if you sorted upstream
                     book_review_badges += f" [:violet-badge[+{len(links)-n} more]]({links[0]})"
 
-    # Build the common badges string ONCE
     badges = " ".join(filter(None, [
         pub_link_badge,
         zotero_link_badge,
         book_review_badges,
         oa_link_text,
-        citation_text if include_citation else ""
+        citation_text if include_citation else "",
+        pub_page_badge,
     ]))
 
     # --- display fields ---
     publication_type = _clean(row.get("Publication type"))
-    title           = _clean(row.get("Title"))
-    authors         = _clean(row.get("FirstName2"))
-    date_published  = _clean(row.get("Date published"))
-    book_title      = _clean(row.get("Book_title"))
-    thesis_type     = _clean(row.get("Thesis_type"))
-    thesis_type2    = f"{thesis_type}: " if thesis_type else ""
-    university      = _clean(row.get("University"))
+    title            = _clean(row.get("Title"))
+    authors_raw      = _clean(row.get("FirstName2"))
+    authors          = _author_links(authors_raw, base_url)
+    date_published   = _clean(row.get("Date published"))
+    book_title       = _clean(row.get("Book_title"))
+    thesis_type      = _clean(row.get("Thesis_type"))
+    thesis_type2     = f"{thesis_type}: " if thesis_type else ""
+    university       = _clean(row.get("University"))
 
-    # NaN-safe journal/publisher logic
     j = _clean(row.get("Journal"))
     p = _clean(row.get("Publisher"))
     if j:
@@ -93,7 +240,7 @@ def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inlin
         return (
             f"**{publication_type}**: {title} "
             f"(in: *{book_title}*) "
-            f"(by *{authors}*) "
+            f"(by {authors}) "
             f"(Publication date: {date_published}) "
             f"{badges}"
         )
@@ -101,15 +248,14 @@ def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inlin
         return (
             f"**{publication_type}**: {title} "
             f"({thesis_type2}*{university}*) "
-            f"(by *{authors}*) "
+            f"(by {authors}) "
             f"(Publication date: {date_published}) "
             f"{badges}"
         )
     else:
-        # Books and everything else
         return (
             f"**{publication_type}**: {title} "
-            f"(by *{authors}*) "
+            f"(by {authors}) "
             f"(Publication date: {date_published}) "
             f"{pub_src_segment}"
             f"{badges}"

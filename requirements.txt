@@ -1,4 +1,4 @@
-streamlit==1.44.0
+streamlit==1.46.0
 pandas==1.5.3
 pyzotero==1.5.5
 PyQt6==6.6.1
@@ -20,9 +20,15 @@ pdfkit==1.0.0
 fuzzywuzzy==0.18.0
 pyparsing==3.1.2
 beautifulsoup4==4.12.3
-atproto==0.0.56
+atproto==0.0.49
 grapheme==0.6.0
 gspread
 pycountry==24.6.1
 spacy
+requests==2.31.0
+requests-oauthlib==1.3.1
 countryinfo==0.1.2
+st-theme
+anthropic
+scikit-learn
+rapidfuzz
