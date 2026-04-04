@@ -1,0 +1,30 @@
+name: Weekly Digest Email
+
+on:
+  workflow_dispatch:  # allow manual trigger for testing
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9am UTC
+
+jobs:
+  send_digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pandas
+
+      - name: Send weekly digest
+        run: python send_digest.py
+        env:
+          SMTP_SERVER:   ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT:     ${{ secrets.SMTP_PORT }}
+          SMTP_USER:     ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          DIGEST_TO:     ${{ secrets.DIGEST_TO }}
