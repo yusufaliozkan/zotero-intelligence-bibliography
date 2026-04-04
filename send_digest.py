@@ -50,7 +50,13 @@ def build_html_digest(df):
                 source = ""
 
             authors_display = authors if authors and authors != "nan" else "N/A"
-            date_display    = date_pub if date_pub and date_pub != "nan" else "N/A"
+            if date_pub and date_pub != "nan":
+                try:
+                    date_display = pd.to_datetime(date_pub).strftime("%d %B %Y")
+                except Exception:
+                    date_display = date_pub
+            else:
+                date_display = "N/A"
 
             link_to_publication = str(row.get("Link to publication", "")).strip()
             if link_to_publication == "nan":
