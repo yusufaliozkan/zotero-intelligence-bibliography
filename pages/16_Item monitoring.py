@@ -740,7 +740,7 @@ else:
                                     )
                                     if save_dismissed(df_dismissed, sha):
                                         st.success(f"✅ {len(new_rows)} item(s) dismissed and saved.")
-                                        st.rerun()
+                                        st.rerun(scope="fragment")
                                     else:
                                         st.error("Failed to save to GitHub. Check your token and repo name in secrets.")
                                 else:
@@ -760,7 +760,7 @@ else:
                                 empty = pd.DataFrame(columns=["DOI", "Title"])
                                 if save_dismissed(empty, sha_view):
                                     st.success("Dismissed list cleared.")
-                                    st.rerun()
+                                    st.rerun(scope="fragment")
 
                     # ---------------------------------------------------------------------------
                     # Main monitoring scan
@@ -898,7 +898,7 @@ else:
                             if not dfs:
                                 st.warning("No articles found.")
                                 status.update(label="Search complete!", state="complete", expanded=True)
-                                st.stop()
+                                return  # use return instead of st.stop() inside a fragment
 
                             final_df = pd.concat(dfs, ignore_index=True).drop_duplicates(subset='Link')
                             historical_journal_filtered = final_df[final_df['Journal'].isin(journals_with_filtered_items)]
