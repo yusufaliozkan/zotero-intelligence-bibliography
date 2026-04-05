@@ -4,12 +4,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 import os
-import datetime as dt
 
 BASE_URL = "https://intelligence.streamlit.app"
 EVENTS_URL = f"{BASE_URL}/Events"
 
-# Google Sheets CSV export URLs
 SHEET_ID = "10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI"
 
 def sheet_url(gid):
@@ -30,31 +28,32 @@ def get_new_items(days=7):
     new_items = new_items.sort_values("Date added", ascending=False)
     return new_items
 
-def get_upcoming_conferences():
+def get_upcoming_events():
     today = pd.Timestamp.now().normalize()
     try:
-        df1 = pd.read_csv(sheet_url(GID_CONF_MAIN))
-        df2 = pd.read_csv(sheet_url(GID_CONF_V2))
-        if 'Timestamp' in df2.columns:
-            df2 = df2.drop('Timestamp', axis=1)
+        df1 = pd.read_csv(sheet_url(GID_EVENTS_MAIN))
+        df2 = pd.read_csv(sheet_url(GID_EVENTS_FORMS))
+        df2 = df2.rename(columns={
+            'Event name': 'event_name',
+            'Event organiser': 'organiser',
+            'Link to the event': 'link',
+            'Date of event': 'date',
+            'Event venue': 'venue',
+            'Details': 'details'
+        })
         df = pd.concat([df1, df2], axis=0)
-        df = df.drop_duplicates(subset=['link'], keep='first')
-        df['date']     = pd.to_datetime(df['date'],     infer_datetime_format=True, errors='coerce')
-        df['date_end'] = pd.to_datetime(df['date_end'], infer_datetime_format=True, errors='coerce')
-        # For rows where date_end is NaT, fall back to date
-        df['date_end'] = df['date_end'].fillna(df['date'])
-        print(f"Conferences after parse: {len(df)} rows")
-        print(df[['conference_name', 'date', 'date_end']].to_string())
-        df = df[df['date_end'] >= today].sort_values('date')
-        print(f"Conferences after filter: {len(df)} rows")
-        df['date_display']     = df['date'].dt.strftime('%d %B %Y')
-        df['date_end_display'] = df['date_end'].dt.strftime('%d %B %Y')
+        df = df.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+        df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True, errors='coerce')
+        print(f"Events after parse: {len(df)} rows")
+        df = df[df['date'] >= today].sort_values('date')
+        print(f"Events after filter: {len(df)} rows")
+        df['date_display'] = df['date'].dt.strftime('%d %B %Y')
         df['venue']     = df['venue'].fillna('').astype(str)
         df['organiser'] = df['organiser'].fillna('').astype(str)
         df['link']      = df['link'].fillna('').astype(str)
         return df
     except Exception as e:
-        print(f"Error fetching conferences: {e}")
+        print(f"Error fetching events: {e}")
         return pd.DataFrame()
 
 def get_upcoming_conferences():
@@ -66,8 +65,9 @@ def get_upcoming_conferences():
             df2 = df2.drop('Timestamp', axis=1)
         df = pd.concat([df1, df2], axis=0)
         df = df.drop_duplicates(subset=['link'], keep='first')
-        df['date']     = pd.to_datetime(df['date'], dayfirst=False, errors='coerce')
-        df['date_end'] = pd.to_datetime(df['date_end'], dayfirst=False, errors='coerce')
+        df['date']     = pd.to_datetime(df['date'],     infer_datetime_format=True, errors='coerce')
+        df['date_end'] = pd.to_datetime(df['date_end'], infer_datetime_format=True, errors='coerce')
+        df['date_end'] = df['date_end'].fillna(df['date'])
         print(f"Conferences after parse: {len(df)} rows")
         print(df[['conference_name', 'date', 'date_end']].to_string())
         df = df[df['date_end'] >= today].sort_values('date')
@@ -89,7 +89,7 @@ def get_upcoming_cfp():
         df2 = pd.read_csv(sheet_url(GID_CFP_V2))
         df = pd.concat([df1, df2], axis=0)
         df = df.drop_duplicates(subset=['name', 'link', 'deadline'], keep='first')
-        df['deadline'] = pd.to_datetime(df['deadline'], dayfirst=False, errors='coerce')
+        df['deadline'] = pd.to_datetime(df['deadline'], infer_datetime_format=True, errors='coerce')
         print(f"CFPs after parse: {len(df)} rows")
         df = df[df['deadline'] >= today].sort_values('deadline')
         print(f"CFPs after filter: {len(df)} rows")
@@ -100,6 +100,9 @@ def get_upcoming_cfp():
     except Exception as e:
         print(f"Error fetching CFPs: {e}")
         return pd.DataFrame()
+
+def build_events_html(events_df, conferences_df, cfp_df):
+    html = ""
 
     # ── Events ────────────────────────────────────────────────────────────────
     if not events_df.empty:
