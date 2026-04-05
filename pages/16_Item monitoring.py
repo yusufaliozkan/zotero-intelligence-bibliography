@@ -671,6 +671,8 @@ else:
                             print(f"Failed to post: {e}")
             post_events()
         else:
+            @st.fragment
+            def item_monitoring_section():
                     st.subheader('Item monitoring section', anchor=False)
 
                     # ---------------------------------------------------------------------------
@@ -1012,6 +1014,7 @@ else:
                             display_with_dismiss(df_not, "Other resources")
 
                             status.update(label="Search complete!", state="complete", expanded=True)
+            item_monitoring_section()
 st.write('---')
 
 display_custom_license()
