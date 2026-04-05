@@ -10,7 +10,7 @@ import datetime
 import plotly.express as px
 import numpy as np
 import re
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 import nltk
 nltk.download('all')
 from nltk.corpus import stopwords
