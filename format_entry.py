@@ -176,12 +176,12 @@ def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inlin
 
     pub_link_badge    = f"[:blue-badge[Publication link]]({link_to_publication})" if link_to_publication else ""
     zotero_link_badge = f"[:red-badge[Zotero link]]({zotero_link})" if zotero_link else ""
-    oa_link_text      = f"[:green-badge[OA version]]({oa_url_fixed})" if oa_url_fixed else ""
+    oa_link_text      = f"[:orange-badge[OA version]]({oa_url_fixed})" if oa_url_fixed else ""
     if citation > 0:
         if citation_link:
-            citation_text = f"[:orange-badge[Cited by {citation}]]({citation_link})"
+            citation_text = f"[:gray-badge[Cited by {citation}]]({citation_link})"
         else:
-            citation_text = f":orange-badge[Cited by {citation}]"
+            citation_text = f":gray-badge[Cited by {citation}]"
     else:
         citation_text = ""
 
@@ -190,7 +190,7 @@ def format_entry(row, include_citation=True, reviews_map=None, max_reviews_inlin
         parent_key = zotero_link.rstrip("/").split("/")[-1]
 
     BASE_URL = "https://intelligence.streamlit.app"
-    pub_page_badge = f"[:gray-badge[📄 IntelArchive details]]({BASE_URL}/?item={parent_key})" if parent_key else ""
+    pub_page_badge = f"[:green-badge[📄 IntelArchive details]]({BASE_URL}/?item={parent_key})" if parent_key else ""
 
     book_review_badges = ""
     if reviews_map:
