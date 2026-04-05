@@ -671,350 +671,319 @@ else:
                             print(f"Failed to post: {e}")
             post_events()
         else:
-            @st.fragment
-            def item_monitoring_section():
-                    st.subheader('Item monitoring section', anchor=False)
+                    @st.fragment
+                    def item_monitoring_section():
+                        st.subheader('Item monitoring section', anchor=False)
 
-                    # ---------------------------------------------------------------------------
-                    # GitHub helper — read and write dismissed.csv via API
-                    # ---------------------------------------------------------------------------
-                    GITHUB_TOKEN = st.secrets["github_token"]
-                    GITHUB_REPO = st.secrets["github_repo"]  # e.g. "yourusername/zotero-intelligence-bibliography"
-                    DISMISSED_PATH = "dismissed.csv"
+                        GITHUB_TOKEN = st.secrets["github_token"]
+                        GITHUB_REPO = st.secrets["github_repo"]
+                        DISMISSED_PATH = "dismissed.csv"
 
-                    def load_dismissed():
-                        url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{DISMISSED_PATH}"
-                        headers = {"Authorization": f"token {GITHUB_TOKEN}"}
-                        r = requests.get(url, headers=headers)
-                        if r.status_code == 200:
+                        def load_dismissed():
+                            url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{DISMISSED_PATH}"
+                            headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+                            r = requests.get(url, headers=headers)
+                            if r.status_code == 200:
+                                import base64
+                                content = base64.b64decode(r.json()["content"]).decode("utf-8")
+                                from io import StringIO
+                                df = pd.read_csv(StringIO(content))
+                                return df, r.json()["sha"]
+                            else:
+                                return pd.DataFrame(columns=["DOI", "Title"]), None
+
+                        def save_dismissed(df_dismissed, sha):
                             import base64
-                            content = base64.b64decode(r.json()["content"]).decode("utf-8")
-                            from io import StringIO
-                            df = pd.read_csv(StringIO(content))
-                            return df, r.json()["sha"]
-                        else:
-                            return pd.DataFrame(columns=["DOI", "Title"]), None
+                            csv_content = df_dismissed.to_csv(index=False)
+                            encoded = base64.b64encode(csv_content.encode("utf-8")).decode("utf-8")
+                            url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{DISMISSED_PATH}"
+                            headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+                            payload = {"message": "Update dismissed.csv via Streamlit admin", "content": encoded, "sha": sha}
+                            r = requests.put(url, json=payload, headers=headers)
+                            return r.status_code == 200
 
-                    def save_dismissed(df_dismissed, sha):
-                        import base64
-                        from io import StringIO
-                        csv_content = df_dismissed.to_csv(index=False)
-                        encoded = base64.b64encode(csv_content.encode("utf-8")).decode("utf-8")
-                        url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{DISMISSED_PATH}"
-                        headers = {"Authorization": f"token {GITHUB_TOKEN}"}
-                        payload = {
-                            "message": "Update dismissed.csv via Streamlit admin",
-                            "content": encoded,
-                            "sha": sha
-                        }
-                        r = requests.put(url, json=payload, headers=headers)
-                        return r.status_code == 200
-
-                    def display_with_dismiss(df, section_label, id_col="DOI", use_title_fallback=False):
-                        """Show a dataframe with a Dismiss? checkbox column and a dismiss button."""
-                        if df.empty:
-                            st.write(f"No items found.")
-                            return
-
-                        df = df.copy().reset_index(drop=True)
-                        df.insert(0, "Dismiss?", False)
-                        edited = st.data_editor(df, key=f"editor_{section_label}", use_container_width=True)
-
-                        to_dismiss = edited[edited["Dismiss?"] == True]
-                        if not to_dismiss.empty:
-                            if st.button(f"Dismiss selected ({len(to_dismiss)}) from '{section_label}'", key=f"btn_{section_label}"):
-                                df_dismissed, sha = load_dismissed()
-                                new_rows = []
-                                for _, row in to_dismiss.iterrows():
-                                    doi = str(row.get("DOI", "")).strip() if "DOI" in row else ""
-                                    title = str(row.get("Title", "")).strip()
-                                    # Avoid duplicates
-                                    already = (
-                                        (df_dismissed["DOI"] == doi) | (df_dismissed["Title"] == title)
-                                    ).any()
-                                    if not already:
-                                        new_rows.append({"DOI": doi, "Title": title})
-                                if new_rows:
-                                    df_dismissed = pd.concat(
-                                        [df_dismissed, pd.DataFrame(new_rows)], ignore_index=True
-                                    )
-                                    if save_dismissed(df_dismissed, sha):
-                                        st.success(f"✅ {len(new_rows)} item(s) dismissed and saved.")
-                                        st.rerun(scope="fragment")
+                        def display_with_dismiss(df, section_label):
+                            if df.empty:
+                                st.write("No items found.")
+                                return
+                            df = df.copy().reset_index(drop=True)
+                            df.insert(0, "Dismiss?", False)
+                            edited = st.data_editor(df, key=f"editor_{section_label}", use_container_width=True)
+                            to_dismiss = edited[edited["Dismiss?"] == True]
+                            if not to_dismiss.empty:
+                                if st.button(f"Dismiss selected ({len(to_dismiss)}) from '{section_label}'", key=f"btn_{section_label}"):
+                                    df_dismissed, sha = load_dismissed()
+                                    new_rows = []
+                                    for _, row in to_dismiss.iterrows():
+                                        doi = str(row.get("DOI", "")).strip() if "DOI" in row else ""
+                                        title = str(row.get("Title", "")).strip()
+                                        already = ((df_dismissed["DOI"] == doi) | (df_dismissed["Title"] == title)).any()
+                                        if not already:
+                                            new_rows.append({"DOI": doi, "Title": title})
+                                    if new_rows:
+                                        df_dismissed = pd.concat([df_dismissed, pd.DataFrame(new_rows)], ignore_index=True)
+                                        if save_dismissed(df_dismissed, sha):
+                                            st.success(f"✅ {len(new_rows)} item(s) dismissed and saved.")
+                                            st.rerun(scope="fragment")
+                                        else:
+                                            st.error("Failed to save to GitHub.")
                                     else:
-                                        st.error("Failed to save to GitHub. Check your token and repo name in secrets.")
+                                        st.info("All selected items were already dismissed.")
+
+                        # View / manage dismissed list
+                        with st.expander("View / manage dismissed items"):
+                            df_dismissed_view, sha_view = load_dismissed()
+                            if df_dismissed_view.empty:
+                                st.write("No dismissed items yet.")
+                            else:
+                                st.dataframe(df_dismissed_view, use_container_width=True)
+                                st.caption(f"{len(df_dismissed_view)} item(s) permanently dismissed.")
+                                if st.button("Clear all dismissed items"):
+                                    empty = pd.DataFrame(columns=["DOI", "Title"])
+                                    if save_dismissed(empty, sha_view):
+                                        st.success("Dismissed list cleared.")
+                                        st.rerun(scope="fragment")
+
+                        # Main monitoring scan
+                        if st.button("Run item monitoring"):
+                            with st.status("Scanning sources to find items...", expanded=True) as status:
+                                api_links = [
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s33269604&sort=publication_year:desc&per_page=10',
+                                    "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10",
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s4210168073&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s2764506647&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s2764781490&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s93928036&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s962698607&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s199078552&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s145781505&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s120387555&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s161550498&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s164505828&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s99133842&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s4210219209&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s185196701&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s157188123&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s79519963&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s161027966&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s4210201145&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s2764954702&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s200077084&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s27717133&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s4210214688&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s112911512&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s131264395&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s154084123&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s103350616&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s17185278&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s21016770&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s41746314&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s56601287&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s143110675&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s106532728&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s67329160&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s49917718&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s8593340&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s161552967&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s141724154&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s53578506&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s4210184262&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s4210236978&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s120889147&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?filter=primary_location.source.id:s86954274&sort=publication_year:desc&per_page=10',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s117224066&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s160097506&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s175405714&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s84944781&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s154337186&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s156235965&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s68909633&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s42104779&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764513295&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s82119083&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s129176075&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764608241&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=primary_topic.id:t12572&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=concepts.id:c558872910&sort=publication_year:desc',
+                                    'https://api.openalex.org/works?page=1&filter=concepts.id:c173127888&sort=publication_year:desc',
+                                ]
+
+                                journals_with_filtered_items = [
+                                    'The Historical Journal', 'Journal of Policing, Intelligence and Counter Terrorism', 'Cold War History', 'RUSI Journal',
+                                    'Journal of Strategic Studies', 'War in History', 'International History Review', 'Journal of Contemporary History',
+                                    'Middle Eastern Studies', 'Diplomacy & Statecraft', 'The international journal of intelligence, security, and public affairs',
+                                    'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly',
+                                    'Journal of intelligence, conflict and warfare', 'The Journal of Conflict Studies', 'Journal of Cold War Studies', 'Survival',
+                                    'Security and Defence Quarterly', 'The Journal of Imperial and Commonwealth History', 'Review of International Studies', 'Diplomatic History',
+                                    'Cambridge Review of International Affairs', 'Public Policy and Administration', 'Armed Forces & Society', 'Studies in Conflict & Terrorism',
+                                    'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History',
+                                    'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror",
+                                    'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies', 'International Journal', 'German Law Journal',
+                                    'American Journal of International Law', 'European Journal of International Law', 'Human Rights Law Review', 'Leiden Journal of International Law',
+                                    'International & Comparative Law Quarterly', 'Journal of Conflict and Security Law', 'Journal of International Dispute Settlement', 'Security and Human Rights',
+                                    'Modern Law Review', 'International Theory', 'Michigan Journal of International Law', 'Journal of Global Security Studies', 'Intelligence Studies and Analysis in Modern Context'
+                                ]
+
+                                keywords = [
+                                    'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert', 'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis',
+                                    'spying', 'spies', 'surveillance', 'targeted killing', 'cyberespionage', ' cia ', 'rendition', ' mi6 ', ' mi5 ', ' sis ', 'security service',
+                                    'central intelligence'
+                                ]
+
+                                import time
+                                dfs = []
+                                for api_link in api_links:
+                                    openalex_headers = {"User-Agent": "IntelArchive/1.0 (mailto:y.ozkan@imperial.ac.uk)"}
+                                    response = requests.get(api_link + "&mailto=y.ozkan@imperial.ac.uk", headers=openalex_headers)
+                                    time.sleep(0.3)
+                                    if response.status_code == 200:
+                                        results = response.json().get('results', [])
+                                        titles, dois, publication_dates, dois_without_https, journals = [], [], [], [], []
+                                        today = datetime.today().date()
+                                        for result in results:
+                                            if not result:
+                                                continue
+                                            pub_date_str = result.get('publication_date')
+                                            if not pub_date_str:
+                                                continue
+                                            try:
+                                                pub_date = datetime.strptime(pub_date_str, '%Y-%m-%d').date()
+                                            except ValueError:
+                                                continue
+                                            if today - pub_date <= timedelta(days=90):
+                                                title = result.get('title')
+                                                if title and any(kw in title.lower() for kw in keywords):
+                                                    titles.append(title)
+                                                    dois.append(result.get('doi', 'Unknown'))
+                                                    publication_dates.append(pub_date_str)
+                                                    doi_value = result.get('ids', {}).get('doi', 'Unknown')
+                                                    dois_without_https.append(doi_value.split("https://doi.org/")[-1] if doi_value != 'Unknown' else 'Unknown')
+                                                    source = (result.get('primary_location') or {}).get('source')
+                                                    journals.append(source.get('display_name', 'Unknown') if source else 'Unknown')
+                                        if titles:
+                                            dfs.append(pd.DataFrame({'Title': titles, 'Link': dois, 'Publication Date': publication_dates, 'DOI': dois_without_https, 'Journal': journals}))
+
+                                if not dfs:
+                                    st.warning("No articles found.")
+                                    status.update(label="Search complete!", state="complete", expanded=True)
+                                    return
+
+                                final_df = pd.concat(dfs, ignore_index=True).drop_duplicates(subset='Link')
+                                filtered_final_df = pd.concat([
+                                    final_df[~final_df['Journal'].isin(journals_with_filtered_items)],
+                                    final_df[final_df['Journal'].isin(journals_with_filtered_items)]
+                                ], ignore_index=True)
+
+                                df_dedup = pd.read_csv('all_items.csv')
+                                df_dois = df_dedup.dropna(subset=['DOI'])[['DOI']].copy()
+                                filtered_final_df['DOI'] = filtered_final_df['DOI'].str.lower()
+                                df_dois['DOI'] = df_dois['DOI'].str.lower()
+                                merged = pd.merge(filtered_final_df, df_dois, on='DOI', how='left', indicator=True)
+                                items_not_in_df2 = merged[merged['_merge'] == 'left_only'].drop('_merge', axis=1)
+                                items_not_in_df2 = items_not_in_df2[~items_not_in_df2['Title'].str.contains('notwantedwordshere', case=False)]
+
+                                df_titles = df_dedup.dropna(subset=['Title'])[['Title']].copy()
+                                merged2 = pd.merge(items_not_in_df2, df_titles, on='Title', how='left', indicator=True)
+                                items_not_in_df3 = merged2[merged2['_merge'] == 'left_only'].drop('_merge', axis=1).sort_values('Publication Date', ascending=False).reset_index(drop=True)
+
+                                df_dismissed, sha = load_dismissed()
+                                if not df_dismissed.empty:
+                                    dismissed_dois = set(df_dismissed['DOI'].str.lower().dropna())
+                                    dismissed_titles = set(df_dismissed['Title'].str.lower().dropna())
+                                    items_not_in_df3 = items_not_in_df3[
+                                        ~items_not_in_df3['DOI'].str.lower().isin(dismissed_dois) &
+                                        ~items_not_in_df3['Title'].str.lower().isin(dismissed_titles)
+                                    ].reset_index(drop=True)
                                 else:
-                                    st.info("All selected items were already dismissed.")
+                                    dismissed_titles = set()
 
-                    # ---------------------------------------------------------------------------
-                    # Optionally view / clear dismissed list
-                    # ---------------------------------------------------------------------------
-                    with st.expander("View / manage dismissed items"):
-                        df_dismissed_view, sha_view = load_dismissed()
-                        if df_dismissed_view.empty:
-                            st.write("No dismissed items yet.")
-                        else:
-                            st.dataframe(df_dismissed_view, use_container_width=True)
-                            st.caption(f"{len(df_dismissed_view)} item(s) permanently dismissed.")
-                            if st.button("Clear all dismissed items"):
-                                empty = pd.DataFrame(columns=["DOI", "Title"])
-                                if save_dismissed(empty, sha_view):
-                                    st.success("Dismissed list cleared.")
-                                    st.rerun(scope="fragment")
-
-                    # ---------------------------------------------------------------------------
-                    # Main monitoring scan
-                    # ---------------------------------------------------------------------------
-                    item_monitoring = st.button("Run item monitoring")
-                    if item_monitoring:
-                        st.write('The following items are not in the library yet. Book reviews will not be included!')
-                        with st.status("Scanning sources to find items...", expanded=True) as status:
-                            api_links = [
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s33269604&sort=publication_year:desc&per_page=10', #IJIC
-                                "https://api.openalex.org/works?filter=primary_location.source.id:s205284143&sort=publication_year:desc&per_page=10", #The Historical Journal
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s4210168073&sort=publication_year:desc&per_page=10', #INS
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s2764506647&sort=publication_year:desc&per_page=10', #Journal of Intelligence History
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s2764781490&sort=publication_year:desc&per_page=10', #Journal of Policing, Intelligence and Counter Terrorism
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s93928036&sort=publication_year:desc&per_page=10', #Cold War History
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s962698607&sort=publication_year:desc&per_page=10', #RUSI Journal
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s199078552&sort=publication_year:desc&per_page=10', #Journal of Strategic Studies
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s145781505&sort=publication_year:desc&per_page=10', #War in History
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s120387555&sort=publication_year:desc&per_page=10', #International History Review
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s161550498&sort=publication_year:desc&per_page=10', #Journal of Contemporary History
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s164505828&sort=publication_year:desc&per_page=10', #Middle Eastern Studies
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s99133842&sort=publication_year:desc&per_page=10', #Diplomacy & Statecraft
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s4210219209&sort=publication_year:desc&per_page=10', #The international journal of intelligence, security, and public affair
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s185196701&sort=publication_year:desc&per_page=10', #Cryptologia
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s157188123&sort=publication_year:desc&per_page=10', #The Journal of Slavic Military Studies
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s79519963&sort=publication_year:desc&per_page=10', #International Affairs
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s161027966&sort=publication_year:desc&per_page=10', #Political Science Quarterly
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s4210201145&sort=publication_year:desc&per_page=10', #Journal of intelligence, conflict and warfare
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s2764954702&sort=publication_year:desc&per_page=10', #The Journal of Conflict Studies
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s200077084&sort=publication_year:desc&per_page=10', #Journal of Cold War Studies
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s27717133&sort=publication_year:desc&per_page=10', #Survival
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s4210214688&sort=publication_year:desc&per_page=10', #Security and Defence Quarterly
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s112911512&sort=publication_year:desc&per_page=10', #The Journal of Imperial and Commonwealth History
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s131264395&sort=publication_year:desc&per_page=10', #Review of International Studies
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s154084123&sort=publication_year:desc&per_page=10', #Diplomatic History
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s103350616&sort=publication_year:desc&per_page=10', #Cambridge Review of International Affairs
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s17185278&sort=publication_year:desc&per_page=10', #Public Policy and Administration
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s21016770&sort=publication_year:desc&per_page=10', #Armed Forces & Society
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s41746314&sort=publication_year:desc&per_page=10', #Studies in Conflict & Terrorism
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s56601287&sort=publication_year:desc&per_page=10', #The English Historical Review
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s143110675&sort=publication_year:desc&per_page=10', #World Politics
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s106532728&sort=publication_year:desc&per_page=10', #Israel Affairs
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s67329160&sort=publication_year:desc&per_page=10', #Australian Journal of International Affairs
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s49917718&sort=publication_year:desc&per_page=10', #Contemporary British History
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s8593340&sort=publication_year:desc&per_page=10', #The Historian
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s161552967&sort=publication_year:desc&per_page=10', #The British Journal of Politics and International Relations
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s141724154&sort=publication_year:desc&per_page=10', #Terrorism and Political Violence
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s53578506&sort=publication_year:desc&per_page=10', #Mariner's Mirror
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s4210184262&sort=publication_year:desc&per_page=10', #Small Wars & Insurgencies
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s4210236978&sort=publication_year:desc&per_page=10', #Journal of Cyber Policy
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s120889147&sort=publication_year:desc&per_page=10', #South Asia:Journal of South Asian Studies
-                                'https://api.openalex.org/works?filter=primary_location.source.id:s86954274&sort=publication_year:desc&per_page=10', #International Journal
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s117224066&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s160097506&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s175405714&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s84944781&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s154337186&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s156235965&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s68909633&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s42104779&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764513295&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s82119083&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s129176075&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2764608241&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_location.source.id:s2735957470&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=primary_topic.id:t12572&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=concepts.id:c558872910&sort=publication_year:desc',
-                                'https://api.openalex.org/works?page=1&filter=concepts.id:c173127888&sort=publication_year:desc',
-                            ]
-
-                            journals_with_filtered_items = [
-                                'The Historical Journal', 'Journal of Policing, Intelligence and Counter Terrorism', 'Cold War History', 'RUSI Journal',
-                                'Journal of Strategic Studies', 'War in History', 'International History Review','Journal of Contemporary History',
-                                'Middle Eastern Studies', 'Diplomacy & Statecraft', 'The international journal of intelligence, security, and public affairs',
-                                'Cryptologia', 'The Journal of Slavic Military Studies', 'International Affairs', 'Political Science Quarterly',
-                                'Journal of intelligence, conflict and warfare', 'The Journal of Conflict Studies','Journal of Cold War Studies', 'Survival',
-                                'Security and Defence Quarterly', 'The Journal of Imperial and Commonwealth History', 'Review of International Studies', 'Diplomatic History',
-                                'Cambridge Review of International Affairs', 'Public Policy and Administration', 'Armed Forces & Society', 'Studies in Conflict & Terrorism',
-                                'The English Historical Review', 'World Politics', 'Israel Affairs', 'Australian Journal of International Affairs', 'Contemporary British History',
-                                'The Historian', 'The British Journal of Politics and International Relations', 'Terrorism and Political Violence', "Mariner's Mirror",
-                                'Small Wars & Insurgencies', 'Journal of Cyber Policy', 'South Asia:Journal of South Asian Studies', 'International Journal', 'German Law Journal',
-                                'American Journal of International Law', 'European Journal of International Law', 'Human Rights Law Review', 'Leiden Journal of International Law',
-                                'International & Comparative Law Quarterly', 'Journal of Conflict and Security Law', 'Journal of International Dispute Settlement', 'Security and Human Rights',
-                                'Modern Law Review', 'International Theory', 'Michigan Journal of International Law', 'Journal of Global Security Studies', 'Intelligence Studies and Analysis in Modern Context'
-                            ]
-
-                            keywords = [
-                                'intelligence', 'spy', 'counterintelligence', 'espionage', 'covert', 'signal', 'sigint', 'humint', 'decipher', 'cryptanalysis',
-                                'spying', 'spies', 'surveillance', 'targeted killing', 'cyberespionage', ' cia ', 'rendition', ' mi6 ', ' mi5 ', ' sis ', 'security service',
-                                'central intelligence'
-                            ]
-
-                            dfs = []
-                            import time
-                            for api_link in api_links:
-                                openalex_headers = {"User-Agent": "IntelArchive/1.0 (mailto:y.ozkan@imperial.ac.uk)"}
-                                api_link_with_email = api_link + "&mailto=y.ozkan@imperial.ac.uk"
-                                response = requests.get(api_link_with_email, headers=openalex_headers)
-                                time.sleep(0.3)
-
-                                if response.status_code == 200:
-                                    data = response.json()
-                                    results = data.get('results', [])
-                                    titles, dois, publication_dates, dois_without_https, journals = [], [], [], [], []
-                                    today = datetime.today().date()
-                                    for result in results:
-                                        if result is None:
-                                            continue
-                                        pub_date_str = result.get('publication_date')
-                                        if pub_date_str is None:
-                                            continue
-                                        try:
-                                            pub_date = datetime.strptime(pub_date_str, '%Y-%m-%d').date()
-                                        except ValueError:
-                                            continue
-                                        if today - pub_date <= timedelta(days=90):
-                                            title = result.get('title')
-                                            if title is not None and any(keyword in title.lower() for keyword in keywords):
-                                                titles.append(title)
-                                                dois.append(result.get('doi', 'Unknown'))
-                                                publication_dates.append(pub_date_str)
-                                                ids = result.get('ids', {})
-                                                doi_value = ids.get('doi', 'Unknown')
-                                                dois_without_https.append(doi_value.split("https://doi.org/")[-1] if doi_value != 'Unknown' else 'Unknown')
-                                                primary_location = result.get('primary_location', {})
-                                                source = primary_location.get('source')
-                                                journals.append(source.get('display_name', 'Unknown') if source else 'Unknown')
-                                    if titles:
-                                        dfs.append(pd.DataFrame({
-                                            'Title': titles, 'Link': dois,
-                                            'Publication Date': publication_dates,
-                                            'DOI': dois_without_https, 'Journal': journals,
-                                        }))
-
-                            if not dfs:
-                                st.warning("No articles found.")
-                                status.update(label="Search complete!", state="complete", expanded=True)
-                                return  # use return instead of st.stop() inside a fragment
-
-                            final_df = pd.concat(dfs, ignore_index=True).drop_duplicates(subset='Link')
-                            historical_journal_filtered = final_df[final_df['Journal'].isin(journals_with_filtered_items)]
-                            other_journals = final_df[~final_df['Journal'].isin(journals_with_filtered_items)]
-                            filtered_final_df = pd.concat([other_journals, historical_journal_filtered], ignore_index=True)
-
-                            # DOI dedup against library
-                            df_dedup = pd.read_csv('all_items.csv')
-                            df_dois = df_dedup.dropna(subset=['DOI'])[['DOI']].copy()
-                            filtered_final_df['DOI'] = filtered_final_df['DOI'].str.lower()
-                            df_dois['DOI'] = df_dois['DOI'].str.lower()
-                            merged_df = pd.merge(filtered_final_df, df_dois, on='DOI', how='left', indicator=True)
-                            items_not_in_df2 = merged_df[merged_df['_merge'] == 'left_only'].drop('_merge', axis=1)
-                            words_to_exclude = ['notwantedwordshere']
-                            items_not_in_df2 = items_not_in_df2[~items_not_in_df2['Title'].str.contains('|'.join(words_to_exclude), case=False)]
-
-                            # Title dedup against library
-                            df_titles = df_dedup.dropna(subset=['Title'])[['Title']].copy()
-                            merged_df_2 = pd.merge(items_not_in_df2, df_titles, on='Title', how='left', indicator=True)
-                            items_not_in_df3 = merged_df_2[merged_df_2['_merge'] == 'left_only'].drop('_merge', axis=1)
-                            items_not_in_df3 = items_not_in_df3.sort_values(by=['Publication Date'], ascending=False).reset_index(drop=True)
-
-                            # ---------------------------------------------------------------------------
-                            # Filter out dismissed items
-                            # ---------------------------------------------------------------------------
-                            df_dismissed, sha = load_dismissed()
-                            if not df_dismissed.empty:
-                                dismissed_dois = set(df_dismissed['DOI'].str.lower().dropna())
-                                dismissed_titles = set(df_dismissed['Title'].str.lower().dropna())
-                                items_not_in_df3 = items_not_in_df3[
-                                    ~items_not_in_df3['DOI'].str.lower().isin(dismissed_dois) &
-                                    ~items_not_in_df3['Title'].str.lower().isin(dismissed_titles)
+                                items_not_in_df3['Publication Date'] = pd.to_datetime(items_not_in_df3['Publication Date'])
+                                current_date = datetime.now()
+                                future_df = items_not_in_df3[items_not_in_df3['Publication Date'] >= current_date].reset_index(drop=True)
+                                last_30_days_df = items_not_in_df3[
+                                    (items_not_in_df3['Publication Date'] <= current_date) &
+                                    (items_not_in_df3['Publication Date'] >= current_date - timedelta(days=30))
                                 ].reset_index(drop=True)
 
-                            items_not_in_df3['Publication Date'] = pd.to_datetime(items_not_in_df3['Publication Date'])
-                            current_date = datetime.now()
+                                df_item_titles = df_dedup.dropna(subset=['Title'])[['Title']].copy()
+                                from rss_feed import df_podcast, df_magazines
+                                new_podcasts = pd.merge(df_podcast, df_item_titles, on='Title', how='left', indicator=True)
+                                new_podcasts = new_podcasts[new_podcasts['_merge'] == 'left_only'].drop('_merge', axis=1).reset_index(drop=True)
+                                if dismissed_titles:
+                                    new_podcasts = new_podcasts[~new_podcasts['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
+
+                                new_magazines = pd.merge(df_magazines, df_item_titles, on='Title', how='left', indicator=True)
+                                new_magazines = new_magazines[new_magazines['_merge'] == 'left_only'].drop('_merge', axis=1).reset_index(drop=True)
+                                if dismissed_titles:
+                                    new_magazines = new_magazines[~new_magazines['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
+
+                                def fetch_rss_data(url, label):
+                                    r = requests.get(url)
+                                    root = ET.fromstring(r.content)
+                                    data = []
+                                    for item in root.findall('.//item')[1:]:
+                                        data.append({'title': item.find('title').text, 'link': item.find('link').text, 'label': label, 'pubDate': item.find('pubDate').text})
+                                    return data
+
+                                all_data = []
+                                for feed in [{"url": "https://www.aspistrategist.org.au/feed/", "label": "Australian Strategic Policy Institute"}]:
+                                    all_data.extend(fetch_rss_data(feed["url"], feed["label"]))
+                                df_other = pd.DataFrame(all_data)
+                                df_other = df_other[df_other['title'].str.contains('|'.join(["intelligence", "espionage", "spy", "oversight"]), case=False, na=False)].reset_index(drop=True)
+                                df_other = df_other.rename(columns={'title': 'Title'})
+                                df_other['Title'] = df_other['Title'].str.upper()
+                                df_titles['Title'] = df_titles['Title'].str.upper()
+
+                                def find_similar_title(title, titles, threshold=80):
+                                    for t in titles:
+                                        if fuzz.ratio(title, t) >= threshold:
+                                            return t
+                                    return None
+
+                                df_other['Similar_Title'] = df_other['Title'].apply(lambda x: find_similar_title(x, df_titles['Title'], threshold=80))
+                                df_not = df_other.merge(df_titles[['Title']], left_on='Similar_Title', right_on='Title', how='left', indicator=True)
+                                df_not = df_not[df_not['_merge'] == 'left_only'].drop(['_merge', 'Similar_Title'], axis=1).reset_index(drop=True)
+                                if dismissed_titles:
+                                    df_not = df_not[~df_not['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
+
+                                # Save all results to session state
+                                st.session_state['monitoring_results'] = {
+                                    'future_df': future_df,
+                                    'last_30_days_df': last_30_days_df,
+                                    'new_podcasts': new_podcasts,
+                                    'new_magazines': new_magazines,
+                                    'df_not': df_not,
+                                    'df_dismissed': df_dismissed,
+                                }
+                                status.update(label="Search complete!", state="complete", expanded=True)
+
+                        # Display results from session state — persists across fragment reruns from checkbox ticks
+                        if 'monitoring_results' in st.session_state:
+                            r = st.session_state['monitoring_results']
 
                             st.write('**Journal articles (future publications)**')
-                            future_df = items_not_in_df3[items_not_in_df3['Publication Date'] >= current_date].reset_index(drop=True)
-                            display_with_dismiss(future_df, "Future publications")
+                            display_with_dismiss(r['future_df'], "Future publications")
 
                             st.write('**Journal articles (published in last 30 days)**')
-                            date_30_days_ago = current_date - timedelta(days=30)
-                            last_30_days_df = items_not_in_df3[
-                                (items_not_in_df3['Publication Date'] <= current_date) &
-                                (items_not_in_df3['Publication Date'] >= date_30_days_ago)
-                            ].reset_index(drop=True)
-                            display_with_dismiss(last_30_days_df, "Last 30 days")
+                            display_with_dismiss(r['last_30_days_df'], "Last 30 days")
 
-                            # Podcasts
-                            df_item_podcast = df_dedup.dropna(subset=['Title'])[['Title']].copy()
-                            from rss_feed import df_podcast, df_magazines
-                            df_podcast_merged = pd.merge(df_podcast, df_item_podcast, on='Title', how='left', indicator=True)
-                            new_podcasts = df_podcast_merged[df_podcast_merged['_merge'] == 'left_only'].drop('_merge', axis=1).reset_index(drop=True)
-                            if not df_dismissed.empty:
-                                new_podcasts = new_podcasts[~new_podcasts['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
                             st.write('**Podcasts**')
-                            if new_podcasts.empty:
+                            if r['new_podcasts'].empty:
                                 st.write('No new podcasts!')
                             else:
-                                new_podcasts = new_podcasts.sort_values(by=['PubDate'], ascending=False)
-                                display_with_dismiss(new_podcasts, "Podcasts")
+                                display_with_dismiss(r['new_podcasts'].sort_values('PubDate', ascending=False), "Podcasts")
 
-                            # Magazines
-                            df_item_magazines = df_dedup.dropna(subset=['Title'])[['Title']].copy()
-                            df_magazines_merged = pd.merge(df_magazines, df_item_magazines, on='Title', how='left', indicator=True)
-                            new_magazines = df_magazines_merged[df_magazines_merged['_merge'] == 'left_only'].drop('_merge', axis=1).reset_index(drop=True)
-                            if not df_dismissed.empty:
-                                new_magazines = new_magazines[~new_magazines['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
                             st.write('**Magazine articles**')
-                            if new_magazines.empty:
+                            if r['new_magazines'].empty:
                                 st.write('No new magazine articles!')
                             else:
-                                new_magazines = new_magazines.sort_values(by=['PubDate'], ascending=False)
-                                display_with_dismiss(new_magazines, "Magazines")
+                                display_with_dismiss(r['new_magazines'].sort_values('PubDate', ascending=False), "Magazines")
 
                             st.write('**Other resources**')
-                            def fetch_rss_data(url, label):
-                                response = requests.get(url)
-                                rss_content = response.content
-                                root = ET.fromstring(rss_content)
-                                items = root.findall('.//item')[1:]
-                                data = []
-                                for item in items:
-                                    title = item.find('title').text
-                                    link = item.find('link').text
-                                    pub_date = item.find('pubDate').text
-                                    data.append({'title': title, 'link': link, 'label': label, 'pubDate': pub_date})
-                                return data
+                            display_with_dismiss(r['df_not'], "Other resources")
 
-                            feeds = [{"url": "https://www.aspistrategist.org.au/feed/", "label": "Australian Strategic Policy Institute"}]
-                            all_data = []
-                            for feed in feeds:
-                                all_data.extend(fetch_rss_data(feed["url"], feed["label"]))
-                            df_other = pd.DataFrame(all_data)
-                            words_to_filter = ["intelligence", "espionage", "spy", "oversight"]
-                            df_other = df_other[df_other['title'].str.contains('|'.join(words_to_filter), case=False, na=False)].reset_index(drop=True)
-                            df_other = df_other.rename(columns={'title': 'Title'})
-                            df_other['Title'] = df_other['Title'].str.upper()
-                            df_titles['Title'] = df_titles['Title'].str.upper()
-
-                            def find_similar_title(title, titles, threshold=80):
-                                for t in titles:
-                                    if fuzz.ratio(title, t) >= threshold:
-                                        return t
-                                return None
-
-                            df_other['Similar_Title'] = df_other['Title'].apply(lambda x: find_similar_title(x, df_titles['Title'], threshold=80))
-                            df_not = df_other.merge(df_titles[['Title']], left_on='Similar_Title', right_on='Title', how='left', indicator=True)
-                            df_not = df_not[df_not['_merge'] == 'left_only'].drop(['_merge', 'Similar_Title'], axis=1).reset_index(drop=True)
-                            if not df_dismissed.empty:
-                                df_not = df_not[~df_not['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
-                            display_with_dismiss(df_not, "Other resources")
-
-                            status.update(label="Search complete!", state="complete", expanded=True)
-            item_monitoring_section()
+                    item_monitoring_section()
 st.write('---')
 
 display_custom_license()
