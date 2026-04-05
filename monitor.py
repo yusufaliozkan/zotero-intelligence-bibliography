@@ -5,7 +5,7 @@ import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
-from rss_feed import df_podcast, df_magazines
+from rss_feed_simple import df_podcast, df_magazines
 
 # ---------------------------------------------------------------------------
 # CONFIG — set these as GitHub Actions secrets
