@@ -338,9 +338,10 @@ if __name__ == '__main__':
                 ~deduped['DOI'].str.lower().isin(dismissed_dois) &
                 ~deduped['Title'].str.lower().isin(dismissed_titles)
             ].reset_index(drop=True)
-            print(f"{len(deduped)} articles remaining after dismissal filter.")
+            # Also apply to podcasts and magazines
     except FileNotFoundError:
-        print("No dismissed.csv found, skipping dismissal filter.")
+        dismissed_titles = set()
+        dismissed_dois = set()
 
     current_date = datetime.now()
     future_df = deduped[deduped['Publication Date'] >= current_date].reset_index(drop=True)
@@ -354,9 +355,13 @@ if __name__ == '__main__':
 
     podcast_merged = pd.merge(df_podcast, df_lib_titles, on='Title', how='left', indicator=True)
     new_podcasts = podcast_merged[podcast_merged['_merge'] == 'left_only'].drop('_merge', axis=1).reset_index(drop=True)
+    if dismissed_titles:
+        new_podcasts = new_podcasts[~new_podcasts['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
 
     mag_merged = pd.merge(df_magazines, df_lib_titles, on='Title', how='left', indicator=True)
     new_magazines = mag_merged[mag_merged['_merge'] == 'left_only'].drop('_merge', axis=1).reset_index(drop=True)
+    if dismissed_titles:
+        new_magazines = new_magazines[~new_magazines['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
 
     total_new = len(future_df) + len(last_30_df) + len(new_podcasts) + len(new_magazines)
     print(f"Found {total_new} new item(s) total.")
