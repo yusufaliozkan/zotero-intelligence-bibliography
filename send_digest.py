@@ -286,7 +286,7 @@ def build_html_digest(df):
                         <tr>
                             <td style="padding: 28px 32px 0 32px; text-align: left;">
                                 <h2 style="font-family: Georgia, serif; color: #1a1a1a; margin: 0 0 8px 0; font-size: 1.3em;">
-                                    📚 New Publications
+                                    📚 Recently Added Publications
                                 </h2>
                                 <p style="font-family: Arial, sans-serif; color: #444; margin: 0 0 20px 0; font-size: 0.95em;">
                                     Here are the latest additions to the
