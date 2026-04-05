@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas requests fuzzywuzzy python-Levenshtein beautifulsoup4
+          pip install pandas requests fuzzywuzzy python-Levenshtein beautifulsoup4 feedparser
 
       - name: Run monitor script
         env:
