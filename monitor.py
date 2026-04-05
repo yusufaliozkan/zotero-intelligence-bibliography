@@ -328,6 +328,20 @@ if __name__ == '__main__':
     print(f"Fetched {len(raw)} candidate articles. Deduplicating...")
     deduped = deduplicate(raw)
 
+    # Filter out dismissed items
+    try:
+        dismissed = pd.read_csv('dismissed.csv')
+        if not dismissed.empty:
+            dismissed_dois = set(dismissed['DOI'].str.lower().dropna())
+            dismissed_titles = set(dismissed['Title'].str.lower().dropna())
+            deduped = deduped[
+                ~deduped['DOI'].str.lower().isin(dismissed_dois) &
+                ~deduped['Title'].str.lower().isin(dismissed_titles)
+            ].reset_index(drop=True)
+            print(f"{len(deduped)} articles remaining after dismissal filter.")
+    except FileNotFoundError:
+        print("No dismissed.csv found, skipping dismissal filter.")
+
     current_date = datetime.now()
     future_df = deduped[deduped['Publication Date'] >= current_date].reset_index(drop=True)
     last_30_df = deduped[
