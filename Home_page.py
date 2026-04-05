@@ -1688,7 +1688,6 @@ with tab1:
                             theme_links.append(f"[{row['Collection_Name']}]({app_link})")
                         st.caption(" | ".join(theme_links))
 
-                        # ── 5 most recent publications ───────────────────────────────────────
                         st.markdown("**5 most recent publications:**")
                         recent = adf.copy()
                         recent["_sort_date"] = pd.to_datetime(
@@ -1696,9 +1695,9 @@ with tab1:
                         )
                         recent = recent.sort_values("_sort_date", ascending=False) \
                                     .drop(columns=["_sort_date"]).head(5)
-                        for i, row in recent.iterrows():
+                        for i, (_, row) in enumerate(recent.iterrows(), 1):
                             st.write(
-                                f"- {format_entry(row, include_citation=True, reviews_map=reviews_map, base_url=BASE_URL)}"
+                                f"{i}) {format_entry(row, include_citation=True, reviews_map=reviews_map, base_url=BASE_URL)}"
                             )
 
                         st.divider()
