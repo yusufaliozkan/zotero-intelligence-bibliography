@@ -943,10 +943,10 @@ else:
 
                                 df_other['Similar_Title'] = df_other['Title'].apply(lambda x: find_similar_title(x, df_titles['Title'], threshold=80))
                                 df_not = df_other.merge(df_titles[['Title']], left_on='Similar_Title', right_on='Title', how='left', indicator=True)
-                                df_not = df_not[df_not['_merge'] == 'left_only'].drop(['_merge', 'Similar_Title'], axis=1).reset_index(drop=True)
+                                df_not = df_not[df_not['_merge'] == 'left_only'].drop(['_merge', 'Similar_Title', 'Title_y'], axis=1).reset_index(drop=True)
+                                df_not = df_not.rename(columns={'Title_x': 'Title'})
                                 if dismissed_titles:
                                     df_not = df_not[~df_not['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
-
                                 # Save all results to session state
                                 st.session_state['monitoring_results'] = {
                                     'future_df': future_df,
