@@ -853,6 +853,7 @@ else:
 
                             dfs = []
                             for api_link in api_links:
+                                st.write(f"Debug: fetched {len(dfs)} dataframes from {len(api_links)} API links")
                                 response = requests.get(api_link)
                                 if response.status_code == 200:
                                     data = response.json()
