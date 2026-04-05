@@ -365,16 +365,16 @@ def send_digest():
 
     smtp_server   = os.environ["SMTP_SERVER"]
     smtp_port     = int(os.environ["SMTP_PORT"])
-    smtp_user     = os.environ["SMTP_USER"]
-    smtp_password = os.environ["SMTP_PASSWORD"]
-    to_address    = os.environ["DIGEST_TO"]
+    smtp_user     = os.environ["SMTP_USER"]      # ← must be your Gmail address
+    smtp_password = os.environ["SMTP_PASSWORD"]  # ← Gmail app password
+    to_address    = os.environ["DIGEST_TO"]      # ← Google Group address
 
     today = datetime.now().strftime("%d %B %Y")
     subject = f"IntelArchive Weekly Digest — {count} new item{'s' if count != 1 else ''} · {today}"
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
-    msg["From"]    = smtp_user
+    msg["From"]    = f"IntelArchive <{smtp_user}>"  # ← shows IntelArchive as sender name
     msg["To"]      = to_address
     msg.attach(MIMEText(html, "html"))
 
