@@ -1,0 +1,31 @@
+name: Daily IntelArchive Monitor
+
+on:
+  schedule:
+    - cron: '0 7 * * *'   # Runs every day at 07:00 UTC (08:00 UK winter / 08:00 BST summer)
+  workflow_dispatch:        # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas requests fuzzywuzzy python-Levenshtein beautifulsoup4
+
+      - name: Run monitor script
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          python monitor.py
