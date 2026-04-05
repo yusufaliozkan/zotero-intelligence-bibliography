@@ -30,32 +30,31 @@ def get_new_items(days=7):
     new_items = new_items.sort_values("Date added", ascending=False)
     return new_items
 
-def get_upcoming_events():
+def get_upcoming_conferences():
     today = pd.Timestamp.now().normalize()
     try:
-        df1 = pd.read_csv(sheet_url(GID_EVENTS_MAIN))
-        df2 = pd.read_csv(sheet_url(GID_EVENTS_FORMS))
-        df2 = df2.rename(columns={
-            'Event name': 'event_name',
-            'Event organiser': 'organiser',
-            'Link to the event': 'link',
-            'Date of event': 'date',
-            'Event venue': 'venue',
-            'Details': 'details'
-        })
+        df1 = pd.read_csv(sheet_url(GID_CONF_MAIN))
+        df2 = pd.read_csv(sheet_url(GID_CONF_V2))
+        if 'Timestamp' in df2.columns:
+            df2 = df2.drop('Timestamp', axis=1)
         df = pd.concat([df1, df2], axis=0)
-        df = df.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
-        df['date'] = pd.to_datetime(df['date'], dayfirst=False, errors='coerce')
-        print(f"Events after parse: {len(df)} rows")
-        df = df[df['date'] >= today].sort_values('date')
-        print(f"Events after filter: {len(df)} rows")
-        df['date_display'] = df['date'].dt.strftime('%d %B %Y')
+        df = df.drop_duplicates(subset=['link'], keep='first')
+        df['date']     = pd.to_datetime(df['date'],     infer_datetime_format=True, errors='coerce')
+        df['date_end'] = pd.to_datetime(df['date_end'], infer_datetime_format=True, errors='coerce')
+        # For rows where date_end is NaT, fall back to date
+        df['date_end'] = df['date_end'].fillna(df['date'])
+        print(f"Conferences after parse: {len(df)} rows")
+        print(df[['conference_name', 'date', 'date_end']].to_string())
+        df = df[df['date_end'] >= today].sort_values('date')
+        print(f"Conferences after filter: {len(df)} rows")
+        df['date_display']     = df['date'].dt.strftime('%d %B %Y')
+        df['date_end_display'] = df['date_end'].dt.strftime('%d %B %Y')
         df['venue']     = df['venue'].fillna('').astype(str)
         df['organiser'] = df['organiser'].fillna('').astype(str)
         df['link']      = df['link'].fillna('').astype(str)
         return df
     except Exception as e:
-        print(f"Error fetching events: {e}")
+        print(f"Error fetching conferences: {e}")
         return pd.DataFrame()
 
 def get_upcoming_conferences():
