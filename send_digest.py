@@ -129,6 +129,7 @@ def build_html_digest(df):
                                 </p>
                                 <p style="font-family: Arial, sans-serif; font-size: 0.78em; color: #888; margin: 8px 0 0 0;">
                                     <a href="{BASE_URL}" style="color: #5cb85c; text-decoration: none;">Visit IntelArchive</a>
+                                    <a href="{BASE_URL}" style="color: #5cb85c; text-decoration: none;">Visit IntelArchive</a>
                                 </p>
                             </td>
                         </tr>
