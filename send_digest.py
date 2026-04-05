@@ -4,8 +4,23 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 import os
+import datetime as dt
 
 BASE_URL = "https://intelligence.streamlit.app"
+EVENTS_URL = f"{BASE_URL}/Events"
+
+# Google Sheets CSV export URLs
+SHEET_ID = "10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI"
+
+def sheet_url(gid):
+    return f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={gid}"
+
+GID_EVENTS_MAIN  = "0"
+GID_EVENTS_FORMS = "1941981997"
+GID_CONF_MAIN    = "939232836"
+GID_CONF_V2      = "312814443"
+GID_CFP_MAIN     = "135096406"
+GID_CFP_V2       = "1589739166"
 
 def get_new_items(days=7):
     df = pd.read_csv("all_items.csv")
@@ -14,6 +29,159 @@ def get_new_items(days=7):
     new_items = df[df["Date added"] >= cutoff].copy()
     new_items = new_items.sort_values("Date added", ascending=False)
     return new_items
+
+def get_upcoming_events():
+    today = pd.Timestamp.now().normalize()
+    try:
+        df1 = pd.read_csv(sheet_url(GID_EVENTS_MAIN))
+        df2 = pd.read_csv(sheet_url(GID_EVENTS_FORMS))
+        df2 = df2.rename(columns={
+            'Event name': 'event_name',
+            'Event organiser': 'organiser',
+            'Link to the event': 'link',
+            'Date of event': 'date',
+            'Event venue': 'venue',
+            'Details': 'details'
+        })
+        df = pd.concat([df1, df2], axis=0)
+        df = df.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
+        df['date'] = pd.to_datetime(df['date'], errors='coerce')
+        df = df[df['date'] >= today].sort_values('date')
+        df['date_display'] = df['date'].dt.strftime('%d %B %Y')
+        df['venue'] = df['venue'].fillna('').astype(str)
+        df['organiser'] = df['organiser'].fillna('').astype(str)
+        df['link'] = df['link'].fillna('').astype(str)
+        return df
+    except Exception as e:
+        print(f"Error fetching events: {e}")
+        return pd.DataFrame()
+
+def get_upcoming_conferences():
+    today = pd.Timestamp.now().normalize()
+    try:
+        df1 = pd.read_csv(sheet_url(GID_CONF_MAIN))
+        df2 = pd.read_csv(sheet_url(GID_CONF_V2))
+        if 'Timestamp' in df2.columns:
+            df2 = df2.drop('Timestamp', axis=1)
+        df = pd.concat([df1, df2], axis=0)
+        df = df.drop_duplicates(subset=['link'], keep='first')
+        df['date_end'] = pd.to_datetime(df['date_end'], errors='coerce')
+        df['date'] = pd.to_datetime(df['date'], errors='coerce')
+        df = df[df['date_end'] >= today].sort_values('date')
+        df['date_display']     = df['date'].dt.strftime('%d %B %Y')
+        df['date_end_display'] = df['date_end'].dt.strftime('%d %B %Y')
+        df['venue']     = df['venue'].fillna('').astype(str)
+        df['organiser'] = df['organiser'].fillna('').astype(str)
+        df['link']      = df['link'].fillna('').astype(str)
+        return df
+    except Exception as e:
+        print(f"Error fetching conferences: {e}")
+        return pd.DataFrame()
+
+def get_upcoming_cfp():
+    today = pd.Timestamp.now().normalize()
+    try:
+        df1 = pd.read_csv(sheet_url(GID_CFP_MAIN))
+        df2 = pd.read_csv(sheet_url(GID_CFP_V2))
+        df = pd.concat([df1, df2], axis=0)
+        df = df.drop_duplicates(subset=['name', 'link', 'deadline'], keep='first')
+        df['deadline'] = pd.to_datetime(df['deadline'], errors='coerce')
+        df = df[df['deadline'] >= today].sort_values('deadline')
+        df['deadline_display'] = df['deadline'].dt.strftime('%d %B %Y')
+        df['organiser'] = df['organiser'].fillna('').astype(str)
+        df['link']      = df['link'].fillna('').astype(str)
+        return df
+    except Exception as e:
+        print(f"Error fetching CFPs: {e}")
+        return pd.DataFrame()
+
+def build_events_html(events_df, conferences_df, cfp_df):
+    html = ""
+
+    # ── Events ────────────────────────────────────────────────────────────────
+    if not events_df.empty:
+        html += """
+        <h3 style="color: #1a1a1a; border-bottom: 2px solid #5cb85c; padding-bottom: 6px;
+                   margin-top: 28px; font-family: Georgia, serif;">
+            Upcoming Events
+        </h3>
+        """
+        for _, row in events_df.head(10).iterrows():
+            name      = str(row.get('event_name', '')).strip()
+            link      = str(row.get('link', '')).strip()
+            organiser = str(row.get('organiser', '')).strip()
+            date      = str(row.get('date_display', '')).strip()
+            venue     = str(row.get('venue', '')).strip()
+            title_html = f'<a href="{link}" style="font-weight: bold; color: #1a1a1a; text-decoration: none; font-family: Georgia, serif; font-size: 1em;">{name}</a>' if link else f'<strong>{name}</strong>'
+            html += f"""
+            <div style="margin-bottom: 12px; padding: 12px 16px; background: #f8f8f8;
+                        border-left: 4px solid #5cb85c; border-radius: 0 4px 4px 0;">
+                {title_html}<br>
+                <span style="color: #555; font-size: 0.88em; font-family: Arial, sans-serif;">
+                    {organiser} &nbsp;·&nbsp; {date}
+                    {"&nbsp;·&nbsp;" + venue if venue else ""}
+                </span>
+            </div>
+            """
+        if len(events_df) > 10:
+            html += f'<p style="font-family: Arial, sans-serif; font-size: 0.85em; color: #888;">And {len(events_df) - 10} more events. <a href="{EVENTS_URL}" style="color: #5cb85c;">See all →</a></p>'
+
+    # ── Conferences ───────────────────────────────────────────────────────────
+    if not conferences_df.empty:
+        html += """
+        <h3 style="color: #1a1a1a; border-bottom: 2px solid #5cb85c; padding-bottom: 6px;
+                   margin-top: 28px; font-family: Georgia, serif;">
+            Upcoming Conferences
+        </h3>
+        """
+        for _, row in conferences_df.head(10).iterrows():
+            name      = str(row.get('conference_name', '')).strip()
+            link      = str(row.get('link', '')).strip()
+            organiser = str(row.get('organiser', '')).strip()
+            date      = str(row.get('date_display', '')).strip()
+            date_end  = str(row.get('date_end_display', '')).strip()
+            venue     = str(row.get('venue', '')).strip()
+            title_html = f'<a href="{link}" style="font-weight: bold; color: #1a1a1a; text-decoration: none; font-family: Georgia, serif; font-size: 1em;">{name}</a>' if link else f'<strong>{name}</strong>'
+            html += f"""
+            <div style="margin-bottom: 12px; padding: 12px 16px; background: #f8f8f8;
+                        border-left: 4px solid #5cb85c; border-radius: 0 4px 4px 0;">
+                {title_html}<br>
+                <span style="color: #555; font-size: 0.88em; font-family: Arial, sans-serif;">
+                    {organiser} &nbsp;·&nbsp; {date} – {date_end}
+                    {"&nbsp;·&nbsp;" + venue if venue else ""}
+                </span>
+            </div>
+            """
+        if len(conferences_df) > 10:
+            html += f'<p style="font-family: Arial, sans-serif; font-size: 0.85em; color: #888;">And {len(conferences_df) - 10} more conferences. <a href="{EVENTS_URL}" style="color: #5cb85c;">See all →</a></p>'
+
+    # ── Call for Papers ───────────────────────────────────────────────────────
+    if not cfp_df.empty:
+        html += """
+        <h3 style="color: #1a1a1a; border-bottom: 2px solid #5cb85c; padding-bottom: 6px;
+                   margin-top: 28px; font-family: Georgia, serif;">
+            Calls for Papers
+        </h3>
+        """
+        for _, row in cfp_df.head(10).iterrows():
+            name      = str(row.get('name', '')).strip()
+            link      = str(row.get('link', '')).strip()
+            organiser = str(row.get('organiser', '')).strip()
+            deadline  = str(row.get('deadline_display', '')).strip()
+            title_html = f'<a href="{link}" style="font-weight: bold; color: #1a1a1a; text-decoration: none; font-family: Georgia, serif; font-size: 1em;">{name}</a>' if link else f'<strong>{name}</strong>'
+            html += f"""
+            <div style="margin-bottom: 12px; padding: 12px 16px; background: #f8f8f8;
+                        border-left: 4px solid #5cb85c; border-radius: 0 4px 4px 0;">
+                {title_html}<br>
+                <span style="color: #555; font-size: 0.88em; font-family: Arial, sans-serif;">
+                    {organiser} &nbsp;·&nbsp; Deadline: {deadline}
+                </span>
+            </div>
+            """
+        if len(cfp_df) > 10:
+            html += f'<p style="font-family: Arial, sans-serif; font-size: 0.85em; color: #888;">And {len(cfp_df) - 10} more calls. <a href="{EVENTS_URL}" style="color: #5cb85c;">See all →</a></p>'
+
+    return html
 
 def build_html_digest(df):
     today = datetime.now().strftime("%d %B %Y")
@@ -78,6 +246,12 @@ def build_html_digest(df):
             </div>
             """
 
+    # ── Fetch events data ─────────────────────────────────────────────────────
+    events_df      = get_upcoming_events()
+    conferences_df = get_upcoming_conferences()
+    cfp_df         = get_upcoming_cfp()
+    events_html    = build_events_html(events_df, conferences_df, cfp_df)
+
     html = f"""
     <html>
     <body style="margin: 0; padding: 0; background-color: #f4f4f4;">
@@ -108,17 +282,35 @@ def build_html_digest(df):
                             </td>
                         </tr>
 
-                        <!-- Body -->
+                        <!-- Body: Publications -->
                         <tr>
-                            <td style="padding: 28px 32px; text-align: left;">
+                            <td style="padding: 28px 32px 0 32px; text-align: left;">
+                                <h2 style="font-family: Georgia, serif; color: #1a1a1a; margin: 0 0 8px 0; font-size: 1.3em;">
+                                    📚 New Publications
+                                </h2>
                                 <p style="font-family: Arial, sans-serif; color: #444; margin: 0 0 20px 0; font-size: 0.95em;">
                                     Here are the latest additions to the
                                     <a href="{BASE_URL}" style="color: #5cb85c; text-decoration: none;">IntelArchive Intelligence Studies Database</a>.
                                 </p>
-
                                 {rows_html}
                             </td>
                         </tr>
+
+                        <!-- Body: Events -->
+                        {"" if not events_html else f'''
+                        <tr>
+                            <td style="padding: 0 32px 28px 32px; text-align: left;">
+                                <h2 style="font-family: Georgia, serif; color: #1a1a1a; margin: 32px 0 8px 0; font-size: 1.3em;">
+                                    📅 Events & Conferences
+                                </h2>
+                                <p style="font-family: Arial, sans-serif; color: #444; margin: 0 0 20px 0; font-size: 0.95em;">
+                                    Upcoming events, conferences, and calls for papers relevant to intelligence studies.
+                                    <a href="{EVENTS_URL}" style="color: #5cb85c; text-decoration: none;">See all on IntelArchive →</a>
+                                </p>
+                                {events_html}
+                            </td>
+                        </tr>
+                        '''}
 
                         <!-- Footer -->
                         <tr>
