@@ -15,6 +15,10 @@ SHEET_ID = "10ezNUOUpzBayqIMJWuS_zsvwklxP49zlfBWsiJI6aqI"
 def sheet_url(gid):
     return f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={gid}"
 
+df2 = pd.read_csv(sheet_url("312814443"))
+print(df2.columns.tolist())
+print(df2.head())
+
 GID_EVENTS_MAIN  = "0"
 GID_EVENTS_FORMS = "1941981997"
 GID_CONF_MAIN    = "939232836"
