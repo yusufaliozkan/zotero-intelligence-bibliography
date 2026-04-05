@@ -44,6 +44,10 @@ def get_upcoming_events():
         df = pd.concat([df1, df2], axis=0)
         df = df.drop_duplicates(subset=['event_name', 'link', 'date'], keep='first')
         df['date'] = pd.to_datetime(df['date'], format='%m/%d/%Y', errors='coerce')
+        df = df[
+            (df['date'] >= today) &
+            (df['date'] <= today + pd.Timedelta(days=30))
+        ].sort_values('date')
         print(f"Events after parse: {len(df)} rows")
         df = df[df['date'] >= today].sort_values('date')
         print(f"Events after filter: {len(df)} rows")
@@ -68,6 +72,10 @@ def get_upcoming_conferences():
         df['date']     = pd.to_datetime(df['date'],     format='%m/%d/%Y', errors='coerce')
         df['date_end'] = pd.to_datetime(df['date_end'], format='%m/%d/%Y', errors='coerce')
         df['date_end'] = df['date_end'].fillna(df['date'])
+        df = df[
+            (df['date_end'] >= today) &
+            (df['date'] <= today + pd.Timedelta(days=90))
+        ].sort_values('date')
         print(f"Conferences after parse: {len(df)} rows")
         print(df[['conference_name', 'date', 'date_end']].to_string())
         df = df[df['date_end'] >= today].sort_values('date')
@@ -109,7 +117,7 @@ def build_events_html(events_df, conferences_df, cfp_df):
         html += """
         <h3 style="color: #1a1a1a; border-bottom: 2px solid #5cb85c; padding-bottom: 6px;
                    margin-top: 28px; font-family: Georgia, serif;">
-            Upcoming Events
+            Upcoming Events (in the next 30 days)
         </h3>
         """
         for _, row in events_df.head(10).iterrows():
@@ -137,7 +145,7 @@ def build_events_html(events_df, conferences_df, cfp_df):
         html += """
         <h3 style="color: #1a1a1a; border-bottom: 2px solid #5cb85c; padding-bottom: 6px;
                    margin-top: 28px; font-family: Georgia, serif;">
-            Upcoming Conferences
+            Upcoming Conferences (in the next 90 days)
         </h3>
         """
         for _, row in conferences_df.head(10).iterrows():
