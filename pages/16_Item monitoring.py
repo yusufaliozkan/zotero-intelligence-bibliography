@@ -852,9 +852,11 @@ else:
                             ]
 
                             dfs = []
+                            import time
                             for api_link in api_links:
-                                response = requests.get(api_link)
-                                st.write(f"Status: {response.status_code} for {api_link[:60]}")  # temporary debug
+                                headers = {"User-Agent": "IntelArchive/1.0 (mailto:y.ozkan@imperial.ac.uk)"}
+                                response = requests.get(api_link, headers=headers)
+                                time.sleep(0.2)  # 200ms delay between requests
 
                                 if response.status_code == 200:
                                     data = response.json()
