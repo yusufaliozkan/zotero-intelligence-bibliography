@@ -1688,6 +1688,7 @@ with tab1:
                             theme_links.append(f"[{row['Collection_Name']}]({app_link})")
                         st.caption(" | ".join(theme_links))
 
+                        # ── 5 most recent publications ───────────────────────────────────────
                         st.markdown("**5 most recent publications:**")
                         recent = adf.copy()
                         recent["_sort_date"] = pd.to_datetime(
