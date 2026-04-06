@@ -862,6 +862,23 @@ else:
                                         if titles:
                                             dfs.append(pd.DataFrame({'Title': titles, 'Link': dois, 'Publication Date': publication_dates, 'DOI': dois_without_https, 'Journal': journals}))
 
+                            # DEBUG - remove after testing
+                            st.write(f"**Debug: {len(dfs)} dataframes fetched from {len(api_links)} API links**")
+                            if dfs:
+                                debug_df = pd.concat(dfs, ignore_index=True)
+                                st.write(f"Total raw articles before dedup/filtering: {len(debug_df)}")
+                                st.dataframe(debug_df.head(20))
+                            else:
+                                # Show status codes to diagnose
+                                st.write("No data returned. Testing first API link directly:")
+                                test_response = requests.get(api_links[0])
+                                st.write(f"Status code: {test_response.status_code}")
+                                if test_response.status_code == 200:
+                                    test_data = test_response.json()
+                                    st.write(f"Results returned: {len(test_data.get('results', []))}")
+                                    st.write("First result:")
+                                    st.json(test_data.get('results', [{}])[0])
+
                                 if not dfs:
                                     st.warning("No articles found.")
                                     status.update(label="Search complete!", state="complete", expanded=True)
@@ -884,6 +901,8 @@ else:
                                 df_titles = df_dedup.dropna(subset=['Title'])[['Title']].copy()
                                 merged2 = pd.merge(items_not_in_df2, df_titles, on='Title', how='left', indicator=True)
                                 items_not_in_df3 = merged2[merged2['_merge'] == 'left_only'].drop('_merge', axis=1).sort_values('Publication Date', ascending=False).reset_index(drop=True)
+
+
 
                                 df_dismissed, sha = load_dismissed()
                                 if not df_dismissed.empty:
