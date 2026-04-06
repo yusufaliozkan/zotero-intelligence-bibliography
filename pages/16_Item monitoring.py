@@ -834,9 +834,8 @@ else:
                                 import time
                                 dfs = []
                                 for api_link in api_links:
-                                    openalex_headers = {"User-Agent": "IntelArchive/1.0 (mailto:y.ozkan@imperial.ac.uk)"}
-                                    response = requests.get(api_link + "&mailto=y.ozkan@imperial.ac.uk", headers=openalex_headers)
-                                    time.sleep(0.3)
+                                    response = requests.get(api_link)
+                                    time.sleep(0.1)
                                     if response.status_code == 200:
                                         results = response.json().get('results', [])
                                         titles, dois, publication_dates, dois_without_https, journals = [], [], [], [], []
