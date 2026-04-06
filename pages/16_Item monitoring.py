@@ -835,6 +835,7 @@ else:
                                 dfs = []
                                 for api_link in api_links:
                                     response = requests.get(api_link)
+                                    st.write(f"{response.status_code} - {api_link[:50]}")
                                     time.sleep(0.1)
                                     if response.status_code == 200:
                                         results = response.json().get('results', [])
