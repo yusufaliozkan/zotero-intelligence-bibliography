@@ -69,3 +69,17 @@ jobs:
             ELAPSED=$((END_TIME - START_TIME))
           done
           echo "Workflow runtime exceeded 20 minutes. Exiting."
+
+      # Daily monitor
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install nbconvert ipykernel feedparser fuzzywuzzy python-Levenshtein beautifulsoup4
+
+      - name: Run daily monitor
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          python monitor.py
