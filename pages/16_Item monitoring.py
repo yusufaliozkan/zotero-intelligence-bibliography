@@ -709,11 +709,28 @@ else:
                         else:
                             st.dataframe(df_dismissed_view, use_container_width=True)
                             st.caption(f"{len(df_dismissed_view)} item(s) permanently dismissed.")
-                            if st.button("Clear all dismissed items"):
-                                empty = pd.DataFrame(columns=["DOI", "Title"])
-                                if save_dismissed(empty, sha_view):
-                                    st.success("Dismissed list cleared.")
-                                    st.rerun()
+                            
+                            col1, col2 = st.columns(2)
+                            
+                            with col1:
+                                if st.button("Clear all dismissed items"):
+                                    empty = pd.DataFrame(columns=["DOI", "Title", "dismissed_at"])
+                                    if save_dismissed(empty, sha_view):
+                                        st.success("Dismissed list cleared.")
+                                        st.rerun()
+                            
+                            with col2:
+                                if st.button("Clear items dismissed over 30 days ago"):
+                                    if 'dismissed_at' in df_dismissed_view.columns:
+                                        df_dismissed_view['dismissed_at'] = pd.to_datetime(df_dismissed_view['dismissed_at'], errors='coerce')
+                                        cutoff = datetime.now() - timedelta(days=30)
+                                        df_kept = df_dismissed_view[df_dismissed_view['dismissed_at'] >= cutoff].reset_index(drop=True)
+                                        removed = len(df_dismissed_view) - len(df_kept)
+                                        if save_dismissed(df_kept, sha_view):
+                                            st.success(f"Cleared {removed} item(s) dismissed over 30 days ago.")
+                                            st.rerun()
+                                    else:
+                                        st.info("No timestamps found in dismissed list — all items predate this feature.")
 
                     # Load results from CSV files saved by monitor.py (via GitHub Actions)
                     try:
@@ -757,6 +774,7 @@ else:
 
                     # Dismiss helper — works without @st.fragment since no OpenAlex calls happen
                     def display_with_dismiss(df, section_label):
+
                         if df.empty:
                             st.write("No items found.")
                             return
@@ -768,6 +786,12 @@ else:
                             if st.button(f"Dismiss selected ({len(to_dismiss)})", key=f"btn_{section_label}"):
                                 df_dismissed, sha = load_dismissed()
                                 new_rows = []
+                                from datetime import datetime
+                                new_rows.append({
+                                    "DOI": doi, 
+                                    "Title": title,
+                                    "dismissed_at": datetime.now().isoformat()
+                                })
                                 for _, row in to_dismiss.iterrows():
                                     doi = str(row.get("DOI", "")).strip() if "DOI" in row else ""
                                     title = str(row.get("Title", "")).strip()
