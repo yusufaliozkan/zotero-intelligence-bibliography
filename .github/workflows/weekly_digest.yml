@@ -1,9 +1,9 @@
-name: Weekly Digest Email
+name: Weekly Digest Email Run
 
 on:
-  workflow_dispatch:  # allow manual trigger for testing
   schedule:
-    - cron: '0 9 * * 1'  # Every Monday at 9am UTC
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:
 
 jobs:
   send_digest:
@@ -28,3 +28,6 @@ jobs:
           SMTP_USER:     ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           DIGEST_TO:     ${{ secrets.DIGEST_TO }}
+
+
+          
