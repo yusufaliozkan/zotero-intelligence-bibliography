@@ -2,7 +2,7 @@ name: Weekly Digest Email
 
 on:
   schedule:
-    - cron: '50 13 * * 1'  # Every Monday at 9am UTC
+    - cron: '0 9 * * 1'  # Every Monday at 9am UTC
   workflow_dispatch:  # allow manual trigger for testing
 
 jobs:
