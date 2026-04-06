@@ -774,7 +774,6 @@ else:
 
                     # Dismiss helper — works without @st.fragment since no OpenAlex calls happen
                     def display_with_dismiss(df, section_label):
-
                         if df.empty:
                             st.write("No items found.")
                             return
@@ -786,18 +785,16 @@ else:
                             if st.button(f"Dismiss selected ({len(to_dismiss)})", key=f"btn_{section_label}"):
                                 df_dismissed, sha = load_dismissed()
                                 new_rows = []
-                                from datetime import datetime
-                                new_rows.append({
-                                    "DOI": doi, 
-                                    "Title": title,
-                                    "dismissed_at": datetime.now().isoformat()
-                                })
                                 for _, row in to_dismiss.iterrows():
                                     doi = str(row.get("DOI", "")).strip() if "DOI" in row else ""
                                     title = str(row.get("Title", "")).strip()
                                     already = ((df_dismissed["DOI"] == doi) | (df_dismissed["Title"] == title)).any()
                                     if not already:
-                                        new_rows.append({"DOI": doi, "Title": title})
+                                        new_rows.append({
+                                            "DOI": doi,
+                                            "Title": title,
+                                            "dismissed_at": datetime.now().isoformat()
+                                        })
                                 if new_rows:
                                     df_dismissed = pd.concat([df_dismissed, pd.DataFrame(new_rows)], ignore_index=True)
                                     if save_dismissed(df_dismissed, sha):
