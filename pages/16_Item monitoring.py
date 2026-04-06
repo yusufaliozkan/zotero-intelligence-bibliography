@@ -902,7 +902,9 @@ else:
                                 merged2 = pd.merge(items_not_in_df2, df_titles, on='Title', how='left', indicator=True)
                                 items_not_in_df3 = merged2[merged2['_merge'] == 'left_only'].drop('_merge', axis=1).sort_values('Publication Date', ascending=False).reset_index(drop=True)
 
-
+                                # DEBUG - remove after testing
+                                st.write(f"After DOI dedup: {len(items_not_in_df2)} articles remaining")
+                                st.write(f"After title dedup: {len(items_not_in_df3)} articles remaining")
 
                                 df_dismissed, sha = load_dismissed()
                                 if not df_dismissed.empty:
@@ -914,6 +916,10 @@ else:
                                     ].reset_index(drop=True)
                                 else:
                                     dismissed_titles = set()
+
+                                # DEBUG - remove after testing
+                                st.write(f"After dismissed filter: {len(items_not_in_df3)} articles remaining")
+                                st.write(f"Dismissed items count: {len(df_dismissed)}")
 
                                 items_not_in_df3['Publication Date'] = pd.to_datetime(items_not_in_df3['Publication Date'])
                                 current_date = datetime.now()
