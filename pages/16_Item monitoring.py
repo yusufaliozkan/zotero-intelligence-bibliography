@@ -671,7 +671,7 @@ else:
                             print(f"Failed to post: {e}")
             post_events()
         else:
-                    @st.fragment
+                    # @st.fragment
                     def item_monitoring_section():
                         st.subheader('Item monitoring section', anchor=False)
 
