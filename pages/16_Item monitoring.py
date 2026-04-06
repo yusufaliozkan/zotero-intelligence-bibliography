@@ -834,9 +834,8 @@ else:
                                 import time
                                 dfs = []
                                 for api_link in api_links:
-                                    response = requests.get(api_link)
-                                    st.write(f"{response.status_code} - {api_link[:50]}")
-                                    time.sleep(0.1)
+                                    response = requests.get(api_link + "&mailto=y.ozkan@imperial.ac.uk")
+                                    time.sleep(1)  # increase to 1 second between requests
                                     if response.status_code == 200:
                                         results = response.json().get('results', [])
                                         titles, dois, publication_dates, dois_without_https, journals = [], [], [], [], []
