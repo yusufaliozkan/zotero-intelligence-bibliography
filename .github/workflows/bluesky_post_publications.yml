@@ -27,3 +27,17 @@ jobs:
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
         run: |
           python bluesky_posts/bluesky_publications_bot.py
+    
+        # Daily monitor
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install nbconvert ipykernel feedparser fuzzywuzzy python-Levenshtein beautifulsoup4
+
+      - name: Run daily monitor
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        run: |
+          python monitor.py
