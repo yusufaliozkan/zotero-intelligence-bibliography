@@ -2,7 +2,7 @@ name: Daily IntelArchive Monitor
 
 on:
   schedule:
-    - cron: '0 7 * * *'   # Runs every day at 07:00 UTC (08:00 UK winter / 08:00 BST summer)
+    - cron: '0 * * * *'   # Runs every day at 07:00 UTC (08:00 UK winter / 08:00 BST summer)
   workflow_dispatch:        # Allows manual trigger from GitHub Actions UI
 
 jobs:
