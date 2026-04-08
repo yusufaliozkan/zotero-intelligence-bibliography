@@ -5,6 +5,7 @@ from streamlit_theme import st_theme
 
 
 def sidebar_content():
+
     image = 'https://images.pexels.com/photos/315918/pexels-photo-315918.png'
     
     with st.sidebar:
@@ -74,6 +75,20 @@ def sidebar_content():
         st.write('Check the digest [here](https://intelligence.streamlit.app/Digest)')
         st.toast('Join our [mailing list](https://groups.google.com/g/intelarchive) to receive updates.')
 
+def sidebar_content():
+    # Inject JS to expand sidebar only on desktop
+    st.markdown("""
+        <script>
+        const width = window.innerWidth;
+        if (width > 768) {
+            const sidebar = window.parent.document.querySelector('[data-testid="stSidebar"]');
+            if (sidebar) {
+                const button = window.parent.document.querySelector('[data-testid="stSidebarCollapsedControl"]');
+                if (button) button.click();
+            }
+        }
+        </script>
+    """, unsafe_allow_html=True)
 
 def set_page_config():
     st.set_page_config(
