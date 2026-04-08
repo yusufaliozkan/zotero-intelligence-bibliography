@@ -407,6 +407,7 @@ if __name__ == '__main__':
     generated_at = datetime.now().isoformat()
     future_df['generated_at'] = generated_at
     last_30_df['generated_at'] = generated_at
+    last_90_df['generated_at'] = generated_at
 
     future_df.to_csv('monitor_future.csv', index=False)
     last_30_df.to_csv('monitor_last30.csv', index=False)
