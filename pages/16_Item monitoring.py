@@ -747,7 +747,7 @@ else:
                         st.info(f"Results last updated by GitHub Actions: {generated_at}")
 
                         # Drop the generated_at column before displaying
-                        for df_temp in [future_df, last_30_days_df]:
+                        for df_temp in [future_df, last_30_days_df, last_90_days_df]:
                             if 'generated_at' in df_temp.columns:
                                 df_temp.drop(columns=['generated_at'], inplace=True)
 
