@@ -736,6 +736,7 @@ else:
                     try:
                         future_df = pd.read_csv('monitor_future.csv')
                         last_30_days_df = pd.read_csv('monitor_last30.csv')
+                        last_90_days_df = pd.read_csv('monitor_last90.csv')
                         new_podcasts = pd.read_csv('monitor_podcasts.csv')
                         new_magazines = pd.read_csv('monitor_magazines.csv')
                         df_not = pd.read_csv('monitor_other.csv')
@@ -767,6 +768,10 @@ else:
                         if 'DOI' in last_30_days_df.columns:
                             last_30_days_df = last_30_days_df[~last_30_days_df['DOI'].str.lower().isin(dismissed_dois)].reset_index(drop=True)
                         last_30_days_df = last_30_days_df[~last_30_days_df['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
+
+                        if 'DOI' in last_90_days_df.columns:
+                            last_90_days_df = last_90_days_df[~last_90_days_df['DOI'].str.lower().isin(dismissed_dois)].reset_index(drop=True)
+                        last_90_days_df = last_90_days_df[~last_90_days_df['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
 
                         new_podcasts = new_podcasts[~new_podcasts['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
                         new_magazines = new_magazines[~new_magazines['Title'].str.lower().isin(dismissed_titles)].reset_index(drop=True)
@@ -812,6 +817,9 @@ else:
 
                     st.write('**Journal articles (published in last 30 days)**')
                     display_with_dismiss(last_30_days_df, "Last 30 days")
+
+                    st.write('**Journal articles (published 31–90 days ago)**')
+                    display_with_dismiss(last_90_days_df, "Last 90 days")
 
                     st.write('**Podcasts**')
                     if new_podcasts.empty:
