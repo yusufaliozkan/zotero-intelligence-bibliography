@@ -314,7 +314,7 @@ def podcast_to_html_table(df):
     </table>"""
 
 
-def build_email(future_df, last_30_df, podcast_df, magazine_df):
+def build_email(future_df, last_30_df, last_90_df, podcast_df, magazine_df):
     today_str = datetime.today().strftime('%d %B %Y')
 
     def section(heading, table_html, count):
@@ -329,6 +329,7 @@ def build_email(future_df, last_30_df, podcast_df, magazine_df):
     <p style="font-size:13px;color:#666;">Items detected by OpenAlex not yet in the IntelArchive library.</p>
     {section("📅 Future / forthcoming publications", df_to_html_table(future_df), len(future_df))}
     {section("📰 Published in the last 30 days", df_to_html_table(last_30_df), len(last_30_df))}
+    {section("🗂️ Published in the last 31–90 days", df_to_html_table(last_90_df), len(last_90_df))}
     {section("🎙️ Podcasts", podcast_to_html_table(podcast_df), len(podcast_df))}
     {section("📖 Magazine articles", podcast_to_html_table(magazine_df), len(magazine_df))}
     <p style="font-size:11px;color:#aaa;margin-top:32px;">Sent automatically by IntelArchive monitor · {today_str}</p>
@@ -389,6 +390,11 @@ if __name__ == '__main__':
         (deduped['Publication Date'] >= current_date - timedelta(days=30))
     ].reset_index(drop=True)
 
+    last_90_df = deduped[
+        (deduped['Publication Date'] <= current_date - timedelta(days=30)) &
+        (deduped['Publication Date'] >= current_date - timedelta(days=90))
+    ].reset_index(drop=True)
+
     # Podcasts & magazines
     new_podcasts, new_magazines = get_podcasts_magazines(dismissed_titles)
 
@@ -407,15 +413,16 @@ if __name__ == '__main__':
     new_podcasts.to_csv('monitor_podcasts.csv', index=False)
     new_magazines.to_csv('monitor_magazines.csv', index=False)
     df_not.to_csv('monitor_other.csv', index=False)
+    last_90_df.to_csv('monitor_last90.csv', index=False)
 
-    print(f"Future: {len(future_df)}, Last 30: {len(last_30_df)}, Podcasts: {len(new_podcasts)}, Magazines: {len(new_magazines)}, Other: {len(df_not)}")
+    print(f"Future: {len(future_df)}, Last 30: {len(last_30_df)}, Last 90: {len(last_90_df)}, Podcasts: {len(new_podcasts)}, Magazines: {len(new_magazines)}, Other: {len(df_not)}")
 
     # Send email
-    total_new = len(future_df) + len(last_30_df) + len(new_podcasts) + len(new_magazines)
+    total_new = len(future_df) + len(last_30_df) + len(last_90_df) + len(new_podcasts) + len(new_magazines)
     print(f"Found {total_new} new item(s) total.")
 
     if total_new == 0:
         print("Nothing new today. No email sent.")
     else:
-        html = build_email(future_df, last_30_df, new_podcasts, new_magazines)
+        html = build_email(future_df, last_30_df, last_90_df, new_podcasts, new_magazines)
         send_email(html, total_new)
