@@ -2,7 +2,7 @@ name: Daily Monitor
 
 on:
   schedule:
-    - cron: '* 18 * * *'  # Runs once daily at 18:00 UTC
+    - cron: '0 18 * * *'  # Runs once daily at 18:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -34,9 +34,8 @@ jobs:
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git add monitor_future.csv monitor_last30.csv monitor_podcasts.csv monitor_magazines.csv monitor_other.csv
-          git diff-index --quiet HEAD || git commit -m "Update monitor results"
           git add monitor_future.csv monitor_last30.csv monitor_last90.csv monitor_podcasts.csv monitor_magazines.csv monitor_other.csv
+          git diff-index --quiet HEAD || git commit -m "Update monitor results"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
