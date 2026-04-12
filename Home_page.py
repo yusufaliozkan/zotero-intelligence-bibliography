@@ -2353,8 +2353,8 @@ with tab1:
                     df_ov["Date published"] = df_ov["Date published"].fillna("No date")
                     df_ov["Abstract"]       = df_ov["Abstract"].fillna("No abstract")
                     display = st.checkbox("Display abstract")
-                    for i, row in df_ov.iterrows():
-                        st.markdown(f"{i+1}) {format_entry(row, include_citation=True, reviews_map=reviews_map)}", unsafe_allow_html=True)
+                    for i, (_, row) in enumerate(df_ov.iterrows(), 1):
+                        st.markdown(f"{i}) {format_entry(row, include_citation=True, reviews_map=reviews_map)}", unsafe_allow_html=True)
                         if display and row["Abstract"]:
                             st.markdown(f"**Abstract:** {row['Abstract']}")
 
