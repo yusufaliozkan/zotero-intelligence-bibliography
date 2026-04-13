@@ -2182,7 +2182,18 @@ with tab1:
                             mime="text/csv", key="dl-year", icon=":material/download:",
                         )
 
-                        on = st.toggle(":material/monitoring: Generate report")
+                        on = st.toggle(":material/monitoring: Generate report", key="year_report")
+
+                        current_url_report = st.query_params.get("report", "0") == "1"
+                        if on != current_url_report:
+                            params = {"year_from": str(years[0]), "year_to": str(years[1])}
+                            if on:
+                                params["report"] = "1"
+                            st.query_params.from_dict(params)
+
+                        link = f"https://intelligence.streamlit.app/?year_from={years[0]}&year_to={years[1]}{'&report=1' if on else ''}"
+                        st.caption(f"🔗 Shareable link: [{link}]({link})")
+
                         if on and len(df_all):
                             st.info(f"Report for {label_str}")
                             render_report_charts(df_all, label_str, name_replacements,
