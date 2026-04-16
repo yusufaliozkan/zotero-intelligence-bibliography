@@ -132,9 +132,14 @@ with st.sidebar:
     sidebar_content()
 
 ### Bluesky posting functions start here
-client = Client(base_url='https://bsky.social')
-bluesky_password = st.secrets["bluesky_password"]
-client.login('intelarchive.io', bluesky_password)
+@st.cache_resource
+def get_bluesky_client():
+    client = Client(base_url='https://bsky.social')
+    bluesky_password = st.secrets["bluesky_password"]
+    client.login('intelarchive.io', bluesky_password)
+    return client
+
+client = get_bluesky_client()
 
 def fetch_link_metadata(url: str) -> Dict:
     # URL Encode the URL to handle special characters properly
