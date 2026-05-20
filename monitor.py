@@ -242,7 +242,7 @@ def get_other_resources(df_titles, dismissed_titles=set()):
     df = df[df['skip_filter'] | df['title'].str.contains('|'.join(words_to_filter), case=False, na=False)]
     df = df.drop(columns=['skip_filter']).reset_index(drop=True)
 
-    df = df.rename(columns={'title': 'Title'})
+    df = df.rename(columns={'title': 'Title', 'link': 'Link', 'pubDate': 'PubDate'})
     df['Title'] = df['Title'].str.upper()
     df_titles_upper = df_titles.copy()
     df_titles_upper['Title'] = df_titles_upper['Title'].str.upper()
