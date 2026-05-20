@@ -212,7 +212,10 @@ def get_podcasts_magazines(dismissed_titles=set()):
 # Step 4: Other resources / RSS (identical logic to document 20)
 # ---------------------------------------------------------------------------
 def get_other_resources(df_titles, dismissed_titles=set()):
-    feeds = [{"url": "https://www.aspistrategist.org.au/feed/", "label": "Australian Strategic Policy Institute"}]
+    feeds = [
+        {"url": "https://www.aspistrategist.org.au/feed/", "label": "Australian Strategic Policy Institute", "skip_filter": False},
+        {"url": "https://aboutintel.eu/feed/",             "label": "about:intel",                          "skip_filter": True},
+    ]
     all_data = []
     for feed in feeds:
         try:
@@ -223,7 +226,8 @@ def get_other_resources(df_titles, dismissed_titles=set()):
                     'title': item.find('title').text,
                     'link': item.find('link').text,
                     'label': feed["label"],
-                    'pubDate': item.find('pubDate').text
+                    'pubDate': item.find('pubDate').text,
+                    'skip_filter': feed.get("skip_filter", False),
                 })
         except Exception as e:
             print(f"RSS fetch error: {e}")
@@ -233,7 +237,11 @@ def get_other_resources(df_titles, dismissed_titles=set()):
 
     df = pd.DataFrame(all_data)
     words_to_filter = ["intelligence", "espionage", "spy", "oversight"]
-    df = df[df['title'].str.contains('|'.join(words_to_filter), case=False, na=False)].reset_index(drop=True)
+
+    # Fix: respect skip_filter so about:intel posts pass through unconditionally
+    df = df[df['skip_filter'] | df['title'].str.contains('|'.join(words_to_filter), case=False, na=False)]
+    df = df.drop(columns=['skip_filter']).reset_index(drop=True)
+
     df = df.rename(columns={'title': 'Title'})
     df['Title'] = df['Title'].str.upper()
     df_titles_upper = df_titles.copy()
@@ -314,7 +322,7 @@ def podcast_to_html_table(df):
     </table>"""
 
 
-def build_email(future_df, last_30_df, last_90_df, podcast_df, magazine_df):
+def build_email(future_df, last_30_df, last_90_df, podcast_df, magazine_df, other_df):
     today_str = datetime.today().strftime('%d %B %Y')
 
     def section(heading, table_html, count):
@@ -332,6 +340,7 @@ def build_email(future_df, last_30_df, last_90_df, podcast_df, magazine_df):
     {section("🗂️ Published in the last 31–90 days", df_to_html_table(last_90_df), len(last_90_df))}
     {section("🎙️ Podcasts", podcast_to_html_table(podcast_df), len(podcast_df))}
     {section("📖 Magazine articles", podcast_to_html_table(magazine_df), len(magazine_df))}
+    {section("🌐 Other resources", podcast_to_html_table(other_df), len(other_df))}
     <p style="font-size:11px;color:#aaa;margin-top:32px;">Sent automatically by IntelArchive monitor · {today_str}</p>
     </body></html>"""
 
@@ -419,11 +428,11 @@ if __name__ == '__main__':
     print(f"Future: {len(future_df)}, Last 30: {len(last_30_df)}, Last 90: {len(last_90_df)}, Podcasts: {len(new_podcasts)}, Magazines: {len(new_magazines)}, Other: {len(df_not)}")
 
     # Send email
-    total_new = len(future_df) + len(last_30_df) + len(last_90_df) + len(new_podcasts) + len(new_magazines)
+    total_new = len(future_df) + len(last_30_df) + len(last_90_df) + len(new_podcasts) + len(new_magazines) + len(df_not)
     print(f"Found {total_new} new item(s) total.")
 
     if total_new == 0:
         print("Nothing new today. No email sent.")
     else:
-        html = build_email(future_df, last_30_df, last_90_df, new_podcasts, new_magazines)
+        html = build_email(future_df, last_30_df, last_90_df, new_podcasts, new_magazines, df_not)
         send_email(html, total_new)
