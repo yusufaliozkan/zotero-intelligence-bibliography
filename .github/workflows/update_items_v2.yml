@@ -42,6 +42,8 @@ jobs:
       # Convert and Run the Jupyter Notebook
       - name: Convert and Run Jupyter Notebook
         run: jupyter nbconvert --to notebook --execute --inplace all_items.ipynb
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
 
       # Pull, commit, and push changes to CSV files
       - name: Pull, commit, and push changes
@@ -50,8 +52,12 @@ jobs:
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git pull origin main
           git add *.csv
-          git diff-index --quiet HEAD || git commit -m "Update Zotero data"
-          git push
+          if git diff --staged --quiet; then
+            echo "No CSV changes to commit. Skipping."
+          else
+            git commit -m "Update Zotero data"
+            git push
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -69,17 +75,3 @@ jobs:
             ELAPSED=$((END_TIME - START_TIME))
           done
           echo "Workflow runtime exceeded 20 minutes. Exiting."
-
-      # Daily monitor
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install nbconvert ipykernel feedparser fuzzywuzzy python-Levenshtein beautifulsoup4
-
-      - name: Run daily monitor
-        env:
-          GMAIL_USER: ${{ secrets.GMAIL_USER }}
-          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
-          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
-        run: |
-          python monitor.py
