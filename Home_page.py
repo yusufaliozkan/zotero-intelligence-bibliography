@@ -1159,7 +1159,8 @@ with col1:
         help=f"**{len(items_this_month)}** items added in {current_date.strftime('%B %Y')}",
     )
 
-st.write("The library last updated on **" + df_intro.loc[0]["Date added"].strftime("%d/%m/%Y, %H:%M") + "**")
+latest_added = df_intro["Date added"].max()
+st.write("The library last updated on **" + latest_added.strftime("%d/%m/%Y, %H:%M") + "**")
 
 with col2:
     with st.popover("More metrics"):
