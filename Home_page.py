@@ -1153,8 +1153,8 @@ items_this_month = df_intro[
 ]
 with col1:
     st.metric(
-        label="Number of items in the library",
-        value=len(df_intro),
+        label="Number of items in the library", 
+        value=f"{len(df_intro):,}",
         delta=len(items_this_month),
         help=f"**{len(items_this_month)}** items added in {current_date.strftime('%B %Y')}",
     )
