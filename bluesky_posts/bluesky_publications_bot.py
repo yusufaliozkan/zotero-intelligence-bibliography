@@ -10,12 +10,28 @@ from grapheme import length as grapheme_length
 from datetime import datetime, timedelta
 import pytz
 import re 
+import json
 
 client = Client(base_url='https://bsky.social')
 bluesky_password = os.getenv("BLUESKY_PASSWORD")
 client.login('intelarchive.io', bluesky_password)
 
 ### POST ITEMS
+
+STATE_FILE = "bluesky_posts/last_posted.json"
+
+def load_last_posted():
+    try:
+        with open(STATE_FILE, "r") as f:
+            ts = json.load(f)["last_posted_date_added"]
+            return pd.to_datetime(ts, utc=True)
+    except (FileNotFoundError, KeyError):
+        # first ever run — fall back to "1 hour ago" so it doesn't post the whole library
+        return datetime.now(pytz.UTC) - timedelta(hours=1)
+
+def save_last_posted(ts):
+    with open(STATE_FILE, "w") as f:
+        json.dump({"last_posted_date_added": ts.isoformat()}, f, indent=2)
 
 def fetch_link_metadata(url: str) -> Dict:
     response = requests.get(url)
@@ -257,9 +273,8 @@ df['Date added'] = pd.to_datetime(df['Date added'], errors='coerce', utc=True)
 
 # df = df[df['Date added'].dt.date >= days_ago]
 
-now = datetime.now(pytz.UTC)
-last_hours = now - timedelta(hours=1)
-df = df[df['Date added'] >= last_hours]
+last_posted = load_last_posted()
+df = df[df['Date added'] > last_posted]
 df = df[['Title', 'Publication type', 'Link to publication', 'Zotero link', 'Date added', 'Date published', 'Date modified', 'Authors']]
 
 header='New addition\n\n'
@@ -314,3 +329,6 @@ for index, row in df.iterrows():
         )
     except Exception as e:
         print(f"Failed to post: {e}")
+
+if not df.empty:
+    save_last_posted(df['Date added'].max())

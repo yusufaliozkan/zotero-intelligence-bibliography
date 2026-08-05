@@ -108,6 +108,14 @@ keywords = [
 # ---------------------------------------------------------------------------
 # Step 1: Fetch from OpenAlex (identical logic to document 20)
 # ---------------------------------------------------------------------------
+
+# Source IDs for flagship intelligence studies journals — include everything, no keyword filter
+NO_KEYWORD_FILTER_SOURCE_IDS = {
+    's33269604',
+    's2764506647',
+    's4210168073',
+}
+
 def fetch_articles():
     dfs = []
     today = datetime.today().date()
@@ -116,6 +124,10 @@ def fetch_articles():
         response = requests.get(api_link)
         if response.status_code != 200:
             continue
+
+        skip_keyword_filter = any(
+            f'source.id:{sid}' in api_link for sid in NO_KEYWORD_FILTER_SOURCE_IDS
+        )
 
         results = response.json().get('results', [])
         titles, dois, publication_dates, dois_without_https, journals = [], [], [], [], []
@@ -132,16 +144,26 @@ def fetch_articles():
                 continue
             if today - pub_date <= timedelta(days=90):
                 title = result.get('title')
-                if title is not None and any(keyword in title.lower() for keyword in keywords):
+                if title is None:
+                    continue
+
+                primary_location = result.get('primary_location', {})
+                source = primary_location.get('source')
+                journal_name = source.get('display_name', 'Unknown') if source else 'Unknown'
+
+                # Skip Zenodo — it's an unmoderated general-purpose repository,
+                # not a journal, and lets junk/spam through the keyword filter.
+                if journal_name and 'zenodo' in journal_name.lower():
+                    continue
+
+                if skip_keyword_filter or any(keyword in title.lower() for keyword in keywords):
                     titles.append(title)
                     dois.append(result.get('doi', 'Unknown'))
                     publication_dates.append(pub_date_str)
                     ids = result.get('ids', {})
                     doi_value = ids.get('doi', 'Unknown')
                     dois_without_https.append(doi_value.split("https://doi.org/")[-1] if doi_value != 'Unknown' else 'Unknown')
-                    primary_location = result.get('primary_location', {})
-                    source = primary_location.get('source')
-                    journals.append(source.get('display_name', 'Unknown') if source else 'Unknown')
+                    journals.append(journal_name)
 
         if titles:
             dfs.append(pd.DataFrame({

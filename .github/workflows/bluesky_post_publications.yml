@@ -27,3 +27,11 @@ jobs:
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
         run: |
           python bluesky_posts/bluesky_publications_bot.py
+
+      - name: Commit updated last_posted.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bluesky_posts/last_posted.json
+          git diff --staged --quiet || git commit -m "Update last posted timestamp"
+          git push
