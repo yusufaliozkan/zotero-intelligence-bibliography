@@ -2966,6 +2966,17 @@ with tab2:
                 df_countries["Country"] = df_countries["Country"].replace("UK", "United Kingdom")
                 df_countries = df_countries.groupby("Country", as_index=False).sum()
 
+                @st.cache_data
+                def get_coordinates(country_name):
+                    try:
+                        return CountryInfo(country_name).info().get("latlng", (None, None))
+                    except KeyError:
+                        return None, None
+
+                @st.cache_data
+                def load_ner_csvs():
+                    return pd.read_csv("gpe.csv"), pd.read_csv("person.csv"), pd.read_csv("org.csv")
+
                 df_countries[["Latitude", "Longitude"]] = df_countries["Country"].apply(
                     lambda x: pd.Series(get_coordinates(x))
                 )
