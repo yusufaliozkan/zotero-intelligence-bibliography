@@ -75,7 +75,8 @@ _STOPWORDS_EXTRA = [
     "journal", "london", "review",
 ]
 
-def build_stopwords(extra: Optional[list] = None) -> list:
+@st.cache_resource
+def build_stopwords(extra: Optional[tuple] = None) -> list:
     stopword = nltk.corpus.stopwords.words("english")
     stopword.extend(_STOPWORDS_EXTRA)
     if extra:
@@ -99,32 +100,37 @@ def remove_stopwords(tokens: list, stopword: list) -> list:
     return [w for w in tokens if w and w not in stopword]
 
 
-def lemmatize(tokens: list) -> list:
-    wn = nltk.WordNetLemmatizer()
+def lemmatize(tokens: list, wn) -> list:
     return [wn.lemmatize(w) for w in tokens]
 
-
 def prepare_title_tokens(df: pd.DataFrame, stopword: list) -> pd.Series:
-    """Full NLP pipeline on the Title column; returns a Series of token lists."""
+    wn = nltk.WordNetLemmatizer()   
     cleaned = df["Title"].apply(clean_text)
     cleaned = cleaned.apply(lambda x: " ".join(w for w in x.split() if len(w) > 2))
     tokens = cleaned.apply(tokenize)
     tokens = tokens.apply(lambda t: remove_stopwords(t, stopword))
-    return tokens.apply(lemmatize)
+    return tokens.apply(lambda t: lemmatize(t, wn))
 
 
-def render_wordcloud(df: pd.DataFrame, title: str, extra_stopwords: list | None = None):
-    """Build and render a WordCloud from df['Title']."""
-    stopword = build_stopwords(extra_stopwords)
-    token_series = prepare_title_tokens(df, stopword)
+@st.cache_data(show_spinner=False)
+def _generate_wordcloud_image(titles_tuple: tuple, title: str, extra_stopwords: tuple | None = None):
+    stopword = build_stopwords(extra_stopwords)   
+    df_tmp = pd.DataFrame({"Title": titles_tuple})
+    token_series = prepare_title_tokens(df_tmp, stopword)
     all_tokens = [tok for sublist in token_series for tok in sublist]
     text = pd.Series(all_tokens).str.cat(sep=" ")
     wc = WordCloud(
         stopwords=stopword, width=1500, height=750,
         background_color="white", collocations=False, colormap="magma",
     ).generate(str(text))
+    return wc.to_array()   # cache-friendly, picklable
+
+def render_wordcloud(df: pd.DataFrame, title: str, extra_stopwords: list | None = None):
+    titles_tuple = tuple(df["Title"].fillna("").tolist())
+    extra_tuple = tuple(extra_stopwords) if extra_stopwords else None
+    wc_array = _generate_wordcloud_image(titles_tuple, title, extra_tuple)
     fig, ax = plt.subplots(figsize=(20, 8))
-    ax.imshow(wc)
+    ax.imshow(wc_array)
     ax.axis("off")
     ax.set_title(title)
     st.pyplot(fig)
