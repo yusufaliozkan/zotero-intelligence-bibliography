@@ -32,4 +32,4 @@ st-theme
 anthropic
 scikit-learn
 rapidfuzz
-streamlit-keyup==1.0.0
+streamlit-keyup==0.4.0
