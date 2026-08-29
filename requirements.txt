@@ -32,3 +32,4 @@ st-theme
 anthropic
 scikit-learn
 rapidfuzz
+st-keyup==0.2.0
