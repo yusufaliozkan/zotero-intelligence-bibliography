@@ -36,6 +36,8 @@ from shared_utils import (
     parse_date_column,
     sort_by_date,
     load_reviews_map,
+    load_recent_reviews,
+    format_review_entry,
     render_wordcloud,
     split_and_expand,
     remove_numbers,
@@ -2365,7 +2367,25 @@ with tab1:
                     df_ov["Date published"] = df_ov["Date published"].fillna("No date")
                     df_ov["Abstract"]       = df_ov["Abstract"].fillna("No abstract")
                     display = st.checkbox("Display abstract")
-                    for i, (_, row) in enumerate(df_ov.iterrows(), 1):
+
+                    # Merge recent items and recent book reviews into one feed, newest first
+                    feed = [
+                        (pd.to_datetime(row["Date added"], utc=True, errors="coerce"), "item", row)
+                        for _, row in df_ov.iterrows()
+                    ]
+                    feed += [
+                        (rev["dateAdded"], "review", rev)
+                        for _, rev in load_recent_reviews(10).iterrows()
+                    ]
+                    feed.sort(
+                        key=lambda x: x[0] if pd.notna(x[0]) else pd.Timestamp.min.tz_localize("UTC"),
+                        reverse=True,
+                    )
+
+                    for i, (_, kind, row) in enumerate(feed[:10], 1):
+                        if kind == "review":
+                            st.markdown(f"{i}) {format_review_entry(row, base_url=BASE_URL)}", unsafe_allow_html=True)
+                            continue
                         st.markdown(f"{i}) {format_entry(row, include_citation=True, reviews_map=reviews_map)}", unsafe_allow_html=True)
                         if display and row["Abstract"]:
                             st.markdown(f"**Abstract:** {row['Abstract']}")
