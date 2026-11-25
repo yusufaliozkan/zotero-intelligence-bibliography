@@ -10,6 +10,7 @@ def _today_strings():
 
 def display_custom_license():
     current_year, cite_today = _today_strings()
+    st.caption(f"DEBUG v2 · {__file__} · {datetime.datetime.now()}")  # remove after testing
     components.html(
         f"""
         <br><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licence" style="border-width:0"
