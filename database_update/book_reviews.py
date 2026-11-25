@@ -26,11 +26,12 @@ for parent in top_items:
                 "parentKey": parent_key,
                 "parentTitle": parent_title,
                 "linkTitle": d.get("title"),
-                "url": d.get("url")
+                "url": d.get("url"),
+                "dateAdded": d.get("dateAdded"),
             })
 
 # Build DataFrame
-df = pd.DataFrame(rows, columns=["attachmentKey", "parentKey", "parentTitle", "linkTitle", "url"])
+df = pd.DataFrame(rows, columns=["attachmentKey", "parentKey", "parentTitle", "linkTitle", "url", "dateAdded"])
 
 df = df[df["linkTitle"].str.startswith("Book review", na=False)]
 
