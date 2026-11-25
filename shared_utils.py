@@ -61,6 +61,48 @@ def load_reviews_map(path: str = "book_reviews.csv") -> dict:
         return {}
 
 
+@st.cache_data(ttl=300)
+def load_recent_reviews(n: int = 10, path: str = "book_reviews.csv") -> pd.DataFrame:
+    """Return the n most recently added book reviews, newest first.
+
+    Columns: parentKey, parentTitle, reviewer, url, dateAdded (UTC datetime).
+    Returns an empty frame if the CSV has no dateAdded column yet.
+    """
+    cols = ["parentKey", "parentTitle", "reviewer", "url", "dateAdded"]
+    try:
+        df = pd.read_csv(path, dtype=str)
+    except Exception:
+        return pd.DataFrame(columns=cols)
+    if "dateAdded" not in df.columns:
+        return pd.DataFrame(columns=cols)
+
+    df = df.dropna(subset=["parentKey", "url", "dateAdded"]).copy()
+    df["parentKey"] = df["parentKey"].str.strip().str.upper()
+    df["dateAdded"] = pd.to_datetime(df["dateAdded"], utc=True, errors="coerce")
+    df = df.dropna(subset=["dateAdded"])
+    # "Book review by Jane Smith" -> "Jane Smith"
+    df["reviewer"] = (
+        df["linkTitle"].fillna("")
+        .str.replace(r"^\s*Book review\s*(by)?\s*", "", regex=True, case=False)
+        .str.strip(" ()")
+    )
+    return df.sort_values("dateAdded", ascending=False).head(n)[cols].reset_index(drop=True)
+
+
+def format_review_entry(review, base_url: str = "https://intelligence.streamlit.app") -> str:
+    """Markdown line for a book review in the 'Recently added' feed."""
+    title = str(review.get("parentTitle") or "Untitled").strip()
+    reviewer = str(review.get("reviewer") or "").strip()
+    by = f" (by {reviewer})" if reviewer else ""
+    added = review["dateAdded"].strftime("%d %B %Y") if pd.notna(review.get("dateAdded")) else ""
+    added_txt = f" (Added: {added})" if added else ""
+    return (
+        f"**Book review** for *{title}*{by}{added_txt} "
+        f"[:violet-badge[Read the review]]({review['url']}) "
+        f"[:green-badge[📄 IntelArchive details]]({base_url}/?item={review['parentKey']})"
+    )
+
+
 # ---------------------------------------------------------------------------
 # Text / NLP helpers  (previously copy-pasted in every report block)
 # ---------------------------------------------------------------------------
