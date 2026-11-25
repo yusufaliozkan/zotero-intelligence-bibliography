@@ -3257,8 +3257,5 @@ with st.expander("Acknowledgements"):
     Proudly sponsored by the [King's Centre for the Study of Intelligence](https://kcsi.uk/)
     """)
 
-def display_custom_license():
-    current_year, cite_today = _today_strings()
-    st.caption(f"DEBUG v2 · {__file__} · {datetime.datetime.now()}")  # remove after testing
-    components.html(...)
+display_custom_license()
 
