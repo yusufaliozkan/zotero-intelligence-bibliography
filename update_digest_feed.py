@@ -20,6 +20,7 @@ def plural(n, word):
 
 
 def summary(info) -> str:
+    """Short fallback text (used if the detailed fields are missing)."""
     parts = []
     if info.get("item_count"):
         parts.append(plural(info["item_count"], "new item"))
@@ -28,6 +29,68 @@ def summary(info) -> str:
     what = " and ".join(parts) or "new additions"
     return (f"This week's IntelArchive digest is out: {what}, "
             f"plus upcoming events and calls for papers.")
+
+
+# ── LinkedIn post text ───────────────────────────────────────────────────────
+TYPE_EMOJI = {"Book": "📘", "Journal article": "📄", "Book chapter": "📑", "Podcast": "🎧",
+              "Thesis": "🎓", "Video": "🎬", "Report": "📊"}
+PLURALS = {"Thesis": "theses", "Podcast": "podcasts"}
+HASHTAGS = "#IntelligenceStudies #IntelligenceHistory #NationalSecurity"
+MAX_TITLE = 140
+
+
+def type_phrase(t: str, n: int) -> str:
+    name = t.lower()
+    if n == 1:
+        return f"{'an' if name[:1] in 'aeiou' else 'a'} {name}"
+    return f"{n} {PLURALS.get(t, name + 's')}"
+
+
+def join_and(parts):
+    return parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]
+
+
+def short(title: str) -> str:
+    return title if len(title) <= MAX_TITLE else title[:MAX_TITLE - 1].rstrip() + "…"
+
+
+def linkedin_text(info) -> str:
+    if "type_counts" not in info:
+        return summary(info)
+
+    lines = [f"📬 IntelArchive Weekly Digest · {info.get('date_display', '')}".rstrip(" ·"), ""]
+
+    n = info.get("item_count", 0)
+    if n:
+        types = [type_phrase(t, c) for t, c in info["type_counts"]]
+        opener = f"{plural(n, 'new addition')} to the IntelArchive Intelligence Studies Database this week"
+        if len(types) > 1:
+            opener += f", including {join_and(types[:4])}"
+        lines.append(opener + ".")
+    reviews = info.get("review_count", 0)
+    if reviews:
+        lines.append(f"{plural(reviews, 'new book review')} added too." if n
+                     else f"{plural(reviews, 'new book review')} added this week.")
+
+    if info.get("highlights"):
+        lines += ["", "Highlights:"]
+        for h in info["highlights"]:
+            by = f" ({h['authors']})" if h.get("authors") else ""
+            lines.append(f"{TYPE_EMOJI.get(h.get('type'), '📰')} {short(h['title'])}{by}")
+
+    if info.get("review"):
+        r = info["review"]
+        by = f" by {r['reviewer']}" if r.get("reviewer") else ""
+        lines += ["", f"📖 New review: {short(r['book'])}{by}"]
+
+    if info.get("next_event") and info["next_event"].get("name"):
+        e = info["next_event"]
+        bits = [x for x in (e.get("date"), e.get("organiser")) if x]
+        lines += ["", f"📅 Coming up: {short(e['name'])}" + (f" ({', '.join(bits)})" if bits else "")]
+
+    lines += ["", "Plus more events, conferences and calls for papers in the full digest 👇",
+              "", HASHTAGS]
+    return "\n".join(lines)
 
 
 def new_feed():
@@ -61,7 +124,7 @@ def main():
     item = ET.Element("item")
     ET.SubElement(item, "title").text = info.get("subject", "IntelArchive Weekly Digest")
     ET.SubElement(item, "link").text = info["link"]
-    ET.SubElement(item, "description").text = summary(info)
+    ET.SubElement(item, "description").text = linkedin_text(info)
     ET.SubElement(item, "guid", isPermaLink="false").text = guid_text
     ET.SubElement(item, "pubDate").text = now
 

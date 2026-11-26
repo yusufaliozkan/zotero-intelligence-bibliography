@@ -490,6 +490,67 @@ def build_html_digest(df, reviews_df=None):
     """
     return html
 
+def _clean(x):
+    s = "" if x is None else str(x).strip()
+    return "" if s.lower() in ("", "nan", "none", "null") else s
+
+def _short_authors(raw, max_authors=2):
+    names = [a.strip() for a in _clean(raw).split(",") if a.strip()]
+    if len(names) > max_authors:
+        return f"{names[0]} et al."
+    return ", ".join(names)
+
+def digest_extras(new_items, reviews):
+    """Details for the social-media posts (saved in digest_post.json)."""
+    extras = {"date_display": datetime.now().strftime("%d %B %Y")}
+
+    items = new_items.copy()
+    items["Publication type"] = items["Publication type"].fillna("Other")
+    counts = items["Publication type"].value_counts()
+    extras["type_counts"] = [[t, int(n)] for t, n in counts.items()]
+
+    # Highlights: up to 3, books first, then one of each other type
+    # (most common type first), then the newest of whatever is left.
+    uniq = items.drop_duplicates(subset=["Title"]).sort_values("Date added", ascending=False)
+    picked = []
+    for _, row in uniq[uniq["Publication type"] == "Book"].iterrows():
+        picked.append(row)
+    for t in counts.index:
+        if t == "Book":
+            continue
+        match = uniq[uniq["Publication type"] == t]
+        if not match.empty:
+            picked.append(match.iloc[0])
+    for _, row in uniq.iterrows():
+        picked.append(row)
+    highlights, seen = [], set()
+    for row in picked:
+        title = _clean(row.get("Title"))
+        if not title or title in seen:
+            continue
+        seen.add(title)
+        highlights.append({"type": _clean(row.get("Publication type")),
+                           "title": title,
+                           "authors": _short_authors(row.get("FirstName2"))})
+        if len(highlights) == 3:
+            break
+    extras["highlights"] = highlights
+
+    if reviews is not None and not reviews.empty:
+        r = reviews.iloc[0]
+        extras["review"] = {"book": _clean(r["bookTitle"]), "reviewer": _clean(r["reviewer"])}
+
+    try:
+        ev = get_upcoming_events()
+        if not ev.empty:
+            e = ev.iloc[0]
+            extras["next_event"] = {"name": _clean(e.get("event_name")),
+                                    "date": _clean(e.get("date_display")),
+                                    "organiser": _clean(e.get("organiser"))}
+    except Exception as e:
+        print(f"Could not add next event to social post: {e}")
+    return extras
+
 def send_digest():
     new_items    = get_new_items(days=7)
     count        = len(new_items)
@@ -541,6 +602,7 @@ def send_digest():
             "subject": subject,
             "item_count": count,
             "review_count": review_count,
+            **digest_extras(new_items, reviews),
         }, f, indent=2)
 
 if __name__ == "__main__":
