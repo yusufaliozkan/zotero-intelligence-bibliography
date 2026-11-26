@@ -1,0 +1,41 @@
+name: Post book reviews to Bluesky
+
+on:
+  schedule:
+    - cron: '30 * * * *'  # Every hour at :30 (the publications bot runs at :00)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  post_to_bluesky:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas pyzotero requests beautifulsoup4 pytz atproto==0.0.56
+
+      - name: Run Python Script
+        env:
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+        run: |
+          python bluesky_posts/bluesky_book_reviews_bot.py
+
+      - name: Commit updated last_posted_reviews.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -f bluesky_posts/last_posted_reviews.json ]; then
+            git add bluesky_posts/last_posted_reviews.json
+            git diff --staged --quiet || (git commit -m "Update last posted book review timestamp" && git pull --rebase && git push)
+          fi
