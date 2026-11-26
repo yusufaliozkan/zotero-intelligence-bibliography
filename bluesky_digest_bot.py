@@ -13,8 +13,8 @@ from atproto import Client
 GROUP = "intelarchive"
 GROUP_URL = f"https://groups.google.com/g/{GROUP}"
 HANDOFF_FILE = "digest_post.json"
-LOGO_URL = ("https://raw.githubusercontent.com/yusufaliozkan/zotero-intelligence-bibliography/"
-            "main/images/01_logo/IntelArchive_Digital_Logo_Colour-Negative.png")
+CARD_IMAGE_URL = ("https://raw.githubusercontent.com/yusufaliozkan/zotero-intelligence-bibliography/"
+                  "main/images/03_social/IntelArchive_Digital_OG.png")
 TIMEOUT = 15
 
 
@@ -48,11 +48,11 @@ def link_facet(text: str, link_text: str, url: str):
 def link_card(client, url: str, title: str, description: str):
     thumb = None
     try:
-        img = requests.get(LOGO_URL, timeout=TIMEOUT)
+        img = requests.get(CARD_IMAGE_URL, timeout=TIMEOUT)
         img.raise_for_status()
         thumb = client.upload_blob(img.content)["blob"]
     except Exception as e:
-        print(f"Warning: could not attach logo: {e}")
+        print(f"Warning: could not attach card image: {e}")
     return {
         "$type": "app.bsky.embed.external",
         "external": {"uri": url, "title": title, "description": description, "thumb": thumb},
