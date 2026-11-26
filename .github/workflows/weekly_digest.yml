@@ -6,9 +6,12 @@ on:
   workflow_dispatch:  # allow manual trigger for testing
     inputs:
       post_to_bluesky:
-        description: 'Also share the digest on Bluesky'
+        description: 'Also share the digest on Bluesky and LinkedIn (via the feed)'
         type: boolean
         default: true
+
+permissions:
+  contents: write   # to commit feeds/digest.xml
 
 jobs:
   send_digest:
@@ -34,8 +37,23 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           DIGEST_TO:     ${{ secrets.DIGEST_TO }}
 
-      - name: Share digest on Bluesky
+      - name: Find the digest on Google Groups
+        id: share
         if: ${{ hashFiles('digest_post.json') != '' && (github.event_name == 'schedule' || inputs.post_to_bluesky) }}
+        run: python digest_link.py
+
+      - name: Share digest on Bluesky
+        if: ${{ steps.share.conclusion == 'success' }}
+        continue-on-error: true   # a Bluesky problem shouldn't stop the feed update
         run: python bluesky_posts/bluesky_digest_bot.py
         env:
           BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+
+      - name: Add digest to RSS feed (picked up by Zapier for LinkedIn)
+        if: ${{ steps.share.conclusion == 'success' }}
+        run: |
+          python update_digest_feed.py
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add feeds/digest.xml
+          git diff --staged --quiet || (git commit -m "Add weekly digest to feed" && git pull --rebase && git push)
