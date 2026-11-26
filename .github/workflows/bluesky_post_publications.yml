@@ -2,8 +2,14 @@ name: Post publications to Bluesky
 
 on:
   schedule:
-    - cron: '0 * * * *'  # Runs every hour
+    - cron: '7 * * * *'  # Backup: hourly at :07. Main trigger is cron-job.org
   workflow_dispatch:
+
+# Never run two at once (cron-job.org and GitHub's schedule can overlap):
+# a second run waits for the first, so nothing is posted twice.
+concurrency:
+  group: bluesky-publications
+  cancel-in-progress: false
 
 jobs:
   post_to_bluesky:
@@ -34,4 +40,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add bluesky_posts/last_posted.json
           git diff --staged --quiet || git commit -m "Update last posted timestamp"
-          git push
+          git pull --rebase && git push

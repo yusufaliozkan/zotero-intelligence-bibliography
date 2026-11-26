@@ -551,7 +551,28 @@ def digest_extras(new_items, reviews):
         print(f"Could not add next event to social post: {e}")
     return extras
 
+def already_sent_this_week() -> bool:
+    """True if this week's digest is already in feeds/digest.xml.
+
+    The digest can be started by cron-job.org and by GitHub's own schedule on
+    the same Monday; this stops the second run from emailing the list again.
+    """
+    try:
+        import xml.etree.ElementTree as ET
+        from email.utils import parsedate_to_datetime
+        _, window_end = digest_window()
+        for d in ET.parse("feeds/digest.xml").getroot().iter("pubDate"):
+            if pd.Timestamp(parsedate_to_datetime(d.text)) >= window_end:
+                return True
+    except Exception as e:
+        print(f"Could not check the feed for an earlier send: {e}")
+    return False
+
 def send_digest():
+    if os.environ.get("FORCE_SEND", "").lower() != "true" and already_sent_this_week():
+        print("This week's digest has already been sent. Skipping.")
+        return
+
     new_items    = get_new_items(days=7)
     count        = len(new_items)
     reviews      = get_new_book_reviews(days=7)

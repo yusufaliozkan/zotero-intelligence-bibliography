@@ -2,13 +2,21 @@ name: Weekly Digest Email
 
 on:
   schedule:
-    - cron: '17 7 * * 1'  # Mondays 07:17 UTC (GitHub often starts it hours later)
+    - cron: '17 9 * * 1'  # Backup: Mondays 09:17 UTC. Main trigger is cron-job.org (Monday 08:00)
   workflow_dispatch:  # allow manual trigger for testing
     inputs:
       post_to_bluesky:
         description: 'Also share the digest on Bluesky and LinkedIn (via the feed)'
         type: boolean
         default: true
+      force_send:
+        description: 'Send even if this week''s digest was already sent (for testing)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: weekly-digest
+  cancel-in-progress: false
 
 permissions:
   contents: write   # to commit feeds/digest.xml
@@ -31,6 +39,7 @@ jobs:
       - name: Send weekly digest
         run: python send_digest.py
         env:
+          FORCE_SEND:    ${{ inputs.force_send }}
           SMTP_SERVER:   ${{ secrets.SMTP_SERVER }}
           SMTP_PORT:     ${{ secrets.SMTP_PORT }}
           SMTP_USER:     ${{ secrets.SMTP_USER }}

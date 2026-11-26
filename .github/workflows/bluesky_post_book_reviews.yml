@@ -2,8 +2,12 @@ name: Post book reviews to Bluesky
 
 on:
   schedule:
-    - cron: '30 * * * *'  # Every hour at :30 (the publications bot runs at :00)
+    - cron: '37 * * * *'  # Backup: hourly at :37. Main trigger is cron-job.org
   workflow_dispatch:
+
+concurrency:
+  group: bluesky-book-reviews
+  cancel-in-progress: false
 
 permissions:
   contents: write
