@@ -4,6 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 import os
+import html as html_lib
 
 BASE_URL = "https://intelligence.streamlit.app"
 EVENTS_URL = f"{BASE_URL}/Events"
@@ -27,6 +28,100 @@ def get_new_items(days=7):
     new_items = df[df["Date added"] >= cutoff].copy()
     new_items = new_items.sort_values("Date added", ascending=False)
     return new_items
+
+def get_new_book_reviews(days=7):
+    """Book-review attachments added to Zotero in the last `days` days, newest first.
+
+    A book review is a linked-URL attachment whose title starts with "Book review"
+    (e.g. "Book review by Jane Smith"). Queried from Zotero directly so the digest
+    doesn't depend on when book_reviews.csv was last refreshed.
+    """
+    cols = ["parentKey", "bookTitle", "reviewer", "url", "dateAdded"]
+    try:
+        from pyzotero import zotero
+        zot = zotero.Zotero("2514686", "group")
+        cutoff = pd.Timestamp.now(tz="UTC") - pd.Timedelta(days=days)
+
+        rows, start = [], 0
+        while True:
+            batch = zot.items(itemType="attachment", sort="dateAdded",
+                              direction="desc", limit=100, start=start)
+            if not batch:
+                break
+            reached_cutoff = False
+            for att in batch:
+                d = att["data"]
+                added = pd.to_datetime(d.get("dateAdded"), utc=True, errors="coerce")
+                if pd.isna(added) or added < cutoff:
+                    reached_cutoff = True
+                    continue
+                title = (d.get("title") or "").strip()
+                if (d.get("linkMode") == "linked_url" and title.lower().startswith("book review")
+                        and d.get("parentItem") and d.get("url")):
+                    rows.append({"parentKey": d["parentItem"], "linkTitle": title,
+                                 "url": d["url"], "dateAdded": added})
+            if reached_cutoff or len(batch) < 100:
+                break
+            start += 100
+
+        df = pd.DataFrame(rows, columns=["parentKey", "linkTitle", "url", "dateAdded"])
+        if df.empty:
+            return pd.DataFrame(columns=cols)
+
+        # Book titles: use all_items.csv where possible, otherwise ask Zotero
+        titles = {}
+        try:
+            items = pd.read_csv("all_items.csv", usecols=["Title", "Zotero link"])
+            items["key"] = items["Zotero link"].astype(str).str.rstrip("/").str.split("/").str[-1]
+            titles = dict(zip(items["key"], items["Title"]))
+        except Exception as e:
+            print(f"Could not read titles from all_items.csv: {e}")
+        for key in df["parentKey"].unique():
+            if not isinstance(titles.get(key), str) or not titles.get(key).strip():
+                try:
+                    titles[key] = zot.item(key)["data"].get("title", "")
+                except Exception as e:
+                    print(f"Could not fetch parent item {key}: {e}")
+                    titles[key] = ""
+        df["bookTitle"] = df["parentKey"].map(titles).fillna("").str.strip()
+
+        # "Book review by Jane Smith" -> "Jane Smith"
+        df["reviewer"] = (
+            df["linkTitle"]
+            .str.replace(r"^\s*Book review\s*(by)?\s*", "", regex=True, case=False)
+            .str.strip(" ()")
+        )
+        print(f"Book reviews this week: {len(df)}")
+        return df.sort_values("dateAdded", ascending=False)[cols].reset_index(drop=True)
+    except Exception as e:
+        print(f"Error fetching book reviews: {e}")
+        return pd.DataFrame(columns=cols)
+
+def build_reviews_html(reviews_df):
+    if reviews_df.empty:
+        return ""
+    html = ""
+    for _, row in reviews_df.iterrows():
+        book     = html_lib.escape(row["bookTitle"] or "Untitled")
+        reviewer = html_lib.escape(row["reviewer"] or "")
+        url      = html_lib.escape(row["url"], quote=True)
+        item_url = f"{BASE_URL}/?item={row['parentKey']}"
+        added    = row["dateAdded"].strftime("%d %B %Y")
+        html += f"""
+            <div style="margin-bottom: 14px; padding: 14px 16px; background: #f8f8f8; border-left: 4px solid #5cb85c; border-radius: 0 4px 4px 0;">
+                <a href="{url}" style="font-weight: bold; color: #1a1a1a; text-decoration: none; font-family: Georgia, serif; font-size: 1em; line-height: 1.4;">
+                    Book review for <em>{book}</em>
+                </a><br>
+                <span style="color: #555; font-size: 0.88em; font-family: Arial, sans-serif;">
+                    {"Reviewed by " + reviewer + " &nbsp;·&nbsp; " if reviewer else ""}Added {added}
+                </span><br>
+                <a href="{url}" style="font-size: 0.82em; color: #5cb85c; text-decoration: none; font-family: Arial, sans-serif;">
+                    Read the review →
+                </a>
+                &nbsp;·&nbsp;<a href="{item_url}" style="font-size: 0.82em; color: #5cb85c; text-decoration: none; font-family: Arial, sans-serif;">View the book in IntelArchive →</a>
+            </div>
+            """
+    return html
 
 def get_upcoming_events():
     today = pd.Timestamp.now().normalize()
@@ -197,11 +292,14 @@ def build_events_html(events_df, conferences_df, cfp_df):
 
     return html
 
-def build_html_digest(df):
+def build_html_digest(df, reviews_df=None):
     today = datetime.now().strftime("%d %B %Y")
     count = len(df)
+    if reviews_df is None:
+        reviews_df = pd.DataFrame()
+    review_count = len(reviews_df)
 
-    if count == 0:
+    if count == 0 and review_count == 0:
         return None
 
     grouped = df.groupby("Publication type")
@@ -265,6 +363,10 @@ def build_html_digest(df):
     conferences_df = get_upcoming_conferences()
     cfp_df         = get_upcoming_cfp()
     events_html    = build_events_html(events_df, conferences_df, cfp_df)
+    reviews_html   = build_reviews_html(reviews_df)
+    title_bar      = f'{count} new item{"s" if count != 1 else ""}'
+    if review_count:
+        title_bar += f' &nbsp;·&nbsp; {review_count} book review{"s" if review_count != 1 else ""}'
 
     html = f"""
     <html>
@@ -291,12 +393,13 @@ def build_html_digest(df):
                         <tr>
                             <td style="background-color: #5cb85c; padding: 12px 32px; text-align: left;">
                                 <span style="color: #ffffff; font-family: Arial, sans-serif; font-size: 0.95em; font-weight: bold;">
-                                    Weekly Digest &nbsp;·&nbsp; {today} &nbsp;·&nbsp; {count} new item{"s" if count != 1 else ""}
+                                    Weekly Digest &nbsp;·&nbsp; {today} &nbsp;·&nbsp; {title_bar}
                                 </span>
                             </td>
                         </tr>
 
                         <!-- Body: Publications -->
+                        {"" if not rows_html else f'''
                         <tr>
                             <td style="padding: 28px 32px 0 32px; text-align: left;">
                                 <h2 style="font-family: Georgia, serif; color: #1a1a1a; margin: 0 0 8px 0; font-size: 1.3em;">
@@ -309,6 +412,22 @@ def build_html_digest(df):
                                 {rows_html}
                             </td>
                         </tr>
+                        '''}
+
+                        <!-- Body: Book reviews -->
+                        {"" if not reviews_html else f'''
+                        <tr>
+                            <td style="padding: 0 32px 0 32px; text-align: left;">
+                                <h2 style="font-family: Georgia, serif; color: #1a1a1a; margin: 32px 0 8px 0; font-size: 1.3em;">
+                                    📖 New Book Reviews
+                                </h2>
+                                <p style="font-family: Arial, sans-serif; color: #444; margin: 0 0 20px 0; font-size: 0.95em;">
+                                    Reviews of books in the database added this week.
+                                </p>
+                                {reviews_html}
+                            </td>
+                        </tr>
+                        '''}
 
                         <!-- Body: Events -->
                         {"" if not events_html else f'''
@@ -351,14 +470,16 @@ def build_html_digest(df):
     return html
 
 def send_digest():
-    new_items = get_new_items(days=7)
-    count     = len(new_items)
+    new_items    = get_new_items(days=7)
+    count        = len(new_items)
+    reviews      = get_new_book_reviews(days=7)
+    review_count = len(reviews)
 
-    if count == 0:
-        print("No new items this week. Skipping digest.")
+    if count == 0 and review_count == 0:
+        print("No new items or book reviews this week. Skipping digest.")
         return
 
-    html = build_html_digest(new_items)
+    html = build_html_digest(new_items, reviews)
     if not html:
         print("Nothing to send.")
         return
@@ -370,7 +491,10 @@ def send_digest():
     to_address    = os.environ["DIGEST_TO"]      # ← Google Group address
 
     today = datetime.now().strftime("%d %B %Y")
-    subject = f"IntelArchive Weekly Digest — {count} new item{'s' if count != 1 else ''} · {today}"
+    subject = f"IntelArchive Weekly Digest — {count} new item{'s' if count != 1 else ''}"
+    if review_count:
+        subject += f", {review_count} book review{'s' if review_count != 1 else ''}"
+    subject += f" · {today}"
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
@@ -383,7 +507,7 @@ def send_digest():
         server.login(smtp_user, smtp_password)
         server.sendmail(smtp_user, to_address, msg.as_string())
 
-    print(f"Digest sent: {count} new items to {to_address}")
+    print(f"Digest sent: {count} new items, {review_count} book reviews to {to_address}")
 
 if __name__ == "__main__":
     send_digest()
