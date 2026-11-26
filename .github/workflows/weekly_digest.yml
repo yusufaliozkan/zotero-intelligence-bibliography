@@ -2,8 +2,13 @@ name: Weekly Digest Email
 
 on:
   schedule:
-    - cron: '0 9 * * 1'  # Every Monday at 9am UTC
+    - cron: '17 7 * * 1'  # Mondays 07:17 UTC (GitHub often starts it hours later)
   workflow_dispatch:  # allow manual trigger for testing
+    inputs:
+      post_to_bluesky:
+        description: 'Also share the digest on Bluesky'
+        type: boolean
+        default: true
 
 jobs:
   send_digest:
@@ -18,7 +23,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install pandas pyzotero
+        run: pip install pandas pyzotero requests atproto==0.0.56
 
       - name: Send weekly digest
         run: python send_digest.py
@@ -28,3 +33,9 @@ jobs:
           SMTP_USER:     ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           DIGEST_TO:     ${{ secrets.DIGEST_TO }}
+
+      - name: Share digest on Bluesky
+        if: ${{ hashFiles('digest_post.json') != '' && (github.event_name == 'schedule' || inputs.post_to_bluesky) }}
+        run: python bluesky_posts/bluesky_digest_bot.py
+        env:
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
