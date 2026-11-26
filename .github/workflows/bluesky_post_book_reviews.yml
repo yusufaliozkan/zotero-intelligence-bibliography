@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main   # latest commit when the run starts, so a queued run sees the previous run's progress
 
       - name: Set up Python
         uses: actions/setup-python@v5
