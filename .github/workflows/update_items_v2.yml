@@ -1,10 +1,28 @@
 name: Update Database v2
 
-# Schedule the workflow to run once a day
+# Two modes (same notebook, all_items.ipynb):
+#   quick - hourly: all Zotero items (new items, edits, deletions), formatted citations
+#           and book reviews; OpenAlex only for new or changed DOIs.
+#   full  - daily: everything, including OpenAlex for all DOIs and the
+#           countries / people / organisations / author-matching statistics.
+# Main triggers: cron-job.org (quick hourly, full daily). GitHub's schedules below are backups.
+
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'quick = Zotero refresh (minutes), full = everything incl. OpenAlex (~25 min)'
+        type: choice
+        options: [quick, full]
+        default: full
   schedule:
-    - cron: '0 12 * * *'  # Runs at 12 PM UTC every day
+    - cron: '13 * * * *'   # backup: quick sync, hourly at :13
+    - cron: '41 4 * * *'   # backup: full refresh, daily 04:41 UTC (skipped if one ran in the last 20 hours)
+
+# One database update at a time; a queued run waits for the current one.
+concurrency:
+  group: update-database
+  cancel-in-progress: false
 
 jobs:
   update_csv:
@@ -17,11 +35,30 @@ jobs:
         id: start_time
         run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
 
-      # Checkout the repository
+      # Checkout the latest main (so a queued run sees the previous run's results)
       - name: Check out repository
         uses: actions/checkout@v4
         with:
+          ref: main
           persist-credentials: true  # Ensure Git credentials persist
+
+      # Work out quick or full
+      - name: Choose update mode
+        run: |
+          MODE="${{ inputs.mode }}"
+          if [ -z "$MODE" ]; then
+            if [ "${{ github.event.schedule }}" = "41 4 * * *" ]; then MODE=full; else MODE=quick; fi
+          fi
+          # A scheduled (backup) full refresh is skipped if cron-job.org already did one recently
+          if [ "$MODE" = "full" ] && [ "${{ github.event_name }}" = "schedule" ] && [ -f last_full_refresh.txt ]; then
+            AGE=$(( $(date +%s) - $(cat last_full_refresh.txt) ))
+            if [ "$AGE" -lt 72000 ]; then
+              echo "A full refresh ran $((AGE / 3600)) hours ago; doing a quick sync instead."
+              MODE=quick
+            fi
+          fi
+          echo "UPDATE_MODE=$MODE" >> $GITHUB_ENV
+          echo "Update mode: $MODE"
 
       # Set up Python
       - name: Set up Python
@@ -39,30 +76,41 @@ jobs:
       - name: Install Jupyter Kernel
         run: python -m ipykernel install --user
 
-      # Convert and Run the Jupyter Notebook
+      # Convert and Run the Jupyter Notebook (reads UPDATE_MODE)
       - name: Convert and Run Jupyter Notebook
         run: jupyter nbconvert --to notebook --execute --inplace all_items.ipynb
         env:
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
 
-      # Pull, commit, and push changes to CSV files
+      # Book reviews (fast: a few paged Zotero calls)
+      - name: Export book reviews
+        continue-on-error: true   # a Zotero hiccup here shouldn't lose the main update
+        run: python database_update/book_reviews.py
+
+      - name: Record full refresh time
+        if: env.UPDATE_MODE == 'full'
+        run: date +%s > last_full_refresh.txt
+
+      # Commit, then pull and push the CSV files
       - name: Pull, commit, and push changes
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-          git pull origin main
           git add *.csv
+          [ -f last_full_refresh.txt ] && git add last_full_refresh.txt
           if git diff --staged --quiet; then
-            echo "No CSV changes to commit. Skipping."
+            echo "No changes to commit. Skipping."
           else
-            git commit -m "Update Zotero data"
+            git commit -m "Update Zotero data (${UPDATE_MODE})"
+            git pull --rebase --autostash origin main   # the notebook run leaves all_items.ipynb modified
             git push
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Check remaining time and loop if necessary
+      # Keep the full refresh at a minimum of 20 minutes, as before (not needed for quick syncs)
       - name: Ensure Minimum Runtime
+        if: env.UPDATE_MODE == 'full'
         run: |
           END_TIME=$(date +%s)
           ELAPSED=$((END_TIME - START_TIME))
