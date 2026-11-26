@@ -2,6 +2,8 @@ import pandas as pd
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import make_msgid
+import json
 from datetime import datetime, timedelta
 import os
 import html as html_lib
@@ -21,11 +23,28 @@ GID_CONF_V2      = "312814443"
 GID_CFP_MAIN     = "135096406"
 GID_CFP_V2       = "1589739166"
 
+def digest_window():
+    """Fixed weekly window: Sunday 12:00 UTC to the following Sunday 12:00 UTC.
+
+    GitHub often starts the scheduled run hours late, and by a different amount
+    each week. Fixed boundaries (rather than "7 days before now") mean every
+    item lands in exactly one digest: no gaps, no duplicates. The window ends
+    at Sunday noon because all_items.csv is refreshed daily at 12:00 UTC, so
+    Sunday's refresh has always captured everything up to the boundary.
+    """
+    now = pd.Timestamp.now(tz="UTC")
+    days_since_sunday = (now.weekday() + 1) % 7
+    end = now.normalize() - pd.Timedelta(days=days_since_sunday) + pd.Timedelta(hours=12)
+    if end > now:
+        end -= pd.Timedelta(days=7)
+    start = end - pd.Timedelta(days=7)
+    return start, end
+
 def get_new_items(days=7):
     df = pd.read_csv("all_items.csv")
     df["Date added"] = pd.to_datetime(df["Date added"], utc=True, errors="coerce")
-    cutoff = datetime.now(tz=df["Date added"].dt.tz) - timedelta(days=days)
-    new_items = df[df["Date added"] >= cutoff].copy()
+    start, end = digest_window()
+    new_items = df[(df["Date added"] >= start) & (df["Date added"] < end)].copy()
     new_items = new_items.sort_values("Date added", ascending=False)
     return new_items
 
@@ -40,7 +59,7 @@ def get_new_book_reviews(days=7):
     try:
         from pyzotero import zotero
         zot = zotero.Zotero("2514686", "group")
-        cutoff = pd.Timestamp.now(tz="UTC") - pd.Timedelta(days=days)
+        cutoff, end = digest_window()
 
         rows, start = [], 0
         while True:
@@ -54,6 +73,8 @@ def get_new_book_reviews(days=7):
                 added = pd.to_datetime(d.get("dateAdded"), utc=True, errors="coerce")
                 if pd.isna(added) or added < cutoff:
                     reached_cutoff = True
+                    continue
+                if added >= end:   # belongs to next week's digest
                     continue
                 title = (d.get("title") or "").strip()
                 if (d.get("linkMode") == "linked_url" and title.lower().startswith("book review")
@@ -422,7 +443,7 @@ def build_html_digest(df, reviews_df=None):
                                     📖 New Book Reviews
                                 </h2>
                                 <p style="font-family: Arial, sans-serif; color: #444; margin: 0 0 20px 0; font-size: 0.95em;">
-                                    Reviews of books in the database added this week.
+                                    Reviews of books in the database added in the past week.
                                 </p>
                                 {reviews_html}
                             </td>
@@ -500,6 +521,10 @@ def send_digest():
     msg["Subject"] = subject
     msg["From"]    = f"IntelArchive <{smtp_user}>"  # ← shows IntelArchive as sender name
     msg["To"]      = to_address
+    # Set our own Message-ID so we know the Google Groups permalink in advance:
+    # https://groups.google.com/d/msgid/<group>/<Message-ID>
+    message_id = make_msgid(domain=smtp_user.split("@")[-1])
+    msg["Message-ID"] = message_id
     msg.attach(MIMEText(html, "html"))
 
     with smtplib.SMTP(smtp_server, smtp_port) as server:
@@ -508,6 +533,15 @@ def send_digest():
         server.sendmail(smtp_user, to_address, msg.as_string())
 
     print(f"Digest sent: {count} new items, {review_count} book reviews to {to_address}")
+
+    # Hand-off for the Bluesky step in the workflow (not committed to the repo)
+    with open("digest_post.json", "w") as f:
+        json.dump({
+            "message_id": message_id.strip("<>"),
+            "subject": subject,
+            "item_count": count,
+            "review_count": review_count,
+        }, f, indent=2)
 
 if __name__ == "__main__":
     send_digest()
