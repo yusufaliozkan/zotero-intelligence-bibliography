@@ -16,7 +16,7 @@ on:
         options: [quick, full]
         default: full
   schedule:
-    - cron: '13 * * * *'   # backup: quick sync, hourly at :13
+    - cron: '13 */4 * * *'   # backup: quick sync, hourly at :13
     - cron: '41 4 * * *'   # backup: full refresh, daily 04:41 UTC (skipped if one ran in the last 20 hours)
 
 # One database update at a time; a queued run waits for the current one.
